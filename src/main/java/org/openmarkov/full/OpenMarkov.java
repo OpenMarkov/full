@@ -4,7 +4,6 @@ import org.openmarkov.core.gui.configuration.ComponentConfiguration;
 import org.openmarkov.core.gui.configuration.OpenMarkovConfiguration;
 import org.openmarkov.core.gui.window.MainGUI;
 
-
 /** This class stores a set of adittionalProperties and the <code>main</code> method.<p>
  * If there is some other main method in other class is only for 
  * test.<p>
@@ -27,34 +26,12 @@ public class OpenMarkov {
 	/** Stores the configuration of each component. */
 	OpenMarkovConfiguration openMarkovConfiguration = null;
 
-	/** OpenMarkov unique instance. Used in singleton pattern. */
-	private static OpenMarkov openMarkov = null;
-
-	/** OpenMarkov private variable to get access to GUI */
-	private static MainGUI openMarkovGUI = null;
-
-	// Constructor
-	private OpenMarkov() {
-		
-	}
-
-	// Methods
-	/** @return OpenMarkov unique instance (singleton pattern). */
-	public static OpenMarkov getUniqueInstance() {
-		if (openMarkov == null) {
-			openMarkov = new OpenMarkov();
-			openMarkovGUI = new MainGUI();
-		}
-
-		return openMarkov;
-	}
-
 	/**
 	 * OpenMarkov main class 
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		OpenMarkov.getUniqueInstance();
+	    MainGUI openMarkovGUI = new MainGUI();
 	}
 	
 }
