@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.openmarkov</groupId>
   <artifactId>org.openmarkov.full</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.1-SNAPSHOT</version>
   <name>org.openmarkov.full</name>
   <description>Full Distribution of OpenMarkov</description>
   
@@ -14,67 +14,67 @@
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.core.gui</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.learning.algorithm.hillclimbing</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.learning.algorithm.pc</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
  
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.learning.gui</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.learning.io</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.learning.metric.aic</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
  
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.learning.metric.bayesian</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
  
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.learning.metric.bd</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
  
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.learning.metric.entropy</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
          <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.learning.metric.k2</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
          <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.learning.metric.mdlm</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -89,12 +89,6 @@
             <version>4.10</version>
         </dependency>
 
-        <dependency>
-            <groupId>umontreal.iro</groupId>
-            <artifactId>umontreal.iro.ssj</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        
         <dependency>
             <groupId>jdom</groupId>
             <artifactId>jdom</artifactId>
