@@ -11,6 +11,7 @@ package org.openmarkov.full;
 
 import org.openmarkov.core.gui.configuration.ComponentConfiguration;
 import org.openmarkov.core.gui.configuration.OpenMarkovConfiguration;
+import org.openmarkov.core.gui.localize.StringResourceLoader;
 import org.openmarkov.core.gui.window.MainGUI;
 
 /** This class stores a set of adittionalProperties and the <code>main</code> method.<p>
@@ -41,6 +42,18 @@ public class OpenMarkov {
 	 */
 	public static void main(String[] args) {
 	    MainGUI openMarkovGUI = new MainGUI();
+	    
+	    for(int i = 0; i < args.length; ++i)
+	    {
+	        if(args[i].equals ("-l") || args[i].equals ("-language"))
+	        {
+	            if(i+1<args.length)
+	            {
+	                StringResourceLoader.setLanguage (args[i+1]);
+	                ++i;
+	            }
+	        }
+	    }
 	}
 	
 }
