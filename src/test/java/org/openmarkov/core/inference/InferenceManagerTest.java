@@ -1,4 +1,4 @@
-package inference;
+package org.openmarkov.core.inference;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

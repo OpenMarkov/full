@@ -9,6 +9,8 @@
 
 package org.openmarkov.full;
 
+import java.io.File;
+
 import org.openmarkov.core.gui.configuration.ComponentConfiguration;
 import org.openmarkov.core.gui.configuration.OpenMarkovConfiguration;
 import org.openmarkov.core.gui.localize.StringResourceLoader;
@@ -52,6 +54,9 @@ public class OpenMarkov {
 	                StringResourceLoader.setLanguage (args[i+1]);
 	                ++i;
 	            }
+	        }else if(new File(args[i]).exists ())
+	        {
+	            openMarkovGUI.openNetwork (args[i]);
 	        }
 	    }
 	}
