@@ -160,7 +160,7 @@
 		
         <dependency>
             <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.evaluation.gui</artifactId>
+            <artifactId>org.openmarkov.evaluation</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>	
 
