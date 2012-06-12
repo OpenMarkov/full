@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.openmarkov.core.inference.InferenceAlgorithm;
 import org.openmarkov.core.inference.annotation.InferenceManager;
 import org.openmarkov.core.model.network.ProbNet;
-import org.openmarkov.inference.variableElimination.VarEliminationBN;
+import org.openmarkov.inference.variableElimination.VariableElimination;
 
 public class InferenceManagerTest
 {
@@ -41,6 +41,6 @@ public class InferenceManagerTest
         
         InferenceAlgorithm algorithm = inferenceManager.getDefaultInferenceAlgorithm (probNet);
         assertNotNull(algorithm);
-        assertEquals(algorithm.getClass (), VarEliminationBN.class);
+        assertEquals(algorithm.getClass (), VariableElimination.class);
     }        
 }
