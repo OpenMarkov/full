@@ -28,7 +28,7 @@
 					<appendAssemblyId>false</appendAssemblyId>
 				</configuration>
 				<executions>
-					<execution><!-- MLUQUE: I do not know if this block is necessary -->
+										<execution><!-- MLUQUE: I do not know if this block is necessary -->
 						<id>make-assembly</id> <!-- this is used for inheritance merges -->
 						<phase>package</phase> <!-- bind to the packaging phase -->
 						<goals>
@@ -78,17 +78,17 @@
              </configuration>
           </execution>
         </executions>
-      </plugin>			
+      </plugin>		
 		</plugins>
 	</build>
 
 	<dependencies>
 
-        <dependency>
-            <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+		<dependency>
+			<groupId>org.openmarkov</groupId>
+			<artifactId>org.openmarkov.core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.openmarkov</groupId>
@@ -96,11 +96,11 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
-        <dependency>
-            <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.learning.core</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
-        </dependency>
+		<dependency>
+			<groupId>org.openmarkov</groupId>
+			<artifactId>org.openmarkov.learning.core</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.openmarkov</groupId>
@@ -117,12 +117,6 @@
 		<dependency>
 			<groupId>org.openmarkov</groupId>
 			<artifactId>org.openmarkov.learning.gui</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.openmarkov</groupId>
-			<artifactId>org.openmarkov.learning.io</artifactId>
 			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 
@@ -168,11 +162,11 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
-        <dependency>
-            <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.inference.likelihoodWeighting</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+		<dependency>
+			<groupId>org.openmarkov</groupId>
+			<artifactId>org.openmarkov.inference.likelihoodWeighting</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.openmarkov</groupId>
@@ -203,24 +197,42 @@
 			<artifactId>org.openmarkov.io.probmodel</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
-        <dependency>
-            <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.evaluation</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.dbgenerator</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>	        	
 
-        <dependency>
-            <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.utilityCalculator</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>    	
+		<dependency>
+			<groupId>org.openmarkov</groupId>
+			<artifactId>org.openmarkov.io.database.excel</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmarkov</groupId>
+            <artifactId>org.openmarkov.io.database.elvira</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmarkov</groupId>
+            <artifactId>org.openmarkov.io.database.weka</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmarkov</groupId>
+			<artifactId>org.openmarkov.evaluation</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmarkov</groupId>
+			<artifactId>org.openmarkov.dbgenerator</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmarkov</groupId>
+			<artifactId>org.openmarkov.utilityCalculator</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 		<dependency>
 			<groupId>log4j</groupId>
