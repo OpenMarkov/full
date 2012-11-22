@@ -15,7 +15,7 @@ import org.openmarkov.core.gui.localize.StringResourceLoader;
 import org.openmarkov.core.gui.window.MainGUI;
 
 /**
- * This class stores a set of adittionalProperties and the <code>main</code>
+ * This class stores a set of additionalProperties and the <code>main</code>
  * method.
  * <p>
  * If there is some other main method in other class is only for test.
