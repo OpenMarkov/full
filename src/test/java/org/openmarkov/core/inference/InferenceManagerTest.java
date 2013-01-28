@@ -26,7 +26,7 @@ public class InferenceManagerTest
     @Test
     public void testGetInferenceAlgorithms() throws Exception{
         
-        assertTrue( inferenceManager.getInferenceAlgorithms (probNet).contains (VariableEliminationName));
+        assertTrue( inferenceManager.getInferenceAlgorithmNames (probNet).contains (VariableEliminationName));
     }
     
     @Test

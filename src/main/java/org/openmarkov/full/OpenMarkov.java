@@ -8,10 +8,11 @@ package org.openmarkov.full;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.openmarkov.core.gui.configuration.ComponentConfiguration;
 import org.openmarkov.core.gui.configuration.OpenMarkovConfiguration;
-import org.openmarkov.core.gui.localize.StringResourceLoader;
+import org.openmarkov.core.gui.localize.StringDatabase;
 import org.openmarkov.core.gui.window.MainGUI;
 
 /**
@@ -44,14 +45,14 @@ public class OpenMarkov
      */
     public static void main (String[] args)
     {
-        ArrayList<String> filesToOpen = new ArrayList<String> ();
+        List<String> filesToOpen = new ArrayList<String> ();
         for (int i = 0; i < args.length; ++i)
         {
             if (args[i].equals ("-l") || args[i].equals ("-language"))
             {
                 if (i + 1 < args.length)
                 {
-                    StringResourceLoader.setLanguage (args[i + 1]);
+                    StringDatabase.getUniqueInstance ().setLanguage (args[i + 1]);
                     ++i;
                 }
             }
