@@ -62,6 +62,7 @@ public class OpenMarkov
             }
         }
         MainGUI openMarkovGUI = new MainGUI ();
+        openMarkovGUI.setVisible(true);
         for (String filename : filesToOpen)
         {
             openMarkovGUI.openNetwork (filename);
