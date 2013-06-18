@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openmarkov</groupId>
 	<artifactId>org.openmarkov.full</artifactId>
-	<version>0.1.2</version>
+	<version>0.1.3-SNAPSHOT</version>
 	<name>org.openmarkov.full</name>
 	<description>Full Distribution of OpenMarkov</description>
 
@@ -87,13 +87,13 @@
 		<dependency>
 			<groupId>org.openmarkov</groupId>
 			<artifactId>org.openmarkov.core</artifactId>
-			<version>0.1.2</version>
+			<version>0.1.3-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.openmarkov</groupId>
 			<artifactId>org.openmarkov.core.gui</artifactId>
-			<version>0.1.2</version>
+			<version>0.1.3-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -201,7 +201,7 @@
 		<dependency>
 			<groupId>org.openmarkov</groupId>
 			<artifactId>org.openmarkov.io.probmodelxml</artifactId>
-			<version>0.1.2</version>
+			<version>0.1.3-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
