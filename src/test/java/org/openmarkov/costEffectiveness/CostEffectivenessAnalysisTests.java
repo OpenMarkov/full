@@ -45,6 +45,33 @@ public class CostEffectivenessAnalysisTests {
     	Assert.assertArrayEquals(expectedResults, result.values, 0.001);
     }
     
+    /**
+     * Test chap model with a super value cost node
+     * @throws Exception
+     */
+    @Test
+    public void testCHAPSV() throws Exception{
+    	// Constants
+    	String modelFilePath = "cea\\chapSV.pgmx";
+    	// Open the file containing the network
+		InputStream file = getClass().getClassLoader ().
+				getResourceAsStream (modelFilePath);
+
+		// Load the Bayesian network
+		PGMXReader pgmxReader = new PGMXReader();
+		ProbNet probNet = pgmxReader.loadProbNet(file, "CHAP").getProbNet();
+
+		EvidenceCase evidence = new EvidenceCase();
+		
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 3.0, 3.0, 3, TransitionTime.BEGINNING);
+		
+		TablePotential result = ceAnalysis.getGlobalUtility();
+		
+		double[] expectedResults = new double[]{1066.744,1.444,852.399,1.709};
+		
+    	Assert.assertArrayEquals(expectedResults, result.values, 0.001);
+    }    
+    
     @Test
     public void testChancellor() throws Exception{
     	// Constants
@@ -171,5 +198,27 @@ public class CostEffectivenessAnalysisTests {
     	Assert.assertEquals(expectedResults[2], result.values[2], 1);
     	Assert.assertEquals(expectedResults[3], result.values[3], 0.01);
     }        
-	
+
+    @Test
+    public void testHPV() throws Exception{
+    	// Constants
+    	String modelFilePath = "cea\\MPAD-HPV.pgmx";
+    	// Open the file containing the network
+		InputStream file = getClass().getClassLoader ().
+				getResourceAsStream (modelFilePath);
+
+		// Load the Bayesian network
+		PGMXReader pgmxReader = new PGMXReader();
+		ProbNet probNet = pgmxReader.loadProbNet(file, "MPAD-HPV").getProbNet();
+
+		EvidenceCase evidence = new EvidenceCase();
+		
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 0.0, 0.0, 88, TransitionTime.BEGINNING);
+		
+		TablePotential result = ceAnalysis.getGlobalUtility();
+		
+		double[] expectedResults = new double[]{1205.296,59.81,2897.377,59.855,3420.872,59.86,1171.416,60.158,2813.055,60.162,3332.291,60.162};
+		
+    	Assert.assertArrayEquals(expectedResults, result.values, 0.001);
+    }    
 }
