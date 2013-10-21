@@ -1,6 +1,7 @@
 package org.openmarkov.costEffectiveness;
 
 import java.io.InputStream;
+import java.util.Arrays;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,6 +14,7 @@ import org.openmarkov.core.model.network.Finding;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.TablePotential;
+import org.openmarkov.core.model.network.potential.operation.DiscretePotentialOperations;
 import org.openmarkov.io.probmodel.PGMXReader;
 
 public class CostEffectivenessAnalysisTests {
@@ -52,7 +54,7 @@ public class CostEffectivenessAnalysisTests {
     @Test
     public void testCHAPSV() throws Exception{
     	// Constants
-    	String modelFilePath = "cea\\chapSV.pgmx";
+    	String modelFilePath = "cea\\chap-sv.pgmx";
     	// Open the file containing the network
 		InputStream file = getClass().getClassLoader ().
 				getResourceAsStream (modelFilePath);
@@ -94,6 +96,29 @@ public class CostEffectivenessAnalysisTests {
 		
     	Assert.assertArrayEquals(expectedResults, result.values, 0.001);
     }
+    
+    @Test
+    public void testChancellorSV() throws Exception{
+    	// Constants
+    	String modelFilePath = "cea\\MPAD-dmhee-2.5-sv.pgmx";
+    	// Open the file containing the network
+		InputStream file = getClass().getClassLoader ().
+				getResourceAsStream (modelFilePath);
+
+		// Load the Bayesian network
+		PGMXReader pgmxReader = new PGMXReader();
+		ProbNet probNet = pgmxReader.loadProbNet(file, "Chancellor").getProbNet();
+
+		EvidenceCase evidence = new EvidenceCase();
+		
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 0.0, 20, TransitionTime.BEGINNING);
+		
+		TablePotential result = ceAnalysis.getGlobalUtility();
+		
+		double[] expectedResults = new double[]{50585.917,8.935,44662.217,7.991};
+		
+    	Assert.assertArrayEquals(expectedResults, result.values, 0.001);
+    }    
     
     @Test
     public void testBriggs() throws Exception{
@@ -178,7 +203,7 @@ public class CostEffectivenessAnalysisTests {
 		ceAnalysis.run();
 		TablePotential result = ceAnalysis.getGlobalUtility();
 
-		double[] expectedResults = new double[]{513.85,14.664,612.80,14.700};
+		double[] expectedResults = new double[]{514,14.66,613,14.70};
 		
     	Assert.assertEquals(expectedResults[0], result.values[0], 1);
     	Assert.assertEquals(expectedResults[1], result.values[1], 0.01);
@@ -217,8 +242,11 @@ public class CostEffectivenessAnalysisTests {
 		
 		TablePotential result = ceAnalysis.getGlobalUtility();
 		
-		double[] expectedResults = new double[]{1205.296,59.81,2897.377,59.855,3420.872,59.86,1171.416,60.158,2813.055,60.162,3332.291,60.162};
-		
-    	Assert.assertArrayEquals(expectedResults, result.values, 0.001);
+		double[] expectedResultsTestType = new double[]{1205.296,59.81,2897.377,59.855,3420.872,59.86,1171.416,60.158,2813.055,60.162,3332.291,60.162};
+		double[] expectedResultsVaccine = new double[]{1205.296,59.81,2897.377,59.855,3420.872,59.86,1171.416,60.158,2813.055,60.162,3332.291,60.162};
+		if(result.getVariable(1).getName().equals("Dec:Test type"))
+			Assert.assertArrayEquals(expectedResultsTestType, result.values, 0.001);
+		else
+			Assert.assertArrayEquals(expectedResultsVaccine, result.values, 0.001);
     }    
 }
