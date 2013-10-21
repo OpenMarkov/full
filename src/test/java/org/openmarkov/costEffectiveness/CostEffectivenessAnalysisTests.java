@@ -98,6 +98,29 @@ public class CostEffectivenessAnalysisTests {
     }
     
     @Test
+    public void testChancellorHC() throws Exception{
+    	// Constants
+    	String modelFilePath = "cea\\MPAD-dmhee-2.5.pgmx";
+    	// Open the file containing the network
+		InputStream file = getClass().getClassLoader ().
+				getResourceAsStream (modelFilePath);
+
+		// Load the Bayesian network
+		PGMXReader pgmxReader = new PGMXReader();
+		ProbNet probNet = pgmxReader.loadProbNet(file, "Chancellor").getProbNet();
+
+		EvidenceCase evidence = new EvidenceCase();
+		
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 0.0, 20, TransitionTime.HALF);
+		
+		TablePotential result = ceAnalysis.getGlobalUtility();
+		
+		double[] expectedResults = new double[]{50585.917,9.412,44662.217,8.471};
+		
+    	Assert.assertArrayEquals(expectedResults, result.values, 0.001);
+    }    
+    
+    @Test
     public void testChancellorSV() throws Exception{
     	// Constants
     	String modelFilePath = "cea\\MPAD-dmhee-2.5-sv.pgmx";
