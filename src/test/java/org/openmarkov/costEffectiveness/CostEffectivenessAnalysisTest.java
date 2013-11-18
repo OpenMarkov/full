@@ -17,7 +17,7 @@ import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.potential.operation.DiscretePotentialOperations;
 import org.openmarkov.io.probmodel.PGMXReader;
 
-public class CostEffectivenessAnalysisTests {
+public class CostEffectivenessAnalysisTest {
 
     @Before
     public void setUp() throws Exception {
