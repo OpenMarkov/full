@@ -21,6 +21,8 @@ import org.openmarkov.io.probmodel.PGMXReader;
 
 public class CostEffectivenessAnalysisTest {
 
+	private boolean useMultithreading = true;
+	
     @Before
     public void setUp() throws Exception {
 
@@ -195,7 +197,7 @@ public class CostEffectivenessAnalysisTest {
 
 		EvidenceCase evidence = new EvidenceCase();
 		
-		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 0.0, 20, 5000, TransitionTime.BEGINNING);
+		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 0.0, 20, 5000, TransitionTime.BEGINNING, useMultithreading);
 		ceAnalysis.run();
 		TablePotential result = ceAnalysis.getGlobalUtility();
 		
@@ -224,20 +226,20 @@ public class CostEffectivenessAnalysisTest {
 		Variable sexVariable = probNet.getVariable("Sex");
 		evidence.addFinding(new Finding(sexVariable, 0));
 		
-		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 1.5, 60, 1000, TransitionTime.BEGINNING);
+		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 1.5, 60, 1000, TransitionTime.BEGINNING, useMultithreading);
 		ceAnalysis.run();
 		TablePotential result = ceAnalysis.getGlobalUtility();
 
 		double[] expectedResults = new double[]{514,14.66,613,14.70};
 		
     	Assert.assertEquals(expectedResults[0], result.values[0], 1);
-    	Assert.assertEquals(expectedResults[1], result.values[1], 0.01);
+    	Assert.assertEquals(expectedResults[1], result.values[1], 0.03);
     	Assert.assertEquals(expectedResults[2], result.values[2], 1);
-    	Assert.assertEquals(expectedResults[3], result.values[3], 0.01);
+    	Assert.assertEquals(expectedResults[3], result.values[3], 0.03);
 
     	// Sex = 1
 		evidence.changeFinding(new Finding(sexVariable, 1));
-		ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 1.5, 60, 1000, TransitionTime.BEGINNING);
+		ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 1.5, 60, 1000, TransitionTime.BEGINNING, useMultithreading);
 		ceAnalysis.run();
 		result = ceAnalysis.getGlobalUtility();
 		
