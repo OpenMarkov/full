@@ -1,5 +1,6 @@
 package org.openmarkov.costEffectiveness;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +29,7 @@ public class CostEffectivenessAnalysisTest {
     @Test
     public void testCHAP() throws Exception{
     	// Constants
-    	String modelFilePath = "cea\\chap.pgmx";
+    	String modelFilePath = "cea" + File.separator +"chap.pgmx";
     	// Open the file containing the network
 		InputStream file = getClass().getClassLoader ().
 				getResourceAsStream (modelFilePath);
@@ -55,7 +56,7 @@ public class CostEffectivenessAnalysisTest {
     @Test
     public void testCHAPSV() throws Exception{
     	// Constants
-    	String modelFilePath = "cea\\chap-sv.pgmx";
+    	String modelFilePath = "cea" + File.separator +"chap-sv.pgmx";
     	// Open the file containing the network
 		InputStream file = getClass().getClassLoader ().
 				getResourceAsStream (modelFilePath);
@@ -78,7 +79,7 @@ public class CostEffectivenessAnalysisTest {
     @Test
     public void testChancellor() throws Exception{
     	// Constants
-    	String modelFilePath = "cea\\MPAD-dmhee-2.5.pgmx";
+    	String modelFilePath = "cea" + File.separator +"MPAD-dmhee-2.5.pgmx";
     	// Open the file containing the network
 		InputStream file = getClass().getClassLoader ().
 				getResourceAsStream (modelFilePath);
@@ -101,7 +102,7 @@ public class CostEffectivenessAnalysisTest {
     @Test
     public void testChancellorHC() throws Exception{
     	// Constants
-    	String modelFilePath = "cea\\MPAD-dmhee-2.5.pgmx";
+    	String modelFilePath = "cea" + File.separator +"MPAD-dmhee-2.5.pgmx";
     	// Open the file containing the network
 		InputStream file = getClass().getClassLoader ().
 				getResourceAsStream (modelFilePath);
@@ -124,7 +125,7 @@ public class CostEffectivenessAnalysisTest {
     @Test
     public void testChancellorSV() throws Exception{
     	// Constants
-    	String modelFilePath = "cea\\MPAD-dmhee-2.5-sv.pgmx";
+    	String modelFilePath = "cea" + File.separator +"MPAD-dmhee-2.5-sv.pgmx";
     	// Open the file containing the network
 		InputStream file = getClass().getClassLoader ().
 				getResourceAsStream (modelFilePath);
@@ -147,7 +148,7 @@ public class CostEffectivenessAnalysisTest {
     @Test
     public void testBriggs() throws Exception{
     	// Constants
-    	String modelFilePath = "cea\\MPAD-dmhee-3.5.pgmx";
+    	String modelFilePath = "cea" + File.separator +"MPAD-dmhee-3.5.pgmx";
     	// Open the file containing the network
 		InputStream file = getClass().getClassLoader ().
 				getResourceAsStream (modelFilePath);
@@ -183,7 +184,7 @@ public class CostEffectivenessAnalysisTest {
     @Test
     public void testChancellorSA() throws Exception{
     	// Constants
-    	String modelFilePath = "cea\\MPAD-dmhee-4.7.pgmx";
+    	String modelFilePath = "cea" + File.separator +"MPAD-dmhee-4.7.pgmx";
     	// Open the file containing the network
 		InputStream file = getClass().getClassLoader ().
 				getResourceAsStream (modelFilePath);
@@ -209,7 +210,7 @@ public class CostEffectivenessAnalysisTest {
     @Test
     public void testBriggsSA() throws Exception{
     	// Constants
-    	String modelFilePath = "cea\\MPAD-dmhee-4.8.pgmx";
+    	String modelFilePath = "cea" + File.separator +"MPAD-dmhee-4.8.pgmx";
     	// Open the file containing the network
 		InputStream file = getClass().getClassLoader ().
 				getResourceAsStream (modelFilePath);
@@ -251,7 +252,7 @@ public class CostEffectivenessAnalysisTest {
     @Test
     public void testHPV() throws Exception{
     	// Constants
-    	String modelFilePath = "cea\\MPAD-HPV.pgmx";
+    	String modelFilePath = "cea" + File.separator +"MPAD-HPV.pgmx";
     	// Open the file containing the network
 		InputStream file = getClass().getClassLoader ().
 				getResourceAsStream (modelFilePath);
