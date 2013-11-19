@@ -2,6 +2,7 @@ package org.openmarkov.costEffectiveness;
 
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -265,11 +266,10 @@ public class CostEffectivenessAnalysisTest {
 		
 		TablePotential result = ceAnalysis.getGlobalUtility();
 		
-		double[] expectedResultsTestType = new double[]{1205.296,59.81,2897.377,59.855,3420.872,59.86,1171.416,60.158,2813.055,60.162,3332.291,60.162};
-		double[] expectedResultsVaccine = new double[]{1205.296,59.81,2897.377,59.855,3420.872,59.86,1171.416,60.158,2813.055,60.162,3332.291,60.162};
-		if(result.getVariable(1).getName().equals("Dec:Test type"))
-			Assert.assertArrayEquals(expectedResultsTestType, result.values, 0.001);
-		else
-			Assert.assertArrayEquals(expectedResultsVaccine, result.values, 0.001);
+		List<Variable> variablesInOrder = Arrays.asList(result.getVariable(0),
+				probNet.getVariable("Dec:Test type"), probNet.getVariable("Dec:Vaccine"));
+		result = DiscretePotentialOperations.reorder(result, variablesInOrder);
+		double[] expectedResults = new double[]{1205.296,59.81,2897.377,59.855,3420.872,59.86,1171.416,60.158,2813.055,60.162,3332.291,60.162};
+		Assert.assertArrayEquals(expectedResults, result.values, 0.001);
     }    
 }
