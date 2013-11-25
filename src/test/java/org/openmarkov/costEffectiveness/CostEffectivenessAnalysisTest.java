@@ -232,10 +232,10 @@ public class CostEffectivenessAnalysisTest {
 
 		double[] expectedResults = new double[]{514,14.66,613,14.70};
 		
-    	Assert.assertEquals(expectedResults[0], result.values[0], 1);
-    	Assert.assertEquals(expectedResults[1], result.values[1], 0.03);
-    	Assert.assertEquals(expectedResults[2], result.values[2], 1);
-    	Assert.assertEquals(expectedResults[3], result.values[3], 0.03);
+    	Assert.assertEquals(expectedResults[0], result.values[0], 2);
+    	Assert.assertEquals(expectedResults[1], result.values[1], 0.02);
+    	Assert.assertEquals(expectedResults[2], result.values[2], 2);
+    	Assert.assertEquals(expectedResults[3], result.values[3], 0.02);
 
     	// Sex = 1
 		evidence.changeFinding(new Finding(sexVariable, 1));
@@ -243,12 +243,12 @@ public class CostEffectivenessAnalysisTest {
 		ceAnalysis.run();
 		result = ceAnalysis.getGlobalUtility();
 		
-		expectedResults = new double[]{609.24,12.588,640.46,12.64};
+		expectedResults = new double[]{610.5,12.588,640.46,12.64};
 		
-    	Assert.assertEquals(expectedResults[0], result.values[0], 1);
-    	Assert.assertEquals(expectedResults[1], result.values[1], 0.01);
-    	Assert.assertEquals(expectedResults[2], result.values[2], 1);
-    	Assert.assertEquals(expectedResults[3], result.values[3], 0.01);
+    	Assert.assertEquals(expectedResults[0], result.values[0], 2);
+    	Assert.assertEquals(expectedResults[1], result.values[1], 0.02);
+    	Assert.assertEquals(expectedResults[2], result.values[2], 2);
+    	Assert.assertEquals(expectedResults[3], result.values[3], 0.02);
     }        
 
     @Test
