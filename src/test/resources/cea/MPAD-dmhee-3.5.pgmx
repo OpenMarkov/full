@@ -131,7 +131,7 @@
         <Coordinates x="369" y="376" />
         <Unit />
         <Precision>0.01</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -140,7 +140,7 @@
         <Coordinates x="267" y="375" />
         <Unit />
         <Precision>0.01</Precision>
-        <DecisionCriteria name="effectiveness" />
+        <Criterion name="effectiveness" />
         <States>
           <State name="" />
         </States>
@@ -149,7 +149,7 @@
         <Coordinates x="147" y="376" />
         <Unit />
         <Precision>0.01</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>

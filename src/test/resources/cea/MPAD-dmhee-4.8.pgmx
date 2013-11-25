@@ -120,7 +120,7 @@
       <Variable name="Cost" timeSlice="0" type="numeric" role="utility" isInput="false">
         <Coordinates x="369" y="376" />
         <Precision>0.01</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -128,7 +128,7 @@
       <Variable name="QoL" timeSlice="0" type="numeric" role="utility" isInput="false">
         <Coordinates x="267" y="375" />
         <Precision>0.01</Precision>
-        <DecisionCriteria name="effectiveness" />
+        <Criterion name="effectiveness" />
         <States>
           <State name="" />
         </States>
@@ -136,7 +136,7 @@
       <Variable name="Prosthesis cost" type="numeric" role="utility" isInput="false">
         <Coordinates x="147" y="376" />
         <Precision>0.01</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>

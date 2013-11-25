@@ -72,7 +72,7 @@
         <Coordinates x="415" y="293" />
         <Unit />
         <Precision>0.01</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -81,7 +81,7 @@
         <Coordinates x="95" y="329" />
         <Unit />
         <Precision>0.01</Precision>
-        <DecisionCriteria name="effectiveness" />
+        <Criterion name="effectiveness" />
         <States>
           <State name="" />
         </States>
@@ -90,7 +90,7 @@
         <Coordinates x="287" y="329" />
         <Unit />
         <Precision>0.01</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -99,7 +99,7 @@
         <Coordinates x="172" y="375" />
         <Unit />
         <Precision>0.01</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -108,7 +108,7 @@
         <Coordinates x="418" y="396" />
         <Unit />
         <Precision>0.01</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>

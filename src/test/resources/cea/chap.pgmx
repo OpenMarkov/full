@@ -167,7 +167,7 @@
         <Coordinates x="86" y="362" />
         <Unit>months</Unit>
         <Precision>0.01</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -176,7 +176,7 @@
         <Coordinates x="159" y="403" />
         <Unit>months</Unit>
         <Precision>0.01</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -185,7 +185,7 @@
         <Coordinates x="430" y="404" />
         <Unit />
         <Precision>0.01</Precision>
-        <DecisionCriteria name="effectiveness" />
+        <Criterion name="effectiveness" />
         <States>
           <State name="" />
         </States>
@@ -194,7 +194,7 @@
         <Coordinates x="313" y="403" />
         <Unit>months</Unit>
         <Precision>0.01</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -203,7 +203,7 @@
         <Coordinates x="87" y="452" />
         <Unit />
         <Precision>0.01</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>

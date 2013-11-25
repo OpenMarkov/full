@@ -280,7 +280,7 @@
         </AdditionalProperties>
         <Unit />
         <Precision>0.0</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -302,7 +302,7 @@
         </AdditionalProperties>
         <Unit />
         <Precision>0.0</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -314,7 +314,7 @@
         </AdditionalProperties>
         <Unit />
         <Precision>0.0</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -336,7 +336,7 @@
         </AdditionalProperties>
         <Unit />
         <Precision>0.0</Precision>
-        <DecisionCriteria name="effectiveness" />
+        <Criterion name="effectiveness" />
         <States>
           <State name="" />
         </States>
@@ -358,7 +358,7 @@
         </AdditionalProperties>
         <Unit />
         <Precision>0.0</Precision>
-        <DecisionCriteria name="effectiveness" />
+        <Criterion name="effectiveness" />
         <States>
           <State name="" />
         </States>
@@ -380,7 +380,7 @@
         </AdditionalProperties>
         <Unit />
         <Precision>0.0</Precision>
-        <DecisionCriteria name="effectiveness" />
+        <Criterion name="effectiveness" />
         <States>
           <State name="" />
         </States>
@@ -392,7 +392,7 @@
         </AdditionalProperties>
         <Unit />
         <Precision>0.0</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -404,7 +404,7 @@
         </AdditionalProperties>
         <Unit />
         <Precision>0.0</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -416,7 +416,7 @@
         </AdditionalProperties>
         <Unit />
         <Precision>0.0</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -428,7 +428,7 @@
         </AdditionalProperties>
         <Unit />
         <Precision>0.0</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -440,7 +440,7 @@
         </AdditionalProperties>
         <Unit />
         <Precision>0.0</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
@@ -452,7 +452,7 @@
         </AdditionalProperties>
         <Unit />
         <Precision>0.0</Precision>
-        <DecisionCriteria name="cost" />
+        <Criterion name="cost" />
         <States>
           <State name="" />
         </States>
