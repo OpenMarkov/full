@@ -212,12 +212,6 @@
 		
 		<dependency>
 			<groupId>org.openmarkov</groupId>
-			<artifactId>org.openmarkov.io.xmlbif</artifactId>
-			<version>0.1.4-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.openmarkov</groupId>
 			<artifactId>org.openmarkov.io.database.excel</artifactId>
 			<version>0.1.4-SNAPSHOT</version>
 		</dependency>
