@@ -1,4 +1,4 @@
-package org.openmarkov.core.gui.io.format.annotation;
+package org.openmarkov.full.io;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
@@ -16,8 +17,8 @@ import org.openmarkov.core.gui.dialog.io.NetsIO;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.io.probmodel.PGMXReader;
 import org.openmarkov.io.probmodel.PGMXWriter;
-import org.openmarkov.io.probmodel.bitbucket.NetsRepository;
 
+import bitbucket.NetsRepository;
 
 
 /**
@@ -25,6 +26,7 @@ import org.openmarkov.io.probmodel.bitbucket.NetsRepository;
  * 
  * @author jmendoza
  * @author mkpalacio
+ * @author jperez
  */
 public class NetsIOTest {
 	/**
@@ -90,7 +92,12 @@ public class NetsIOTest {
             PGMXReader pgmxReader = new PGMXReader();
             
 			try {
-				ProbNet probNet = pgmxReader.loadProbNet(url, networkName).getProbNet();
+				ProbNet probNet = null;
+				try {
+					probNet = pgmxReader.loadProbNet(url.openStream(), networkName).getProbNet();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				assertNotNull(probNet);
 				assertNotNull(probNet.getNodes());
 				
