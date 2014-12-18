@@ -39,27 +39,27 @@ public class NetsRepository {
 	/**
 	 * Constant for Baysian Networks
 	 */
-	public static final String NETWORK_BN = "bn";
+	private final String NETWORK_BN = "bn";
 	/**
 	 * Constant for DAN Networks
 	 */
-	public static final String NETWORK_DAN = "dan";
+	private final String NETWORK_DAN = "dan";
 	/**
 	 * Constant for Influence Diagram Networks
 	 */
-	public static final String NETWORK_ID = "id";
+	private final String NETWORK_ID = "id";
 	/**
 	 * Constant for Limids Networks
 	 */
-	public static final String NETWORK_LIMIDS = "limids";
+	private final String NETWORK_LIMIDS = "limids";
 	/**
 	 * Constant for MPAD Networks
 	 */
-	public static final String NETWORK_MPAD = "mpad";
+	private final String NETWORK_MPAD = "mpad";
 	/**
 	 * Constant for POMDP Networks
 	 */
-	public static final String NETWORK_POMDP = "pomdp";
+	private final String NETWORK_POMDP = "pomdp";
 
 	/**
 	 * Method to obtain the complete list of URL of all networks in the repository
