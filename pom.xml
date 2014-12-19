@@ -102,17 +102,14 @@
 			<version>0.1.6-SNAPSHOT</version>
 		</dependency>
 
-        <dependency>
-            <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.learning.algorithm.hillclimbing</artifactId>
-            <version>0.1.6-SNAPSHOT</version>
-        </dependency>
+		<dependency>
+			<groupId>org.openmarkov</groupId>
+			<artifactId>org.openmarkov.learning.algorithm.hillclimbing</artifactId>
+			<version>0.1.6-SNAPSHOT</version>
+		</dependency>
 
-        <!-- <dependency>
-            <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.learning.algorithm.em</artifactId>
-            <version>0.1.6-SNAPSHOT</version>
-        </dependency> -->
+		<!-- <dependency> <groupId>org.openmarkov</groupId> <artifactId>org.openmarkov.learning.algorithm.em</artifactId> 
+			<version>0.1.6-SNAPSHOT</version> </dependency> -->
 
 		<dependency>
 			<groupId>org.openmarkov</groupId>
@@ -209,7 +206,7 @@
 			<artifactId>org.openmarkov.io.probmodelxml</artifactId>
 			<version>0.1.6-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openmarkov</groupId>
 			<artifactId>org.openmarkov.io.database.excel</artifactId>
@@ -240,23 +237,12 @@
 			<version>0.1.6-SNAPSHOT</version>
 		</dependency>
 
-      <!-- <dependency>
-			<groupId>org.openmarkov</groupId>
-			<artifactId>org.openmarkov.utilityCalculator</artifactId>
-			<version>0.1.6-SNAPSHOT</version>
-		</dependency>
+		<!-- <dependency> <groupId>org.openmarkov</groupId> <artifactId>org.openmarkov.utilityCalculator</artifactId> 
+			<version>0.1.6-SNAPSHOT</version> </dependency> <dependency> <groupId>org.openmarkov</groupId> 
+			<artifactId>org.openmarkov.evaluation</artifactId> <version>0.1.2</version> 
+			</dependency> <dependency> <groupId>org.openmarkov</groupId> <artifactId>org.openmarkov.objectOrientedNetworks</artifactId> 
+			<version>0.1.2</version> </dependency> -->
 
-        <dependency>
-            <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.evaluation</artifactId>
-            <version>0.1.2</version>
-        </dependency>
-  <dependency>
-            <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.objectOrientedNetworks</artifactId>
-            <version>0.1.2</version>
-        </dependency>  -->
-        
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -269,11 +255,22 @@
 			<version>4.10</version>
 		</dependency>
 
-	    <dependency>
-	        <groupId>org.jdom</groupId>
-	        <artifactId>jdom</artifactId>
-	        <version>2.0.2</version>
-	    </dependency>
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+
+
+		<!-- Warning: Do not use a newer version of org.json as it requires Java 
+			1.8 at least -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20140107</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<repositories>
