@@ -11,10 +11,16 @@ import org.junit.Test;
 import org.openmarkov.core.gui.costeffectiveness.CostEffectivenessAnalysis;
 import org.openmarkov.core.gui.costeffectiveness.ProbabilisticCEA;
 import org.openmarkov.core.inference.TransitionTime;
+import org.openmarkov.core.model.network.Criterion;
+import org.openmarkov.core.model.network.Criterion.CECriterion;
 import org.openmarkov.core.model.network.EvidenceCase;
 import org.openmarkov.core.model.network.Finding;
+import org.openmarkov.core.model.network.Node;
+import org.openmarkov.core.model.network.NodeType;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
+import org.openmarkov.core.model.network.CycleLength.DiscountUnit;
+import org.openmarkov.core.model.network.CycleLength.Unit;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.potential.operation.DiscretePotentialOperations;
 import org.openmarkov.io.probmodel.PGMXReader;
@@ -42,7 +48,11 @@ public class CostEffectivenessAnalysisTest {
 
 		EvidenceCase evidence = new EvidenceCase();
 		
-		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 3.0, 3.0, 3, TransitionTime.BEGINNING);
+		// Set cost and effectiveness discounts to all the criteria with that CECriteria. Set the number of cycles and the transition time.
+		setOldMethodParameters(probNet, 3.0,3.0,3, TransitionTime.BEGINNING);
+		
+		//CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 3.0, 3.0, 3, TransitionTime.BEGINNING);
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
 		TablePotential result = ceAnalysis.getGlobalUtility();
 		
@@ -50,8 +60,9 @@ public class CostEffectivenessAnalysisTest {
 		
     	Assert.assertArrayEquals(expectedResults, result.values, 0.001);
     }
-    
-    /**
+
+
+	/**
      * Test chap model with a super value cost node
      * @throws Exception
      */
@@ -69,7 +80,11 @@ public class CostEffectivenessAnalysisTest {
 
 		EvidenceCase evidence = new EvidenceCase();
 		
-		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 3.0, 3.0, 3, TransitionTime.BEGINNING);
+		// Set cost and effectiveness discounts to all the criteria with that CECriteria. Set the number of cycles and the transition time.
+		setOldMethodParameters(probNet, 3.0 , 3.0 , 3 , TransitionTime.BEGINNING);
+		
+//		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 3.0, 3.0, 3, TransitionTime.BEGINNING);
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
 		TablePotential result = ceAnalysis.getGlobalUtility();
 		
@@ -92,7 +107,11 @@ public class CostEffectivenessAnalysisTest {
 
 		EvidenceCase evidence = new EvidenceCase();
 		
-		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 0.0, 20, TransitionTime.BEGINNING);
+		// Set cost and effectiveness discounts to all the criteria with that CECriteria. Set the number of cycles and the transition time.
+		setOldMethodParameters(probNet, 6.0 , 0.0 , 20 , TransitionTime.BEGINNING);
+		
+		// CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 0.0, 20, TransitionTime.BEGINNING);
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
 		TablePotential result = ceAnalysis.getGlobalUtility();
 		
@@ -115,7 +134,11 @@ public class CostEffectivenessAnalysisTest {
 
 		EvidenceCase evidence = new EvidenceCase();
 		
-		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 0.0, 20, TransitionTime.HALF);
+		// Set cost and effectiveness discounts to all the criteria with that CECriteria. Set the number of cycles and the transition time.
+		setOldMethodParameters(probNet, 6.0 , 0.0 , 20 , TransitionTime.HALF);
+		
+//		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 0.0, 20, TransitionTime.HALF);
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
 		TablePotential result = ceAnalysis.getGlobalUtility();
 		
@@ -138,7 +161,11 @@ public class CostEffectivenessAnalysisTest {
 
 		EvidenceCase evidence = new EvidenceCase();
 		
-		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 0.0, 20, TransitionTime.BEGINNING);
+		// Set cost and effectiveness discounts to all the criteria with that CECriteria. Set the number of cycles and the transition time.
+		setOldMethodParameters(probNet, 6.0 , 0.0 , 20 , TransitionTime.BEGINNING);
+		
+//		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 0.0, 20, TransitionTime.BEGINNING);
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
 		TablePotential result = ceAnalysis.getGlobalUtility();
 		
@@ -162,8 +189,12 @@ public class CostEffectivenessAnalysisTest {
 		EvidenceCase evidence = new EvidenceCase();
 		Variable sexVariable = probNet.getVariable("Sex");
 		evidence.addFinding(new Finding(sexVariable, 0));
+
+		// Set cost and effectiveness discounts to all the criteria with that CECriteria. Set the number of cycles and the transition time.
+		setOldMethodParameters(probNet, 6.0 , 1.5 , 60 , TransitionTime.BEGINNING);		
 		
-		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 1.5, 60, TransitionTime.BEGINNING);
+//		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 1.5, 60, TransitionTime.BEGINNING);
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
 		TablePotential result = ceAnalysis.getGlobalUtility();
 		
@@ -173,7 +204,10 @@ public class CostEffectivenessAnalysisTest {
     	
     	evidence.changeFinding(new Finding(sexVariable, 1));
     	
-		ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 1.5, 60, TransitionTime.BEGINNING);
+    	// The old parameters do not change in the execution
+    	
+//		ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 1.5, 60, TransitionTime.BEGINNING);
+    	ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
 		result = ceAnalysis.getGlobalUtility();
 		
@@ -197,7 +231,11 @@ public class CostEffectivenessAnalysisTest {
 
 		EvidenceCase evidence = new EvidenceCase();
 		
-		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 0.0, 20, 5000, TransitionTime.BEGINNING, useMultithreading);
+		// Set cost and effectiveness discounts to all the criteria with that CECriteria. Set the number of cycles and the transition time.
+		setOldMethodParameters(probNet, 6.0 , 0.0 , 20 , TransitionTime.BEGINNING);
+		
+//		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 0.0, 20, 5000, TransitionTime.BEGINNING, useMultithreading);
+		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 5000, useMultithreading);
 		ceAnalysis.run();
 		TablePotential result = ceAnalysis.getGlobalUtility();
 		
@@ -226,7 +264,11 @@ public class CostEffectivenessAnalysisTest {
 		Variable sexVariable = probNet.getVariable("Sex");
 		evidence.addFinding(new Finding(sexVariable, 0));
 		
-		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 1.5, 60, 1000, TransitionTime.BEGINNING, useMultithreading);
+		// Set cost and effectiveness discounts to all the criteria with that CECriteria. Set the number of cycles and the transition time.
+		setOldMethodParameters(probNet, 6.0 , 1.5 , 60 , TransitionTime.BEGINNING);		
+		
+//		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 1.5, 60, 1000, TransitionTime.BEGINNING, useMultithreading);
+		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 1000, useMultithreading);
 		ceAnalysis.run();
 		TablePotential result = ceAnalysis.getGlobalUtility();
 
@@ -239,7 +281,9 @@ public class CostEffectivenessAnalysisTest {
 
     	// Sex = 1
 		evidence.changeFinding(new Finding(sexVariable, 1));
-		ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 1.5, 60, 1000, TransitionTime.BEGINNING, useMultithreading);
+		
+//		ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 1.5, 60, 1000, TransitionTime.BEGINNING, useMultithreading);
+		ceAnalysis = new ProbabilisticCEA (probNet, evidence, 1000, useMultithreading);
 		ceAnalysis.run();
 		result = ceAnalysis.getGlobalUtility();
 		
@@ -265,7 +309,11 @@ public class CostEffectivenessAnalysisTest {
 
 		EvidenceCase evidence = new EvidenceCase();
 		
-		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 0.0, 0.0, 88, TransitionTime.BEGINNING);
+		// Set cost and effectiveness discounts to all the criteria with that CECriteria. Set the number of cycles and the transition time.
+		setOldMethodParameters(probNet, 0.0 , 0.0 , 88 , TransitionTime.BEGINNING);
+		
+//		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 0.0, 0.0, 88, TransitionTime.BEGINNING);
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
 		TablePotential result = ceAnalysis.getGlobalUtility();
 		
@@ -275,4 +323,37 @@ public class CostEffectivenessAnalysisTest {
 		double[] expectedResults = new double[]{1205.296,59.81,2897.377,59.855,3420.872,59.86,1171.416,60.158,2813.055,60.162,3332.291,60.162};
 		Assert.assertArrayEquals(expectedResults, result.values, 0.001);
     }    
+    
+    /**
+     * Set old CostEffectivenessAnalysis constructor parameters
+     * @param probNet
+     * @param costDiscount
+     * @param effectivenessDiscount
+     * @param numberOfSlices
+     * @param transitionTime
+     */
+    private void setOldMethodParameters(ProbNet probNet, double costDiscount, double effectivenessDiscount,
+			int numberOfSlices, TransitionTime transitionTime) {
+		// Set default unit and value for cycle length
+    	probNet.getCycleLength().setUnit(Unit.YEAR);
+		probNet.getCycleLength().setValue(1);
+		
+		// Set number of slices and transition time in temporal options
+		probNet.getInferenceOptions().getTemporalOptions().setNumberOfSlices(numberOfSlices);
+		probNet.getInferenceOptions().getTemporalOptions().setTransition(transitionTime);
+		
+		// Set the cost/effectiveness discount to all nodes with that criterion
+		for(Node node : probNet.getNodes(NodeType.UTILITY)){
+			Criterion criterion = node.getVariable().getDecisionCriterion();
+			if(criterion.getCECriterion() == CECriterion.Cost){
+				criterion.setDiscount(costDiscount);
+				criterion.setDiscountUnit(DiscountUnit.CYCLE);
+			}else if(criterion.getCECriterion() == CECriterion.Effectiveness){
+				criterion.setDiscount(effectivenessDiscount);
+				criterion.setDiscountUnit(DiscountUnit.CYCLE);
+			}else{
+				System.out.println("Fail");
+			}
+		}
+	}
 }

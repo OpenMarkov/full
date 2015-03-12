@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ProbModelXML formatVersion="0.2.0">
   <ProbNet type="MPAD">
+    <DecisionCriteria>
+      <Criterion name="cost" />
+      <Criterion name="effectiveness" />
+    </DecisionCriteria>
+    <TimeUnit unit="YEAR" Value="1.0" />
+    <AdditionalProperties />
     <Variables>
-      <Variable name="Age" timeSlice="0" type="numeric" role="chance" isInput="false">
+      <Variable name="Age" timeSlice="0" type="numeric" role="chance">
         <Coordinates x="156" y="215" />
         <AdditionalProperties>
           <Property name="Relevance" value="7.0" />
@@ -13,11 +19,8 @@
           <Threshold value="10.0" belongsTo="right" />
           <Threshold value="Infinity" belongsTo="right" />
         </Thresholds>
-        <States>
-          <State name="Only one state" />
-        </States>
       </Variable>
-      <Variable name="Infection 16-18" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Infection 16-18" timeSlice="0" type="finiteStates" role="chance">
         <Comment><![CDATA[<html>
   <head>
     
@@ -32,20 +35,16 @@
         <AdditionalProperties>
           <Property name="Relevance" value="7.0" />
         </AdditionalProperties>
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Health state" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Health state" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="204" y="386" />
         <AdditionalProperties>
           <Property name="Relevance" value="7.0" />
         </AdditionalProperties>
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="negative" />
           <State name="CIN1" />
@@ -59,55 +58,47 @@
           <State name="dead" />
         </States>
       </Variable>
-      <Variable name="Death CC" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Death CC" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="450" y="360" />
         <AdditionalProperties>
           <Property name="Relevance" value="7.0" />
         </AdditionalProperties>
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Death OC" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Death OC" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="96" y="292" />
         <AdditionalProperties>
           <Property name="Relevance" value="7.0" />
         </AdditionalProperties>
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Symptoms" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Symptoms" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="348" y="476" />
         <AdditionalProperties>
           <Property name="Relevance" value="7.0" />
         </AdditionalProperties>
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Screening" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Screening" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="510" y="241" />
         <AdditionalProperties>
           <Property name="Relevance" value="7.0" />
         </AdditionalProperties>
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Age" timeSlice="1" type="numeric" role="chance" isInput="false">
+      <Variable name="Age" timeSlice="1" type="numeric" role="chance">
         <Coordinates x="881" y="215" />
         <AdditionalProperties>
           <Property name="Relevance" value="7.0" />
@@ -118,17 +109,12 @@
           <Threshold value="10.0" belongsTo="right" />
           <Threshold value="Infinity" belongsTo="right" />
         </Thresholds>
-        <States>
-          <State name="Only one state" />
-        </States>
       </Variable>
-      <Variable name="Health state" timeSlice="1" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Health state" timeSlice="1" type="finiteStates" role="chance">
         <Coordinates x="912" y="386" />
         <AdditionalProperties>
           <Property name="Relevance" value="7.0" />
         </AdditionalProperties>
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="negative" />
           <State name="CIN1" />
@@ -142,138 +128,112 @@
           <State name="dead" />
         </States>
       </Variable>
-      <Variable name="Healing" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Healing" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="799" y="525" />
         <AdditionalProperties>
           <Property name="Relevance" value="7.0" />
         </AdditionalProperties>
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Screening result" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Screening result" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="586" y="424" />
         <AdditionalProperties>
           <Property name="Relevance" value="7.0" />
         </AdditionalProperties>
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="not-performed" />
           <State name="negative" />
           <State name="positive" />
         </States>
       </Variable>
-      <Variable name="Effective vaccine" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Effective vaccine" type="finiteStates" role="chance">
         <Coordinates x="593" y="116" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Vaccinated" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Vaccinated" type="finiteStates" role="chance">
         <Coordinates x="426" y="69" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Do colposcopy &amp; biopsy" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Do colposcopy &amp; biopsy" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="351" y="552" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Histerectomy" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Histerectomy" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="132" y="627" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Radiotherapy" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Radiotherapy" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="216" y="692" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Chemotherapy" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Chemotherapy" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="311" y="644" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Treatment" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Treatment" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="610" y="770" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Ever screened" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Ever screened" type="finiteStates" role="chance">
         <Coordinates x="445" y="169" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Conization" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Conization" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="406" y="691" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Dec:Vaccine" type="finiteStates" role="decision" isInput="false">
+      <Variable name="Dec:Vaccine" type="finiteStates" role="decision">
         <Coordinates x="276" y="30" />
         <AdditionalProperties>
           <Property name="Relevance" value="7.0" />
         </AdditionalProperties>
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Dec:Test type" type="finiteStates" role="decision" isInput="false">
+      <Variable name="Dec:Test type" type="finiteStates" role="decision">
         <Coordinates x="887" y="49" />
         <AdditionalProperties>
           <Property name="Relevance" value="7.0" />
         </AdditionalProperties>
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="citology" />
           <State name="HC2" />
           <State name="citology+HC2" />
         </States>
       </Variable>
-      <Variable name="Cost of citology" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Cost of citology" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="669" y="236" />
         <AdditionalProperties>
           <Property name="Purpose" value="cost" />
@@ -281,11 +241,8 @@
         <Unit />
         <Precision>0.0</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="Cost of HC2" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Cost of HC2" timeSlice="0" type="numeric" role="utility">
         <Comment><![CDATA[<html>
   <head>
     
@@ -303,11 +260,8 @@
         <Unit />
         <Precision>0.0</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="Cost of vaccine" type="numeric" role="utility" isInput="false">
+      <Variable name="Cost of vaccine" type="numeric" role="utility">
         <Coordinates x="310" y="117" />
         <AdditionalProperties>
           <Property name="Purpose" value="cost" />
@@ -315,11 +269,8 @@
         <Unit />
         <Precision>0.0</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="AR QoL" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="AR QoL" timeSlice="0" type="numeric" role="utility">
         <Comment><![CDATA[<html>
   <head>
     
@@ -337,11 +288,8 @@
         <Unit />
         <Precision>0.0</Precision>
         <Criterion name="effectiveness" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="HSR QoL" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="HSR QoL" timeSlice="0" type="numeric" role="utility">
         <Comment><![CDATA[<html>
   <head>
     
@@ -359,11 +307,8 @@
         <Unit />
         <Precision>0.0</Precision>
         <Criterion name="effectiveness" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="QoL" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="QoL" timeSlice="0" type="numeric" role="utility">
         <Comment><![CDATA[<html>
   <head>
     
@@ -381,11 +326,8 @@
         <Unit />
         <Precision>0.0</Precision>
         <Criterion name="effectiveness" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="Cost of histerectomy" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Cost of histerectomy" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="111" y="729" />
         <AdditionalProperties>
           <Property name="Purpose" value="cost" />
@@ -393,11 +335,8 @@
         <Unit />
         <Precision>0.0</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="Cost of radiotherapy" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Cost of radiotherapy" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="237" y="778" />
         <AdditionalProperties>
           <Property name="Purpose" value="cost" />
@@ -405,11 +344,8 @@
         <Unit />
         <Precision>0.0</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="Cost of chemo" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Cost of chemo" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="322" y="739" />
         <AdditionalProperties>
           <Property name="Purpose" value="cost" />
@@ -417,11 +353,8 @@
         <Unit />
         <Precision>0.0</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="Cost colposcopy" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Cost colposcopy" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="475" y="612" />
         <AdditionalProperties>
           <Property name="Purpose" value="cost" />
@@ -429,11 +362,8 @@
         <Unit />
         <Precision>0.0</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="Cost biopsy" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Cost biopsy" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="495" y="647" />
         <AdditionalProperties>
           <Property name="Purpose" value="cost" />
@@ -441,11 +371,8 @@
         <Unit />
         <Precision>0.0</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="Cost of conization" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Cost of conization" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="428" y="778" />
         <AdditionalProperties>
           <Property name="Purpose" value="cost" />
@@ -453,9 +380,6 @@
         <Unit />
         <Precision>0.0</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
     </Variables>
     <Links>
@@ -772,6 +696,10 @@
               <State name="LCC" />
             </States>
             <Potential type="Tree/ADD">
+              <Variables>
+                <Variable name="Death CC" timeSlice="0" />
+                <Variable name="Age" timeSlice="0" />
+              </Variables>
               <TopVariable name="Age" timeSlice="0" />
               <Branches>
                 <Branch>
@@ -866,6 +794,10 @@
               <State name="RCC" />
             </States>
             <Potential type="Tree/ADD">
+              <Variables>
+                <Variable name="Death CC" timeSlice="0" />
+                <Variable name="Age" timeSlice="0" />
+              </Variables>
               <TopVariable name="Age" timeSlice="0" />
               <Branches>
                 <Branch>
@@ -960,6 +892,10 @@
               <State name="DCC" />
             </States>
             <Potential type="Tree/ADD">
+              <Variables>
+                <Variable name="Death CC" timeSlice="0" />
+                <Variable name="Age" timeSlice="0" />
+              </Variables>
               <TopVariable name="Age" timeSlice="0" />
               <Branches>
                 <Branch>
@@ -1329,6 +1265,10 @@
               <State name="yes" />
             </States>
             <Potential type="Tree/ADD">
+              <Variables>
+                <Variable name="Screening" timeSlice="0" />
+                <Variable name="Age" timeSlice="0" />
+              </Variables>
               <TopVariable name="Age" timeSlice="0" />
               <Branches>
                 <Branch>
@@ -1466,6 +1406,14 @@
               <State name="no" />
             </States>
             <Potential type="Tree/ADD">
+              <Variables>
+                <Variable name="Health state" timeSlice="1" />
+                <Variable name="Health state" timeSlice="0" />
+                <Variable name="Death CC" timeSlice="0" />
+                <Variable name="Infection 16-18" timeSlice="0" />
+                <Variable name="Healing" timeSlice="0" />
+                <Variable name="Effective vaccine" />
+              </Variables>
               <TopVariable name="Death CC" timeSlice="0" />
               <Branches>
                 <Branch>
@@ -1907,6 +1855,10 @@
               <State name="yes" />
             </States>
             <Potential type="Tree/ADD">
+              <Variables>
+                <Variable name="Healing" timeSlice="0" />
+                <Variable name="Health state" timeSlice="0" />
+              </Variables>
               <TopVariable name="Health state" timeSlice="0" />
               <Branches>
                 <Branch>
@@ -2025,6 +1977,11 @@
               <State name="yes" />
             </States>
             <Potential type="Tree/ADD">
+              <Variables>
+                <Variable name="Screening result" timeSlice="0" />
+                <Variable name="Health state" timeSlice="0" />
+                <Variable name="Dec:Test type" />
+              </Variables>
               <TopVariable name="Health state" timeSlice="0" />
               <Branches>
                 <Branch>
@@ -2305,6 +2262,9 @@
             </States>
             <Potential type="Tree/ADD">
               <UtilityVariable name="Cost of citology" timeSlice="0" />
+              <Variables>
+                <Variable name="Dec:Test type" />
+              </Variables>
               <TopVariable name="Dec:Test type" />
               <Branches>
                 <Branch>
@@ -2357,6 +2317,9 @@
             </States>
             <Potential type="Tree/ADD">
               <UtilityVariable name="Cost of HC2" timeSlice="0" />
+              <Variables>
+                <Variable name="Dec:Test type" />
+              </Variables>
               <TopVariable name="Dec:Test type" />
               <Branches>
                 <Branch>
@@ -2640,10 +2603,30 @@
         </UncertainValues>
       </Potential>
     </Potentials>
-    <DecisionCriteria>
-      <Criterion name="cost" />
-      <Criterion name="effectiveness" />
-    </DecisionCriteria>
-    <AdditionalProperties />
   </ProbNet>
+  <InferenceOptions>
+    <MulticriteriaOptions>
+      <SelectedAnalysisType>COST_EFFECTIVENESS</SelectedAnalysisType>
+      <Unicriterion>
+        <Scales>
+          <Scale Criterion="cost" Value="1.0" />
+          <Scale Criterion="effectiveness" Value="1.0" />
+        </Scales>
+      </Unicriterion>
+      <CostEffectiveness>
+        <CE_Criteria>
+          <CE_Criterion Criterion="cost" Value="Cost" />
+          <CE_Criterion Criterion="effectiveness" Value="Effectiveness" />
+        </CE_Criteria>
+      </CostEffectiveness>
+    </MulticriteriaOptions>
+    <TemporalOptions>
+      <Slices>20</Slices>
+      <Transition>BEGINNING</Transition>
+      <DiscountRates>
+        <DiscountRate Criterion="cost" value="0.0" unit="YEAR" />
+        <DiscountRate Criterion="effectiveness" value="0.0" unit="YEAR" />
+      </DiscountRates>
+    </TemporalOptions>
+  </InferenceOptions>
 </ProbModelXML>

@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ProbModelXML formatVersion="0.2.0">
   <ProbNet type="MPAD">
+    <DecisionCriteria>
+      <Criterion name="cost" />
+      <Criterion name="effectiveness" />
+    </DecisionCriteria>
+    <TimeUnit unit="YEAR" Value="1.0" />
+    <AdditionalProperties />
     <Variables>
-      <Variable name="State" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="State" timeSlice="0" type="finiteStates" role="chance">
         <Comment><![CDATA[<html>
   <head>
 
@@ -14,8 +20,6 @@
   </body>
 </html>]]></Comment>
         <Coordinates x="290" y="214" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="Death" />
           <State name="Sucessful revision" />
@@ -24,7 +28,7 @@
           <State name="Primary THR" />
         </States>
       </Variable>
-      <Variable name="Age" timeSlice="0" type="numeric" role="chance" isInput="false">
+      <Variable name="Age" timeSlice="0" type="numeric" role="chance">
         <Coordinates x="435" y="137" />
         <Unit />
         <Precision>1.0</Precision>
@@ -32,11 +36,8 @@
           <Threshold value="35.0" belongsTo="right" />
           <Threshold value="Infinity" belongsTo="right" />
         </Thresholds>
-        <States>
-          <State name="Only one state" />
-        </States>
       </Variable>
-      <Variable name="Age" timeSlice="1" type="numeric" role="chance" isInput="false">
+      <Variable name="Age" timeSlice="1" type="numeric" role="chance">
         <Coordinates x="597" y="137" />
         <Unit />
         <Precision>1.0</Precision>
@@ -44,11 +45,8 @@
           <Threshold value="0.0" belongsTo="right" />
           <Threshold value="Infinity" belongsTo="right" />
         </Thresholds>
-        <States>
-          <State name="Only one state" />
-        </States>
       </Variable>
-      <Variable name="State" timeSlice="1" type="finiteStates" role="chance" isInput="false">
+      <Variable name="State" timeSlice="1" type="finiteStates" role="chance">
         <Comment><![CDATA[<html>
   <head>
 
@@ -60,8 +58,6 @@
   </body>
 </html>]]></Comment>
         <Coordinates x="763" y="213" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="Death" />
           <State name="Sucessful revision" />
@@ -70,43 +66,35 @@
           <State name="Primary THR" />
         </States>
       </Variable>
-      <Variable name="Sex" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Sex" type="finiteStates" role="chance">
         <Coordinates x="498" y="69" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="female" />
           <State name="male" />
         </States>
       </Variable>
-      <Variable name="Death OC" timeSlice="1" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Death OC" timeSlice="1" type="finiteStates" role="chance">
         <Coordinates x="597" y="286" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Revision Risk" timeSlice="1" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Revision Risk" timeSlice="1" type="finiteStates" role="chance">
         <Coordinates x="493" y="239" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Death THR" timeSlice="1" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Death THR" timeSlice="1" type="finiteStates" role="chance">
         <Coordinates x="613" y="347" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Age at entry" type="numeric" role="chance" isInput="false">
+      <Variable name="Age at entry" type="numeric" role="chance">
         <Coordinates x="277" y="60" />
         <Unit />
         <Precision>1.0</Precision>
@@ -114,45 +102,31 @@
           <Threshold value="40.0" belongsTo="right" />
           <Threshold value="90.0" belongsTo="left" />
         </Thresholds>
-        <States>
-          <State name="Only one state" />
-        </States>
       </Variable>
-      <Variable name="Prosthesis type" type="finiteStates" role="decision" isInput="false">
+      <Variable name="Prosthesis type" type="finiteStates" role="decision">
         <Coordinates x="148" y="119" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="Standard" />
           <State name="NP1" />
         </States>
       </Variable>
-      <Variable name="Cost" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Cost" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="369" y="376" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="QoL" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="QoL" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="267" y="375" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="effectiveness" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="Prosthesis cost" type="numeric" role="utility" isInput="false">
+      <Variable name="Prosthesis cost" type="numeric" role="utility">
         <Coordinates x="147" y="376" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
     </Variables>
     <Links>
@@ -650,10 +624,30 @@
         <Values>394.0 579.0</Values>
       </Potential>
     </Potentials>
-    <DecisionCriteria>
-      <Criterion name="cost" />
-      <Criterion name="effectiveness" />
-    </DecisionCriteria>
-    <AdditionalProperties />
   </ProbNet>
+  <InferenceOptions>
+    <MulticriteriaOptions>
+      <SelectedAnalysisType>COST_EFFECTIVENESS</SelectedAnalysisType>
+      <Unicriterion>
+        <Scales>
+          <Scale Criterion="cost" Value="1.0" />
+          <Scale Criterion="effectiveness" Value="1.0" />
+        </Scales>
+      </Unicriterion>
+      <CostEffectiveness>
+        <CE_Criteria>
+          <CE_Criterion Criterion="cost" Value="Cost" />
+          <CE_Criterion Criterion="effectiveness" Value="Effectiveness" />
+        </CE_Criteria>
+      </CostEffectiveness>
+    </MulticriteriaOptions>
+    <TemporalOptions>
+      <Slices>20</Slices>
+      <Transition>BEGINNING</Transition>
+      <DiscountRates>
+        <DiscountRate Criterion="cost" value="0.0" unit="YEAR" />
+        <DiscountRate Criterion="effectiveness" value="0.0" unit="YEAR" />
+      </DiscountRates>
+    </TemporalOptions>
+  </InferenceOptions>
 </ProbModelXML>

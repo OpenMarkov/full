@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ProbModelXML formatVersion="0.2.0">
   <ProbNet type="MPAD">
-    <Comment><![CDATA[<<Double click to add/modify comment>>]]></Comment>
+    <Comment showWhenOpeningNetwork="false"><![CDATA[<<Double click to add/modify comment>>]]></Comment>
+    <DecisionCriteria>
+      <Criterion name="cost" />
+      <Criterion name="effectiveness" />
+    </DecisionCriteria>
+    <TimeUnit unit="YEAR" Value="1.0" />
+    <AdditionalProperties />
     <Variables>
-      <Variable name="Age" timeSlice="0" type="numeric" role="chance" isInput="false">
+      <Variable name="Age" timeSlice="0" type="numeric" role="chance">
         <Coordinates x="516" y="22" />
         <Unit />
         <Precision>1.0</Precision>
@@ -11,14 +17,9 @@
           <Threshold value="0.0" belongsTo="right" />
           <Threshold value="Infinity" belongsTo="right" />
         </Thresholds>
-        <States>
-          <State name="Only one state" />
-        </States>
       </Variable>
-      <Variable name="State" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="State" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="316" y="193" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="dead" />
           <State name="CD4 lt 7" />
@@ -26,10 +27,8 @@
           <State name="CD4 gt 15" />
         </States>
       </Variable>
-      <Variable name="State" timeSlice="1" type="finiteStates" role="chance" isInput="false">
+      <Variable name="State" timeSlice="1" type="finiteStates" role="chance">
         <Coordinates x="853" y="193" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="dead" />
           <State name="CD4 lt 7" />
@@ -37,7 +36,7 @@
           <State name="CD4 gt 15" />
         </States>
       </Variable>
-      <Variable name="Death" timeSlice="1" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Death" timeSlice="1" type="finiteStates" role="chance">
         <Comment><![CDATA[<html>
   <head>
     
@@ -49,14 +48,12 @@
   </body>
 </html>]]></Comment>
         <Coordinates x="501" y="302" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Transition" timeSlice="1" type="finiteStates" role="chance" isInput="false">
+      <Variable name="Transition" timeSlice="1" type="finiteStates" role="chance">
         <Comment><![CDATA[<html>
   <head>
     
@@ -72,14 +69,12 @@
   </body>
 </html>]]></Comment>
         <Coordinates x="669" y="298" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Age at state entry" timeSlice="0" type="numeric" role="chance" isInput="false">
+      <Variable name="Age at state entry" timeSlice="0" type="numeric" role="chance">
         <Coordinates x="562" y="123" />
         <Unit />
         <Precision>0.1</Precision>
@@ -87,11 +82,8 @@
           <Threshold value="0.0" belongsTo="right" />
           <Threshold value="Infinity" belongsTo="right" />
         </Thresholds>
-        <States>
-          <State name="Only one state" />
-        </States>
       </Variable>
-      <Variable name="Time in state" timeSlice="0" type="numeric" role="chance" isInput="false">
+      <Variable name="Time in state" timeSlice="0" type="numeric" role="chance">
         <Coordinates x="669" y="62" />
         <Unit />
         <Precision>0.1</Precision>
@@ -99,11 +91,8 @@
           <Threshold value="0.0" belongsTo="right" />
           <Threshold value="Infinity" belongsTo="right" />
         </Thresholds>
-        <States>
-          <State name="Only one state" />
-        </States>
       </Variable>
-      <Variable name="Time in state" timeSlice="1" type="numeric" role="chance" isInput="false">
+      <Variable name="Time in state" timeSlice="1" type="numeric" role="chance">
         <Coordinates x="901" y="62" />
         <Unit />
         <Precision>0.1</Precision>
@@ -111,11 +100,8 @@
           <Threshold value="0.0" belongsTo="right" />
           <Threshold value="Infinity" belongsTo="right" />
         </Thresholds>
-        <States>
-          <State name="Only one state" />
-        </States>
       </Variable>
-      <Variable name="Age" timeSlice="1" type="numeric" role="chance" isInput="false">
+      <Variable name="Age" timeSlice="1" type="numeric" role="chance">
         <Coordinates x="933" y="22" />
         <Unit />
         <Precision>1.0</Precision>
@@ -123,90 +109,64 @@
           <Threshold value="0.0" belongsTo="right" />
           <Threshold value="Infinity" belongsTo="right" />
         </Thresholds>
-        <States>
-          <State name="Only one state" />
-        </States>
       </Variable>
-      <Variable name="CD4 gt 15" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="CD4 gt 15" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="139" y="249" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="CD4 8_15" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="CD4 8_15" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="235" y="309" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="AIDS" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="AIDS" timeSlice="0" type="finiteStates" role="chance">
         <Coordinates x="419" y="340" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
-      <Variable name="Therapy" type="finiteStates" role="decision" isInput="false">
+      <Variable name="Therapy" type="finiteStates" role="decision">
         <Coordinates x="91" y="34" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="placebo" />
           <State name="cotrimoxazole" />
         </States>
       </Variable>
-      <Variable name="Inpatient costs" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Inpatient costs" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="86" y="362" />
         <Unit>months</Unit>
         <Precision>0.01</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="Outpatient costs" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Outpatient costs" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="159" y="403" />
         <Unit>months</Unit>
         <Precision>0.01</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="QALYs" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="QALYs" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="430" y="404" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="effectiveness" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="Drug costs" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Drug costs" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="313" y="403" />
         <Unit>months</Unit>
         <Precision>0.01</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="HIV test cost" type="numeric" role="utility" isInput="false">
+      <Variable name="HIV test cost" type="numeric" role="utility">
         <Coordinates x="87" y="452" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
     </Variables>
     <Links>
@@ -649,7 +609,7 @@
           </Branch>
         </Branches>
       </Potential>
-      <Potential type="Linear regression" role="conditionalProbability">
+      <Potential type="Linear combination" role="conditionalProbability">
         <Variables>
           <Variable name="Age at state entry" timeSlice="0" />
           <Variable name="Age" timeSlice="0" />
@@ -975,10 +935,30 @@
         <Values>15.4</Values>
       </Potential>
     </Potentials>
-    <DecisionCriteria>
-      <Criterion name="cost" />
-      <Criterion name="effectiveness" />
-    </DecisionCriteria>
-    <AdditionalProperties />
   </ProbNet>
+  <InferenceOptions>
+    <MulticriteriaOptions>
+      <SelectedAnalysisType>COST_EFFECTIVENESS</SelectedAnalysisType>
+      <Unicriterion>
+        <Scales>
+          <Scale Criterion="cost" Value="1.0" />
+          <Scale Criterion="effectiveness" Value="1.0" />
+        </Scales>
+      </Unicriterion>
+      <CostEffectiveness>
+        <CE_Criteria>
+          <CE_Criterion Criterion="cost" Value="Cost" />
+          <CE_Criterion Criterion="effectiveness" Value="Effectiveness" />
+        </CE_Criteria>
+      </CostEffectiveness>
+    </MulticriteriaOptions>
+    <TemporalOptions>
+      <Slices>20</Slices>
+      <Transition>BEGINNING</Transition>
+      <DiscountRates>
+        <DiscountRate Criterion="cost" value="0.0" unit="YEAR" />
+        <DiscountRate Criterion="effectiveness" value="0.0" unit="YEAR" />
+      </DiscountRates>
+    </TemporalOptions>
+  </InferenceOptions>
 </ProbModelXML>

@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ProbModelXML formatVersion="0.2.0">
   <ProbNet type="MPAD">
+    <DecisionCriteria>
+      <Criterion name="cost" />
+      <Criterion name="effectiveness" />
+    </DecisionCriteria>
+    <TimeUnit unit="YEAR" Value="1.0" />
+    <AdditionalProperties />
     <Variables>
-      <Variable name="State" timeSlice="0" type="finiteStates" role="chance" isInput="false">
+      <Variable name="State" timeSlice="0" type="finiteStates" role="chance">
         <Comment><![CDATA[<html>
   <head>
     
@@ -15,8 +21,6 @@
   </body>
 </html>]]></Comment>
         <Coordinates x="199" y="256" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="Dead" />
           <State name="State C" />
@@ -24,10 +28,8 @@
           <State name="State A" />
         </States>
       </Variable>
-      <Variable name="State" timeSlice="1" type="finiteStates" role="chance" isInput="false">
+      <Variable name="State" timeSlice="1" type="finiteStates" role="chance">
         <Coordinates x="624" y="256" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="Dead" />
           <State name="State C" />
@@ -35,7 +37,7 @@
           <State name="State A" />
         </States>
       </Variable>
-      <Variable name="Duration of treatment" timeSlice="0" type="numeric" role="chance" isInput="false">
+      <Variable name="Duration of treatment" timeSlice="0" type="numeric" role="chance">
         <Coordinates x="220" y="172" />
         <Unit />
         <Precision>1.0</Precision>
@@ -43,11 +45,8 @@
           <Threshold value="0.0" belongsTo="right" />
           <Threshold value="Infinity" belongsTo="right" />
         </Thresholds>
-        <States>
-          <State name="Only one state" />
-        </States>
       </Variable>
-      <Variable name="Duration of treatment" timeSlice="1" type="numeric" role="chance" isInput="false">
+      <Variable name="Duration of treatment" timeSlice="1" type="numeric" role="chance">
         <Coordinates x="572" y="170" />
         <Unit />
         <Precision>1.0</Precision>
@@ -55,63 +54,43 @@
           <Threshold value="0.0" belongsTo="right" />
           <Threshold value="Infinity" belongsTo="right" />
         </Thresholds>
-        <States>
-          <State name="Only one state" />
-        </States>
       </Variable>
-      <Variable name="Therapy type" type="finiteStates" role="decision" isInput="false">
+      <Variable name="Therapy type" type="finiteStates" role="decision">
         <Coordinates x="415" y="50" />
-        <Unit />
-        <Precision>0.01</Precision>
         <States>
           <State name="combination therapy" />
           <State name="monotherapy" />
         </States>
       </Variable>
-      <Variable name="Drug cost" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Drug cost" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="415" y="293" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="Life years" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Life years" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="95" y="329" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="effectiveness" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="Direct medical cost" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Direct medical cost" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="287" y="329" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="Community care cost" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Community care cost" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="172" y="375" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
-      <Variable name="Cost" timeSlice="0" type="numeric" role="utility" isInput="false">
+      <Variable name="Cost" timeSlice="0" type="numeric" role="utility">
         <Coordinates x="418" y="396" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="cost" />
-        <States>
-          <State name="" />
-        </States>
       </Variable>
     </Variables>
     <Links>
@@ -201,6 +180,11 @@
               <State name="combination therapy" />
             </States>
             <Potential type="Tree/ADD">
+              <Variables>
+                <Variable name="State" timeSlice="1" />
+                <Variable name="State" timeSlice="0" />
+                <Variable name="Duration of treatment" timeSlice="0" />
+              </Variables>
               <TopVariable name="Duration of treatment" timeSlice="0" />
               <Branches>
                 <Branch>
@@ -266,9 +250,6 @@
                 <Variable name="State" timeSlice="0" />
                 <Variable name="Duration of treatment" timeSlice="0" />
                 <Variable name="Drug cost" timeSlice="0" />
-                <Variable name="Drug cost" timeSlice="0" />
-                <Variable name="Drug cost" timeSlice="0" />
-                <Variable name="Drug cost" timeSlice="0" />
               </Variables>
               <TopVariable name="State" timeSlice="0" />
               <Branches>
@@ -301,6 +282,10 @@
             </States>
             <Potential type="Tree/ADD">
               <UtilityVariable name="Drug cost" timeSlice="0" />
+              <Variables>
+                <Variable name="State" timeSlice="0" />
+                <Variable name="Duration of treatment" timeSlice="0" />
+              </Variables>
               <TopVariable name="Duration of treatment" timeSlice="0" />
               <Branches>
                 <Branch>
@@ -430,10 +415,30 @@
         </Variables>
       </Potential>
     </Potentials>
-    <DecisionCriteria>
-      <Criterion name="cost" />
-      <Criterion name="effectiveness" />
-    </DecisionCriteria>
-    <AdditionalProperties />
   </ProbNet>
+  <InferenceOptions>
+    <MulticriteriaOptions>
+      <SelectedAnalysisType>COST_EFFECTIVENESS</SelectedAnalysisType>
+      <Unicriterion>
+        <Scales>
+          <Scale Criterion="cost" Value="1.0" />
+          <Scale Criterion="effectiveness" Value="1.0" />
+        </Scales>
+      </Unicriterion>
+      <CostEffectiveness>
+        <CE_Criteria>
+          <CE_Criterion Criterion="cost" Value="Cost" />
+          <CE_Criterion Criterion="effectiveness" Value="Effectiveness" />
+        </CE_Criteria>
+      </CostEffectiveness>
+    </MulticriteriaOptions>
+    <TemporalOptions>
+      <Slices>20</Slices>
+      <Transition>BEGINNING</Transition>
+      <DiscountRates>
+        <DiscountRate Criterion="cost" value="0.0" unit="YEAR" />
+        <DiscountRate Criterion="effectiveness" value="0.0" unit="YEAR" />
+      </DiscountRates>
+    </TemporalOptions>
+  </InferenceOptions>
 </ProbModelXML>
