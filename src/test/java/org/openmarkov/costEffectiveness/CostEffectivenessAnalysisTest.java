@@ -334,6 +334,8 @@ public class CostEffectivenessAnalysisTest {
      */
     private void setOldMethodParameters(ProbNet probNet, double costDiscount, double effectivenessDiscount,
 			int numberOfSlices, TransitionTime transitionTime) {
+    	costDiscount /= 100;
+    	effectivenessDiscount /= 100;
 		// Set default unit and value for cycle length
     	probNet.getCycleLength().setUnit(Unit.YEAR);
 		probNet.getCycleLength().setValue(1);
