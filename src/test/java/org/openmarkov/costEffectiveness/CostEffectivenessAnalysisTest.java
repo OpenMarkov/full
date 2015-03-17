@@ -115,7 +115,7 @@ public class CostEffectivenessAnalysisTest {
 		
 		TablePotential result = ceAnalysis.getGlobalUtility();
 		
-		double[] expectedResults = new double[]{50585.917,8.935,44662.217,7.991};
+		double[] expectedResults = new double[]{50585.9167,8.9346,44662.2166,7.99134};
 		
     	Assert.assertArrayEquals(expectedResults, result.values, 0.001);
     }
@@ -143,7 +143,6 @@ public class CostEffectivenessAnalysisTest {
 		TablePotential result = ceAnalysis.getGlobalUtility();
 		
 		double[] expectedResults = new double[]{50585.917,9.412,44662.217,8.471};
-		
     	Assert.assertArrayEquals(expectedResults, result.values, 0.001);
     }    
     
