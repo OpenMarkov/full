@@ -16,13 +16,13 @@ import org.openmarkov.io.probmodel.PGMXReader;
 
 import bitbucket.NetsRepository;
 
+/** @author Manuel Arias */
 public class BayesianNetworkTest {
 
     @Before
     public void setUp() throws Exception {
-
     }    
-    
+
     @Test
     public void testBayesianNetworksInference() {
     	NetsRepository netsRepository = new NetsRepository();
