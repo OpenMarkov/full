@@ -158,7 +158,13 @@
 			<artifactId>org.openmarkov.learning.metric.mdlm</artifactId>
 			<version>0.1.6-SNAPSHOT</version>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>org.openmarkov</groupId>
+			<artifactId>org.openmarkov.inference.huginPropagation</artifactId>
+			<version>0.1.6-SNAPSHOT</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.openmarkov</groupId>
 			<artifactId>org.openmarkov.inference.variableElimination</artifactId>
