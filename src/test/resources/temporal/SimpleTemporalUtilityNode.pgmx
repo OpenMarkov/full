@@ -53,7 +53,7 @@
       </Unicriterion>
       <CostEffectiveness>
         <CE_Criteria>
-          <CE_Criterion Criterion="---" Value="Null" />
+          <CE_Criterion Criterion="---" Value="Cost" />
         </CE_Criteria>
       </CostEffectiveness>
     </MulticriteriaOptions>
