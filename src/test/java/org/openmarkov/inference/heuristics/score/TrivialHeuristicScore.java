@@ -14,12 +14,11 @@ import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.inference.huginPropagation.ClusterOfVariables;
 import org.openmarkov.inference.huginPropagation.HuginForest;
 
-/** This score is defined as the summation per each ProbNet of 1/size of network, 
- * and size of network = summation of the size of the cliques of the network. 
- * <code>HuginForest</code> produced from the 
- * <code>ProbNet</code> with the heuristic.
+/** This class applies several heuristics to one <code>ProbNet</code> to produce an array of scores.<p> 
+ * The score is defined, per each <code>ProbNet</code>, as 1/(size of network), 
+ * and <i>size of network</i> = summation of the size of the cliques of the network. 
  * @author Manuel Arias */
-public class SimpleHeuristicScore extends Thread implements EliminationHeuristicScore {
+public class TrivialHeuristicScore extends Thread implements EliminationHeuristicScore {
 
 	// Attributes
 	private ProbNet probNet;
@@ -32,40 +31,36 @@ public class SimpleHeuristicScore extends Thread implements EliminationHeuristic
 	
 	private EliminationHeuristic heuristic;
 
-	private Counter counter;
-	
 	// Constructors
 	/**
-	 * @param scores
-	 * @param scoreIndex
+	 * Initializes the 
 	 * @param probNet
-	 * @param heuristic
-	 * @param counter
 	 */
-	public SimpleHeuristicScore(double[] scores, int scoreIndex, ProbNet probNet, EliminationHeuristic heuristic, Counter counter) {
+	public TrivialHeuristicScore(ProbNet probNet) {
+		this.probNet = probNet;
+	}
+
+	/**
+	 * This constructor is to be used internally to evaluate networks in parallel.<p>
+	 * A single instance of this class applies one <code>EliminationHeuristic</code> to one <code>ProbNet</code> and 
+	 * stores the result in <code>scores[scoreIndex]</code>
+	 * @param scores. <code>double[]</code>
+	 * @param scoreIndex. <code>double</code> 
+	 * @param probNet. <code>ProbNet</code> 
+	 * @param heuristic. <code>EliminationHeuristic</code>
+	 */
+	private TrivialHeuristicScore(double[] scores, int scoreIndex, ProbNet probNet,	EliminationHeuristic heuristic) {
 		
 		this.scores = scores;
 		this.scoreIndex = scoreIndex;
 		this.probNet = probNet;
 		this.heuristic = heuristic;
-		this.counter = counter;
 	}
 	
-	/**
-	 * This constructor is to be used internally to evaluate networks in parallel
-	 * @param probNet
-	 */
-	public SimpleHeuristicScore(ProbNet probNet) {
-		
-		this.probNet = probNet;
-		counter = new Counter(0);
-	}
-
 	// Methods
     /** Builds a HuginForest
-     * @see java.lang.Thread#run()
      */
-    public void run() {
+    public void createHuginForest() {
     	
 		try {
 			forest = new HuginForest(probNet, heuristic);
@@ -75,8 +70,6 @@ public class SimpleHeuristicScore extends Thread implements EliminationHeuristic
 		}
 		int accumulatedSize = getSumClustersSize(forest);
 		scores[scoreIndex] = 1 / new Double(accumulatedSize);
-		counter.incrementCount();
-		notify();
     }
 	
 	/**
@@ -95,17 +88,17 @@ public class SimpleHeuristicScore extends Thread implements EliminationHeuristic
 		
 		int numHeuristics = heuristicsClasses.length;
 		double[] scores = new double[numHeuristics];
-		SimpleHeuristicScore[] threads = new SimpleHeuristicScore[numHeuristics];
+		TrivialHeuristicScore[] trivialScores = new TrivialHeuristicScore[numHeuristics];
 		for (int scoreIndex = 0; scoreIndex < numHeuristics; scoreIndex++) {
 			try {
 				// Create instance of heuristic given its class
 				List<List<Variable>> listOfListOfVariables = new ArrayList<List<Variable>>();
 				listOfListOfVariables.add(probNet.getVariables());
-				Constructor<?> heuristicConstructor = heuristicsClasses[scoreIndex].getConstructor(ProbNet.class);
+				Constructor<?> heuristicConstructor = heuristicsClasses[scoreIndex].getConstructor(ProbNet.class, List.class);
 				Object heuristic = heuristicConstructor.newInstance(new Object[] {probNet, listOfListOfVariables});
 				// Create a thread for each heuristic
-			    threads[scoreIndex] = new SimpleHeuristicScore(scores, scoreIndex, probNet, (EliminationHeuristic)heuristic, counter);
-			    threads[scoreIndex].start();
+			    trivialScores[scoreIndex] = new TrivialHeuristicScore(scores, scoreIndex, probNet, (EliminationHeuristic)heuristic);
+			    trivialScores[scoreIndex].createHuginForest();
 			} catch (InstantiationException |IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				System.err.println("Can not create heuristic: " + heuristicsClasses[scoreIndex].getName() +"\n");
 				e.printStackTrace();
@@ -114,15 +107,15 @@ public class SimpleHeuristicScore extends Thread implements EliminationHeuristic
 			}
 		}
 		
-		// Wait until all threads finish
-		while (counter.getCount() < scoreIndex) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		
+//		// Wait until all threads finish
+//		while (counter.getCount() < scoreIndex) {
+//			try {
+//				wait();
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		
 		return scores;
 	}
 	
