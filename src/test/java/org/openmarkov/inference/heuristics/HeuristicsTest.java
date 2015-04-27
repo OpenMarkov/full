@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,41 +47,52 @@ public class HeuristicsTest {
 	}
 
 	// TODO Finish
-//	@Test
-//	public void test() {
-//		// Basic tests
-//		List<ProbNet> probNetsDB = 
-//				HeuristicComparator.readProbNetsDB(BayesianNetworkType.getUniqueInstance());
-//		int numNetworks = probNetsDB.size();
-//		for(int i = 0; i < numNetworks; i++) {
-//			// All the variables are removed, and only once
-//			ProbNet probNet = probNetsDB.get(i);
-//			List<Variable> probNetVariables = probNet.getVariables();
-//			for (int j = 0; j < heuristicsClasses.length; j++) {
-//				List<List<Variable>> listOfListOfVariables = new ArrayList<List<Variable>>();
-//				listOfListOfVariables.add(probNetVariables);
-//				Set<Variable> setOfVariables = new HashSet<Variable>(probNetVariables);
-//				Constructor<?> heuristicConstructor;
-//				try {
-//					heuristicConstructor = heuristicsClasses[j].getConstructor(ProbNet.class, List.class);
-//					Object heuristic = heuristicConstructor.newInstance(new Object[] {probNet, listOfListOfVariables});
-//					EliminationHeuristic eliminationHeuristic = (EliminationHeuristic)heuristic;
-//					Variable variable;
-//					while ((variable = eliminationHeuristic.getVariableToDelete()) != null) {
-//						UndoableEditEvent event = new UndoableEditEvent(probNet, new RemoveNodeEdit(probNet, variable));
-//						eliminationHeuristic.undoableEditHappened(event);
-//						assertTrue(setOfVariables.contains(variable));
-//						setOfVariables.remove(variable);
-//					}
-//				} catch (NoSuchMethodException | SecurityException | 
-//						InstantiationException | IllegalAccessException |
-//						IllegalArgumentException | InvocationTargetException  e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//		
-//		// Complex tests
+	@SuppressWarnings("unchecked")
+	@Test
+	public void test() {
+		// Basic tests
+		List<ProbNet> probNetsDB = 
+				HeuristicComparator.readProbNetsDB(BayesianNetworkType.getUniqueInstance());
+		int numNetworks = probNetsDB.size();
+		System.out.println("Number of networks: " + numNetworks);
+		for(int i = 0; i < numNetworks; i++) {
+			// All the variables are removed, and only once
+			ProbNet probNet = probNetsDB.get(i);
+			System.out.println("Network(" + i + "): " + probNet.getName());
+			List<Variable> probNetVariables = probNet.getVariables();
+			for (int j = 0; j < heuristicsClasses.length; j++) {
+				List<List<Variable>> listOfListOfVariables = new ArrayList<List<Variable>>();
+				listOfListOfVariables.add(probNetVariables);
+				Set<Variable> setOfVariables = new HashSet<Variable>(probNetVariables);
+				Constructor<?> heuristicConstructor;
+				try {
+					heuristicConstructor = heuristicsClasses[j].getConstructor(ProbNet.class, List.class);
+					Object heuristic = heuristicConstructor.newInstance(new Object[] {probNet, listOfListOfVariables});
+					EliminationHeuristic eliminationHeuristic = (EliminationHeuristic)heuristic;
+					System.out.print("  " + heuristic.getClass().getSimpleName() + ": ");
+					Variable variable;
+					while ((variable = eliminationHeuristic.getVariableToDelete()) != null) {
+						System.out.print(variable);
+						UndoableEditEvent event = new UndoableEditEvent(probNet, new RemoveNodeEdit(probNet, variable));
+						eliminationHeuristic.undoableEditHappened(event);
+						assertTrue(setOfVariables.contains(variable));
+						setOfVariables.remove(variable);
+						if (setOfVariables.isEmpty()) {
+							System.out.println(".");
+						} else {
+							System.out.print(", ");
+						}
+					}
+				} catch (NoSuchMethodException | SecurityException | 
+						InstantiationException | IllegalAccessException |
+						IllegalArgumentException | InvocationTargetException  e) {
+					e.printStackTrace();
+				}
+			}
+			System.out.println();
+		}
+		
+		// Complex tests
 //		HeuristicComparator comparator = new HeuristicComparator(probNetsDB);
 //		double[][] allNetworksScores = comparator.getAllScores();
 //		for(int i = 0; i < numNetworks; i++) {
@@ -95,6 +105,6 @@ public class HeuristicsTest {
 //			// HybridElimination better or equal than SimpleElimination
 //			assertTrue(allNetworksScores[i][2] >= allNetworksScores[i][3]);
 //		}
-//	}
+	}
 
 }

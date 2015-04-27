@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.openmarkov.core.exception.ParserException;
@@ -30,6 +32,7 @@ public class HeuristicComparator {
 	/**
 	 */
 	public HeuristicComparator(Collection<ProbNet> probNetsDB) {
+	
 		Class[] heuristicsClasses = new Class[] {CanoMoralElimination.class, MinimalFillIn.class, 
 				HybridElimination.class, SimpleElimination.class};
 		networkScores = new double[probNetsDB.size()][];
@@ -83,8 +86,20 @@ public class HeuristicComparator {
     			System.err.println("No networks found in repository.");
     		}
     	}
+    	// Order the networks, from smallest to largest number of variables
+    	int numNetworks = probNetsDB.size();
+    	ProbNet aux;
+    	for (int i = 0; i < numNetworks - 1; i++) {
+    		for (int j = i+1; j < numNetworks; j++) {
+    			if (probNetsDB.get(i).getVariables().size() > probNetsDB.get(j).getVariables().size()) {
+    				aux = probNetsDB.get(j);
+    				probNetsDB.set(j, probNetsDB.get(i));
+    				probNetsDB.set(i, aux);
+    			}
+    		}
+    	}
     	
     	return probNetsDB;
 	}
-	
+
 }
