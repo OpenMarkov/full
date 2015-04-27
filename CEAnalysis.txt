@@ -1,8 +1,0 @@
-lambda
-    branch (lambda). States = [λ in [0.0 , Infinity) Cost = 0.0 Effectiveness = 0.0]. 
-        branch (Decision_TBNA). States = [yes]. 
-            branch (Decision_PET). States = [yes]. 
-                branch (Decision_EBUS_EUS). States = [ebus_eus]. 
-                    branch (Decision_MED). States = [yes]. 
-                        branch (Treatment). States = [thoracotomy]. 
-
