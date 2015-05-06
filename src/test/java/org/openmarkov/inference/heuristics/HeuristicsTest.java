@@ -14,10 +14,13 @@ import javax.swing.event.UndoableEditEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmarkov.core.action.RemoveNodeEdit;
+import org.openmarkov.core.exception.WrongGraphStructureException;
+import org.openmarkov.core.inference.PartialOrder;
 import org.openmarkov.core.inference.heuristic.EliminationHeuristic;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.type.BayesianNetworkType;
+import org.openmarkov.core.model.network.type.InfluenceDiagramType;
 import org.openmarkov.inference.heuristic.canoAndMoral.CanoMoralElimination;
 import org.openmarkov.inference.heuristic.hybridElimination.HybridElimination;
 import org.openmarkov.inference.heuristic.minimalFillIn.MinimalFillIn;
@@ -33,6 +36,8 @@ import org.openmarkov.inference.heuristic.simpleElimination.SimpleElimination;
  */
 public class HeuristicsTest {
 
+	// TODO Add performance tests
+	
 	@SuppressWarnings("rawtypes")
 	private Class[] heuristicsClasses = new Class[] {
 			CanoMoralElimination.class, 
@@ -46,15 +51,15 @@ public class HeuristicsTest {
 	public void setUp() throws Exception {
 	}
 
-	// TODO Finish
+	/** Check that all the variables are removed and only once. */
 	@SuppressWarnings("unchecked")
 	@Test
-	public void test() {
+	public void test1() {
 		// Basic tests
 		List<ProbNet> probNetsDB = 
 				HeuristicComparator.readProbNetsDB(BayesianNetworkType.getUniqueInstance());
 		int numNetworks = probNetsDB.size();
-		System.out.println("Number of networks: " + numNetworks);
+		System.out.println("Number of Bayesian networks: " + numNetworks);
 		for(int i = 0; i < numNetworks; i++) {
 			// All the variables are removed, and only once
 			ProbNet probNet = probNetsDB.get(i);
@@ -83,6 +88,7 @@ public class HeuristicsTest {
 							System.out.print(", ");
 						}
 					}
+					assertTrue(setOfVariables.isEmpty());
 				} catch (NoSuchMethodException | SecurityException | 
 						InstantiationException | IllegalAccessException |
 						IllegalArgumentException | InvocationTargetException  e) {
@@ -105,6 +111,67 @@ public class HeuristicsTest {
 //			// HybridElimination better or equal than SimpleElimination
 //			assertTrue(allNetworksScores[i][2] >= allNetworksScores[i][3]);
 //		}
+	}
+	
+	@Test
+	/** Check that the heuristics remove the variables following the partial order. */
+	public void test2() throws WrongGraphStructureException {
+		List<ProbNet> probNetsDB = 
+				HeuristicComparator.readProbNetsDB(InfluenceDiagramType.getUniqueInstance());
+		int numNetworks = probNetsDB.size();
+		System.out.println("Number of influence diagrams: " + numNetworks);
+		for(int i = 0; i < numNetworks; i++) {
+			// All the variables are removed, and only once
+			ProbNet probNet = probNetsDB.get(i);
+			System.out.println("Network(" + i + "): " + probNet.getName());
+			PartialOrder partialOrder = new PartialOrder(probNet);
+			List<Variable> chanceAndDecisionVariables = probNet.getChanceAndDecisionVariables();
+			for (int j = 0; j < heuristicsClasses.length; j++) {
+				List<List<Variable>> listOfListOfVariables = partialOrder.getOrder();
+				Set<Variable> setOfVariables = new HashSet<Variable>(chanceAndDecisionVariables);
+				Constructor<?> heuristicConstructor;
+				try {
+					heuristicConstructor = heuristicsClasses[j].getConstructor(ProbNet.class, List.class);
+					Object heuristic = heuristicConstructor.newInstance(new Object[] {probNet, listOfListOfVariables});
+					EliminationHeuristic eliminationHeuristic = (EliminationHeuristic)heuristic;
+					System.out.print("  " + heuristic.getClass().getSimpleName() + ": ");
+					Variable variable;
+					while ((variable = eliminationHeuristic.getVariableToDelete()) != null) {
+						System.out.print(variable);
+						List<Variable> lastList;
+						do {
+							int lastElementIndex = listOfListOfVariables.size() - 1;
+							lastList = listOfListOfVariables.get(lastElementIndex);
+							if (lastList.isEmpty()) {
+								listOfListOfVariables.remove(lastElementIndex--);
+								lastList = lastElementIndex >= 0 ? listOfListOfVariables.get(lastElementIndex) : null;
+							}
+						} while (lastList != null && lastList.isEmpty());
+						
+						UndoableEditEvent event = new UndoableEditEvent(probNet, new RemoveNodeEdit(probNet, variable));
+						eliminationHeuristic.undoableEditHappened(event);
+						assertNotNull(lastList);
+						assertTrue(lastList.contains(variable));
+						lastList.remove(variable);
+						setOfVariables.remove(variable);
+						if (setOfVariables.isEmpty()) {
+							System.out.println(".");
+						} else {
+							System.out.print(", ");
+						}
+					}
+					assertTrue(setOfVariables.isEmpty());
+					boolean noElementsInListOfListOfVariables = listOfListOfVariables.isEmpty() || 
+							(listOfListOfVariables.get(0).isEmpty() && listOfListOfVariables.size() == 1);
+					assertTrue(noElementsInListOfListOfVariables);
+				} catch (NoSuchMethodException | SecurityException | 
+						InstantiationException | IllegalAccessException |
+						IllegalArgumentException | InvocationTargetException  e) {
+					e.printStackTrace();
+				}
+			}
+			System.out.println();
+		}		
 	}
 
 }
