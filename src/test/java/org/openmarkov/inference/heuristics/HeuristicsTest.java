@@ -54,114 +54,6 @@ public class HeuristicsTest {
 	public void setUp() throws Exception {
 	}
 
-//	/** Check that all the variables are removed and only once. */
-//	@SuppressWarnings("unchecked")
-//	@Test
-//	public void test1() {
-//		// Basic tests
-//		List<ProbNet> probNetsDB = HeuristicComparator.readProbNetsDB(BayesianNetworkType.getUniqueInstance());
-//		int numNetworks = probNetsDB.size();
-//		System.out.println("Number of Bayesian networks: " + numNetworks);
-//		for(int i = 0; i < numNetworks; i++) {
-//			// All the variables are removed, and only once
-//			ProbNet probNet = probNetsDB.get(i);
-//			System.out.println("Network(" + i + "): " + probNet.getName());
-//			List<Variable> probNetVariables = probNet.getVariables();
-//			for (int j = 0; j < heuristicsClasses.length; j++) {
-//				List<List<Variable>> listOfListOfVariables = new ArrayList<List<Variable>>();
-//				listOfListOfVariables.add(probNetVariables);
-//				Set<Variable> setOfVariables = new HashSet<Variable>(probNetVariables);
-//				Constructor<?> heuristicConstructor;
-//				try {
-//					heuristicConstructor = heuristicsClasses[j].getConstructor(ProbNet.class, List.class);
-//					Object heuristic = heuristicConstructor.newInstance(new Object[] {probNet, listOfListOfVariables});
-//					EliminationHeuristic eliminationHeuristic = (EliminationHeuristic)heuristic;
-//					System.out.print("  " + heuristic.getClass().getSimpleName() + ": ");
-//					Variable variable;
-//					while ((variable = eliminationHeuristic.getVariableToDelete()) != null) {
-//						System.out.print(variable);
-//						UndoableEditEvent event = new UndoableEditEvent(probNet, new RemoveNodeEdit(probNet, variable));
-//						eliminationHeuristic.undoableEditHappened(event);
-//						assertTrue(setOfVariables.contains(variable));
-//						setOfVariables.remove(variable);
-//						if (setOfVariables.isEmpty()) {
-//							System.out.println(".");
-//						} else {
-//							System.out.print(", ");
-//						}
-//					}
-//					assertTrue(setOfVariables.isEmpty());
-//				} catch (NoSuchMethodException | SecurityException | 
-//						InstantiationException | IllegalAccessException |
-//						IllegalArgumentException | InvocationTargetException  e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			System.out.println();
-//		}
-//	}
-//
-//	@Test
-//	/** Check that the heuristics remove the variables following the partial order. */
-//	public void test2() throws WrongGraphStructureException {
-//		List<ProbNet> probNetsDB = 
-//				HeuristicComparator.readProbNetsDB(InfluenceDiagramType.getUniqueInstance());
-//		int numNetworks = probNetsDB.size();
-//		System.out.println("Number of influence diagrams: " + numNetworks);
-//		for(int i = 0; i < numNetworks; i++) {
-//			// All the variables are removed, and only once
-//			ProbNet probNet = probNetsDB.get(i);
-//			System.out.println("Network(" + i + "): " + probNet.getName());
-//			PartialOrder partialOrder = new PartialOrder(probNet);
-//			List<Variable> chanceAndDecisionVariables = probNet.getChanceAndDecisionVariables();
-//			for (int j = 0; j < heuristicsClasses.length; j++) {
-//				List<List<Variable>> listOfListOfVariables = partialOrder.getOrder();
-//				Set<Variable> setOfVariables = new HashSet<Variable>(chanceAndDecisionVariables);
-//				Constructor<?> heuristicConstructor;
-//				try {
-//					heuristicConstructor = heuristicsClasses[j].getConstructor(ProbNet.class, List.class);
-//					Object heuristic = heuristicConstructor.newInstance(new Object[] {probNet, listOfListOfVariables});
-//					EliminationHeuristic eliminationHeuristic = (EliminationHeuristic)heuristic;
-//					System.out.print("  " + heuristic.getClass().getSimpleName() + ": ");
-//					Variable variable;
-//					while ((variable = eliminationHeuristic.getVariableToDelete()) != null) {
-//						System.out.print(variable);
-//						List<Variable> lastList;
-//						do {
-//							int lastElementIndex = listOfListOfVariables.size() - 1;
-//							lastList = listOfListOfVariables.get(lastElementIndex);
-//							if (lastList.isEmpty()) {
-//								listOfListOfVariables.remove(lastElementIndex--);
-//								lastList = lastElementIndex >= 0 ? listOfListOfVariables.get(lastElementIndex) : null;
-//							}
-//						} while (lastList != null && lastList.isEmpty());
-//						
-//						UndoableEditEvent event = new UndoableEditEvent(probNet, new RemoveNodeEdit(probNet, variable));
-//						eliminationHeuristic.undoableEditHappened(event);
-//						assertNotNull(lastList);
-//						assertTrue(lastList.contains(variable));
-//						lastList.remove(variable);
-//						setOfVariables.remove(variable);
-//						if (setOfVariables.isEmpty()) {
-//							System.out.println(".");
-//						} else {
-//							System.out.print(", ");
-//						}
-//					}
-//					assertTrue(setOfVariables.isEmpty());
-//					boolean noElementsInListOfListOfVariables = listOfListOfVariables.isEmpty() || 
-//							(listOfListOfVariables.get(0).isEmpty() && listOfListOfVariables.size() == 1);
-//					assertTrue(noElementsInListOfListOfVariables);
-//				} catch (NoSuchMethodException | SecurityException | 
-//						InstantiationException | IllegalAccessException |
-//						IllegalArgumentException | InvocationTargetException  e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			System.out.println();
-//		}		
-//	}
-
 	@Test
 	/** This is a performance test. It checks that some heuristics are better than others.
 	 * We assume that CanoAndMoral must be better than all the others "most" of the times, 
@@ -224,7 +116,7 @@ public class HeuristicsTest {
 			}
 			removed[bestIndexHeuristic] = true;
 			if (i == 0) {
-				System.out.println("Heuristics, from the best to the worst:");
+				System.out.println("Heuristics, from best to worst:");
 				System.out.print(heuristicsClasses[bestIndexHeuristic].getSimpleName());
 				lastPunctuationHeuristic = bestPunctuationHeuristic;
 			} else {
