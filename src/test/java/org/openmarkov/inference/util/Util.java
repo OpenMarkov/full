@@ -1,59 +1,29 @@
-package org.openmarkov.inference.heuristics;
+package org.openmarkov.inference.util;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.model.network.ProbNet;
-import org.openmarkov.core.model.network.type.BayesianNetworkType;
+import org.openmarkov.core.model.network.potential.Potential;
+import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.type.NetworkType;
-import org.openmarkov.inference.heuristic.canoAndMoral.CanoMoralElimination;
-import org.openmarkov.inference.heuristic.hybridElimination.HybridElimination;
-import org.openmarkov.inference.heuristic.minimalFillIn.MinimalFillIn;
-import org.openmarkov.inference.heuristic.simpleElimination.SimpleElimination;
-import org.openmarkov.inference.heuristics.score.TrivialHeuristicScore;
 import org.openmarkov.io.probmodel.PGMXReader;
 
 import bitbucket.NetsRepository;
 
-/** Compares a set of heuristics with a score function obtained building a <code>HuginForest</code> 
- * in a collection of <code>ProbNet</code>s. 
- * @author Manuel Arias */
-public class HeuristicComparator {
-
-	private double[][] networkScores;
+public class Util {
 	
-	// Constructor
 	/**
-	 */
-	public HeuristicComparator(Collection<ProbNet> probNetsDB) {
-	
-		Class[] heuristicsClasses = new Class[] {CanoMoralElimination.class, MinimalFillIn.class, 
-				HybridElimination.class, SimpleElimination.class};
-		networkScores = new double[probNetsDB.size()][];
-		int i = 0;
-		for (ProbNet bayesianNetwork : probNetsDB) {
-			TrivialHeuristicScore heuristicScore = new TrivialHeuristicScore(bayesianNetwork);
-			double[] scores = heuristicScore.getScores(bayesianNetwork, heuristicsClasses);
-			networkScores[i++] = scores;
-		}
-	}
-	
-	public double[][] getAllScores() {
-		return networkScores;
-	}
-	
-	// Methods
-	/**
+	 * Reads all the networks from the repository that meet the restriction given in the parameter "networkType"
 	 * @param networkType. <code>NetworkType</code>
+	 * @return <code>List</code> of <code>ProbNet</code>s
 	 */
 	public static List<ProbNet> readProbNetsDB(NetworkType networkType) {
-    	NetsRepository netsRepository = new NetsRepository();
+
+		NetsRepository netsRepository = new NetsRepository();
     	List<URL> bayesianNetworksURLList = netsRepository.getNetworks(networkType);
     	PGMXReader reader = new PGMXReader();
     	List<ProbNet> probNetsDB = new ArrayList<ProbNet>();
@@ -102,4 +72,19 @@ public class HeuristicComparator {
     	return probNetsDB;
 	}
 
+	public static List<ProbNet> filterNonPureTablePotentialProbNets(List<ProbNet> probNets) {
+		List<ProbNet> filteredProbNets = new ArrayList<ProbNet>(probNets.size());
+		for (ProbNet probNet : probNets) {
+			List<Potential> potentials = probNet.getPotentials();
+			int numPotentials = potentials.size();
+			boolean include = true;
+			for (int i = 0; include && i < numPotentials; i++) {
+				include &= potentials.get(i).getClass() == TablePotential.class;
+			}
+			if (include) {
+				filteredProbNets.add(probNet);
+			}
+		}
+		return filteredProbNets;
+	}
 }

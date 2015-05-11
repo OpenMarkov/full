@@ -8,6 +8,7 @@ import java.util.List;
 import org.openmarkov.core.exception.DoEditException;
 import org.openmarkov.core.exception.NonProjectablePotentialException;
 import org.openmarkov.core.exception.WrongCriterionException;
+import org.openmarkov.core.exception.WrongGraphStructureException;
 import org.openmarkov.core.inference.heuristic.EliminationHeuristic;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
@@ -48,28 +49,29 @@ public class TrivialHeuristicScore extends Thread implements EliminationHeuristi
 	 * @param scoreIndex. <code>double</code> 
 	 * @param probNet. <code>ProbNet</code> 
 	 * @param heuristic. <code>EliminationHeuristic</code>
+	 * @throws WrongGraphStructureException 
 	 */
-	private TrivialHeuristicScore(double[] scores, int scoreIndex, ProbNet probNet,	EliminationHeuristic heuristic) {
-		
+	private TrivialHeuristicScore(double[] scores, int scoreIndex, ProbNet probNet,	EliminationHeuristic heuristic) throws WrongGraphStructureException {
 		this.scores = scores;
 		this.scoreIndex = scoreIndex;
 		this.probNet = probNet;
 		this.heuristic = heuristic;
+		createHuginForest();
 	}
 	
 	// Methods
     /** Builds a HuginForest
+     * @throws WrongGraphStructureException 
      */
-    public void createHuginForest() {
-    	
-		try {
-			forest = new HuginForest(probNet, heuristic);
-		} catch (DoEditException | NonProjectablePotentialException	| WrongCriterionException | SecurityException e) {
-			System.err.println("Can not create a HuginForest in this network: " + probNet.toString() + "\n");
-			e.printStackTrace();
-		}
+    private void createHuginForest() throws WrongGraphStructureException {
+			try {
+				forest = new HuginForest(probNet, heuristic);
+			} catch (DoEditException | NonProjectablePotentialException
+					| WrongCriterionException e) {
+				e.printStackTrace();
+			}
 		int accumulatedSize = getSumClustersSize(forest);
-		scores[scoreIndex] = 1 / new Double(accumulatedSize);
+		scores[scoreIndex] = 1 / (1 +  new Double(accumulatedSize));
     }
 	
 	/**
@@ -80,11 +82,12 @@ public class TrivialHeuristicScore extends Thread implements EliminationHeuristi
 	}
 	
 	/**
+	 * @throws WrongGraphStructureException 
 	 * @see org.openmarkov.inference.heuristics.score.EliminationHeuristicScore#getScores(org.openmarkov.core.model.network.ProbNet, java.lang.Class[])
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public double[] getScores(ProbNet probNet, Class[] heuristicsClasses) {
+	public double[] getScores(ProbNet probNet, Class[] heuristicsClasses) throws WrongGraphStructureException {
 		
 		int numHeuristics = heuristicsClasses.length;
 		double[] scores = new double[numHeuristics];
@@ -95,10 +98,9 @@ public class TrivialHeuristicScore extends Thread implements EliminationHeuristi
 				List<List<Variable>> listOfListOfVariables = new ArrayList<List<Variable>>();
 				listOfListOfVariables.add(probNet.getVariables());
 				Constructor<?> heuristicConstructor = heuristicsClasses[scoreIndex].getConstructor(ProbNet.class, List.class);
-				Object heuristic = heuristicConstructor.newInstance(new Object[] {probNet, listOfListOfVariables});
 				// Create a thread for each heuristic
-			    trivialScores[scoreIndex] = new TrivialHeuristicScore(scores, scoreIndex, probNet, (EliminationHeuristic)heuristic);
-			    trivialScores[scoreIndex].createHuginForest();
+			    trivialScores[scoreIndex] = new TrivialHeuristicScore(scores, scoreIndex, probNet.copy(), 
+			    		(EliminationHeuristic)heuristicConstructor.newInstance(new Object[] {probNet, listOfListOfVariables}));
 			} catch (InstantiationException |IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				System.err.println("Can not create heuristic: " + heuristicsClasses[scoreIndex].getName() +"\n");
 				e.printStackTrace();
