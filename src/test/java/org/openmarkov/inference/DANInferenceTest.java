@@ -31,6 +31,7 @@ public class DANInferenceTest {
     	List<URL> danURLs = netsRepository.getNetworks(DecisionAnalysisNetworkType.getUniqueInstance());
     	PGMXReader reader = new PGMXReader();
     	for (URL danURL : danURLs) {
+    		System.out.println("Checking " + danURL.toString());
     		ProbNet decisionAnalysisNetwork = null;
 			try {
 				decisionAnalysisNetwork = reader.loadProbNet(danURL.openStream(), danURL.getFile()).getProbNet();

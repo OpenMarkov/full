@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ProbModelXML formatVersion="0.2.0">
-  <ProbNet type="MPAD">
+  <ProbNet type="MID">
     <Comment showWhenOpeningNetwork="false"><![CDATA[<<Double click to add/modify comment>>]]></Comment>
     <DecisionCriteria>
       <Criterion name="cost" />

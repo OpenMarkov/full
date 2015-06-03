@@ -16,7 +16,6 @@ import org.openmarkov.core.model.network.type.BayesianNetworkType;
 import org.openmarkov.core.model.network.type.DecisionAnalysisNetworkType;
 import org.openmarkov.core.model.network.type.InfluenceDiagramType;
 import org.openmarkov.core.model.network.type.LIMIDType;
-import org.openmarkov.core.model.network.type.MPADType;
 import org.openmarkov.core.model.network.type.NetworkType;
 import org.openmarkov.core.model.network.type.POMDPType;
 
@@ -53,9 +52,9 @@ public class NetsRepository {
 	 */
 	private final String NETWORK_LIMIDS = "limids";
 	/**
-	 * Constant for MPAD Networks
+	 * Constant for MID Networks
 	 */
-	private final String NETWORK_MPAD = "mpad";
+	private final String NETWORK_MID = "mid";
 	/**
 	 * Constant for POMDP Networks
 	 */
@@ -84,8 +83,8 @@ public class NetsRepository {
     		return getNetworks(NETWORK_ID);
     	}else if(networkType.equals(LIMIDType.getUniqueInstance())){
     		return getNetworks(NETWORK_LIMIDS);
-    	}else if(networkType.equals(MPADType.getUniqueInstance())){
-    		return getNetworks(NETWORK_MPAD);
+    	}else if(networkType.equals(MIDType.getUniqueInstance())){
+    		return getNetworks(NETWORK_MID);
     	}else if(networkType.equals(POMDPType.getUniqueInstance())){
     		return getNetworks(NETWORK_POMDP);
     	}

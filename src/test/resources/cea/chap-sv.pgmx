@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ProbModelXML formatVersion="0.2.0">
-  <ProbNet type="MPAD">
+  <ProbNet type="MID">
     <DecisionCriteria>
       <Criterion name="cost" />
       <Criterion name="effectiveness" />
