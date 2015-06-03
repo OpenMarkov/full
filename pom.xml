@@ -179,10 +179,16 @@
 
 		<dependency>
 			<groupId>org.openmarkov</groupId>
+			<artifactId>org.openmarkov.inference.decompositionIntoSymmetricDANs</artifactId>
+			<version>0.1.6-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.openmarkov</groupId>
 			<artifactId>org.openmarkov.inference.heuristic.minimalFillIn</artifactId>
 			<version>0.1.6-SNAPSHOT</version>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.openmarkov</groupId>
 			<artifactId>org.openmarkov.inference.heuristic.simpleElimination</artifactId>
