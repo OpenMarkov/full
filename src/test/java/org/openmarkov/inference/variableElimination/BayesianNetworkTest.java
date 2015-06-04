@@ -1,0 +1,56 @@
+package org.openmarkov.inference.variableElimination;
+
+import static org.junit.Assert.fail;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.openmarkov.core.exception.NotEvaluableNetworkException;
+import org.openmarkov.core.exception.ParserException;
+import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.core.model.network.type.BayesianNetworkType;
+import org.openmarkov.io.probmodel.PGMXReader;
+
+import bitbucket.NetsRepository;
+
+/** @author Manuel Arias */
+public class BayesianNetworkTest {
+
+    @Before
+    public void setUp() throws Exception {
+    }    
+
+    @Test
+    public void testBayesianNetworksInference() {
+    	NetsRepository netsRepository = new NetsRepository();
+    	List<URL> bayesianNetworksURLList = netsRepository.getNetworks(BayesianNetworkType.getUniqueInstance());
+    	PGMXReader reader = new PGMXReader();
+    	for (URL bayesianNetworkURL : bayesianNetworksURLList) {
+    		ProbNet probNet = null;
+			try {
+				probNet = reader.loadProbNet(bayesianNetworkURL.openStream(), bayesianNetworkURL.getFile()).getProbNet();
+				System.out.println("Checking network: " + bayesianNetworkURL.getFile());
+			} catch (ParserException | IOException e) {
+				System.err.println("Can not read network: " + bayesianNetworkURL.getFile());
+				fail();
+			}
+			VariableElimination elimination = null;
+    		try {
+				elimination = new VariableElimination(probNet);
+			} catch (NotEvaluableNetworkException e) {
+				System.err.println("Not evaluable network: " + bayesianNetworkURL.getFile());
+				fail();
+			}
+    		try {
+				elimination.getProbsAndUtilities();
+			} catch (Exception e) {
+				System.err.println("VariableElimination inference fails in: " + bayesianNetworkURL.getFile());
+				fail();
+			}
+    	}
+    }
+
+}
