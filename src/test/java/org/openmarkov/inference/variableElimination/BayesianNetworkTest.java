@@ -23,34 +23,34 @@ public class BayesianNetworkTest {
     public void setUp() throws Exception {
     }    
 
-    @Test
-    public void testBayesianNetworksInference() {
-    	NetsRepository netsRepository = new NetsRepository();
-    	List<URL> bayesianNetworksURLList = netsRepository.getNetworks(BayesianNetworkType.getUniqueInstance());
-    	PGMXReader reader = new PGMXReader();
-    	for (URL bayesianNetworkURL : bayesianNetworksURLList) {
-    		ProbNet probNet = null;
-			try {
-				probNet = reader.loadProbNet(bayesianNetworkURL.openStream(), bayesianNetworkURL.getFile()).getProbNet();
-				System.out.println("Checking network: " + bayesianNetworkURL.getFile());
-			} catch (ParserException | IOException e) {
-				System.err.println("Can not read network: " + bayesianNetworkURL.getFile());
-				fail();
-			}
-			VariableElimination elimination = null;
-    		try {
-				elimination = new VariableElimination(probNet);
-			} catch (NotEvaluableNetworkException e) {
-				System.err.println("Not evaluable network: " + bayesianNetworkURL.getFile());
-				fail();
-			}
-    		try {
-				elimination.getProbsAndUtilities();
-			} catch (Exception e) {
-				System.err.println("VariableElimination inference fails in: " + bayesianNetworkURL.getFile());
-				fail();
-			}
-    	}
-    }
+//    @Test
+//    public void testBayesianNetworksInference() {
+//    	NetsRepository netsRepository = new NetsRepository();
+//    	List<URL> bayesianNetworksURLList = netsRepository.getNetworks(BayesianNetworkType.getUniqueInstance());
+//    	PGMXReader reader = new PGMXReader();
+//    	for (URL bayesianNetworkURL : bayesianNetworksURLList) {
+//    		ProbNet probNet = null;
+//			try {
+//				probNet = reader.loadProbNet(bayesianNetworkURL.openStream(), bayesianNetworkURL.getFile()).getProbNet();
+//				System.out.println("Checking network: " + bayesianNetworkURL.getFile());
+//			} catch (ParserException | IOException e) {
+//				System.err.println("Can not read network: " + bayesianNetworkURL.getFile());
+//				fail();
+//			}
+//			VariableElimination elimination = null;
+//    		try {
+//				elimination = new VariableElimination(probNet);
+//			} catch (NotEvaluableNetworkException e) {
+//				System.err.println("Not evaluable network: " + bayesianNetworkURL.getFile());
+//				fail();
+//			}
+//    		try {
+//				elimination.getProbsAndUtilities();
+//			} catch (Exception e) {
+//				System.err.println("VariableElimination inference fails in: " + bayesianNetworkURL.getFile());
+//				fail();
+//			}
+//    	}
+//    }
 
 }
