@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openmarkov</groupId>
 	<artifactId>org.openmarkov.full</artifactId>
-	<version>0.1.6-SNAPSHOT</version>
+	<version>0.2.0-SNAPSHOT</version>
 	<name>org.openmarkov.full</name>
 	<description>Full Distribution of OpenMarkov</description>
 
@@ -87,12 +87,12 @@
 		<dependency>
 			<groupId>org.openmarkov</groupId>
 			<artifactId>org.openmarkov.core</artifactId>
-			<version>0.1.6-SNAPSHOT</version>
+			<version>0.2.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openmarkov</groupId>
 			<artifactId>org.openmarkov.core</artifactId>
-			<version>0.1.6-SNAPSHOT</version>
+			<version>0.2.0-SNAPSHOT</version>
 			<scope>test</scope>
 			<type>test-jar</type>
 		</dependency>
@@ -100,7 +100,7 @@
 		<dependency>
 			<groupId>org.openmarkov</groupId>
 			<artifactId>org.openmarkov.core.gui</artifactId>
-			<version>0.1.6-SNAPSHOT</version>
+			<version>0.2.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -175,7 +175,7 @@
 		<dependency>
 			<groupId>org.openmarkov</groupId>
 			<artifactId>org.openmarkov.inference.variableElimination</artifactId>
-			<version>0.1.6-SNAPSHOT</version>
+			<version>0.2.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -288,6 +288,12 @@
 			<artifactId>json</artifactId>
 			<version>20140107</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openmarkov</groupId>
+			<artifactId>org.openmarkov.inference.tasks</artifactId>
+			<version>0.2.0-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>
