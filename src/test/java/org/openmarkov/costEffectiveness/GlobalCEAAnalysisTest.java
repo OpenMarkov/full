@@ -54,7 +54,7 @@ public class GlobalCEAAnalysisTest {
 		//CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 3.0, 3.0, 3, TransitionTime.BEGINNING);
 		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
-		TablePotential result = ceAnalysis.getGlobalUtility();
+		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
 		double[] expectedResults = new double[]{1066.744,1.444,852.399,1.709};
 		
@@ -86,7 +86,7 @@ public class GlobalCEAAnalysisTest {
 //		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 3.0, 3.0, 3, TransitionTime.BEGINNING);
 		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
-		TablePotential result = ceAnalysis.getGlobalUtility();
+		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
 		double[] expectedResults = new double[]{1066.744,1.444,852.399,1.709};
 		
@@ -113,7 +113,7 @@ public class GlobalCEAAnalysisTest {
 		// CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 0.0, 20, TransitionTime.BEGINNING);
 		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
-		TablePotential result = ceAnalysis.getGlobalUtility();
+		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
 		double[] expectedResults = new double[]{50585.9167,8.9346,44662.2166,7.99134};
 		
@@ -140,7 +140,7 @@ public class GlobalCEAAnalysisTest {
 //		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 0.0, 20, TransitionTime.HALF);
 		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
-		TablePotential result = ceAnalysis.getGlobalUtility();
+		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
 		double[] expectedResults = new double[]{50585.917,9.412,44662.217,8.471};
     	Assert.assertArrayEquals(expectedResults, result.values, 0.001);
@@ -166,7 +166,7 @@ public class GlobalCEAAnalysisTest {
 //		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 0.0, 20, TransitionTime.BEGINNING);
 		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
-		TablePotential result = ceAnalysis.getGlobalUtility();
+		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
 		double[] expectedResults = new double[]{50585.917,8.935,44662.217,7.991};
 		
@@ -195,7 +195,7 @@ public class GlobalCEAAnalysisTest {
 //		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 1.5, 60, TransitionTime.BEGINNING);
 		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
-		TablePotential result = ceAnalysis.getGlobalUtility();
+		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
 		double[] expectedResults = new double[]{510.948,14.666,609.904,14.701};
 		
@@ -208,7 +208,7 @@ public class GlobalCEAAnalysisTest {
 //		ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 1.5, 60, TransitionTime.BEGINNING);
     	ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
-		result = ceAnalysis.getGlobalUtility();
+		result = ceAnalysis.getCostEffectivenessTable();
 		
 		expectedResults = new double[]{604.264,12.59,635.217,12.643};
 		
@@ -236,7 +236,7 @@ public class GlobalCEAAnalysisTest {
 //		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 0.0, 20, 5000, TransitionTime.BEGINNING, useMultithreading);
 		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 5000, useMultithreading);
 		ceAnalysis.run();
-		TablePotential result = ceAnalysis.getGlobalUtility();
+		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
 		double[] expectedResults = new double[]{50600,8.935,44680,7.991};
 		
@@ -269,7 +269,7 @@ public class GlobalCEAAnalysisTest {
 //		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 1.5, 60, 1000, TransitionTime.BEGINNING, useMultithreading);
 		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 1000, useMultithreading);
 		ceAnalysis.run();
-		TablePotential result = ceAnalysis.getGlobalUtility();
+		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 
 		double[] expectedResults = new double[]{510.948,14.666,609.904,14.701};
 		
@@ -284,7 +284,7 @@ public class GlobalCEAAnalysisTest {
 //		ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 1.5, 60, 1000, TransitionTime.BEGINNING, useMultithreading);
 		ceAnalysis = new ProbabilisticCEA (probNet, evidence, 1000, useMultithreading);
 		ceAnalysis.run();
-		result = ceAnalysis.getGlobalUtility();
+		result = ceAnalysis.getCostEffectivenessTable();
 		
 		expectedResults = new double[]{604.264,12.59,635.217,12.643};
 		
@@ -314,7 +314,7 @@ public class GlobalCEAAnalysisTest {
 //		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 0.0, 0.0, 88, TransitionTime.BEGINNING);
 		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
 		
-		TablePotential result = ceAnalysis.getGlobalUtility();
+		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
 		List<Variable> variablesInOrder = Arrays.asList(result.getVariable(0),
 				probNet.getVariable("Dec:Test type"), probNet.getVariable("Dec:Vaccine"));
