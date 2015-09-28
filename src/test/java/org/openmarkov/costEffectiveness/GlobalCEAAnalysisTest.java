@@ -2,6 +2,7 @@ package org.openmarkov.costEffectiveness;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import org.openmarkov.core.model.network.CycleLength.DiscountUnit;
 import org.openmarkov.core.model.network.CycleLength.Unit;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.potential.operation.DiscretePotentialOperations;
+import org.openmarkov.inference.tasks.VariableElimination.VEResolution;
 import org.openmarkov.io.probmodel.PGMXReader;
 
 public class GlobalCEAAnalysisTest {
@@ -144,8 +146,51 @@ public class GlobalCEAAnalysisTest {
 		
 		double[] expectedResults = new double[]{50585.917,9.412,44662.217,8.471};
     	Assert.assertArrayEquals(expectedResults, result.values, 0.001);
-    }    
-    
+    }
+
+	@Test
+	public void testChancellorUnicriterion() throws Exception{
+		// Constants
+		String modelFilePath = "cea" + File.separator +"MID-Chancellor-Unicriterion.pgmx";
+		// Open the file containing the network
+		InputStream file = getClass().getClassLoader ().
+				getResourceAsStream (modelFilePath);
+
+		// Load the Bayesian network
+		PGMXReader pgmxReader = new PGMXReader();
+		ProbNet probNet = pgmxReader.loadProbNet(file, "Chancellor").getProbNet();
+
+		EvidenceCase evidence = new EvidenceCase();
+		List<Variable> conditioningVariables = new ArrayList<Variable>();
+
+		double wtp = 30000;
+		for(Criterion criterion : probNet.getDecisionCriteria()){
+			if(criterion.getCECriterion().equals(CECriterion.Cost)) {
+				criterion.setUnicriteriaScale(-1);
+			} else if (criterion.getCECriterion().equals(CECriterion.Effectiveness)){
+				criterion.setUnicriteriaScale(wtp);
+			}
+		}
+
+		VEResolution veResolution = new VEResolution(probNet, evidence, conditioningVariables);
+		double globalUtility = veResolution.getGlobalUtility().getValues()[0];
+		Assert.assertEquals(globalUtility, 195546.556793745, Math.pow(10,-8));
+
+		wtp = 8000;
+		for(Criterion criterion : probNet.getDecisionCriteria()){
+			if(criterion.getCECriterion().equals(CECriterion.Cost)) {
+				criterion.setUnicriteriaScale(-1);
+			} else if (criterion.getCECriterion().equals(CECriterion.Effectiveness)){
+				criterion.setUnicriteriaScale(wtp);
+			}
+		}
+
+		veResolution = new VEResolution(probNet, evidence, conditioningVariables);
+		globalUtility = veResolution.getGlobalUtility().getValues()[0];
+		Assert.assertEquals(globalUtility, 184.440530353197, Math.pow(10, -8));
+
+	}
+
     @Test
     public void testChancellorSV() throws Exception{
     	// Constants
