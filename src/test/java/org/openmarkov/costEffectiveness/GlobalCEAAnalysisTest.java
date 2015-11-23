@@ -54,7 +54,7 @@ public class GlobalCEAAnalysisTest {
 		setOldMethodParameters(probNet, 3.0,3.0,3, TransitionTime.BEGINNING);
 		
 		//CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 3.0, 3.0, 3, TransitionTime.BEGINNING);
-		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet,probNet.getNodes(NodeType.DECISION).get(0).getVariable(), evidence);
 		
 		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
@@ -86,7 +86,7 @@ public class GlobalCEAAnalysisTest {
 		setOldMethodParameters(probNet, 3.0 , 3.0 , 3 , TransitionTime.BEGINNING);
 		
 //		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 3.0, 3.0, 3, TransitionTime.BEGINNING);
-		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet,probNet.getNodes(NodeType.DECISION).get(0).getVariable(), evidence);
 		
 		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
@@ -113,7 +113,7 @@ public class GlobalCEAAnalysisTest {
 		setOldMethodParameters(probNet, 6.0 , 0.0 , 20 , TransitionTime.BEGINNING);
 		
 		// CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 0.0, 20, TransitionTime.BEGINNING);
-		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet,probNet.getNodes(NodeType.DECISION).get(0).getVariable(), evidence);
 		
 		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
@@ -140,7 +140,7 @@ public class GlobalCEAAnalysisTest {
 		setOldMethodParameters(probNet, 6.0 , 0.0 , 20 , TransitionTime.HALF);
 		
 //		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 0.0, 20, TransitionTime.HALF);
-		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet,probNet.getNodes(NodeType.DECISION).get(0).getVariable(), evidence);
 		
 		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
@@ -209,7 +209,7 @@ public class GlobalCEAAnalysisTest {
 		setOldMethodParameters(probNet, 6.0 , 0.0 , 20 , TransitionTime.BEGINNING);
 		
 //		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 0.0, 20, TransitionTime.BEGINNING);
-		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, probNet.getNodes(NodeType.DECISION).get(0).getVariable(), evidence);
 		
 		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
@@ -238,7 +238,7 @@ public class GlobalCEAAnalysisTest {
 		setOldMethodParameters(probNet, 6.0 , 1.5 , 60 , TransitionTime.BEGINNING);		
 		
 //		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 1.5, 60, TransitionTime.BEGINNING);
-		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, probNet.getNodes(NodeType.DECISION).get(0).getVariable(),evidence);
 		
 		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
@@ -251,7 +251,7 @@ public class GlobalCEAAnalysisTest {
     	// The old parameters do not change in the execution
     	
 //		ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 6.0, 1.5, 60, TransitionTime.BEGINNING);
-    	ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
+    	ceAnalysis = new CostEffectivenessAnalysis(probNet, probNet.getNodes(NodeType.DECISION).get(0).getVariable(), evidence);
 		
 		result = ceAnalysis.getCostEffectivenessTable();
 		
@@ -279,7 +279,7 @@ public class GlobalCEAAnalysisTest {
 		setOldMethodParameters(probNet, 6.0 , 0.0 , 20 , TransitionTime.BEGINNING);
 		
 //		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 0.0, 20, 5000, TransitionTime.BEGINNING, useMultithreading);
-		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 5000, useMultithreading);
+		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, probNet.getNodes(NodeType.DECISION).get(0).getVariable(), evidence, 5000, useMultithreading);
 		ceAnalysis.run();
 		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
@@ -312,7 +312,7 @@ public class GlobalCEAAnalysisTest {
 		setOldMethodParameters(probNet, 6.0 , 1.5 , 60 , TransitionTime.BEGINNING);		
 		
 //		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 1.5, 60, 1000, TransitionTime.BEGINNING, useMultithreading);
-		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, evidence, 1000, useMultithreading);
+		ProbabilisticCEA ceAnalysis = new ProbabilisticCEA (probNet, probNet.getNodes(NodeType.DECISION).get(0).getVariable(), evidence, 1000, useMultithreading);
 		ceAnalysis.run();
 		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 
@@ -357,7 +357,7 @@ public class GlobalCEAAnalysisTest {
 		setOldMethodParameters(probNet, 0.0 , 0.0 , 88 , TransitionTime.BEGINNING);
 		
 //		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence, 0.0, 0.0, 88, TransitionTime.BEGINNING);
-		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet, evidence);
+		CostEffectivenessAnalysis ceAnalysis = new CostEffectivenessAnalysis(probNet,probNet.getNodes(NodeType.DECISION).get(0).getVariable(), evidence);
 		
 		TablePotential result = ceAnalysis.getCostEffectivenessTable();
 		
