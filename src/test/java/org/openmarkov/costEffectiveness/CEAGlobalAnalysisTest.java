@@ -27,7 +27,7 @@ import org.openmarkov.core.model.network.potential.operation.DiscretePotentialOp
 import org.openmarkov.inference.tasks.VariableElimination.VEResolution;
 import org.openmarkov.io.probmodel.PGMXReader;
 
-public class GlobalCEAAnalysisTest {
+public class CEAGlobalAnalysisTest {
 
 	private boolean useMultithreading = true;
 	
@@ -327,7 +327,7 @@ public class GlobalCEAAnalysisTest {
 		evidence.changeFinding(new Finding(sexVariable, 1));
 		
 //		ceAnalysis = new ProbabilisticCEA (probNet, evidence, 6.0, 1.5, 60, 1000, TransitionTime.BEGINNING, useMultithreading);
-		ceAnalysis = new ProbabilisticCEA (probNet, evidence, 1000, useMultithreading);
+		ceAnalysis = new ProbabilisticCEA (probNet,probNet.getVariables(NodeType.DECISION).get(0), evidence, 1000, useMultithreading);
 		ceAnalysis.run();
 		result = ceAnalysis.getCostEffectivenessTable();
 		
