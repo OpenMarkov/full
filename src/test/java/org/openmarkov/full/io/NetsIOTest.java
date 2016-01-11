@@ -8,13 +8,24 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Test;
-import org.openmarkov.core.exception.ParserException;
-import org.openmarkov.core.exception.WriterException;
+import org.openmarkov.core.exception.*;
 import org.openmarkov.core.gui.dialog.io.NetsIO;
+import org.openmarkov.core.inference.MulticriteriaOptions;
+import org.openmarkov.core.io.ProbNetInfo;
+import org.openmarkov.core.model.network.EvidenceCase;
+import org.openmarkov.core.model.network.NodeType;
 import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.core.model.network.Variable;
+import org.openmarkov.core.model.network.constraint.OnlyAtemporalVariables;
+import org.openmarkov.core.model.network.potential.TablePotential;
+import org.openmarkov.core.model.network.type.BayesianNetworkType;
+import org.openmarkov.core.model.network.type.InfluenceDiagramType;
+import org.openmarkov.core.model.network.type.MIDType;
+import org.openmarkov.inference.tasks.VariableElimination.*;
 import org.openmarkov.io.probmodel.PGMXReader;
 import org.openmarkov.io.probmodel.PGMXWriter;
 
@@ -105,9 +116,63 @@ public class NetsIOTest {
 				pgmxWritter.writeProbNet(networkName, probNet);
 				
 				FileInputStream file = new FileInputStream(networkName);
-				probNet = pgmxReader.loadProbNet(file, networkName).getProbNet();
+				ProbNetInfo probNetInfo = pgmxReader.loadProbNet(file, networkName);
+				probNet = probNetInfo.getProbNet();
+				System.out.println("Loaded, saved and reloaded probNet:" + url.getPath());
 				assertNotNull(probNet);
 				assertNotNull(probNet.getNodes());
+				EvidenceCase preResolutionEvidence;
+				if(probNetInfo.getEvidence().size() > 0) {
+					preResolutionEvidence = probNetInfo.getEvidence().get(0);
+				} else {
+					preResolutionEvidence = new EvidenceCase();
+				}
+				if(probNet.getNetworkType().equals(BayesianNetworkType.getUniqueInstance())){
+					try {
+						testResolveNetwork(probNet, preResolutionEvidence, false);
+						testPropagateNetwork(probNet, probNet.getVariables(), preResolutionEvidence);
+					} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
+						e.printStackTrace();
+					}
+				} else if (probNet.getNetworkType().equals(InfluenceDiagramType.getUniqueInstance())){
+					try {
+						if(probNet.getNodes(NodeType.DECISION).size() > 0){
+							testResolveNetwork(probNet, preResolutionEvidence, true);
+						} else {
+							testResolveNetwork(probNet, preResolutionEvidence, false);
+						}
+						testPropagateNetwork(probNet, probNet.getVariables(), preResolutionEvidence);
+
+						if(probNet.getInferenceOptions().getMultiCriteriaOptions().getMulticriteriaType().equals(MulticriteriaOptions.Type.COST_EFFECTIVENESS)){
+							testCEADecisionNetwork(probNet, preResolutionEvidence);
+							testCEAGlobalNetwork(probNet, preResolutionEvidence);
+						}
+
+					} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
+						e.printStackTrace();
+					}
+				} else if(probNet.getNetworkType().equals(MIDType.getUniqueInstance())){
+					try {
+						if(probNet.getNodes(NodeType.DECISION).size() > 0){
+							testResolveNetwork(probNet, preResolutionEvidence, true);
+						} else {
+							testResolveNetwork(probNet, preResolutionEvidence, false);
+						}
+						testPropagateNetwork(probNet, probNet.getVariables(), preResolutionEvidence);
+
+						if(probNet.getInferenceOptions().getMultiCriteriaOptions().getMulticriteriaType().equals(MulticriteriaOptions.Type.COST_EFFECTIVENESS)){
+							testCEADecisionNetwork(probNet, preResolutionEvidence);
+							testCEAGlobalNetwork(probNet, preResolutionEvidence);
+						}
+
+						if(!probNet.hasConstraint(OnlyAtemporalVariables.class)){
+							testTemporalEvolutionNetwork(probNet, preResolutionEvidence);
+						}
+
+					} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
+						e.printStackTrace();
+					}
+				}
 
 				
 			} catch (WriterException | FileNotFoundException | ParserException e) {
@@ -118,5 +183,61 @@ public class NetsIOTest {
 				fileToBeDeleted.delete();
 			}
         }
+	}
+
+	private void testCEAGlobalNetwork(ProbNet probNet, EvidenceCase evidenceCase) throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
+		VECEAGlobal veceaGlobal = new VECEAGlobal(probNet, evidenceCase);
+		assertNotNull(veceaGlobal.getGlobalUtility());
+	}
+
+	private void testCEADecisionNetwork(ProbNet probNet, EvidenceCase evidenceCase) throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
+		VECEADecision veceaDecision = new VECEADecision(probNet,probNet.getNodes(NodeType.DECISION).get(0).getVariable(), evidenceCase);
+		assertNotNull(veceaDecision.getGlobalUtility());
+	}
+
+	private void testPropagateNetwork(ProbNet probNet, List<Variable> variables, EvidenceCase evidenceCase) throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
+		VEPropagation vePropagation	= new VEPropagation(probNet,variables, evidenceCase, null, null);
+		HashMap<Variable, TablePotential> posteriorValues = vePropagation.getPosteriorValues();
+		for(Variable variable : probNet.getVariables()){
+			assertNotNull(posteriorValues.get(variable));
+		}
+		System.out.println("VEPropagation succesfull");
+	}
+
+	private void testResolveNetwork(ProbNet probNet, EvidenceCase evidenceCase, Boolean checkStrategy) throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
+		VEResolution veResolution;
+		if(evidenceCase != null){
+			veResolution = new VEResolution(probNet, evidenceCase, null);
+		} else {
+			veResolution = new VEResolution(probNet, null, null);
+		}
+
+
+		if(checkStrategy){
+			VEOptimalStrategy veOptimalStrategy = new VEOptimalStrategy(probNet, evidenceCase);
+			assertNotNull(veOptimalStrategy.getOptimalStrategy());
+		}
+
+		System.out.println("VEResolution succesfull");
+	}
+
+	private void testTemporalEvolutionNetwork(ProbNet probNet, EvidenceCase evidenceCase) throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
+		List<Variable> temporalVariables = probNet.getVariables();
+		for(Variable variable : temporalVariables){
+			if(variable.isTemporal()){
+				VETemporalEvolution veTemporalEvolution = new VETemporalEvolution(probNet,variable, evidenceCase, null);
+				assertNotNull(veTemporalEvolution.getPosteriorValues());
+				for(int i = 0; i < probNet.getInferenceOptions().getTemporalOptions().getNumberOfSlices(); i++){
+					try {
+						Variable variableInSlicei = probNet.getVariable(variable.getBaseName(), i);
+						assertNotNull(veTemporalEvolution.getPosteriorValues().get(variableInSlicei));
+					} catch (NodeNotFoundException e) {
+						e.printStackTrace();
+					}
+
+				}
+			}
+		}
+
 	}
 }
