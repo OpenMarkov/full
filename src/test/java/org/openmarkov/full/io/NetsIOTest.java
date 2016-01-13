@@ -86,7 +86,7 @@ public class NetsIOTest {
 		skippedNetworkNames.add("LIMID-Nilsson-Lauritzen.pgmx");
 		skippedNetworkNames.add("LIMID-decide-test-symptom.pgmx");
 
-		// TODO - Check CEA: Already passed with VEResolution, VEPropagation, VETemporalEvolution, VECEADecision, VECEAGlobal (NOT PSA)
+		// TODO - Check CEA: Already passed with VEResolution, VEPropagation, VETemporalEvolution, VECEADecision, VECEAGlobal, VECEPSA
 		skippedNetworkNames.add("ID-CEA-minimal.pgmx");
 		skippedNetworkNames.add("MID-Chancellor.pgmx");
 		skippedNetworkNames.add("MID-dmhee-2.5.pgmx");
@@ -205,6 +205,9 @@ public class NetsIOTest {
 				assertNotNull(probNet);
 				assertNotNull(probNet.getNodes());
 				EvidenceCase preResolutionEvidence;
+				int numSimulations = 10;
+				boolean useMultithreading = true;
+
 				if (probNetInfo.getEvidence().size() > 0) {
 					preResolutionEvidence = probNetInfo.getEvidence().get(0);
 				} else {
@@ -231,6 +234,7 @@ public class NetsIOTest {
 						if (hasCostEffectiveness(probNet)){
 							testCEADecisionNetwork(probNet, preResolutionEvidence);
 							testCEAGlobalNetwork(probNet, preResolutionEvidence);
+							testCEPSANetwork(probNet, preResolutionEvidence, numSimulations, useMultithreading);
 						}
 
 					} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
@@ -249,6 +253,7 @@ public class NetsIOTest {
 						if (hasCostEffectiveness(probNet)){
 							testCEADecisionNetwork(probNet, preResolutionEvidence);
 							testCEAGlobalNetwork(probNet, preResolutionEvidence);
+							testCEPSANetwork(probNet, preResolutionEvidence, numSimulations, useMultithreading);
 						}
 
 						if (!probNet.hasConstraint(OnlyAtemporalVariables.class)){
@@ -318,6 +323,33 @@ public class NetsIOTest {
 			assertNotNull(veceaDecision.getGlobalUtility());
 		}
 		System.out.println("VECEADecision successful");
+	}
+
+	private void testCEPSANetwork(ProbNet probNet, EvidenceCase evidenceCase, int numSimulations, boolean useMultithreading){
+		List<Variable> decisionVariables = probNet.getVariables(NodeType.DECISION);
+
+		for(Variable decisionVariable : decisionVariables){
+			List<Variable> informationalPredecesors = ProbNetOperations.getInformationalPredecessors(probNet, decisionVariable);
+			informationalPredecesors.remove(decisionVariable);
+
+			for(Variable informationalPredecesor : informationalPredecesors){
+				// Set the first state as an evidence
+				Finding finding = new Finding(informationalPredecesor, informationalPredecesor.getStates()[0]);
+				try {
+					evidenceCase.addFinding(finding);
+				} catch (InvalidStateException | IncompatibleEvidenceException e) {
+					e.printStackTrace();
+				}
+			}
+			try {
+				VECEPSA vecepsa = new VECEPSA(probNet, decisionVariable, evidenceCase, numSimulations, useMultithreading);
+				assertNotNull(vecepsa.getCeaResults());
+			} catch (NotEvaluableNetworkException | IncompatibleEvidenceException e) {
+				e.printStackTrace();
+			}
+
+		}
+		System.out.println("VECEPSA successful");
 	}
 
 	private void testPropagateNetwork(ProbNet probNet, List<Variable> variables, EvidenceCase evidenceCase) throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
