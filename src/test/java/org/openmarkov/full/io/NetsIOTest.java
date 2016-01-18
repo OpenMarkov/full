@@ -92,7 +92,7 @@ public class NetsIOTest {
 		skippedNetworkNames.add("MID-dmhee-2.5.pgmx");
 		skippedNetworkNames.add("MID-dmhee-3.5.pgmx");
 		skippedNetworkNames.add("MID-dmhee-4.7.pgmx");
-		skippedNetworkNames.add("ID-CEA-test-2therapies.pgmx");
+//		skippedNetworkNames.add("ID-CEA-test-2therapies.pgmx");
 		skippedNetworkNames.add("ID-decide-test-without-dummy-state.pgmx");
 		skippedNetworkNames.add("ID-decide-test.pgmx");
 		skippedNetworkNames.add("ID-delayed-result-of-test.pgmx");
@@ -102,8 +102,8 @@ public class NetsIOTest {
 		skippedNetworkNames.add("ID-mediastinet-ce.pgmx");
 
 		// TODO - Failed in VEResolution
-		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
-		skippedNetworkNames.add("MID-dmhee-4.8.pgmx");
+//		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
+//		skippedNetworkNames.add("MID-dmhee-4.8.pgmx");
 
 		// TODO - Failed in VEPropagation (All with supervalue nodes)
 		skippedNetworkNames.add("ID-arthronet.pgmx");
