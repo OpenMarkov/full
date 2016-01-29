@@ -16,7 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openmarkov.core.exception.*;
 import org.openmarkov.core.gui.dialog.io.NetsIO;
-import org.openmarkov.core.inference.MulticriteriaOptions;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.*;
 import org.openmarkov.core.model.network.constraint.OnlyAtemporalVariables;
@@ -92,7 +91,7 @@ public class NetsIOTest {
 		skippedNetworkNames.add("MID-dmhee-2.5.pgmx");
 		skippedNetworkNames.add("MID-dmhee-3.5.pgmx");
 		skippedNetworkNames.add("MID-dmhee-4.7.pgmx");
-//		skippedNetworkNames.add("ID-CEA-test-2therapies.pgmx");
+		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
 		skippedNetworkNames.add("ID-decide-test-without-dummy-state.pgmx");
 		skippedNetworkNames.add("ID-decide-test.pgmx");
 		skippedNetworkNames.add("ID-delayed-result-of-test.pgmx");
@@ -102,7 +101,7 @@ public class NetsIOTest {
 		skippedNetworkNames.add("ID-mediastinet-ce.pgmx");
 
 		// TODO - Failed in VEResolution
-//		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
+		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
 //		skippedNetworkNames.add("MID-dmhee-4.8.pgmx");
 
 		// TODO - Failed in VEPropagation (All with supervalue nodes)

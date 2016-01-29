@@ -94,10 +94,10 @@ public class NetsRepository {
     
     /**
      * Method to obtain filtered networks in the repository by it network type
-     * @param networkType constant to define the filter. Use the static constants defined in this class 
+     * @param networkFilterType constant to define the filter. Use the static constants defined in this class 
      * @return List of filtered url networks
      */
-    private List<URL> getNetworks(String networkType){
+    private List<URL> getNetworks(String networkFilterType) {
     	List<URL> networksURL = new ArrayList<URL>();
     	JSONObject bitbucketDirectoryJSON = null;
 
@@ -118,7 +118,7 @@ public class NetsRepository {
     			// of this string will be the type of the network. If the network type is equals to the 
     			// filter or the filter is empty, we must recover this URL.
     			if((lastURLString.indexOf("/") != -1) &&
-    					((lastURLString.substring(0, lastURLString.indexOf("/")).equals(networkType)) || (networkType.isEmpty()))){
+    					((lastURLString.substring(0, lastURLString.indexOf("/")).equals(networkFilterType)) || (networkFilterType.isEmpty()))){
     				// We get the url from that file and add it to the list
     				try {
 						URL url = new URL(rootNetworksDirectory + lastURLString);

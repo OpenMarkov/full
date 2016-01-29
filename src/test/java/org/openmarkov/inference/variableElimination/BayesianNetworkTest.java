@@ -37,9 +37,9 @@ public class BayesianNetworkTest {
 //				System.err.println("Can not read network: " + bayesianNetworkURL.getFile());
 //				fail();
 //			}
-//			VariableElimination elimination = null;
+//			VariableEliminationCore elimination = null;
 //    		try {
-//				elimination = new VariableElimination(probNet);
+//				elimination = new VariableEliminationCore(probNet);
 //			} catch (NotEvaluableNetworkException e) {
 //				System.err.println("Not evaluable network: " + bayesianNetworkURL.getFile());
 //				fail();
