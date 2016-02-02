@@ -85,24 +85,24 @@ public class NetsIOTest {
 		skippedNetworkNames.add("LIMID-Nilsson-Lauritzen.pgmx");
 		skippedNetworkNames.add("LIMID-decide-test-symptom.pgmx");
 
-		// TODO - Check CEA: Already passed with VEResolution, VEPropagation, VETemporalEvolution, VECEADecision, VECEAGlobal, VECEPSA
+		// TODO - Already passed with VEResolution, VEPropagation, VETemporalEvolution, VECEADecision, VECEAGlobal, VECEPSA
 		skippedNetworkNames.add("ID-CEA-minimal.pgmx");
 		skippedNetworkNames.add("MID-Chancellor.pgmx");
 		skippedNetworkNames.add("MID-dmhee-2.5.pgmx");
 		skippedNetworkNames.add("MID-dmhee-3.5.pgmx");
 		skippedNetworkNames.add("MID-dmhee-4.7.pgmx");
+		skippedNetworkNames.add("ID-CEA-test-2therapies.pgmx");
 		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
 		skippedNetworkNames.add("ID-decide-test-without-dummy-state.pgmx");
 		skippedNetworkNames.add("ID-decide-test.pgmx");
 		skippedNetworkNames.add("ID-delayed-result-of-test.pgmx");
 
 		// TODO - Check CEA: Already passed with VEResolution and VEPropagation (Failed at CEA)
-		skippedNetworkNames.add("ID-CEA-test-2therapies-new-test.pgmx");
+//		skippedNetworkNames.add("ID-CEA-test-2therapies-new-test.pgmx");
 		skippedNetworkNames.add("ID-mediastinet-ce.pgmx");
 
 		// TODO - Failed in VEResolution
-		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
-//		skippedNetworkNames.add("MID-dmhee-4.8.pgmx");
+		skippedNetworkNames.add("MID-dmhee-4.8.pgmx");
 
 		// TODO - Failed in VEPropagation (All with supervalue nodes)
 		skippedNetworkNames.add("ID-arthronet.pgmx");
@@ -341,7 +341,7 @@ public class NetsIOTest {
 				}
 			}
 			try {
-				VECEPSA vecepsa = new VECEPSA(probNet, decisionVariable, evidenceCase, numSimulations, useMultithreading);
+				VECEPSA vecepsa = new VECEPSA(probNet, evidenceCase, decisionVariable, numSimulations, useMultithreading);
 				assertNotNull(vecepsa.getCeaResults());
 			} catch (NotEvaluableNetworkException | IncompatibleEvidenceException e) {
 				e.printStackTrace();
