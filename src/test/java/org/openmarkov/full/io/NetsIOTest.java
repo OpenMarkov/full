@@ -318,7 +318,7 @@ public class NetsIOTest {
 					e.printStackTrace();
 				}
 			}
-			VECEADecision veceaDecision = new VECEADecision(probNet, decisionVariable, evidenceCase);
+			VECEADecision veceaDecision = new VECEADecision(probNet, evidenceCase, decisionVariable);
 			assertNotNull(veceaDecision.getGlobalUtility());
 		}
 		System.out.println("VECEADecision successful");
