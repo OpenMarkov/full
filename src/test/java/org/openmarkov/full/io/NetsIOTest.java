@@ -31,7 +31,7 @@ import bitbucket.NetsRepository;
 
 
 /**
- * This class tests the class {@link openmarkov.gui.io.NetsIO}.
+ * This class tests the class
  * 
  * @author jmendoza
  * @author mkpalacio
@@ -318,7 +318,7 @@ public class NetsIOTest {
 					e.printStackTrace();
 				}
 			}
-			VECEADecision veceaDecision = new VECEADecision(probNet, decisionVariable, evidenceCase);
+			VECEADecision veceaDecision = new VECEADecision(probNet, evidenceCase, decisionVariable);
 			assertNotNull(veceaDecision.getGlobalUtility());
 		}
 		System.out.println("VECEADecision successful");
@@ -341,7 +341,7 @@ public class NetsIOTest {
 				}
 			}
 			try {
-				VECEPSA vecepsa = new VECEPSA(probNet, decisionVariable, evidenceCase, numSimulations, useMultithreading);
+				VECEPSA vecepsa = new VECEPSA(probNet, evidenceCase, decisionVariable, numSimulations, useMultithreading);
 				assertNotNull(vecepsa.getCeaResults());
 			} catch (NotEvaluableNetworkException | IncompatibleEvidenceException e) {
 				e.printStackTrace();
