@@ -77,7 +77,7 @@ public class DANInferenceTest {
 //				try {
 //					VariableEliminationCE varEliminationCE = new VariableEliminationCE(decisionAnalysisNetwork, 0, Double.POSITIVE_INFINITY, decisionAnalysisNetwork.getPNESupport());
 //					// Calculate cost-effectiveness partition
-//					Intervention intervention = varEliminationCE.getOptimalStrategy();
+//					Intervention intervention = varEliminationCE.getOptimalIntervention();
 //					Assert.assertNotNull(intervention);
 //				} catch (NotEvaluableNetworkException e) {
 //					System.err.println("Network " + danURL.getFile() + " is not evaluable with VariableEliminationCE");

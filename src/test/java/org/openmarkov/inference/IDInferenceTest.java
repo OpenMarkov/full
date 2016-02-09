@@ -63,7 +63,7 @@ public class IDInferenceTest {
 //	    		//Calculate optimal strategy
 //	    		Intervention optimalStrategy = null;
 //	    		try {
-//	    			optimalStrategy = elimination.getOptimalStrategy();
+//	    			optimalStrategy = elimination.getOptimalIntervention();
 //				} catch (Exception e) {
 //					System.err.println("VariableElimination inference fails in: " + influenceDiagramURL.getFile());
 //					fail();
@@ -75,7 +75,7 @@ public class IDInferenceTest {
 //				try {
 //					VariableEliminationCE varEliminationCE = new VariableEliminationCE(influenceDiagram, 0, Double.POSITIVE_INFINITY, influenceDiagram.getPNESupport());
 //					// Calculate cost-effectiveness partition
-//					Intervention intervention = varEliminationCE.getOptimalStrategy();
+//					Intervention intervention = varEliminationCE.getOptimalIntervention();
 //					Assert.assertNotNull(intervention);
 //				} catch (NotEvaluableNetworkException e) {
 //					System.err.println("Network " + influenceDiagramURL.getFile() + " is not evaluable with VariableEliminationCE");

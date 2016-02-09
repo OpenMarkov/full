@@ -91,7 +91,7 @@ public class NetsIOTest {
 		skippedNetworkNames.add("MID-dmhee-2.5.pgmx");
 		skippedNetworkNames.add("MID-dmhee-3.5.pgmx");
 		skippedNetworkNames.add("MID-dmhee-4.7.pgmx");
-//		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
+		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
 		skippedNetworkNames.add("ID-decide-test-without-dummy-state.pgmx");
 		skippedNetworkNames.add("ID-decide-test.pgmx");
 		skippedNetworkNames.add("ID-delayed-result-of-test.pgmx");
@@ -298,7 +298,7 @@ public class NetsIOTest {
 
 	private void testCEAGlobalNetwork(ProbNet probNet, EvidenceCase evidenceCase) throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
 		VECEAGlobal veceaGlobal = new VECEAGlobal(probNet, evidenceCase);
-		assertNotNull(veceaGlobal.getGlobalUtility());
+		assertNotNull(veceaGlobal.getCEP());
 		System.out.println("VECEAGlobal successful");
 	}
 
@@ -319,7 +319,7 @@ public class NetsIOTest {
 				}
 			}
 			VECEADecision veceaDecision = new VECEADecision(probNet, evidenceCase, decisionVariable);
-			assertNotNull(veceaDecision.getGlobalUtility());
+			assertNotNull(veceaDecision.getCEPPotential());
 		}
 		System.out.println("VECEADecision successful");
 	}
@@ -341,7 +341,12 @@ public class NetsIOTest {
 				}
 			}
 			try {
-				VECEPSA vecepsa = new VECEPSA(probNet, evidenceCase, decisionVariable, numSimulations, useMultithreading);
+				VECEPSA vecepsa = null;
+				try {
+					vecepsa = new VECEPSA(probNet, evidenceCase, decisionVariable, numSimulations, useMultithreading);
+				} catch (UnexpectedInferenceException e) {
+					e.printStackTrace();
+				}
 				assertNotNull(vecepsa.getCeaResults());
 			} catch (NotEvaluableNetworkException | IncompatibleEvidenceException e) {
 				e.printStackTrace();
@@ -372,8 +377,8 @@ public class NetsIOTest {
 
 
 		if (checkStrategy) {
-			VEOptimalStrategy veOptimalStrategy = new VEOptimalStrategy(probNet, evidenceCase);
-			assertNotNull(veOptimalStrategy.getOptimalStrategy());
+			VEOptimalIntervention veOptimalStrategy = new VEOptimalIntervention(probNet, evidenceCase);
+			assertNotNull(veOptimalStrategy.getOptimalIntervention());
 		}
 
 		System.out.println("VEResolution successful");
