@@ -51,7 +51,7 @@ public class NetsIOTest {
 		skippedNetworkNames.add("BN-asia.pgmx");
 		skippedNetworkNames.add("BN-catarnet.pgmx");
 		skippedNetworkNames.add("BN-hepar.pgmx");
-		skippedNetworkNames.add("BN-nasonet.pgmx");
+
 		skippedNetworkNames.add("BN-one-disease.pgmx");
 		skippedNetworkNames.add("BN-prostanet.pgmx");
 		skippedNetworkNames.add("BN-two-diseases.pgmx");
@@ -78,42 +78,43 @@ public class NetsIOTest {
 		skippedNetworkNames.add("DAN-qale-mediastinet.pgmx");
 		skippedNetworkNames.add("DAN-reactor.pgmx");
 		skippedNetworkNames.add("DAN-test-always.pgmx");
-		skippedNetworkNames.add("DAN-used-car-buyer.pgmx");
 		skippedNetworkNames.add("DAN-unordered-two-decs.pgmx");
-		skippedNetworkNames.add("Dec-POMDP-wireless-network.pgmx");
-		skippedNetworkNames.add("POMDP-coffee-robot.pgmx");
+		skippedNetworkNames.add("DAN-used-car-buyer.pgmx");
 		skippedNetworkNames.add("LIMID-Nilsson-Lauritzen.pgmx");
 		skippedNetworkNames.add("LIMID-decide-test-symptom.pgmx");
+		skippedNetworkNames.add("Dec-POMDP-wireless-network.pgmx");
+		skippedNetworkNames.add("POMDP-coffee-robot.pgmx");
 
-		// TODO - Check CEA: Already passed with VEResolution, VEPropagation, VETemporalEvolution, VECEADecision, VECEAGlobal, VECEPSA
+//		// TODO - Check CEA: Already passed with VEResolution, VEPropagation, VETemporalEvolution, VECEADecision, VECEAGlobal, VECEPSA
 		skippedNetworkNames.add("ID-CEA-minimal.pgmx");
+		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
+		skippedNetworkNames.add("ID-CEA-test-2therapies-new-test.pgmx");
+		skippedNetworkNames.add("ID-CEA-test-2therapies.pgmx");
+		skippedNetworkNames.add("ID-decide-test-without-dummy-state.pgmx");
+		skippedNetworkNames.add("ID-decide-test.pgmx");
 		skippedNetworkNames.add("MID-Chancellor.pgmx");
+		skippedNetworkNames.add("MID-hip-Briggs.pgmx");
 		skippedNetworkNames.add("MID-dmhee-2.5.pgmx");
 		skippedNetworkNames.add("MID-dmhee-3.5.pgmx");
 		skippedNetworkNames.add("MID-dmhee-4.7.pgmx");
-		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
-		skippedNetworkNames.add("ID-decide-test-without-dummy-state.pgmx");
-		skippedNetworkNames.add("ID-decide-test.pgmx");
-		skippedNetworkNames.add("ID-delayed-result-of-test.pgmx");
-
-		// TODO - Check CEA: Already passed with VEResolution and VEPropagation (Failed at CEA)
-		skippedNetworkNames.add("ID-CEA-test-2therapies-new-test.pgmx");
-		skippedNetworkNames.add("ID-mediastinet-ce.pgmx");
-
-		// TODO - Failed in VEResolution
-		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
 		skippedNetworkNames.add("MID-dmhee-4.8.pgmx");
 
-		// TODO - Failed in VEPropagation (All with supervalue nodes)
+		// TODO - Failed on VEPropagation
+		skippedNetworkNames.add("ID-delayed-result-of-test.pgmx");
+
+		// TODO - Failed getting optimal intervention on Resolve
+		skippedNetworkNames.add("ID-mediastinet-ce.pgmx");
+
+		// TODO - Memory Heap
+//		skippedNetworkNames.add("BN-nasonet.pgmx");
+
+//		// TODO - Failed in VEPropagation (All with supervalue nodes)
 		skippedNetworkNames.add("ID-arthronet.pgmx");
 		skippedNetworkNames.add("ID-arthronet-ce.pgmx");
 		skippedNetworkNames.add("ID-mediastinet.pgmx");
 		skippedNetworkNames.add("ID-used-car-buyer.pgmx");
 		skippedNetworkNames.add("MID-CHAP-Ryan-Griffin.pgmx");
 		skippedNetworkNames.add("MID-HPV.pgmx");
-
-		// TODO - Failed in VEResolution (getting optimal strategy)
-		skippedNetworkNames.add("MID-hip-Briggs.pgmx");
 
 
 	}
