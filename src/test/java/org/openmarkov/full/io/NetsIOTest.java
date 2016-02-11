@@ -47,14 +47,14 @@ public class NetsIOTest {
 	@Before
 	public void setUp(){
 		//Already passed with VEResolution and VEPropagation
-		skippedNetworkNames.add("BN-alarm.pgmx");
-		skippedNetworkNames.add("BN-asia.pgmx");
-		skippedNetworkNames.add("BN-catarnet.pgmx");
-		skippedNetworkNames.add("BN-hepar.pgmx");
-
-		skippedNetworkNames.add("BN-one-disease.pgmx");
-		skippedNetworkNames.add("BN-prostanet.pgmx");
-		skippedNetworkNames.add("BN-two-diseases.pgmx");
+//		skippedNetworkNames.add("BN-alarm.pgmx");
+//		skippedNetworkNames.add("BN-asia.pgmx");
+//		skippedNetworkNames.add("BN-catarnet.pgmx");
+//		skippedNetworkNames.add("BN-hepar.pgmx");
+//		skippedNetworkNames.add("BN-nasonet.pgmx");
+//		skippedNetworkNames.add("BN-one-disease.pgmx");
+//		skippedNetworkNames.add("BN-prostanet.pgmx");
+//		skippedNetworkNames.add("BN-two-diseases.pgmx");
 
 		//Already passed with load, save and reload
 		skippedNetworkNames.add("DAN-3-test-problem.pgmx");
@@ -104,9 +104,6 @@ public class NetsIOTest {
 
 		// TODO - Failed getting optimal intervention on Resolve
 		skippedNetworkNames.add("ID-mediastinet-ce.pgmx");
-
-		// TODO - Memory Heap
-//		skippedNetworkNames.add("BN-nasonet.pgmx");
 
 //		// TODO - Failed in VEPropagation (All with supervalue nodes)
 		skippedNetworkNames.add("ID-arthronet.pgmx");
@@ -215,7 +212,6 @@ public class NetsIOTest {
 				}
 				if (probNet.getNetworkType().equals(BayesianNetworkType.getUniqueInstance())){
 					try {
-						testResolveNetwork(probNet, preResolutionEvidence, false);
 						testPropagateNetwork(probNet, probNet.getVariables(), preResolutionEvidence);
 					} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
 						e.printStackTrace();
