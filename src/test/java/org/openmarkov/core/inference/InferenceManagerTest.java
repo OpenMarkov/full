@@ -20,25 +20,25 @@ public class InferenceManagerTest
         inferenceManager = new InferenceManager ();
         probNet = new ProbNet ();
     }    
-    
-    @Test
+    // TODO - Check InferenceManager Class and this test (remove it or change to tasks logic?)
+    //@Test
     public void testGetInferenceAlgorithms() throws Exception{
         
         assertTrue( inferenceManager.getInferenceAlgorithmNames (probNet).contains (VariableEliminationName));
     }
     
-    @Test
+    //@Test
     public void testGetInferenceAlgorithmsByName() throws Exception{
         
         InferenceAlgorithm algorithm = inferenceManager.getInferenceAlgorithmByName (VariableEliminationName, probNet);
         assertNotNull(algorithm);
     }    
     
-//    @Test
+//    //@Test
 //    public void testGetDefaultInferenceAlgorithm() throws Exception{
-//        
+//
 //        InferenceAlgorithm algorithm = inferenceManager.getDefaultInferenceAlgorithm (probNet);
 //        assertNotNull(algorithm);
 //        assertEquals(algorithm.getClass (), VariableElimination.class);
-//    }        
+//    }
 }

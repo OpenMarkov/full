@@ -25,7 +25,8 @@ import bitbucket.NetsRepository;
 
 public class DANInferenceTest {
 
-	@Test
+	// TODO - Check DANs inference when it becomes available
+	// @Test
 	public void testDANsInference() {
 		NetsRepository netsRepository = new NetsRepository();
     	List<URL> danURLs = netsRepository.getNetworks(DecisionAnalysisNetworkType.getUniqueInstance());
