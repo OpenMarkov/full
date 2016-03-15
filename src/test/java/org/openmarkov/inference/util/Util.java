@@ -72,6 +72,7 @@ public class Util {
     	return probNetsDB;
 	}
 
+	// TODO - Remove this method
 	public static List<ProbNet> filterNonPureTablePotentialProbNets(List<ProbNet> probNets) {
 		List<ProbNet> filteredProbNets = new ArrayList<ProbNet>(probNets.size());
 		for (ProbNet probNet : probNets) {

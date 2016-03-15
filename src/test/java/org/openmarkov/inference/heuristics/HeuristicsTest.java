@@ -16,7 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openmarkov.core.action.RemoveNodeEdit;
 import org.openmarkov.core.exception.WrongGraphStructureException;
-import org.openmarkov.core.inference.PartialOrder;
 import org.openmarkov.core.inference.heuristic.EliminationHeuristic;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
