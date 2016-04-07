@@ -116,6 +116,9 @@ public class NetsIOTest {
 		skippedNetworkNames.add("MID-CHAP-Ryan-Griffin.pgmx");
 		skippedNetworkNames.add("MID-HPV.pgmx");
 
+		// Too big
+		skippedNetworkNames.add("MID-Cochlear.pgmx");
+
 
 	}
 
