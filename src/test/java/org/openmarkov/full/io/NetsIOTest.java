@@ -118,7 +118,11 @@ public class NetsIOTest {
 
 		// Too big
 		skippedNetworkNames.add("MID-Cochlear.pgmx");
+		skippedNetworkNames.add("MID-Colorectal.pgmx");
 
+		// TODO - only for 'Augmented bayesian networks' branch
+		skippedNetworkNames.add("ID-decide-test-0.4.0.pgmx");
+		skippedNetworkNames.add("ID-decide-test-0.5.0.pgmx");
 
 	}
 
@@ -189,9 +193,11 @@ public class NetsIOTest {
             PGMXReader pgmxReader = new PGMXReader();
             
 			try {
+				ProbNetInfo probNetInfo = null;
 				ProbNet probNet = null;
 				try {
-					probNet = pgmxReader.loadProbNet(url.openStream(), networkName).getProbNet();
+					probNetInfo = pgmxReader.loadProbNet(url.openStream(), networkName);
+					probNet = probNetInfo.getProbNet();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -199,10 +205,10 @@ public class NetsIOTest {
 				assertNotNull(probNet.getNodes());
 				
 				PGMXWriter pgmxWritter = new PGMXWriter();
-				pgmxWritter.writeProbNet(networkName, probNet);
+				pgmxWritter.writeProbNet(networkName, probNet, probNetInfo.getEvidence());
 				
 				FileInputStream file = new FileInputStream(networkName);
-				ProbNetInfo probNetInfo = pgmxReader.loadProbNet(file, networkName);
+				probNetInfo = pgmxReader.loadProbNet(file, networkName);
 				probNet = probNetInfo.getProbNet();
 				System.out.println("Loaded, saved and reloaded probNet:" + url.getPath());
 				assertNotNull(probNet);
