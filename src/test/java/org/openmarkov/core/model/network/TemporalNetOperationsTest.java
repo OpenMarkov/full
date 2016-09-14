@@ -16,8 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.model.network.CycleLength.Unit;
-import org.openmarkov.core.model.network.ProbNet;
-import org.openmarkov.core.model.network.potential.TablePotential;
+import org.openmarkov.core.model.network.potential.ExactDistrPotential;
 import org.openmarkov.io.probmodel.PGMXReader;
 
 public class TemporalNetOperationsTest {
@@ -25,7 +24,7 @@ public class TemporalNetOperationsTest {
 	private ProbNet probNet;
 
 	@Before
-    public void setUp() throws Exception {
+	public void setUp() throws Exception {
 		String networkName = "temporal/SimpleTemporalUtilityNode.pgmx";
 		// Open the file containing the network
 		InputStream file = getClass().getClassLoader ().
@@ -57,8 +56,8 @@ public class TemporalNetOperationsTest {
 		TemporalNetOperations.applyDiscountToUtilityNodes(probNet);
 
 		for(Node utilityNode : probNet.getNodes(NodeType.UTILITY)){
-            double potential1 = ((TablePotential) utilityNode.getPotentials().get(0)).values[0];
-            double potential2 = ((TablePotential) utilityNode.getPotentials().get(0)).values[1];
+			double potential1 = ((ExactDistrPotential) utilityNode.getPotentials().get(0)).getTablePotential().values[0];
+			double potential2 = ((ExactDistrPotential) utilityNode.getPotentials().get(0)).getTablePotential().values[1];
 			int numSlice = utilityNode.getVariable().getTimeSlice();
 			double discount = CycleLength.getTemporalAdjustedDiscount(
 					probNet.getCycleLength().getUnit(),
@@ -93,8 +92,8 @@ public class TemporalNetOperationsTest {
 		TemporalNetOperations.applyDiscountToUtilityNodes(probNet);
 
 		for(Node utilityNode : probNet.getNodes(NodeType.UTILITY)){
-            double potential1 = ((TablePotential) utilityNode.getPotentials().get(0)).values[0];
-            double potential2 = ((TablePotential) utilityNode.getPotentials().get(0)).values[1];
+			double potential1 = ((ExactDistrPotential) utilityNode.getPotentials().get(0)).getTablePotential().values[0];
+			double potential2 = ((ExactDistrPotential) utilityNode.getPotentials().get(0)).getTablePotential().values[1];
 			int numSlice = utilityNode.getVariable().getTimeSlice();
 			double discount = CycleLength.getTemporalAdjustedDiscount(
 					probNet.getCycleLength().getUnit(),
@@ -111,12 +110,4 @@ public class TemporalNetOperationsTest {
 			assertTrue(Math.abs((potential2 - expectedPotential2)) < (expectedPotential2 / Math.pow(10, 9)));
 		}
 	}
-
-
-
-
-
-
-
-
 }
