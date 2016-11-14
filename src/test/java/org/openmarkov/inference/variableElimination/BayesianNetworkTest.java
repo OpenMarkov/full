@@ -12,7 +12,7 @@ import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.type.BayesianNetworkType;
-import org.openmarkov.io.probmodel.PGMXReader;
+import org.openmarkov.io.probmodel.parser.PGMXReader_0_2_0;
 
 import bitbucket.NetsRepository;
 
