@@ -25,7 +25,7 @@ public class TemporalNetOperationsTest {
 
 	@Before
 	public void setUp() throws Exception {
-		String networkName = "temporal/SimpleTemporalUtilityNode.pgmx";
+		String networkName = "networks/mid/SimpleTemporalUtilityNode.pgmx";
 		// Open the file containing the network
 		InputStream file = getClass().getClassLoader ().
 				getResourceAsStream (networkName);
