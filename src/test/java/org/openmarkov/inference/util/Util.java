@@ -10,22 +10,22 @@ import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.potential.Potential;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.type.NetworkType;
-import org.openmarkov.io.probmodel.parser.PGMXReader_0_2_0;
 
 import bitbucket.NetsRepository;
+import org.openmarkov.io.probmodel.PGMXReader;
 
 public class Util {
 	
 	/**
 	 * Reads all the networks from the repository that meet the restriction given in the parameter "networkType"
-	 * @param networkType. <code>NetworkType</code>
+	 * @param networkType <code>NetworkType</code>
 	 * @return <code>List</code> of <code>ProbNet</code>s
 	 */
 	public static List<ProbNet> readProbNetsDB(NetworkType networkType) {
 
 		NetsRepository netsRepository = new NetsRepository();
     	List<URL> bayesianNetworksURLList = netsRepository.getNetworks(networkType);
-    	PGMXReader_0_2_0 reader = new PGMXReader_0_2_0();
+    	PGMXReader reader = new PGMXReader();
     	List<ProbNet> probNetsDB = new ArrayList<ProbNet>();
     	List<String> wrongNetworksNames = new ArrayList<String>();
     	int readingErrors = 0;

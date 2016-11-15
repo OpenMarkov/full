@@ -19,7 +19,7 @@ import org.openmarkov.core.model.network.potential.Intervention;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.type.DecisionAnalysisNetworkType;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithm;
-import org.openmarkov.io.probmodel.parser.PGMXReader_0_2_0;
+import org.openmarkov.io.probmodel.PGMXReader;
 
 import bitbucket.NetsRepository;
 
@@ -30,7 +30,7 @@ public class DANInferenceTest {
 	public void testDANsInference() {
 		NetsRepository netsRepository = new NetsRepository();
     	List<URL> danURLs = netsRepository.getNetworks(DecisionAnalysisNetworkType.getUniqueInstance());
-    	PGMXReader_0_2_0 reader = new PGMXReader_0_2_0();
+    	PGMXReader reader = new PGMXReader();
     	for (URL danURL : danURLs) {
     		System.out.println("Checking " + danURL.toString());
     		ProbNet decisionAnalysisNetwork = null;

@@ -18,7 +18,7 @@ import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.model.network.CycleLength.Unit;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.io.probmodel.parser.PGMXReader_0_2_0;
+import org.openmarkov.io.probmodel.PGMXReader;
 
 public class TemporalNetOperationsTest {
 
@@ -32,7 +32,7 @@ public class TemporalNetOperationsTest {
 				getResourceAsStream (networkName);
 
 		// Load the Bayesian network
-		PGMXReader_0_2_0 pgmxReader = new PGMXReader_0_2_0();
+		PGMXReader pgmxReader = new PGMXReader();
 		try {
 			this.probNet = pgmxReader.loadProbNet(file, networkName).getProbNet();
 			probNet.getInferenceOptions().getTemporalOptions().setNumberOfSlices(15);
