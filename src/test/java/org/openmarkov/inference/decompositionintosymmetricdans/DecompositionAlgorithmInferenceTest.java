@@ -66,9 +66,15 @@ import org.openmarkov.io.probmodel.PGMXReader;
 			testMEU("one-decision",87.4);
 		}
 		
-		//@Test
+		@Test
 		public void testDANNoKnowledge() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 			testMEU("no-knowledge",9.16);
+		}
+		
+		//@Test
+		//TODO This test requires a correct calculation of the elimination order in a symmetric DAN
+		public void testDANPerfectKnowledge() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+			testMEU("perfect-knowledge",9.72);
 		}
 		
 		

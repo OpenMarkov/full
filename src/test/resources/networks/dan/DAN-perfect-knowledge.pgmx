@@ -8,7 +8,8 @@
     <AdditionalProperties />
     <Variables>
       <Variable name="A" type="finiteStates" role="chance">
-        <Coordinates x="476" y="177" />
+        <Coordinates x="517" y="164" />
+        <AlwaysObserved />
         <States>
           <State name="absent" />
           <State name="present" />
