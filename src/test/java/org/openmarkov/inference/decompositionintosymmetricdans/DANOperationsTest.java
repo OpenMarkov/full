@@ -124,14 +124,17 @@ public class DANOperationsTest {
             // Check that the links from disease to test and effectiveness are removed
             Assert.assertTrue(instantiatedNetworks.get(1).getLinks(diseaseNode).isEmpty());
 
+            /*
             PGMXWriter pgmxWriter = new PGMXWriter();
             pgmxWriter.writeProbNet("D://Instantiated-disease-absent_DAN-Test2Therapies.pgmx", instantiatedNetworks.get(0));
             pgmxWriter.writeProbNet("D://Instantiated-disease-present_DAN-Test2Therapies.pgmx", instantiatedNetworks.get(1));
+            */
         } catch (NodeNotFoundException e) {
             e.printStackTrace();
-        } catch (WriterException e) {
-            e.printStackTrace();
         }
+//        catch (WriterException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Test
