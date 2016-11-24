@@ -90,226 +90,24 @@
 			<artifactId>org.openmarkov.core.gui</artifactId>
 			<version>0.2.0-SNAPSHOT</version>
 		</dependency>
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.core</artifactId>-->
-			<!--<version>0.2.0-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.learning.core</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.learning.algorithm.hillclimbing</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--&lt;!&ndash; <dependency> <groupId>org.openmarkov</groupId> <artifactId>org.openmarkov.learning.algorithm.em</artifactId> -->
-			<!--<version>0.1.6-SNAPSHOT</version> </dependency> &ndash;&gt;-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.learning.algorithm.pc</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.learning.gui</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.learning.metric.aic</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.learning.metric.bayesian</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.learning.metric.bd</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.learning.metric.entropy</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.learning.metric.k2</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.learning.metric.mdlm</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-		<!---->
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.inference.huginPropagation</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-		<!---->
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.inference.variableElimination</artifactId>-->
-			<!--<version>0.2.0-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.inference.likelihoodWeighting</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.inference.decompositionIntoSymmetricDANs</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-		<!---->
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.inference.heuristic.minimalFillIn</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-		<!---->
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.inference.heuristic.simpleElimination</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.inference.heuristic.hybridElimination</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.inference.heuristic.canoAndMoral</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.io.elvira</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.io.probmodelxml</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.io.database.excel</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.io.database.elvira</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.io.database.weka</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.dbgenerator</artifactId>-->
-			<!--<version>0.1.6-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.sensitivityanalysis.gui</artifactId>-->
-			<!--<version>0.2.0-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.costEffectiveness</artifactId>-->
-			<!--<version>0.2.0-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
-
-		<!--&lt;!&ndash; <dependency> <groupId>org.openmarkov</groupId> <artifactId>org.openmarkov.utilityCalculator</artifactId> -->
-			<!--<version>0.1.6-SNAPSHOT</version> </dependency> <dependency> <groupId>org.openmarkov</groupId> -->
-			<!--<artifactId>org.openmarkov.evaluation</artifactId> <version>0.1.2</version> -->
-			<!--</dependency> <dependency> <groupId>org.openmarkov</groupId> <artifactId>org.openmarkov.objectOrientedNetworks</artifactId> -->
-			<!--<version>0.1.2</version> </dependency> &ndash;&gt;-->
-
-		<!--<dependency>-->
-			<!--<groupId>log4j</groupId>-->
-			<!--<artifactId>log4j</artifactId>-->
-			<!--<version>1.2.16</version>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>junit</groupId>-->
-			<!--<artifactId>junit</artifactId>-->
-			<!--<version>4.10</version>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>org.jdom</groupId>-->
-			<!--<artifactId>jdom</artifactId>-->
-			<!--<version>2.0.2</version>-->
-		<!--</dependency>-->
-
-
+		<dependency>
+			<groupId>org.openmarkov</groupId>
+			<artifactId>org.openmarkov.core</artifactId>
+			<version>0.2.0-SNAPSHOT</version>
+			<scope>test</scope>
+			<type>test-jar</type>
+		</dependency>
+		<!-- Plugins -->
+		<dependency>
+			<groupId>org.openmarkov</groupId>
+			<artifactId>org.openmarkov.costEffectiveness</artifactId>
+			<version>0.2.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openmarkov</groupId>
+			<artifactId>org.openmarkov.sensitivityanalysis.gui</artifactId>
+			<version>0.2.0-SNAPSHOT</version>
+		</dependency>
 		<!-- Warning: Do not use a newer version of org.json as it requires Java 
 			1.8 at least -->
 		<dependency>
@@ -318,13 +116,6 @@
 			<version>20140107</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!--<dependency>-->
-			<!--<groupId>org.openmarkov</groupId>-->
-			<!--<artifactId>org.openmarkov.inference.tasks</artifactId>-->
-			<!--<version>0.2.0-SNAPSHOT</version>-->
-			<!--<scope>test</scope>-->
-		<!--</dependency>-->
 
 	</dependencies>
 
