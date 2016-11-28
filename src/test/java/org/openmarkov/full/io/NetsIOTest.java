@@ -152,7 +152,7 @@ public class NetsIOTest {
 		}
 		path = file.getParent();
 		fileNameSave = path + File.separator + fileToSave;
-		NetsIO.saveNetworkFile(net, fileNameSave);
+		NetsIO.saveNetworkFile(net, fileNameSave, "");
 		net = null;
 		net = NetsIO.openNetworkFile(fileNameSave).getProbNet();
 		assertNotNull(net);
