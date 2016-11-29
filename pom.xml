@@ -169,6 +169,24 @@
 			<artifactId>org.openmarkov.io.database.weka</artifactId>
 			<version>0.1.6-SNAPSHOT</version>
 		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.openmarkov</groupId>-->
+			<!--<artifactId>org.openmarkov.utilityCalculator</artifactId>-->
+			<!--<version>0.1.5-SNAPSHOT</version>-->
+			<!--<scope>test</scope>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>org.openmarkov</groupId>-->
+			<!--<artifactId>org.openmarkov.evaluation</artifactId>-->
+			<!--<version>0.1.5-SNAPSHOT</version>-->
+			<!--<scope>test</scope>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>org.openmarkov</groupId>-->
+			<!--<artifactId>org.openmarkov.objectOrientedNetworks</artifactId>-->
+			<!--<version>0.0.1-SNAPSHOT</version>-->
+			<!--<scope>test</scope>-->
+		<!--</dependency>-->
 		<!-- Warning: Do not use a newer version of org.json as it requires Java 
 			1.8 at least -->
 		<dependency>
