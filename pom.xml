@@ -46,6 +46,11 @@
             <artifactId>org.openmarkov.learning</artifactId>
             <version>${openmarkov.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.openmarkov</groupId>
+            <artifactId>org.openmarkov.core.gui</artifactId>
+            <version>${openmarkov.version}</version>
+        </dependency>
         <!--<dependency>-->
         <!--<groupId>org.openmarkov</groupId>-->
         <!--<artifactId>org.openmarkov.utilityCalculator</artifactId>-->
