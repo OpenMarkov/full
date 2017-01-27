@@ -24,8 +24,8 @@ import org.openmarkov.core.model.network.type.BayesianNetworkType;
 import org.openmarkov.core.model.network.type.InfluenceDiagramType;
 import org.openmarkov.core.model.network.type.MIDType;
 import org.openmarkov.inference.tasks.VariableElimination.*;
-import org.openmarkov.io.probmodel.PGMXReader;
-import org.openmarkov.io.probmodel.PGMXWriter;
+import org.openmarkov.io.probmodel.reader.PGMXReader;
+import org.openmarkov.io.probmodel.writer.PGMXWriter;
 
 import bitbucket.NetsRepository;
 
@@ -196,7 +196,7 @@ public class NetsIOTest {
 				ProbNetInfo probNetInfo = null;
 				ProbNet probNet = null;
 				try {
-					probNetInfo = pgmxReader.loadProbNet(url.openStream(), networkName);
+					probNetInfo = pgmxReader.loadProbNetInfo(networkName, url.openStream());
 					probNet = probNetInfo.getProbNet();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -208,7 +208,7 @@ public class NetsIOTest {
 				pgmxWritter.writeProbNet(networkName, probNet, probNetInfo.getEvidence());
 				
 				FileInputStream file = new FileInputStream(networkName);
-				probNetInfo = pgmxReader.loadProbNet(file, networkName);
+				probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
 				probNet = probNetInfo.getProbNet();
 				System.out.println("Loaded, saved and reloaded probNet:" + url.getPath());
 				assertNotNull(probNet);

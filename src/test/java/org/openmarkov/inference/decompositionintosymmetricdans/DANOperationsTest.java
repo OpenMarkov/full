@@ -14,8 +14,8 @@ import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.ExactDistrPotential;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANOperations;
-import org.openmarkov.io.probmodel.PGMXReader;
-import org.openmarkov.io.probmodel.PGMXWriter;
+import org.openmarkov.io.probmodel.reader.PGMXReader;
+import org.openmarkov.io.probmodel.writer.PGMXWriter;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -38,22 +38,22 @@ public class DANOperationsTest {
             // Initialize danTest2Therapies network
             networkName = "networks/dan/DAN-test-2therapies.pgmx";
             file = getClass().getClassLoader ().getResourceAsStream (networkName);
-            danTest2Therapies = pgmxReader.loadProbNet(file, networkName).getProbNet();
+            danTest2Therapies = pgmxReader.loadProbNet(networkName, file);
 
             // Initialize danDecideTest2TherapiesNoCost network
             networkName = "networks/dan/DAN-decide-test-2therapies-no-cost.pgmx";
             file = getClass().getClassLoader ().getResourceAsStream (networkName);
-            danDecideTest2TherapiesNoCost = pgmxReader.loadProbNet(file, networkName).getProbNet();
+            danDecideTest2TherapiesNoCost = pgmxReader.loadProbNet(networkName, file);
 
             // Initialize danDecideTest2TherapiesNoCost network
             networkName = "networks/dan/DAN-decide-test-2therapies-no-cost-symmetrized.pgmx";
             file = getClass().getClassLoader ().getResourceAsStream (networkName);
-            danDecideTest2TherapiesNoCostSymmetrized = pgmxReader.loadProbNet(file, networkName).getProbNet();
+            danDecideTest2TherapiesNoCostSymmetrized = pgmxReader.loadProbNet(networkName, file);
 
             // Initialize danDiabetes network
             networkName = "networks/dan/DAN-diabetes.pgmx";
             file = getClass().getClassLoader ().getResourceAsStream (networkName);
-            danDiabetes = pgmxReader.loadProbNet(file, networkName).getProbNet();
+            danDiabetes = pgmxReader.loadProbNet(networkName, file);
         } catch (ParserException e) {
             e.printStackTrace();
         }

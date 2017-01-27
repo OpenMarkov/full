@@ -19,7 +19,7 @@ import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.tasks.VariableElimination.VEPropagation;
-import org.openmarkov.io.probmodel.PGMXReader;
+import org.openmarkov.io.probmodel.reader.PGMXReader;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class bnHeparTests {
         PGMXReader pgmxReader = new PGMXReader();
         ProbNetInfo probNetInfo = null;
         try {
-            probNetInfo = pgmxReader.loadProbNet(file, networkName);
+            probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
         } catch (ParserException e) {
             e.printStackTrace();
         }

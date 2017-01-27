@@ -26,7 +26,7 @@ import org.openmarkov.core.model.network.potential.Intervention;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.potential.treeadd.TreeADDBranch;
 import org.openmarkov.inference.tasks.VariableElimination.*;
-import org.openmarkov.io.probmodel.PGMXReader;
+import org.openmarkov.io.probmodel.reader.PGMXReader;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -50,7 +50,7 @@ public class idDecideTestNetworkTests {
         PGMXReader pgmxReader = new PGMXReader();
         ProbNetInfo probNetInfo = null;
         try {
-            probNetInfo = pgmxReader.loadProbNet(file, networkName);
+            probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
         } catch (ParserException e) {
             e.printStackTrace();
         }

@@ -19,7 +19,7 @@ import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.potential.operation.DiscretePotentialOperations;
 import org.openmarkov.inference.tasks.VariableElimination.VECEADecision;
 import org.openmarkov.inference.tasks.VariableElimination.VEResolution;
-import org.openmarkov.io.probmodel.PGMXReader;
+import org.openmarkov.io.probmodel.reader.PGMXReader;
 
 public class CEAGlobalAnalysisTest {
 
@@ -99,7 +99,7 @@ public class CEAGlobalAnalysisTest {
 
 		// Load the Bayesian network
 		PGMXReader pgmxReader = new PGMXReader();
-		ProbNet probNet = pgmxReader.loadProbNet(file, "Chancellor").getProbNet();
+		ProbNet probNet = pgmxReader.loadProbNet("Chancellor", file);
 
 		EvidenceCase evidence = new EvidenceCase();
 

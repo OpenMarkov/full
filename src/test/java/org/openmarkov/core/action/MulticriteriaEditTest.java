@@ -9,7 +9,7 @@ import org.openmarkov.core.exception.WrongCriterionException;
 import org.openmarkov.core.inference.MulticriteriaOptions;
 import org.openmarkov.core.model.network.Criterion;
 import org.openmarkov.core.model.network.ProbNet;
-import org.openmarkov.io.probmodel.PGMXReader;
+import org.openmarkov.io.probmodel.reader.PGMXReader;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -89,7 +89,7 @@ public class MulticriteriaEditTest {
 		PGMXReader pgmxReader = new PGMXReader();
 		ProbNet probNet = null;
 		try {
-			probNet = pgmxReader.loadProbNet(file, bayesNetworkName).getProbNet();
+			probNet = pgmxReader.loadProbNet(bayesNetworkName, file);
 		} catch (ParserException e) {
 			e.printStackTrace();
 		}

@@ -19,7 +19,7 @@ import org.openmarkov.core.model.network.factory.DANFactory;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticle;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticle.DANEvaluationOutput;
-import org.openmarkov.io.probmodel.PGMXReader;
+import org.openmarkov.io.probmodel.reader.PGMXReader;
 
 	public class DecompositionAlgorithmInferenceTest {
 		
@@ -34,13 +34,13 @@ import org.openmarkov.io.probmodel.PGMXReader;
 
 		   // Load the network: ID-decide-test
 		   PGMXReader pgmxReader = new PGMXReader();
-		   ProbNetInfo probNetInfo = null;
+		   ProbNet probNet = null;
 		   try {
-		       probNetInfo = pgmxReader.loadProbNet(file, networkName);
+		       probNet = pgmxReader.loadProbNet(networkName, file);
 		        } catch (ParserException e) {
 		            e.printStackTrace();
 		        }
-		   return probNetInfo.getProbNet();
+		   return probNet;
 		}
 		
 		public void testMEU(String danName,double expectedEU){

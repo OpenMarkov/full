@@ -10,7 +10,7 @@ import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.potential.Potential;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.type.NetworkType;
-import org.openmarkov.io.probmodel.PGMXReader;
+import org.openmarkov.io.probmodel.reader.PGMXReader;
 
 import bitbucket.NetsRepository;
 
@@ -34,7 +34,7 @@ public class Util {
     		String fileName = null;
 			try {
 				fileName = bayesianNetworkURL.getFile();
-				probNet = reader.loadProbNet(bayesianNetworkURL.openStream(), fileName).getProbNet();
+				probNet = reader.loadProbNet(fileName, bayesianNetworkURL.openStream());
 				probNetsDB.add(probNet);
 			} catch (ParserException | IOException e) {
 				readingErrors++;
