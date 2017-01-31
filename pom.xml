@@ -57,12 +57,12 @@
         <!--<version>${openmarkov.version}</version>-->
         <!--<scope>test</scope>-->
         <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>org.openmarkov</groupId>-->
-        <!--<artifactId>org.openmarkov.evaluation</artifactId>-->
-        <!--<version>${openmarkov.version}</version>-->
-        <!--<scope>test</scope>-->
-        <!--</dependency>-->
+        <dependency>
+        <groupId>org.openmarkov</groupId>
+        <artifactId>org.openmarkov.evaluation</artifactId>
+        <version>${openmarkov.version}</version>
+        <scope>test</scope>
+        </dependency>
         <!--<dependency>-->
         <!--<groupId>org.openmarkov</groupId>-->
         <!--<artifactId>org.openmarkov.objectOrientedNetworks</artifactId>-->
