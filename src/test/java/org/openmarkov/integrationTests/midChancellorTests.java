@@ -448,4 +448,14 @@ public class midChancellorTests {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void veTemporalEvolutionTest(){
+        try {
+            VETemporalEvaluation veTemporalEvaluation = new VETemporalEvaluation(probNet, preResolutionEvidence, null);
+
+        } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
+            e.printStackTrace();
+        }
+    }
 }
