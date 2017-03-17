@@ -13,10 +13,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmarkov.core.exception.*;
+import org.openmarkov.core.inference.TransitionTime;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.CEP;
 import org.openmarkov.core.model.network.EvidenceCase;
 import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.core.model.network.UtilityOperations;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.GTablePotential;
 import org.openmarkov.core.model.network.potential.Intervention;
@@ -26,7 +28,9 @@ import org.openmarkov.inference.tasks.VariableElimination.*;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class midChancellorTests {
 
@@ -453,6 +457,69 @@ public class midChancellorTests {
     public void veTemporalEvolutionTest(){
         try {
             VETemporalEvaluation veTemporalEvaluation = new VETemporalEvaluation(probNet, preResolutionEvidence, null);
+            TablePotential atemporalUtility = veTemporalEvaluation.getAtemporalUtility();
+            Assert.assertEquals(atemporalUtility.values[0],0,deltaEquals);
+
+            List<TablePotential> potentialsPerSlice = veTemporalEvaluation.getUtilityPotentialsPerSlice();
+            double[] costs_monotherapy = new double[21];
+            double[] effectiveness_monotherapy = new double[21];
+            double[] costs_combtherapy = new double[21];
+            double[] effectiveness_combtherapy = new double[21];
+
+            int slice = 0;
+            for (TablePotential tablePotential : potentialsPerSlice) {
+                costs_monotherapy[slice] = ((CEP)((GTablePotential) tablePotential).elementTable.get(0)).getCost(0);
+                effectiveness_monotherapy[slice] = ((CEP)((GTablePotential) tablePotential).elementTable.get(0)).getEffectiveness(0);
+                costs_combtherapy[slice] = ((CEP)((GTablePotential) tablePotential).elementTable.get(1)).getCost(0);
+                effectiveness_combtherapy[slice] = ((CEP)((GTablePotential) tablePotential).elementTable.get(1)).getEffectiveness(0);
+                slice++;
+            }
+
+            double c_monotherapy = UtilityOperations.applyLeftRiemannSum(costs_monotherapy, 1);
+            double e_monotherapy = UtilityOperations.applyLeftRiemannSum(effectiveness_monotherapy, 1);
+
+            double c_combtherapy = UtilityOperations.applyLeftRiemannSum(costs_combtherapy, 1);
+            double e_combtherapy = UtilityOperations.applyLeftRiemannSum(effectiveness_combtherapy, 1);
+
+            Variable decisionVariable = null;
+            try {
+                decisionVariable = probNet.getVariable("Therapy type");
+            } catch (NodeNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            //Asserting that Left Rieman summ is equals to a transition at the end
+            probNet.getInferenceOptions().getTemporalOptions().setTransition(TransitionTime.END);
+            VECEADecision veceaDecision = new VECEADecision(probNet,preResolutionEvidence,decisionVariable);
+            GTablePotential ceaResult = veceaDecision.getCEPPotential();
+            double c_monotherapy_cea = ((CEP)(ceaResult.elementTable.get(0))).getCost(0);
+            double e_monotherapy_cea = ((CEP)(ceaResult.elementTable.get(0))).getEffectiveness(0);
+            double c_combtherapy_cea = ((CEP)(ceaResult.elementTable.get(1))).getCost(0);
+            double e_combtherapy_cea = ((CEP)(ceaResult.elementTable.get(1))).getEffectiveness(0);
+
+            Assert.assertEquals(c_monotherapy, c_monotherapy_cea, deltaEquals);
+            Assert.assertEquals(e_monotherapy, e_monotherapy_cea, deltaEquals);
+            Assert.assertEquals(c_combtherapy, c_combtherapy_cea, deltaEquals);
+            Assert.assertEquals(e_combtherapy, e_combtherapy_cea, deltaEquals);
+
+            //Asserting that Right Riemann Summ is equals to a transition at the beginning
+            probNet.getInferenceOptions().getTemporalOptions().setTransition(TransitionTime.BEGINNING);
+            c_monotherapy = UtilityOperations.applyRightRiemannSum(costs_monotherapy, 1);
+            e_monotherapy = UtilityOperations.applyRightRiemannSum(effectiveness_monotherapy, 1);
+            c_combtherapy = UtilityOperations.applyRightRiemannSum(costs_combtherapy, 1);
+            e_combtherapy = UtilityOperations.applyRightRiemannSum(effectiveness_combtherapy, 1);
+
+            veceaDecision = new VECEADecision(probNet,preResolutionEvidence,decisionVariable);
+            ceaResult = veceaDecision.getCEPPotential();
+            c_monotherapy_cea = ((CEP)(ceaResult.elementTable.get(0))).getCost(0);
+            e_monotherapy_cea = ((CEP)(ceaResult.elementTable.get(0))).getEffectiveness(0);
+            c_combtherapy_cea = ((CEP)(ceaResult.elementTable.get(1))).getCost(0);
+            e_combtherapy_cea = ((CEP)(ceaResult.elementTable.get(1))).getEffectiveness(0);
+
+            Assert.assertEquals(c_monotherapy, c_monotherapy_cea, deltaEquals);
+            Assert.assertEquals(e_monotherapy, e_monotherapy_cea, deltaEquals);
+            Assert.assertEquals(c_combtherapy, c_combtherapy_cea, deltaEquals);
+            Assert.assertEquals(e_combtherapy, e_combtherapy_cea, deltaEquals);
 
         } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
             e.printStackTrace();
