@@ -27,27 +27,26 @@ import org.openmarkov.io.probmodel.reader.PGMXReader;
 		public void setUp() throws Exception {
 		}
 		
-		
-		private ProbNet loadDAN(String nameSuffix){
-			String networkName = "networks/dan/DAN-"+nameSuffix+".pgmx";
-			InputStream file = getClass().getClassLoader().getResourceAsStream(networkName);
+	public ProbNet loadDAN(String nameSuffix) {
+		String networkName = "networks/dan/DAN-" + nameSuffix + ".pgmx";
+		InputStream file = getClass().getClassLoader().getResourceAsStream(
+				networkName);
 
-		   // Load the network: ID-decide-test
-		   PGMXReader pgmxReader = new PGMXReader();
-		   ProbNet probNet = null;
-		   try {
-		       probNet = pgmxReader.loadProbNet(networkName, file);
-		        } catch (ParserException e) {
-		            e.printStackTrace();
-		        }
-		   return probNet;
+		PGMXReader pgmxReader = new PGMXReader();
+		ProbNetInfo probNetInfo = null;
+		try {
+			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
+		} catch (ParserException e) {
+			e.printStackTrace();
 		}
+		return probNetInfo.getProbNet();
+	}
 		
 		public void testMEU(String danName,double expectedEU){
 			ProbNet network = loadDAN(danName);
 			DecompositionAlgorithmArticle dsd = new DecompositionAlgorithmArticle();
 			DANEvaluationOutput output = dsd.evaluateDSD(network);
-			TablePotential globalUtility = output.getUtility();			
+			TablePotential globalUtility = output.getUtility().get(0);			
 			Assert.assertEquals(expectedEU, globalUtility.values[0], 0.0001);
 		}
 		
@@ -75,6 +74,22 @@ import org.openmarkov.io.probmodel.reader.PGMXReader;
 		public void testDANPerfectKnowledge() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 			testMEU("perfect-knowledge",9.72);
 		}
+			
+		
+		//@Test
+		public void testDANTest2TherapiesNoCostSymmetrizedOrderForced() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+			testMEU("decide-test-2therapies-no-cost-symmetrized-order-forced",9.39366);
+		}
+		
+		//@Test
+		public void testDANTest2TherapiesNoCostOrderForced() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+			testMEU("decide-test-2therapies-no-cost-order-forced",9.39366);
+		}
+		
+		//@Test
+		public void testDANTest2Therapies() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+			testMEU("test-2therapies",9.39366);
+		}
 		
 		
 		
@@ -85,7 +100,7 @@ import org.openmarkov.io.probmodel.reader.PGMXReader;
 			long startTime = System.nanoTime();
 			DecompositionAlgorithmArticle dsd = new DecompositionAlgorithmArticle();
 			DANEvaluationOutput output = dsd.evaluateDSD(decideTestDAN);
-			TablePotential globalUtility = output.getUtility();
+			TablePotential globalUtility = output.getUtility().get(0);
 			long ellapsedTime = (System.nanoTime() - startTime) / 1000000;
 			System.out.println(" Execution time =" +ellapsedTime);
 			Assert.assertEquals(9.3929, globalUtility.values[0], 0.0001);

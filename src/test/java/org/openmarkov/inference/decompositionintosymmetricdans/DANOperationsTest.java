@@ -182,9 +182,9 @@ public class DANOperationsTest {
 
     @Test
     public void isSymmetricTest(){
-        Assert.assertTrue(DANOperations.isSymmetric(danTest2Therapies));
-        Assert.assertFalse(DANOperations.isSymmetric(danDecideTest2TherapiesNoCost));
-        Assert.assertFalse(DANOperations.isSymmetric(danDiabetes));
+        Assert.assertTrue(DANOperations.isSymmetric(danTest2Therapies,null));
+        Assert.assertFalse(DANOperations.isSymmetric(danDecideTest2TherapiesNoCost,null));
+        Assert.assertFalse(DANOperations.isSymmetric(danDiabetes,null));
 
         //Assert.assertTrue(DANOperations.isSymmetric(danDecideTest2TherapiesNoCostSymmetrized));
     }
