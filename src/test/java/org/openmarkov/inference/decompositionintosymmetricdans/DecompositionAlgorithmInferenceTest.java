@@ -86,7 +86,7 @@ import org.openmarkov.io.probmodel.reader.PGMXReader;
 			testMEU("decide-test-2therapies-no-cost-symmetrized-order-forced",9.39366);
 		}
 		
-		//@Test
+		@Test
 		public void testDANTest2TherapiesNoCostOrderForced() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 			testMEU("decide-test-2therapies-no-cost-order-forced",9.39366);
 		}
