@@ -44,6 +44,10 @@ import org.openmarkov.io.probmodel.reader.PGMXReader;
 		
 		public void testMEU(String danName,double expectedEU){
 			ProbNet network = loadDAN(danName);
+			testMEU(network, expectedEU);
+		}
+
+		private void testMEU(ProbNet network, double expectedEU) {
 			DecompositionAlgorithmArticle dsd = new DecompositionAlgorithmArticle();
 			DANEvaluationOutput output = dsd.evaluateDSD(network);
 			TablePotential globalUtility = output.getUtility().get(0);			
@@ -91,12 +95,22 @@ import org.openmarkov.io.probmodel.reader.PGMXReader;
 			testMEU("decide-test-2therapies-no-cost-order-forced",9.39366);
 		}
 		
+		@Test
+		public void testDANTest2TherapiesNoCost() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+			testMEU("decide-test-2therapies-no-cost",9.39366);
+		}
+		
+		//@Test
+		public void testDANFactoryDiabetes() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+			testMEU("factory-diabetes",9.3929);
+		}
+		
 		
 		
 		
 		
 
-		//@Test
+		/*@Test
 		public void testDecideTestDAN() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 			ProbNet decideTestDAN = DANFactory.buildDecideTestDAN();
 			long startTime = System.nanoTime();
@@ -107,7 +121,7 @@ import org.openmarkov.io.probmodel.reader.PGMXReader;
 			System.out.println(" Execution time =" +ellapsedTime);
 			Assert.assertEquals(9.3929, globalUtility.values[0], 0.0001);
 			//Assert.assertNotNull(recursiveEvaluation.getOptimalStrategy());
-		}
+		}*/
 		
 		/*@Test
 		public void testDiabetesDAN() throws NodeNotFoundException, IncompatibleEvidenceException,
