@@ -100,11 +100,17 @@ import org.openmarkov.io.probmodel.reader.PGMXReader;
 			testMEU("decide-test-2therapies-no-cost",9.39366);
 		}
 		
-		//@Test
-		public void testDANFactoryDiabetes() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-			testMEU("factory-diabetes",9.3929);
+		@Test
+		public void testDANUIDsPaper() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+			testMEU("UID-luque2016-OM-0-2-0",10);
+			
 		}
 		
+		//@Test
+		public void testDANFactoryDiabetes() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+			testMEU("factory-diabetes",9.8261);
+			
+		}
 		
 		
 		
