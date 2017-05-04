@@ -3,6 +3,9 @@ package org.openmarkov.inference.decompositionintosymmetricdans;
 
 
 	import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import junit.framework.Assert;
 
@@ -15,7 +18,9 @@ import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.factory.DANFactory;
+import org.openmarkov.core.model.network.potential.Intervention;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticle;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticle.DANEvaluationOutput;
@@ -42,106 +47,207 @@ import org.openmarkov.io.probmodel.reader.PGMXReader;
 		return probNetInfo.getProbNet();
 	}
 		
-		public void testMEU(String danName,double expectedEU){
+		public void testMEUAndIntervention(String danName,double expectedEU,String ...namesVariablesIntervention){
 			ProbNet network = loadDAN(danName);
-			testMEU(network, expectedEU);
+			testMEUAndIntervention(network, expectedEU,namesVariablesIntervention);
 		}
 
-		private void testMEU(ProbNet network, double expectedEU) {
+		private void testMEUAndIntervention(ProbNet network, double expectedEU,String ...namesVariablesIntervention) {
 			DecompositionAlgorithmArticle dsd = new DecompositionAlgorithmArticle();
 			DANEvaluationOutput output = dsd.evaluateDSD(network);
-			TablePotential globalUtility = output.getUtility().get(0);			
+			TablePotential globalUtility = output.getUtility().get(0);
+			//Only debugging
+			
+			//String strIntervention = globalUtility.interventions[0].toStringForGraphviz(network);
 			Assert.assertEquals(expectedEU, globalUtility.values[0], 0.0001);
+			Intervention[] inter = globalUtility.interventions;
+			if (inter!=null && namesVariablesIntervention!=null && namesVariablesIntervention.length > 0){				
+				Intervention intervention = inter[0];
+				String strIntervention = intervention.toStringForGraphviz(network);
+				Assert.assertTrue(areEquals(getVariablesOfIntervention(intervention),namesVariablesIntervention));
+			}
 		}
 		
+		private boolean areEquals(List<Variable> variables,String[] expectedNamesVariables) {
+			return areEqualsListsOfStrings(getDifferentNamesVariables(variables),expectedNamesVariables);		
+			
+		}
+		
+		private List<String> getDifferentNamesVariables(List<Variable> variables) {
+			List<String> differentNames = new ArrayList<>();
+			for (Variable var:variables){
+				String name = var.getName();
+				if (!differentNames.contains(name)){
+					differentNames.add(name);
+				}
+			}
+			return differentNames;
+		}
+
+		private boolean areEqualsListsOfStrings(List<String> namesVariablesIntervention,String[] expectedNamesVariables) {
+			boolean areEqual = true;
+			int varSize = namesVariablesIntervention.size();
+			if (expectedNamesVariables.length!=varSize){
+				areEqual = false;
+			}
+			else{
+				String [] namesInVariables = new String[varSize];
+				int i=0;				
+				for (String var:namesVariablesIntervention){
+					namesInVariables[i]=var;
+					i++;
+				}
+				areEqual = areEquals(namesInVariables,expectedNamesVariables);
+			}
+			return areEqual;		
+			
+		}
+		
+		
+		private List<Variable> getVariablesOfIntervention(Intervention inter){
+			List<Variable> variables = new ArrayList<>();
+			
+			if (inter!=null){
+				variables.add(inter.getRootVariable());
+				for (Intervention child:inter.getInterventionsChildren()){
+					variables = DecompositionAlgorithmArticle.join(variables, getVariablesOfIntervention(child));
+				}				
+			}
+			return variables;		
+			
+		}
+		
+		
+		private boolean areEquals(String a[],String b[]){
+			return isSubset(a,b) && isSubset(b,a);
+		}
+		
+		private boolean isSubset(String []subsetCandidate,String []set){
+			int subsetSize = subsetCandidate.length;
+			boolean isSubset = true;
+			for (int i=0;i<subsetSize&&isSubset;i++){
+				isSubset = isStringInList(subsetCandidate[i],set);					
+			}
+			return isSubset;			
+		}
+		
+		
+		
+		private boolean isStringInList(String search,String[] list){
+			boolean contains = false;
+			for(int i=0;i<list.length&&!contains;i++) {
+				String str = list[i];
+				contains = Objects.equals(str, search);
+			}
+			return contains;	
+			
+		}
+
 		@Test
 		public void testDANOnlyUtility() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-			testMEU("only-utility",10.0);
+			testMEUAndIntervention("only-utility",10.0);
 		}
 		
 		@Test
 		public void testDANOneChance() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-			testMEU("one-chance",83.7);
+			testMEUAndIntervention("one-chance",83.7);
 		}
 		
 		@Test
 		public void testDANOneDecision() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-			testMEU("one-decision",87.4);
+			testMEUAndIntervention("one-decision",87.4,"D");
 		}
 		
 		@Test
 		public void testDANNoKnowledge() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-			testMEU("no-knowledge",9.16);
+			testMEUAndIntervention("no-knowledge",9.16,"D");
 		}
 		
 		@Test
 		public void testDANPerfectKnowledge() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-			testMEU("perfect-knowledge",9.72);
+			testMEUAndIntervention("perfect-knowledge",9.72,"A","D");
 		}
 		
 		@Test
 		public void testDANTest2Therapies() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-			testMEU("test-2therapies",9.39366);
+			testMEUAndIntervention("test-2therapies",9.39366,"Test","Therapy");
 		}
 			
 		
 		@Test
 		public void testDANTest2TherapiesNoCostSymmetrizedOrderForced() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-			testMEU("decide-test-2therapies-no-cost-symmetrized-order-forced",9.39366);
+			testMEUAndIntervention("decide-test-2therapies-no-cost-symmetrized-order-forced",9.39366,"Do test?","Result of test","Therapy");
 		}
 		
 		@Test
 		public void testDANTest2TherapiesNoCostOrderForced() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-			testMEU("decide-test-2therapies-no-cost-order-forced",9.39366);
+			testMEUAndIntervention("decide-test-2therapies-no-cost-order-forced",9.39366,"Do test?","Result of test","Therapy");
 		}
 		
 		@Test
 		public void testDANTest2TherapiesNoCost() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-			testMEU("decide-test-2therapies-no-cost",9.39366);
+			testMEUAndIntervention("decide-test-2therapies-no-cost",9.39366,"Do test?","Result of test","Therapy");
 		}
 		
 		@Test
 		public void testDANUIDsPaper() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-			testMEU("UID-luque2016-OM-0-2-0",10);
+			testMEUAndIntervention("UID-luque2016-OM-0-2-0",10,"OD","D","X","E");
+			
+		}
+		
+		@Test
+		public void testDANDiabetes() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+			testMEUAndIntervention("diabetes",979.8337,"Symptom","OD","Dec: Blood Test","Dec: Urine test","Blood test result","Urine test result","Therapy");
+			
+		}
+		
+		@Test
+		public void testDANUsedCarBuyer() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+			//testMEUAndIntervention("used-car-buyer",32.96,"Dec: First Test","First Result","Dec: Second Test","Dec: Purchase");
+			testMEUAndIntervention("used-car-buyer",32.96,"Dec: First Test","First Result","Dec: Second Test","Dec: Purchase");
+			
+		}
+		
+		@Test
+		public void testDANReactor() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+			testMEUAndIntervention("reactor",8.1280,"Test decision","Result of test","Build decision");
+			
+		}
+		
+		@Test
+		public void testDANKing() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+			testMEUAndIntervention("king",7.73);
+			
+		}
+		
+		@Test
+		public void testDAN3Tests() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+			testMEUAndIntervention("3-test-problem",9.6162,"Symptom","OD","Dec: Test 0","Dec: Test 1",
+					"Dec: Test 2","Test Result 1","Test Result 2","Therapy");
 			
 		}
 		
 		//@Test
-		public void testDANFactoryDiabetes() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-			testMEU("factory-diabetes",9.8261);
+		public void testDANDating() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+			testMEUAndIntervention("dating",9.4076);
+			
+		}
+		
+		//@Test
+		//TODO DAN-mediastinet has super-value nodes. It must be converted into a DAN with only ordinary utility nodes.
+		public void testDANMediastinet() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+			testMEUAndIntervention("mediastinet",1.4710368294106826);
 			
 		}
 		
 		
 		
 		
-
-		/*@Test
-		public void testDecideTestDAN() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-			ProbNet decideTestDAN = DANFactory.buildDecideTestDAN();
-			long startTime = System.nanoTime();
-			DecompositionAlgorithmArticle dsd = new DecompositionAlgorithmArticle();
-			DANEvaluationOutput output = dsd.evaluateDSD(decideTestDAN);
-			TablePotential globalUtility = output.getUtility().get(0);
-			long ellapsedTime = (System.nanoTime() - startTime) / 1000000;
-			System.out.println(" Execution time =" +ellapsedTime);
-			Assert.assertEquals(9.3929, globalUtility.values[0], 0.0001);
-			//Assert.assertNotNull(recursiveEvaluation.getOptimalStrategy());
-		}*/
 		
-		/*@Test
-		public void testDiabetesDAN() throws NodeNotFoundException, IncompatibleEvidenceException,
-				UnexpectedInferenceException, NotEvaluableNetworkException {
+		
+		
 
-			ProbNet diabetesDAN = DANFactory.buildDiabetesDAN();
-			long startTime = System.nanoTime();
-			DecompositionAlgorithm recursiveEvaluation = new DecompositionAlgorithm(diabetesDAN);
-			TablePotential globalUtility = recursiveEvaluation.getGlobalUtility();
-			long ellapsedTime = (System.nanoTime() - startTime) / 1000000;
-			System.out.println(" Execution time =" +ellapsedTime);
-			Assert.assertEquals(9.8261, globalUtility.values[0], 0.0001);
-			Assert.assertNotNull(recursiveEvaluation.getOptimalStrategy());
-		}		
+		/*	
 		
 		@Test
 		public void testDatingDAN() throws NodeNotFoundException, NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
@@ -155,45 +261,7 @@ import org.openmarkov.io.probmodel.reader.PGMXReader;
 			Assert.assertNotNull(recursiveEvaluation.getOptimalStrategy());
 		}
 		
-		@Test
-		public void testReactorDAN() throws NodeNotFoundException, IncompatibleEvidenceException,
-				UnexpectedInferenceException, NotEvaluableNetworkException {
-
-			ProbNet reactorDAN = DANFactory.buildReactorDAN();
-			long startTime = System.nanoTime();
-			DecompositionAlgorithm recursiveEvaluation = new DecompositionAlgorithm(reactorDAN);
-			TablePotential globalUtility = recursiveEvaluation.getGlobalUtility();
-			long ellapsedTime = (System.nanoTime() - startTime) / 1000000;
-			System.out.println(" Execution time =" +ellapsedTime);
-			Assert.assertEquals(10.0627, globalUtility.values[0], 0.0001);
-		}	
-		
-		@Test
-		public void testWooerDAN() throws NodeNotFoundException, IncompatibleEvidenceException,
-				UnexpectedInferenceException, NotEvaluableNetworkException {
-
-			ProbNet wooerDAN = DANFactory.buildWooerDAN();
-			long startTime = System.nanoTime();
-			DecompositionAlgorithm recursiveEvaluation = new DecompositionAlgorithm(wooerDAN);
-			TablePotential globalUtility = recursiveEvaluation.getGlobalUtility();
-			long ellapsedTime = (System.nanoTime() - startTime) / 1000000;
-			System.out.println(" Execution time =" +ellapsedTime);
-			Assert.assertEquals(7.73, globalUtility.values[0], 0.0001);
-		}	
-		
-		@Test
-		public void testUsedCarBuyerDAN() throws NodeNotFoundException, IncompatibleEvidenceException,
-				UnexpectedInferenceException, NotEvaluableNetworkException {
-
-			ProbNet usedCarBuyerDAN = DANFactory.buildUsedCarBuyer();
-			long startTime = System.nanoTime();
-			DecompositionAlgorithm recursiveEvaluation = new DecompositionAlgorithm(usedCarBuyerDAN);
-			TablePotential globalUtility = recursiveEvaluation.getGlobalUtility();
-			long ellapsedTime = (System.nanoTime() - startTime) / 1000000;
-			System.out.println(" Execution time =" +ellapsedTime);
-			Assert.assertEquals(32.96, globalUtility.values[0], 0.0001);
-		}
-		
+				
 		@Test
 		public void testMediastiNetDAN() throws NodeNotFoundException, IncompatibleEvidenceException,
 				UnexpectedInferenceException, NotEvaluableNetworkException {
