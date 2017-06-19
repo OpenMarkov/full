@@ -27,6 +27,7 @@ public class DANOperationsTest {
     private ProbNet danDecideTest2TherapiesNoCost;
     private ProbNet danDecideTest2TherapiesNoCostSymmetrized;
     private ProbNet danDiabetes;
+    private ProbNet IDAD1D2;
 
     @Before
     public void setUp(){
@@ -54,6 +55,13 @@ public class DANOperationsTest {
             networkName = "networks/dan/DAN-diabetes.pgmx";
             file = getClass().getClassLoader ().getResourceAsStream (networkName);
             danDiabetes = pgmxReader.loadProbNet(networkName, file);
+            
+            // Initialize ID-A-D1-D2 network
+            networkName = "ID-A-D1-D2.pgmx";
+            file = getClass().getClassLoader ().getResourceAsStream (networkName);
+            IDAD1D2 = pgmxReader.loadProbNet(networkName, file);
+            
+            
         } catch (ParserException e) {
             e.printStackTrace();
         }
@@ -188,4 +196,10 @@ public class DANOperationsTest {
 
         //Assert.assertTrue(DANOperations.isSymmetric(danDecideTest2TherapiesNoCostSymmetrized));
     }
+    
+    @Test
+    public void ceaIDAD1D2() {
+    	
+    }
+    
 }
