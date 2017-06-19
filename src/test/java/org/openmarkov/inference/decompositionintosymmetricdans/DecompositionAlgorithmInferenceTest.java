@@ -22,8 +22,8 @@ import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.factory.DANFactory;
 import org.openmarkov.core.model.network.potential.Intervention;
 import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticle;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticle.DANEvaluationOutput;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticleCEA;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticleCEA.DANEvaluationOutputCEA;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 
 	public class DecompositionAlgorithmInferenceTest {
@@ -53,8 +53,8 @@ import org.openmarkov.io.probmodel.reader.PGMXReader;
 		}
 
 		private void testMEUAndIntervention(ProbNet network, double expectedEU,String ...namesVariablesIntervention) {
-			DecompositionAlgorithmArticle dsd = new DecompositionAlgorithmArticle();
-			DANEvaluationOutput output = dsd.evaluateDSD(network);
+			DecompositionAlgorithmArticleCEA dsd = new DecompositionAlgorithmArticleCEA();
+			DANEvaluationOutputCEA output = dsd.evaluateDSD(network);
 			TablePotential globalUtility = output.getUtility().get(0);
 			//Only debugging
 			
@@ -110,7 +110,7 @@ import org.openmarkov.io.probmodel.reader.PGMXReader;
 			if (inter!=null){
 				variables.add(inter.getRootVariable());
 				for (Intervention child:inter.getInterventionsChildren()){
-					variables = DecompositionAlgorithmArticle.join(variables, getVariablesOfIntervention(child));
+					variables = DecompositionAlgorithmArticleCEA.joinLists(variables, getVariablesOfIntervention(child));
 				}				
 			}
 			return variables;		
