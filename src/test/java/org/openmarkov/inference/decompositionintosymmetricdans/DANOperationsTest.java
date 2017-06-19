@@ -3,17 +3,23 @@ package org.openmarkov.inference.decompositionintosymmetricdans;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
+import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.ParserException;
+import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.exception.WriterException;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.graph.Link;
 import org.openmarkov.core.model.network.Node;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
+import org.openmarkov.core.model.network.factory.DANFactory;
 import org.openmarkov.core.model.network.potential.ExactDistrPotential;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANOperations;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticleCEA;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticleCEA.DANEvaluationOutputCEA;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 import org.openmarkov.io.probmodel.writer.PGMXWriter;
 
@@ -27,7 +33,7 @@ public class DANOperationsTest {
     private ProbNet danDecideTest2TherapiesNoCost;
     private ProbNet danDecideTest2TherapiesNoCostSymmetrized;
     private ProbNet danDiabetes;
-    private ProbNet IDAD1D2;
+    private ProbNet danDiabetesCE;
 
     @Before
     public void setUp(){
@@ -57,9 +63,9 @@ public class DANOperationsTest {
             danDiabetes = pgmxReader.loadProbNet(networkName, file);
             
             // Initialize ID-A-D1-D2 network
-            networkName = "ID-A-D1-D2.pgmx";
+            networkName = "networks/dan/DAN-diabetes-CE.pgmx";
             file = getClass().getClassLoader ().getResourceAsStream (networkName);
-            IDAD1D2 = pgmxReader.loadProbNet(networkName, file);
+            danDiabetesCE = pgmxReader.loadProbNet(networkName, file);
             
             
         } catch (ParserException e) {
@@ -175,6 +181,8 @@ public class DANOperationsTest {
             e.printStackTrace();
         }
     }
+
+        
 
     @Test
     public void getNextDecisionsTest(){
