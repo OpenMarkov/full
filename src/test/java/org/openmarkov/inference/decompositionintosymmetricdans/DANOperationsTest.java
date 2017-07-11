@@ -1,6 +1,8 @@
 package org.openmarkov.inference.decompositionintosymmetricdans;
 
 import junit.framework.Assert;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANOperations;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
@@ -17,9 +19,7 @@ import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.factory.DANFactory;
 import org.openmarkov.core.model.network.potential.ExactDistrPotential;
 import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANOperations;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticleCEA;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticleCEA.DANEvaluationOutputCEA;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.*;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 import org.openmarkov.io.probmodel.writer.PGMXWriter;
 
@@ -197,7 +197,7 @@ public class DANOperationsTest {
     }
 
     @Test
-    public void isSymmetricTest(){
+    public void isSymmetricTest() { 
         Assert.assertTrue(DANOperations.isSymmetric(danTest2Therapies,null));
         Assert.assertFalse(DANOperations.isSymmetric(danDecideTest2TherapiesNoCost,null));
         Assert.assertFalse(DANOperations.isSymmetric(danDiabetes,null));

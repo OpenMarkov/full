@@ -51,23 +51,30 @@
             <artifactId>org.openmarkov.core.gui</artifactId>
             <version>${openmarkov.version}</version>
         </dependency>
+        <dependency>
+        	<groupId>org.openmarkov</groupId>
+            <artifactId>org.openmarkov.inference.decompositionIntoSymmetricDANs</artifactId>
+		    <version>${openmarkov.version}</version>
+        </dependency>
+        <dependency>
+        <groupId>org.openmarkov</groupId>
+	        <artifactId>org.openmarkov.evaluation</artifactId>
+    	    <version>${openmarkov.version}</version>
+        	<scope>test</scope>
+        </dependency>
+        
         <!--<dependency>-->
         <!--<groupId>org.openmarkov</groupId>-->
         <!--<artifactId>org.openmarkov.utilityCalculator</artifactId>-->
         <!--<version>${openmarkov.version}</version>-->
         <!--<scope>test</scope>-->
         <!--</dependency>-->
-        <dependency>
-        <groupId>org.openmarkov</groupId>
-        <artifactId>org.openmarkov.evaluation</artifactId>
-        <version>${openmarkov.version}</version>
-        <scope>test</scope>
-        </dependency>
         <!--<dependency>-->
         <!--<groupId>org.openmarkov</groupId>-->
         <!--<artifactId>org.openmarkov.objectOrientedNetworks</artifactId>-->
         <!--<version>${openmarkov.version}</version>-->
         <!--<scope>test</scope>-->
         <!--</dependency>-->
+        
     </dependencies>
 </project>
