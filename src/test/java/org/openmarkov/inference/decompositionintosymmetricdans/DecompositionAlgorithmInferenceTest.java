@@ -21,6 +21,8 @@ import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.Intervention;
 import org.openmarkov.core.model.network.potential.TablePotential;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANDecompositionAlgorithm;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANDecompositionAlgorithmOutput;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticleCEA;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticleCEA.DANEvaluationOutputCEA;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
@@ -46,7 +48,7 @@ public class DecompositionAlgorithmInferenceTest {
 		return probNetInfo.getProbNet();
 	}
 
-	@Test
+	//@Test
 	public void testDiabetesDANCE() 
 			throws IncompatibleEvidenceException, UnexpectedInferenceException, 
 			NodeNotFoundException, NotEvaluableNetworkException {
@@ -68,6 +70,23 @@ public class DecompositionAlgorithmInferenceTest {
 	}
 
 	private void testMEUAndIntervention(ProbNet network, double expectedEU,String ...namesVariablesIntervention) {
+		DANDecompositionAlgorithm dsd = new DANDecompositionAlgorithm();
+		DANDecompositionAlgorithmOutput output = dsd.evaluateDSD(network);
+		TablePotential globalUtility = output.getUtility().get(0);
+		//Only debugging
+
+		//String strIntervention = globalUtility.interventions[0].toStringForGraphviz(network);
+		Assert.assertEquals(expectedEU, globalUtility.values[0], 0.0001);
+		Intervention[] inter = globalUtility.interventions;
+		if (inter!=null && namesVariablesIntervention!=null && namesVariablesIntervention.length > 0){				
+			Intervention intervention = inter[0];
+			String strIntervention = intervention.toStringForGraphviz(network);
+			Assert.assertTrue(areEquals(getVariablesOfIntervention(intervention),namesVariablesIntervention));
+		}
+	}
+	
+	
+	private void testMEUAndInterventionCEA(ProbNet network, double expectedEU,String ...namesVariablesIntervention) {
 		DecompositionAlgorithmArticleCEA dsd = new DecompositionAlgorithmArticleCEA();
 		DANEvaluationOutputCEA output = dsd.evaluateDSD(network);
 		TablePotential globalUtility = output.getUtility().get(0);
