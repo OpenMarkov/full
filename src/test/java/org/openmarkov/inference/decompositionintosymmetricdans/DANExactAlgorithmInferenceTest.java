@@ -22,12 +22,13 @@ import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.Intervention;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANDecompositionAlgorithm;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANDecompositionAlgorithmOutput;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANEvaluationOutput;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANExactAlgorithm;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticleCEA;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticleCEA.DANEvaluationOutputCEA;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 
-public class DecompositionAlgorithmInferenceTest {
+public abstract class DANExactAlgorithmInferenceTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -70,8 +71,9 @@ public class DecompositionAlgorithmInferenceTest {
 	}
 
 	private void testMEUAndIntervention(ProbNet network, double expectedEU,String ...namesVariablesIntervention) {
-		DANDecompositionAlgorithm dsd = new DANDecompositionAlgorithm();
-		DANDecompositionAlgorithmOutput output = dsd.evaluateDSD(network);
+		//DANExactAlgorithm dsd = new DANDecompositionAlgorithm();
+		DANExactAlgorithm dsd = buildDANExactAlgorithm();
+		DANEvaluationOutput output = dsd.evaluate(network);
 		TablePotential globalUtility = output.getUtility().get(0);
 		//Only debugging
 
@@ -86,6 +88,8 @@ public class DecompositionAlgorithmInferenceTest {
 	}
 	
 	
+	protected abstract DANExactAlgorithm buildDANExactAlgorithm();
+
 	private void testMEUAndInterventionCEA(ProbNet network, double expectedEU,String ...namesVariablesIntervention) {
 		DecompositionAlgorithmArticleCEA dsd = new DecompositionAlgorithmArticleCEA();
 		DANEvaluationOutputCEA output = dsd.evaluateDSD(network);
