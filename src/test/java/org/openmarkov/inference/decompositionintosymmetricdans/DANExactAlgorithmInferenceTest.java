@@ -233,13 +233,13 @@ public abstract class DANExactAlgorithmInferenceTest {
 
 	}
 
-	@Test
+	//@Test
 	public void testDANDiabetes() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 		testMEUAndIntervention("diabetes",979.8337,"Symptom","OD","Dec: Blood Test","Dec: Urine test","Blood test result","Urine test result","Therapy");
 
 	}
 
-	@Test
+	//@Test
 	public void testDANUsedCarBuyer() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 		//testMEUAndIntervention("used-car-buyer",32.96,"Dec: First Test","First Result","Dec: Second Test","Dec: Purchase");
 		testMEUAndIntervention("used-car-buyer",32.96,"Dec: First Test","First Result","Dec: Second Test","Dec: Purchase");
@@ -252,13 +252,13 @@ public abstract class DANExactAlgorithmInferenceTest {
 
 	}
 
-	@Test
+	//@Test
 	public void testDANKing() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 		testMEUAndIntervention("king",7.73);
 
 	}
 
-	@Test
+	//@Test
 	public void testDAN3Tests() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 		testMEUAndIntervention("3-test-problem",9.6162,"Symptom","OD","Dec: Test 0","Dec: Test 1",
 				"Dec: Test 2","Test Result 1","Test Result 2","Therapy");
