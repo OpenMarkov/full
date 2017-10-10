@@ -1,13 +1,5 @@
 package org.openmarkov.inference.decompositionintosymmetricdans;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,12 +15,13 @@ import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.GTablePotential;
 import org.openmarkov.core.model.network.potential.Intervention;
-import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticleCEA;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticleCEA.DANEvaluationOutputCEA;
-import org.openmarkov.inference.tasks.VariableElimination.VECEAGlobal;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+
+@SuppressWarnings("ALL")
 public class DecompositionAlgorithmArticleTest {
 
 	// Delta parameter for Assert.Equals methods
@@ -56,7 +49,7 @@ public class DecompositionAlgorithmArticleTest {
 			e.printStackTrace();
 		}
 
-		ProbNet probNet = probNetInfo.getProbNet();
+        ProbNet probNet = probNetInfo.getProbNet();
 		EvidenceCase preResolutionEvidence = null;
 		if (probNetInfo.getEvidence().size() != 0) {
 			preResolutionEvidence = probNetInfo.getEvidence().get(0);
