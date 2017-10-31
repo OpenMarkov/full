@@ -1,14 +1,6 @@
 package org.openmarkov.inference.decompositionintosymmetricdans;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
@@ -24,9 +16,14 @@ import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANDecompositionAlgorithm;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANEvaluationOutput;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANExactAlgorithm;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticleCEA;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticleCEA.DANEvaluationOutputCEA;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import static org.junit.Assert.assertNotNull;
 
 public abstract class DANExactAlgorithmInferenceTest {
 
@@ -57,8 +54,8 @@ public abstract class DANExactAlgorithmInferenceTest {
 		ProbNet danDiabetesCE = loadDAN("DAN-diabetes-CE");
 		System.out.println("adios");
 		long startTime = System.nanoTime();
-		DecompositionAlgorithmArticleCEA algorithm = new DecompositionAlgorithmArticleCEA();
-		DANEvaluationOutputCEA output = algorithm.evaluateDSD(danDiabetesCE);
+		DANDecompositionAlgorithm algorithm = new DANDecompositionAlgorithm();
+		DANEvaluationOutput output = algorithm.evaluate(danDiabetesCE);
 		TablePotential globalUtility = output.getUtility().get(0);
 		assertNotNull(globalUtility);
 		long ellapsedTime = (System.nanoTime() - startTime) / 1000000;
@@ -91,8 +88,8 @@ public abstract class DANExactAlgorithmInferenceTest {
 	protected abstract DANExactAlgorithm buildDANExactAlgorithm();
 
 	private void testMEUAndInterventionCEA(ProbNet network, double expectedEU,String ...namesVariablesIntervention) {
-		DecompositionAlgorithmArticleCEA dsd = new DecompositionAlgorithmArticleCEA();
-		DANEvaluationOutputCEA output = dsd.evaluateDSD(network);
+		DANDecompositionAlgorithm dsd = new DANDecompositionAlgorithm();
+		DANEvaluationOutput output = dsd.evaluate(network);
 		TablePotential globalUtility = output.getUtility().get(0);
 		//Only debugging
 
@@ -148,7 +145,7 @@ public abstract class DANExactAlgorithmInferenceTest {
 		if (inter!=null){
 			variables.add(inter.getRootVariable());
 			for (Intervention child:inter.getInterventionsChildren()){
-				variables = DecompositionAlgorithmArticleCEA.joinLists(variables, getVariablesOfIntervention(child));
+				variables = DANDecompositionAlgorithm.join(variables, getVariablesOfIntervention(child));
 			}				
 		}
 		return variables;		

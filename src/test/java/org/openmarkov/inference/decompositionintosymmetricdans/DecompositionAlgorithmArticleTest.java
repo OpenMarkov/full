@@ -12,14 +12,13 @@ import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.CEP;
 import org.openmarkov.core.model.network.EvidenceCase;
 import org.openmarkov.core.model.network.ProbNet;
-import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.GTablePotential;
 import org.openmarkov.core.model.network.potential.Intervention;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionAlgorithmArticleCEA;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANDecompositionAlgorithm;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANEvaluationOutput;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 
 @SuppressWarnings("ALL")
 public class DecompositionAlgorithmArticleTest {
@@ -58,8 +57,8 @@ public class DecompositionAlgorithmArticleTest {
 //        VECEAGlobal veGlobalCEA = new VECEAGlobal(probNet, preResolutionEvidence);
 //        CEP cep = veGlobalCEA.getCEP();
 
-		DecompositionAlgorithmArticleCEA decompositionAlgorithmArticleCEA = new DecompositionAlgorithmArticleCEA();
-		DecompositionAlgorithmArticleCEA.DANEvaluationOutputCEA outputCEA = decompositionAlgorithmArticleCEA.evaluateDSD_CEA(probNet, new ArrayList<Variable>(), preResolutionEvidence);
+        DANDecompositionAlgorithm decompositionAlgorithmArticleCEA = new DANDecompositionAlgorithm();
+        DANEvaluationOutput outputCEA = decompositionAlgorithmArticleCEA.evaluate(probNet, preResolutionEvidence);
 		CEP cep = (CEP) ((GTablePotential) outputCEA.getUtility()).elementTable.get(0);
 
 		// Check num intervals
@@ -122,8 +121,8 @@ public class DecompositionAlgorithmArticleTest {
 //        VECEAGlobal veGlobalCEA = new VECEAGlobal(probNet, preResolutionEvidence);
 //        CEP cep = veGlobalCEA.getCEP();
 
-        DecompositionAlgorithmArticleCEA decompositionAlgorithmArticleCEA = new DecompositionAlgorithmArticleCEA();
-        DecompositionAlgorithmArticleCEA.DANEvaluationOutputCEA outputCEA = decompositionAlgorithmArticleCEA.evaluateDSD_CEA(probNet, new ArrayList<Variable>(), preResolutionEvidence);
+        DANDecompositionAlgorithm decompositionAlgorithmArticleCEA = new DANDecompositionAlgorithm();
+        DANEvaluationOutput outputCEA = decompositionAlgorithmArticleCEA.evaluate(probNet, preResolutionEvidence);
         CEP cep = (CEP) ((GTablePotential) outputCEA.getUtility()).elementTable.get(0);
 
         // Check num intervals
@@ -180,8 +179,8 @@ public class DecompositionAlgorithmArticleTest {
 //        VECEAGlobal veGlobalCEA = new VECEAGlobal(probNet, preResolutionEvidence);
 //        CEP cep = veGlobalCEA.getCEP();
 
-        DecompositionAlgorithmArticleCEA decompositionAlgorithmArticleCEA = new DecompositionAlgorithmArticleCEA();
-        DecompositionAlgorithmArticleCEA.DANEvaluationOutputCEA outputCEA = decompositionAlgorithmArticleCEA.evaluateDSD_CEA(probNet, new ArrayList<Variable>(), preResolutionEvidence);
+        DANDecompositionAlgorithm decompositionAlgorithmArticleCEA = new DANDecompositionAlgorithm();
+        DANEvaluationOutput outputCEA = decompositionAlgorithmArticleCEA.evaluate(probNet, preResolutionEvidence);
         CEP cep = (CEP) ((GTablePotential) outputCEA.getUtility()).elementTable.get(0);
 
         // Check num intervals
@@ -274,8 +273,8 @@ public class DecompositionAlgorithmArticleTest {
             preResolutionEvidence = probNetInfo.getEvidence().get(0);
         }
 
-        DecompositionAlgorithmArticleCEA decompositionAlgorithmArticleCEA = new DecompositionAlgorithmArticleCEA();
-        DecompositionAlgorithmArticleCEA.DANEvaluationOutputCEA outputCEA = decompositionAlgorithmArticleCEA.evaluateDSD_CEA(probNet, new ArrayList<Variable>(), preResolutionEvidence);
+        DANDecompositionAlgorithm decompositionAlgorithmArticleCEA = new DANDecompositionAlgorithm();
+        DANEvaluationOutput outputCEA = decompositionAlgorithmArticleCEA.evaluate(probNet, preResolutionEvidence);
         CEP cep = (CEP) ((GTablePotential) outputCEA.getUtility()).elementTable.get(0);
 
         // Check num intervals
