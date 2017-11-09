@@ -13,9 +13,8 @@ import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.Intervention;
 import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANDecompositionAlgorithm;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANEvaluationOutput;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANExactAlgorithm;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANEvaluation;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANOperations;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 
 import java.io.InputStream;
@@ -25,7 +24,7 @@ import java.util.Objects;
 
 import static org.junit.Assert.assertNotNull;
 
-public abstract class DANExactAlgorithmInferenceTest {
+public abstract class DANEvaluationInferenceTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -46,7 +45,7 @@ public abstract class DANExactAlgorithmInferenceTest {
 		return probNetInfo.getProbNet();
 	}
 
-	//@Test
+	/*//@Test
 	public void testDiabetesDANCE() 
 			throws IncompatibleEvidenceException, UnexpectedInferenceException, 
 			NodeNotFoundException, NotEvaluableNetworkException {
@@ -60,7 +59,7 @@ public abstract class DANExactAlgorithmInferenceTest {
 		assertNotNull(globalUtility);
 		long ellapsedTime = (System.nanoTime() - startTime) / 1000000;
 		System.out.println(" Execution time =" +ellapsedTime);
-	}
+	}*/
 
 	public void testMEUAndIntervention(String danName,double expectedEU,String ...namesVariablesIntervention){
 		ProbNet network = loadDAN(danName);
@@ -69,9 +68,14 @@ public abstract class DANExactAlgorithmInferenceTest {
 
 	private void testMEUAndIntervention(ProbNet network, double expectedEU,String ...namesVariablesIntervention) {
 		//DANExactAlgorithm dsd = new DANDecompositionAlgorithm();
-		DANExactAlgorithm dsd = buildDANExactAlgorithm();
-		DANEvaluationOutput output = dsd.evaluate(network);
-		TablePotential globalUtility = output.getUtility().get(0);
+		DANEvaluation eval = buildDANEvaluation(network);
+		TablePotential globalUtility = null;
+		try {
+			globalUtility = eval.getUtility();
+		} catch (UnexpectedInferenceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//Only debugging
 
 		//String strIntervention = globalUtility.interventions[0].toStringForGraphviz(network);
@@ -85,9 +89,9 @@ public abstract class DANExactAlgorithmInferenceTest {
 	}
 	
 	
-	protected abstract DANExactAlgorithm buildDANExactAlgorithm();
+	protected abstract DANEvaluation buildDANEvaluation(ProbNet network);
 
-	private void testMEUAndInterventionCEA(ProbNet network, double expectedEU,String ...namesVariablesIntervention) {
+	/*private void testMEUAndInterventionCEA(ProbNet network, double expectedEU,String ...namesVariablesIntervention) {
 		DANDecompositionAlgorithm dsd = new DANDecompositionAlgorithm();
 		DANEvaluationOutput output = dsd.evaluate(network);
 		TablePotential globalUtility = output.getUtility().get(0);
@@ -101,7 +105,7 @@ public abstract class DANExactAlgorithmInferenceTest {
 			String strIntervention = intervention.toStringForGraphviz(network);
 			Assert.assertTrue(areEquals(getVariablesOfIntervention(intervention),namesVariablesIntervention));
 		}
-	}
+	}*/
 
 	private boolean areEquals(List<Variable> variables,String[] expectedNamesVariables) {
 		return areEqualsListsOfStrings(getDifferentNamesVariables(variables),expectedNamesVariables);		
@@ -145,7 +149,7 @@ public abstract class DANExactAlgorithmInferenceTest {
 		if (inter!=null){
 			variables.add(inter.getRootVariable());
 			for (Intervention child:inter.getInterventionsChildren()){
-				variables = DANDecompositionAlgorithm.join(variables, getVariablesOfIntervention(child));
+				variables = DANOperations.join(variables, getVariablesOfIntervention(child));
 			}				
 		}
 		return variables;		
