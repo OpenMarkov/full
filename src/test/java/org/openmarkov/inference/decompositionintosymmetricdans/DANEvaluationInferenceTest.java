@@ -61,14 +61,14 @@ public abstract class DANEvaluationInferenceTest {
 		System.out.println(" Execution time =" +ellapsedTime);
 	}*/
 
-	public void testMEUAndIntervention(String danName,double expectedEU,String ...namesVariablesIntervention){
+	public void testDANEvaluation(String danName,double expectedEU,String ...namesVariablesIntervention){
 		ProbNet network = loadDAN(danName);
-		testMEUAndIntervention(network, expectedEU,namesVariablesIntervention);
+		DANEvaluation eval = buildDANEvaluation(network);
+		testDANEvaluation(eval,network, expectedEU,namesVariablesIntervention);
 	}
 
-	private void testMEUAndIntervention(ProbNet network, double expectedEU,String ...namesVariablesIntervention) {
+	protected void testDANEvaluation(DANEvaluation eval,ProbNet network, double expectedEU,String ...namesVariablesIntervention) {
 		//DANExactAlgorithm dsd = new DANDecompositionAlgorithm();
-		DANEvaluation eval = buildDANEvaluation(network);
 		TablePotential globalUtility = null;
 		try {
 			globalUtility = eval.getUtility();
@@ -184,98 +184,98 @@ public abstract class DANEvaluationInferenceTest {
 
 	@Test
 	public void testDANOnlyUtility() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("only-utility",10.0);
+		testDANEvaluation("only-utility",10.0);
 	}
 
 	@Test
 	public void testDANOneChance() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("one-chance",83.7);
+		testDANEvaluation("one-chance",83.7);
 	}
 
 	@Test
 	public void testDANOneDecision() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("one-decision",87.4,"D");
+		testDANEvaluation("one-decision",87.4,"D");
 	}
 
 	@Test
 	public void testDANNoKnowledge() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("no-knowledge",9.16,"D");
+		testDANEvaluation("no-knowledge",9.16,"D");
 	}
 
 	@Test
 	public void testDANPerfectKnowledge() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("perfect-knowledge",9.72,"A","D");
+		testDANEvaluation("perfect-knowledge",9.72,"A","D");
 	}
 
 	@Test
 	public void testDANTest2Therapies() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("test-2therapies",9.39366,"Test","Therapy");
+		testDANEvaluation("test-2therapies",9.39366,"Test","Therapy");
 	}
 
 
 	@Test
 	public void testDANTest2TherapiesNoCostSymmetrizedOrderForced() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("decide-test-2therapies-no-cost-symmetrized-order-forced",9.39366,"Do test?","Result of test","Therapy");
+		testDANEvaluation("decide-test-2therapies-no-cost-symmetrized-order-forced",9.39366,"Do test?","Result of test","Therapy");
 	}
 
 	@Test
 	public void testDANTest2TherapiesNoCostOrderForced() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("decide-test-2therapies-no-cost-order-forced",9.39366,"Do test?","Result of test","Therapy");
+		testDANEvaluation("decide-test-2therapies-no-cost-order-forced",9.39366,"Do test?","Result of test","Therapy");
 	}
 
 	@Test
 	public void testDANTest2TherapiesNoCost() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("decide-test-2therapies-no-cost",9.39366,"Do test?","Result of test","Therapy");
+		testDANEvaluation("decide-test-2therapies-no-cost",9.39366,"Do test?","Result of test","Therapy");
 	}
 
 	@Test
 	public void testDANUIDsPaper() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("UID-luque2016-OM-0-2-0",10,"OD","D","X","E");
+		testDANEvaluation("UID-luque2016-OM-0-2-0",10,"OD","D","X","E");
 
 	}
 
 	//@Test
 	public void testDANDiabetes() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("diabetes",979.8337,"Symptom","OD","Dec: Blood Test","Dec: Urine test","Blood test result","Urine test result","Therapy");
+		testDANEvaluation("diabetes",979.8337,"Symptom","OD","Dec: Blood Test","Dec: Urine test","Blood test result","Urine test result","Therapy");
 
 	}
 
 	//@Test
 	public void testDANUsedCarBuyer() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 		//testMEUAndIntervention("used-car-buyer",32.96,"Dec: First Test","First Result","Dec: Second Test","Dec: Purchase");
-		testMEUAndIntervention("used-car-buyer",32.96,"Dec: First Test","First Result","Dec: Second Test","Dec: Purchase");
+		testDANEvaluation("used-car-buyer",32.96,"Dec: First Test","First Result","Dec: Second Test","Dec: Purchase");
 
 	}
 
 	@Test
 	public void testDANReactor() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("reactor",8.1280,"Test decision","Result of test","Build decision");
+		testDANEvaluation("reactor",8.1280,"Test decision","Result of test","Build decision");
 
 	}
 
 	//@Test
 	public void testDANKing() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("king",7.73);
+		testDANEvaluation("king",7.73);
 
 	}
 
 	//@Test
 	public void testDAN3Tests() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("3-test-problem",9.6162,"Symptom","OD","Dec: Test 0","Dec: Test 1",
+		testDANEvaluation("3-test-problem",9.6162,"Symptom","OD","Dec: Test 0","Dec: Test 1",
 				"Dec: Test 2","Test Result 1","Test Result 2","Therapy");
 
 	}
 
 	//@Test
 	public void testDANDating() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("dating",9.4076);
+		testDANEvaluation("dating",9.4076);
 
 	}
 
 	//@Test
 	//TODO DAN-mediastinet has super-value nodes. It must be converted into a DAN with only ordinary utility nodes.
 	public void testDANMediastinet() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testMEUAndIntervention("mediastinet",1.4710368294106826);
+		testDANEvaluation("mediastinet",1.4710368294106826);
 
 	}
 
