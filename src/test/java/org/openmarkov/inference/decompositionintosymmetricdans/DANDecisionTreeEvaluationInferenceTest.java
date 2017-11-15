@@ -2,7 +2,11 @@ package org.openmarkov.inference.decompositionintosymmetricdans;
 
 import junit.framework.Assert;
 
+import org.junit.Test;
+import org.openmarkov.core.exception.IncompatibleEvidenceException;
+import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
+import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANDecisionTreeEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANEvaluation;
@@ -13,7 +17,7 @@ public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferen
 	protected void testDANEvaluation(DANEvaluation eval, ProbNet network, double expectedEU,
 			String... namesVariablesIntervention) {
 		super.testDANEvaluation(eval, network, expectedEU, namesVariablesIntervention);
-		Assert.assertNull(((DANDecisionTreeEvaluation) eval).getDecisionTree());
+		Assert.assertNotNull(((DANDecisionTreeEvaluation) eval).getDecisionTree());
 	}
 
 	@Override
@@ -26,4 +30,14 @@ public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferen
 		}
 		return eval;
 	}	
+	
+	@Test
+	public void testDANOnlyUtility() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		//testDANEvaluation("only-utility",10.0);
+	}
+	
+	@Test
+	public void testDANOneDecision() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		//testDANEvaluation("one-decision",87.4,"D");
+	}
 }
