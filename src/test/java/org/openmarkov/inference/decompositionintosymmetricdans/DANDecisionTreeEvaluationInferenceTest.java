@@ -30,14 +30,4 @@ public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferen
 		}
 		return eval;
 	}	
-	
-	@Test
-	public void testDANOnlyUtility() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		//testDANEvaluation("only-utility",10.0);
-	}
-	
-	@Test
-	public void testDANOneDecision() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		//testDANEvaluation("one-decision",87.4,"D");
-	}
 }
