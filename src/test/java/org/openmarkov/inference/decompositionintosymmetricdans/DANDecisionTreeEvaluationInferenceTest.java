@@ -31,14 +31,6 @@ public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferen
 		return eval;
 	}	
 	
-	
-	@Test
-	public void testDANDiabetes() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		//TODO Fix bug in tree evaluation and uncomment next line
-		//testDANEvaluation("diabetes",979.8337,"Symptom","OD","Dec: Blood Test","Dec: Urine test","Blood test result","Urine test result","Therapy");
-
-	}
-
 	@Test
 	public void testDANUsedCarBuyer() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 		//TODO Fix bug in tree evaluation and uncomment next line
@@ -46,6 +38,7 @@ public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferen
 
 	}
 	
+	@Test
 	public void testDANKing() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 		//TODO Fix bug in tree evaluation and uncomment next line
 		//testDANEvaluation("king",7.73);
