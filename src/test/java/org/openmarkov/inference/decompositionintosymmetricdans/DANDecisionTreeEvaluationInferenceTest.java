@@ -45,4 +45,10 @@ public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferen
 		//testDANEvaluation("used-car-buyer",32.96,"Dec: First Test","First Result","Dec: Second Test","Dec: Purchase");
 
 	}
+	
+	public void testDANKing() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		//TODO Fix bug in tree evaluation and uncomment next line
+		//testDANEvaluation("king",7.73);
+
+	}
 }

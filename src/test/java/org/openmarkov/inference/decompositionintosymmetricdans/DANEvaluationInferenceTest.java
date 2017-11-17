@@ -253,7 +253,7 @@ public abstract class DANEvaluationInferenceTest {
 
 	}
 
-	//@Test
+	@Test
 	public void testDANKing() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 		testDANEvaluation("king",7.73);
 
