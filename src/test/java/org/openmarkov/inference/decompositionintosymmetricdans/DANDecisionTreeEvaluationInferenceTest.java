@@ -31,35 +31,17 @@ public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferen
 		return eval;
 	}
 	
-	@Test
-	public void testDANDiabetes() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		//TODO Fix bug in tree evaluation and uncomment next line
-		//testDANEvaluation("diabetes",979.8337,"Symptom","OD","Dec: Blood Test","Dec: Urine test","Blood test result","Urine test result","Therapy");
-	}
-	
+		
 	@Test
 	public void testDANUsedCarBuyer() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 		//TODO Fix bug in tree evaluation and uncomment next line
 		//testDANEvaluation("used-car-buyer",32.96,"Dec: First Test","First Result","Dec: Second Test","Dec: Purchase");
 	}
-	
-	@Test
-	public void testDANReactor() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		//TODO Fix bug in tree evaluation and uncomment next line
-		//testDANEvaluation("reactor",8.1280,"Test decision","Result of test","Build decision");
-	}
-	
+		
 	@Test
 	public void testDANKing() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 		//TODO Fix bug in tree evaluation and uncomment next line
 		//testDANEvaluation("king",7.73);
 	}
 	
-	@Test
-	public void testDAN3Tests() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		//TODO Fix bug in tree evaluation and uncomment next line
-		/*/testDANEvaluation("3-test-problem",9.6162,"Symptom","OD","Dec: Test 0","Dec: Test 1",
-				"Dec: Test 2","Test Result 1","Test Result 2","Therapy");*/
-
-	}
 }
