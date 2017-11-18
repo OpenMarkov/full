@@ -259,7 +259,7 @@ public abstract class DANEvaluationInferenceTest {
 
 	}
 
-	//@Test
+	@Test
 	public void testDAN3Tests() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 		testDANEvaluation("3-test-problem",9.6162,"Symptom","OD","Dec: Test 0","Dec: Test 1",
 				"Dec: Test 2","Test Result 1","Test Result 2","Therapy");
