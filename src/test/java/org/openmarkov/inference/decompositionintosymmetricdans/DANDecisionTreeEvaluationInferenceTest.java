@@ -33,16 +33,10 @@ public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferen
 	
 		
 	@Test
-	public void testDANUsedCarBuyer() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		//TODO Fix bug in tree evaluation and uncomment next line
-		//testDANEvaluation("used-car-buyer",32.96,"Dec: First Test","First Result","Dec: Second Test","Dec: Purchase");
-	}
-		
-	@Test
 	public void testDANKing() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 		//TODO
 		//This test works now with DANDecisionTreeEvaluation, but it takes 52 seconds in the core i7 laptop borrowed from Miguel.
-		//That's why I have decided to commment it
+		//That's why I have decided to comment it
 		//testDANEvaluation("king",7.73);
 	}
 	

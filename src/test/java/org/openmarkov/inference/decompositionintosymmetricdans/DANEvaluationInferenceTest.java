@@ -239,10 +239,15 @@ public abstract class DANEvaluationInferenceTest {
 		testDANEvaluation("diabetes",979.8337,"Symptom","OD","Dec: Blood Test","Dec: Urine test","Blood test result","Urine test result","Therapy");
 
 	}
+	
+	@Test
+	public void testDANSimplifiedUsedCarBuyer() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		testDANEvaluation("simplified-used-car-buyer",32.96,"Dec: First Test","First Result","Dec: Purchase");
+
+	}
 
 	@Test
 	public void testDANUsedCarBuyer() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		//testMEUAndIntervention("used-car-buyer",32.96,"Dec: First Test","First Result","Dec: Second Test","Dec: Purchase");
 		testDANEvaluation("used-car-buyer",32.96,"Dec: First Test","First Result","Dec: Second Test","Dec: Purchase");
 
 	}
