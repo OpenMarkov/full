@@ -84,7 +84,7 @@ public abstract class DANEvaluationInferenceTest {
 		if (inter!=null && namesVariablesIntervention!=null && namesVariablesIntervention.length > 0){				
 			Intervention intervention = inter[0];
 			String strIntervention = intervention.toStringForGraphviz(network);
-		//	Assert.assertTrue(areEquals(getVariablesOfIntervention(intervention),namesVariablesIntervention));
+			Assert.assertTrue(areEquals(getVariablesOfIntervention(intervention),namesVariablesIntervention));
 		}
 	}
 	
