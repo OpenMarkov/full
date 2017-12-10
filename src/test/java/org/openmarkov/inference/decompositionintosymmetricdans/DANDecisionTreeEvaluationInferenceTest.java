@@ -31,7 +31,38 @@ public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferen
 		return eval;
 	}
 	
-		
+	
+	//Next tests are commented because running them very often takes too much time
+	@Test
+	public void testDANKingNobleDescentYesFirstTask1() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		//testDANEvaluation("king-noble-descent-yes-first-task-1",9.03);
+
+	}
+	
+	@Test
+	public void testDANKingNobleDescentYesFirstTask1SecondTask2() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		//testDANEvaluation("king-noble-descent-yes-first-task-1-second-task-2",9.03);
+	}
+			
+	@Test
+	public void testDANKingNobleDescentNo() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		//testDANEvaluation("king-noble-descent-no",6.43);
+
+	}
+	
+	@Test
+	public void testDANKingNobleDescentYes() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		//testDANEvaluation("king-noble-descent-yes",9.03);
+	}
+
+
+	@Test
+	public void testDANKing() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		//testDANEvaluation("king",7.73);
+	}
+
+	
+	/*	
 	@Test
 	public void testDANKing() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 		//TODO
@@ -39,5 +70,5 @@ public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferen
 		//That's why I have decided to comment it
 		//testDANEvaluation("king",7.73);
 	}
-	
+	*/
 }

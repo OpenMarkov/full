@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static org.junit.Assert.assertNotNull;
-
 public abstract class DANEvaluationInferenceTest {
 
 	@Before
@@ -63,6 +61,8 @@ public abstract class DANEvaluationInferenceTest {
 
 	public void testDANEvaluation(String danName,double expectedEU,String ...namesVariablesIntervention){
 		ProbNet network = loadDAN(danName);
+		System.out.println("*** Evaluating DAN "+danName+" ***");
+		System.out.println();
 		DANEvaluation eval = buildDANEvaluation(network);
 		testDANEvaluation(eval,network, expectedEU,namesVariablesIntervention);
 	}
@@ -79,7 +79,7 @@ public abstract class DANEvaluationInferenceTest {
 		//Only debugging
 
 		//String strIntervention = globalUtility.interventions[0].toStringForGraphviz(network);
-		Assert.assertEquals(expectedEU, globalUtility.values[0], 0.0001);
+		Assert.assertEquals(expectedEU, globalUtility.getFirstValue(), 0.0001);
 		Intervention[] inter = globalUtility.interventions;
 		if (inter!=null && namesVariablesIntervention!=null && namesVariablesIntervention.length > 0){				
 			Intervention intervention = inter[0];
@@ -257,18 +257,61 @@ public abstract class DANEvaluationInferenceTest {
 		testDANEvaluation("reactor",8.1280,"Test decision","Result of test","Build decision");
 
 	}
+	
+		
+	@Test
+	public void testDANKingNobleDescentYesFirstTask1() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		testDANEvaluation("king-noble-descent-yes-first-task-1",9.03);
+
+	}
+	
+	@Test
+	public void testDANKingNobleDescentYesFirstTask1SecondTask2() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		testDANEvaluation("king-noble-descent-yes-first-task-1-second-task-2",9.03);
+	}
+	
+	@Test
+	public void testDANSimplifiedTwoTasksKingNobleDescentYes() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		testDANEvaluation("simplified-two-tasks-king-noble-descent-yes",9.08);
+	}
+	
+	/**
+	 * This network is as "simplified-two-tasks-king-noble-descent-yes", but removing zero utility potentials.
+	 */
+	@Test
+	public void testDANSimplified2TwoTasksKingNobleDescentYes() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		testDANEvaluation("simplified-2-two-tasks-king-noble-descent-yes",9.08);
+	}
+	
+	/**
+	 * This network is as "simplified-two-tasks-king-noble-descent-yes", but removing zero utility potentials.
+	 */
+	@Test
+	public void testDANSimplifiedOneTaskKingNobleDescentYes() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		testDANEvaluation("simplified-one-task-king-noble-descent-yes",9.28);
+	}
+	
+	@Test
+	public void testDANKingNobleDescentNo() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		testDANEvaluation("king-noble-descent-no",6.43);
+
+	}
+	
+	@Test
+	public void testDANKingNobleDescentYes() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
+		testDANEvaluation("king-noble-descent-yes",9.03);
+	}
+
 
 	@Test
 	public void testDANKing() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 		testDANEvaluation("king",7.73);
-
 	}
 
 	@Test
 	public void testDAN3Tests() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
 		testDANEvaluation("3-test-problem",9.6162,"Symptom","OD","Dec: Test 0","Dec: Test 1",
 				"Dec: Test 2","Test Result 1","Test Result 2","Therapy");
-
 	}
 
 	//@Test
