@@ -30,6 +30,7 @@ public class CEAGlobalAnalysisTest {
 
     }
 
+    // TODO - Check if this tests are useful or not
 //    @Test
 //    public void testCHAP() throws Exception{
 //    	// Constants
@@ -88,39 +89,6 @@ public class CEAGlobalAnalysisTest {
 //
 //    	Assert.assertArrayEquals(expectedResults, result.values, 0.001);
 //    }
-
-    @Test
-    public void testChancellor() throws Exception{
-    	// Constants
-    	String modelFilePath = "cea" + File.separator +"MID-dmhee-2.5.pgmx";
-    	// Open the file containing the network
-		InputStream file = getClass().getClassLoader ().
-				getResourceAsStream (modelFilePath);
-
-		// Load the Bayesian network
-		PGMXReader pgmxReader = new PGMXReader();
-		ProbNet probNet = pgmxReader.loadProbNet("Chancellor", file);
-
-		EvidenceCase evidence = new EvidenceCase();
-
-		// Set cost and effectiveness discounts to all the criteria with that CECriteria. Set the number of cycles and the transition time.
-		setOldMethodParameters(probNet, 6.0 , 0.0 , 20 , TransitionTime.BEGINNING);
-
-		VECEADecision veceaDecision = new VECEADecision(probNet, evidence, probNet.getNodes(NodeType.DECISION).get(0).getVariable());
-		GTablePotential resultPontential = veceaDecision.getCEPPotential();
-		double[] results = new double[4];
-		CEP monotherapyCEP = (CEP) resultPontential.elementTable.get(0);
-		results[0] = monotherapyCEP.getCost(0);
-		results[1] = monotherapyCEP.getEffectiveness(0);
-		CEP combinationTherapy = (CEP) resultPontential.elementTable.get(1);
-		results[2] = combinationTherapy.getCost(0);
-		results[3] = combinationTherapy.getEffectiveness(0);
-
-		double[] expectedResults = new double[]{50585.9167,8.9346,44662.2166,7.99134};
-
-    	Assert.assertArrayEquals(expectedResults, results, 0.001);
-    }
-
 //    @Test
 //    public void testChancellorHC() throws Exception{
 //    	// Constants
