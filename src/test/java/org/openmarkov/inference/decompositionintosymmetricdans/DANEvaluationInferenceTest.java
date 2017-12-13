@@ -248,7 +248,8 @@ public abstract class DANEvaluationInferenceTest {
 
 	@Test
 	public void testDANUsedCarBuyer() throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException, NotEvaluableNetworkException{
-		testDANEvaluation("used-car-buyer",32.96,"Dec: First Test","First Result","Dec: Second Test","Dec: Purchase");
+		//testDANEvaluation("used-car-buyer",32.96,"Dec: First Test","First Result","Dec: Second Test","Dec: Purchase");
+		testDANEvaluation("used-car-buyer",32.96);
 
 	}
 
