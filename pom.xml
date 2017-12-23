@@ -9,18 +9,18 @@
     </parent>
 
     <artifactId>org.openmarkov.full</artifactId>
-    <version>${openmarkov.version}</version>
+    <version>0.3.0-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.core.gui</artifactId>
-            <version>${openmarkov.version}</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.core</artifactId>
-            <version>${openmarkov.version}</version>
+            <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
@@ -29,50 +29,50 @@
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.costEffectiveness</artifactId>
-            <version>${openmarkov.version}</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.sensitivityanalysis.gui</artifactId>
-            <version>${openmarkov.version}</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.dbgenerator</artifactId>
-            <version>${openmarkov.version}</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.learning</artifactId>
-            <version>${openmarkov.version}</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.core.gui</artifactId>
-            <version>${openmarkov.version}</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
         	<groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.inference.decompositionIntoSymmetricDANs</artifactId>
-		    <version>${openmarkov.version}</version>
+		    <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
         <groupId>org.openmarkov</groupId>
 	        <artifactId>org.openmarkov.evaluation</artifactId>
-    	    <version>${openmarkov.version}</version>
+    	    <version>0.3.0-SNAPSHOT</version>
         	<scope>test</scope>
         </dependency>
         
         <!--<dependency>-->
         <!--<groupId>org.openmarkov</groupId>-->
         <!--<artifactId>org.openmarkov.utilityCalculator</artifactId>-->
-        <!--<version>${openmarkov.version}</version>-->
+        <!--<version>0.3.0-SNAPSHOT</version>-->
         <!--<scope>test</scope>-->
         <!--</dependency>-->
         <!--<dependency>-->
         <!--<groupId>org.openmarkov</groupId>-->
         <!--<artifactId>org.openmarkov.objectOrientedNetworks</artifactId>-->
-        <!--<version>${openmarkov.version}</version>-->
+        <!--<version>0.3.0-SNAPSHOT</version>-->
         <!--<scope>test</scope>-->
         <!--</dependency>-->
         
