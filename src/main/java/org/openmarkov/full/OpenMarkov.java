@@ -10,10 +10,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openmarkov.core.gui.configuration.ComponentConfiguration;
-import org.openmarkov.core.gui.configuration.OpenMarkovConfiguration;
-import org.openmarkov.core.gui.localize.StringDatabase;
-import org.openmarkov.core.gui.window.MainGUI;
+import org.openmarkov.gui.configuration.ComponentConfiguration;
+import org.openmarkov.gui.configuration.OpenMarkovConfiguration;
+import org.openmarkov.gui.localize.StringDatabase;
+import org.openmarkov.gui.window.MainGUI;
 
 /**
  * This class stores a set of additionalProperties and the <code>main</code>

@@ -15,7 +15,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmarkov.core.exception.*;
-import org.openmarkov.core.gui.dialog.io.NetsIO;
+import org.openmarkov.gui.dialog.io.NetsIO;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.*;
 import org.openmarkov.core.model.network.constraint.OnlyAtemporalVariables;

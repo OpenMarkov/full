@@ -1,4 +1,4 @@
-package org.openmarkov.core.gui.action;
+package org.openmarkov.gui.action;
 
 import static org.junit.Assert.assertEquals;
 

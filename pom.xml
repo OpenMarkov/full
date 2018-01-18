@@ -57,7 +57,7 @@
     <dependencies>
         <dependency>
             <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.core.gui</artifactId>
+            <artifactId>org.openmarkov.gui</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>

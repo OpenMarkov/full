@@ -1,4 +1,4 @@
-package org.openmarkov.core.gui.action;
+package org.openmarkov.gui.action;
 
 
 import static org.junit.Assert.assertEquals;
@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openmarkov.core.gui.graphic.VisualChanceNode;
-import org.openmarkov.core.gui.graphic.VisualDecisionNode;
-import org.openmarkov.core.gui.graphic.VisualNode;
+import org.openmarkov.gui.graphic.VisualChanceNode;
+import org.openmarkov.gui.graphic.VisualDecisionNode;
+import org.openmarkov.gui.graphic.VisualNode;
 import org.openmarkov.core.model.network.NodeType;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Node;
