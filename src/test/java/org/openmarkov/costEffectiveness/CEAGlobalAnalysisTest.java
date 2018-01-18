@@ -1,24 +1,11 @@
 package org.openmarkov.costEffectiveness;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 import org.openmarkov.core.inference.TransitionTime;
 import org.openmarkov.core.model.network.*;
 import org.openmarkov.core.model.network.Criterion.CECriterion;
 import org.openmarkov.core.model.network.CycleLength.DiscountUnit;
 import org.openmarkov.core.model.network.CycleLength.Unit;
-import org.openmarkov.core.model.network.potential.GTablePotential;
-import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.core.model.network.potential.operation.DiscretePotentialOperations;
-import org.openmarkov.inference.tasks.VariableElimination.VECEADecision;
-import org.openmarkov.inference.tasks.VariableElimination.VEResolution;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 
 public class CEAGlobalAnalysisTest {

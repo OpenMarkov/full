@@ -12,22 +12,13 @@ import org.openmarkov.core.inference.TransitionTime;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.*;
 import org.openmarkov.core.model.network.potential.GTablePotential;
-import org.openmarkov.core.model.network.potential.Potential;
 import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.inference.tasks.VariableElimination.VECEADecision;
-import org.openmarkov.inference.tasks.VariableElimination.VETemporalEvaluation;
-import org.openmarkov.inference.tasks.VariableElimination.VETemporalEvolution;
+import org.openmarkov.inference.variableElimination.tasks.VECEADecision;
+import org.openmarkov.inference.variableElimination.tasks.VETemporalEvaluation;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 
 import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Created by JORGE on 08/02/2017.

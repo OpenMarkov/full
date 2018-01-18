@@ -23,7 +23,13 @@ import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.type.BayesianNetworkType;
 import org.openmarkov.core.model.network.type.InfluenceDiagramType;
 import org.openmarkov.core.model.network.type.MIDType;
-import org.openmarkov.inference.tasks.VariableElimination.*;
+import org.openmarkov.inference.variableElimination.tasks.VECEADecision;
+import org.openmarkov.inference.variableElimination.tasks.VECEAGlobal;
+import org.openmarkov.inference.variableElimination.tasks.VECEPSA;
+import org.openmarkov.inference.variableElimination.tasks.VEOptimalIntervention;
+import org.openmarkov.inference.variableElimination.tasks.VEPropagation;
+import org.openmarkov.inference.variableElimination.tasks.VEResolution;
+import org.openmarkov.inference.variableElimination.tasks.VETemporalEvolution;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 import org.openmarkov.io.probmodel.writer.PGMXWriter;
 

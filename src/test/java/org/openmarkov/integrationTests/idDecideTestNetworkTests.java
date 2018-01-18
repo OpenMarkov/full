@@ -25,7 +25,11 @@ import org.openmarkov.core.model.network.modelUncertainty.UncertainParameter;
 import org.openmarkov.core.model.network.potential.Intervention;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.potential.treeadd.TreeADDBranch;
-import org.openmarkov.inference.tasks.VariableElimination.*;
+import org.openmarkov.inference.variableElimination.tasks.VEExpectedUtilityDecision;
+import org.openmarkov.inference.variableElimination.tasks.VEOptimalIntervention;
+import org.openmarkov.inference.variableElimination.tasks.VEOptimalPolicy;
+import org.openmarkov.inference.variableElimination.tasks.VEResolution;
+import org.openmarkov.inference.variableElimination.tasks.VESensAnTornadoSpider;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 
 import java.io.InputStream;
