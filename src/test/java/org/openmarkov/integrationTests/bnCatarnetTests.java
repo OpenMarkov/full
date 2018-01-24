@@ -67,7 +67,10 @@ public class bnCatarnetTests {
         }
 
         try {
-            vePropagation = new VEPropagation(probNet, variablesOfInterest, preResolutionEvidence, postResolutionEvidence, null);
+            vePropagation = new VEPropagation(probNet);
+            vePropagation.setVariablesOfInterest(variablesOfInterest);
+            vePropagation.setPreResolutionEvidence(preResolutionEvidence);
+            vePropagation.setPostResolutionEvidence(postResolutionEvidence);
             HashMap<Variable, TablePotential> posteriorVales = vePropagation.getPosteriorValues();
 
             for(Variable variable : variablesOfInterest) {
@@ -85,7 +88,7 @@ public class bnCatarnetTests {
                 }
                 Assert.assertArrayEquals(posteriorVales.get(variable).values, expectedValues,  deltaEquals);
             }
-        } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
+        } catch (NotEvaluableNetworkException | IncompatibleEvidenceException e) {
             e.printStackTrace();
         }
     }
@@ -117,7 +120,10 @@ public class bnCatarnetTests {
         }
 
         try {
-            vePropagation = new VEPropagation(probNet, variablesOfInterest, preResolutionEvidence, postResolutionEvidence, null);
+            vePropagation = new VEPropagation(probNet);
+            vePropagation.setVariablesOfInterest(variablesOfInterest);
+            vePropagation.setPreResolutionEvidence(preResolutionEvidence);
+            vePropagation.setPostResolutionEvidence(postResolutionEvidence);
             HashMap<Variable, TablePotential> posteriorVales = vePropagation.getPosteriorValues();
 
             for(Variable variable : variablesOfInterest) {
@@ -135,7 +141,7 @@ public class bnCatarnetTests {
                 }
                 Assert.assertArrayEquals(posteriorVales.get(variable).values, expectedValues,  deltaEquals);
             }
-        } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
+        } catch (NotEvaluableNetworkException | IncompatibleEvidenceException e) {
             e.printStackTrace();
         }
     }
@@ -165,12 +171,15 @@ public class bnCatarnetTests {
 
         boolean incompatibleEvidenceExceptionOcurred = false;
         try {
-            vePropagation = new VEPropagation(probNet, variablesOfInterest, preResolutionEvidence, postResolutionEvidence, null);
-        } catch (NotEvaluableNetworkException | UnexpectedInferenceException e) {
+            vePropagation = new VEPropagation(probNet);
+            vePropagation.setVariablesOfInterest(variablesOfInterest);
+            vePropagation.setPreResolutionEvidence(preResolutionEvidence);
+            vePropagation.setPostResolutionEvidence(postResolutionEvidence);
+        } catch (NotEvaluableNetworkException e) {
             e.printStackTrace();
-        } catch (IncompatibleEvidenceException e) {
+        }/* catch (IncompatibleEvidenceException e) {
             incompatibleEvidenceExceptionOcurred = true;
-        }
+        }*/
 
         Assert.assertTrue(incompatibleEvidenceExceptionOcurred);
     }

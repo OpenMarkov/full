@@ -67,7 +67,10 @@ public class bnHeparTests {
         }
 
         try {
-            vePropagation = new VEPropagation(probNet, variablesOfInterest, preResolutionEvidence, postResolutionEvidence, null);
+            vePropagation = new VEPropagation(probNet);
+            vePropagation.setVariablesOfInterest(variablesOfInterest);
+            vePropagation.setPreResolutionEvidence(preResolutionEvidence);
+            vePropagation.setPostResolutionEvidence(postResolutionEvidence);
             HashMap<Variable, TablePotential> posteriorVales = vePropagation.getPosteriorValues();
 
             for(Variable variable : variablesOfInterest) {
@@ -85,7 +88,7 @@ public class bnHeparTests {
                 }
                 Assert.assertArrayEquals(posteriorVales.get(variable).values, expectedValues,  deltaEquals);
             }
-        } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
+        } catch (NotEvaluableNetworkException | IncompatibleEvidenceException e) {
             e.printStackTrace();
         }
     }
@@ -121,7 +124,10 @@ public class bnHeparTests {
         }
 
         try {
-            vePropagation = new VEPropagation(probNet, variablesOfInterest, preResolutionEvidence, postResolutionEvidence, null);
+            vePropagation = new VEPropagation(probNet);
+            vePropagation.setVariablesOfInterest(variablesOfInterest);
+            vePropagation.setPreResolutionEvidence(preResolutionEvidence);
+            vePropagation.setPostResolutionEvidence(postResolutionEvidence);
             HashMap<Variable, TablePotential> posteriorVales = vePropagation.getPosteriorValues();
 
             for(Variable variable : variablesOfInterest) {
@@ -139,7 +145,7 @@ public class bnHeparTests {
                 }
                 Assert.assertArrayEquals(posteriorVales.get(variable).values, expectedValues,  deltaEquals);
             }
-        } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
+        } catch (NotEvaluableNetworkException | IncompatibleEvidenceException e) {
             e.printStackTrace();
         }
     }

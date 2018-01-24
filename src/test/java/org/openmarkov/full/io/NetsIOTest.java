@@ -15,6 +15,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmarkov.core.exception.*;
+import org.openmarkov.core.model.network.potential.GTablePotential;
 import org.openmarkov.gui.dialog.io.NetsIO;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.*;
@@ -23,8 +24,6 @@ import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.type.BayesianNetworkType;
 import org.openmarkov.core.model.network.type.InfluenceDiagramType;
 import org.openmarkov.core.model.network.type.MIDType;
-import org.openmarkov.inference.variableElimination.tasks.VECEADecision;
-import org.openmarkov.inference.variableElimination.tasks.VECEAGlobal;
 import org.openmarkov.inference.variableElimination.tasks.VECEPSA;
 import org.openmarkov.inference.variableElimination.tasks.VEOptimalIntervention;
 import org.openmarkov.inference.variableElimination.tasks.VEPropagation;
@@ -312,8 +311,9 @@ public class NetsIOTest {
 	}
 
 	private void testCEAGlobalNetwork(ProbNet probNet, EvidenceCase evidenceCase) throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
-		VECEAGlobal veceaGlobal = new VECEAGlobal(probNet, evidenceCase);
-		assertNotNull(veceaGlobal.getCEP());
+		VEEvaluation veceaGlobal = new VEEvaluation(probNet);
+		veceaGlobal.setPreResolutionEvidence(evidenceCase);
+		assertNotNull((GTablePotential) veceaGlobal.getUtility());
 		System.out.println("VECEAGlobal successful");
 	}
 
@@ -333,8 +333,10 @@ public class NetsIOTest {
 					e.printStackTrace();
 				}
 			}
-			VECEADecision veceaDecision = new VECEADecision(probNet, evidenceCase, decisionVariable);
-			assertNotNull(veceaDecision.getCEPPotential());
+			VEEvaluation veceaDecision = new VEEvaluation(probNet);
+			veceaDecision.setPreResolutionEvidence(evidenceCase);
+			veceaDecision.setDecisionVariable(decisionVariable);
+			assertNotNull((GTablePotential) veceaDecision.getUtility());
 		}
 		System.out.println("VECEADecision successful");
 	}
@@ -372,7 +374,9 @@ public class NetsIOTest {
 	}
 
 	private void testPropagateNetwork(ProbNet probNet, List<Variable> variables, EvidenceCase evidenceCase) throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
-		VEPropagation vePropagation	= new VEPropagation(probNet,variables, evidenceCase, null, null);
+		VEPropagation vePropagation	= new VEPropagation(probNet);
+		vePropagation.setVariablesOfInterest(variables);
+		vePropagation.setPreResolutionEvidence(evidenceCase);
 		HashMap<Variable, TablePotential> posteriorValues = vePropagation.getPosteriorValues();
 		for(Variable variable : probNet.getVariables()){
 //			if(!variable.getVariableType().equals(VariableType.NUMERIC)) {
@@ -385,10 +389,12 @@ public class NetsIOTest {
 	private void testResolveNetwork(ProbNet probNet, EvidenceCase evidenceCase, Boolean checkStrategy) throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
 		VEEvaluation veEvaluation;
 		if (evidenceCase != null) {
-			veEvaluation = new VEEvaluation(probNet, evidenceCase, null);
+			veEvaluation = new VEEvaluation(probNet);
+			veEvaluation.setPreResolutionEvidence(evidenceCase);
 		} else {
-			veEvaluation = new VEEvaluation(probNet, null, null);
+			veEvaluation = new VEEvaluation(probNet);
 		}
+		veEvaluation.getUtility();
 
 
 		if (checkStrategy) {
@@ -433,11 +439,11 @@ public class NetsIOTest {
 
 			VETemporalEvolution veTemporalEvolution = new VETemporalEvolution(probNet,variable, evidenceCase, null);
 			ProbNet expandedNetwork = veTemporalEvolution.getExpandedNetwork();
-			assertNotNull(veTemporalEvolution.getPosteriorValues());
+			assertNotNull(veTemporalEvolution.getTemporalEvolution());
 			for(int i = variable.getTimeSlice(); i < expandedNetwork.getInferenceOptions().getTemporalOptions().getNumberOfSlices(); i++){
 				try {
 					Variable variableInSlicei = expandedNetwork.getVariable(variable.getBaseName(), i);
-					assertNotNull(veTemporalEvolution.getPosteriorValues().get(variableInSlicei));
+					assertNotNull(veTemporalEvolution.getTemporalEvolution().get(variableInSlicei));
 				} catch (NodeNotFoundException e) {
 					e.printStackTrace();
 				}

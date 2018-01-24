@@ -2,25 +2,6 @@ package org.openmarkov.inference;
 
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.openmarkov.core.dt.DecisionTreeBuilder;
-import org.openmarkov.core.dt.DecisionTreeElement;
-import org.openmarkov.core.exception.NotEvaluableNetworkException;
-import org.openmarkov.core.exception.ParserException;
-import org.openmarkov.core.model.network.Criterion;
-import org.openmarkov.core.model.network.ProbNet;
-import org.openmarkov.core.model.network.potential.Intervention;
-import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.core.model.network.type.InfluenceDiagramType;
-import org.openmarkov.io.probmodel.reader.PGMXReader;
-
-import bitbucket.NetsRepository;
-
 public class IDInferenceTest {
 
 //	@Test

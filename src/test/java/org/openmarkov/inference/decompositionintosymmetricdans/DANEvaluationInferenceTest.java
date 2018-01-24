@@ -11,7 +11,7 @@ import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
-import org.openmarkov.core.model.network.potential.Intervention;
+import org.openmarkov.core.model.network.potential.StrategyTree;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANOperations;
@@ -80,11 +80,11 @@ public abstract class DANEvaluationInferenceTest {
 
 		//String strIntervention = globalUtility.interventions[0].toStringForGraphviz(network);
 		Assert.assertEquals(expectedEU, globalUtility.getFirstValue(), 0.0001);
-		Intervention[] inter = globalUtility.interventions;
+		StrategyTree[] inter = globalUtility.strategyTrees;
 		if (inter!=null && namesVariablesIntervention!=null && namesVariablesIntervention.length > 0){				
-			Intervention intervention = inter[0];
-			String strIntervention = intervention.toStringForGraphviz(network);
-			Assert.assertTrue(areEquals(getVariablesOfIntervention(intervention),namesVariablesIntervention));
+			StrategyTree strategyTree = inter[0];
+			String strIntervention = strategyTree.toStringForGraphviz(network);
+			Assert.assertTrue(areEquals(getVariablesOfIntervention(strategyTree),namesVariablesIntervention));
 		}
 	}
 	
@@ -143,12 +143,12 @@ public abstract class DANEvaluationInferenceTest {
 	}
 
 
-	private List<Variable> getVariablesOfIntervention(Intervention inter){
+	private List<Variable> getVariablesOfIntervention(StrategyTree inter){
 		List<Variable> variables = new ArrayList<>();
 
 		if (inter!=null){
 			variables.add(inter.getRootVariable());
-			for (Intervention child:inter.getInterventionsChildren()){
+			for (StrategyTree child:inter.getInterventionsChildren()){
 				variables = DANOperations.join(variables, getVariablesOfIntervention(child));
 			}				
 		}
