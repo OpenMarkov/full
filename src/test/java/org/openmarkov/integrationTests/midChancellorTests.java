@@ -28,7 +28,7 @@ import org.openmarkov.inference.variableElimination.tasks.VECEADecision;
 import org.openmarkov.inference.variableElimination.tasks.VECEAGlobal;
 import org.openmarkov.inference.variableElimination.tasks.VEOptimalIntervention;
 import org.openmarkov.inference.variableElimination.tasks.VEOptimalPolicy;
-import org.openmarkov.inference.variableElimination.tasks.VEResolution;
+import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
 import org.openmarkov.inference.variableElimination.tasks.VETemporalEvaluation;
 import org.openmarkov.inference.variableElimination.tasks.VETemporalEvolution;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
@@ -67,10 +67,10 @@ public class midChancellorTests {
 
     @Test
     public void veResolutionTestWithoutEvidence(){
-        VEResolution veResolution;
+        VEEvaluation veEvaluation;
         try {
-            veResolution = new VEResolution(probNet, preResolutionEvidence, null);
-            TablePotential utility = veResolution.getUtility();
+            veEvaluation = new VEEvaluation(probNet, preResolutionEvidence, null);
+            TablePotential utility = veEvaluation.getUtility();
             Assert.assertEquals(utility.getValues()[0], 50608.78077314, deltaEquals);
         } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
             e.printStackTrace();

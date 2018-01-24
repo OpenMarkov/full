@@ -28,7 +28,7 @@ import org.openmarkov.core.model.network.potential.treeadd.TreeADDBranch;
 import org.openmarkov.inference.variableElimination.tasks.VEExpectedUtilityDecision;
 import org.openmarkov.inference.variableElimination.tasks.VEOptimalIntervention;
 import org.openmarkov.inference.variableElimination.tasks.VEOptimalPolicy;
-import org.openmarkov.inference.variableElimination.tasks.VEResolution;
+import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
 import org.openmarkov.inference.variableElimination.tasks.VESensAnTornadoSpider;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 
@@ -66,10 +66,10 @@ public class idDecideTestNetworkTests {
 
     @Test
     public void veResolutionTestWithoutEvidence(){
-        VEResolution veResolution;
+        VEEvaluation veEvaluation;
         try {
-            veResolution = new VEResolution(probNet, preResolutionEvidence, null);
-            TablePotential utility = veResolution.getUtility();
+            veEvaluation = new VEEvaluation(probNet, preResolutionEvidence, null);
+            TablePotential utility = veEvaluation.getUtility();
             Assert.assertEquals(utility.getValues()[0], 9.3289, deltaEquals);
         } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
             e.printStackTrace();
@@ -82,7 +82,7 @@ public class idDecideTestNetworkTests {
         EvidenceCase evidenceCase = new EvidenceCase();
         Variable disease = null;
         Variable doTest = null;
-        VEResolution veResolution;
+        VEEvaluation veEvaluation;
         Finding finding;
         Finding secondFinding;
 
@@ -91,8 +91,8 @@ public class idDecideTestNetworkTests {
             disease = probNet.getVariable("Disease");
             finding = new Finding(disease, 0);
             evidenceCase.addFinding(finding);
-            veResolution = new VEResolution(probNet, evidenceCase, null);
-            TablePotential utility = veResolution.getUtility();
+            veEvaluation = new VEEvaluation(probNet, evidenceCase, null);
+            TablePotential utility = veEvaluation.getUtility();
             Assert.assertEquals(utility.getValues()[0], 10, deltaEquals);
 
         } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException | InvalidStateException e) {
@@ -106,8 +106,8 @@ public class idDecideTestNetworkTests {
             // Set disease as present
             finding = new Finding(disease, 1);
             evidenceCase.addFinding(finding);
-            veResolution = new VEResolution(probNet, evidenceCase, null);
-            TablePotential utility = veResolution.getUtility();
+            veEvaluation = new VEEvaluation(probNet, evidenceCase, null);
+            TablePotential utility = veEvaluation.getUtility();
             Assert.assertEquals(utility.getValues()[0], 7.25, deltaEquals);
 
         } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException | InvalidStateException e) {
@@ -128,8 +128,8 @@ public class idDecideTestNetworkTests {
             secondFinding = new Finding(doTest, 1);
             evidenceCase.addFinding(secondFinding);
 
-            veResolution = new VEResolution(probNet, evidenceCase, null);
-            TablePotential utility = veResolution.getUtility();
+            veEvaluation = new VEEvaluation(probNet, evidenceCase, null);
+            TablePotential utility = veEvaluation.getUtility();
             Assert.assertEquals(utility.getValues()[0], 7.05, deltaEquals);
 
         } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException | InvalidStateException e) {

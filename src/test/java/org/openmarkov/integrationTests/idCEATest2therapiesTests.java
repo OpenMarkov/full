@@ -23,7 +23,7 @@ import org.openmarkov.inference.variableElimination.tasks.VECEADecision;
 import org.openmarkov.inference.variableElimination.tasks.VECEAGlobal;
 import org.openmarkov.inference.variableElimination.tasks.VEOptimalIntervention;
 import org.openmarkov.inference.variableElimination.tasks.VEOptimalPolicy;
-import org.openmarkov.inference.variableElimination.tasks.VEResolution;
+import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 
 import java.io.InputStream;
@@ -58,10 +58,10 @@ public class idCEATest2therapiesTests {
 
     @Test
     public void veResolutionTestWithoutEvidence(){
-        VEResolution veResolution;
+        VEEvaluation veEvaluation;
         try {
-            veResolution = new VEResolution(probNet, preResolutionEvidence, null);
-            TablePotential utility = veResolution.getUtility();
+            veEvaluation = new VEEvaluation(probNet, preResolutionEvidence, null);
+            TablePotential utility = veEvaluation.getUtility();
             Assert.assertEquals(utility.getValues()[0], 269569.4, deltaEquals);
         } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
             e.printStackTrace();
@@ -74,7 +74,7 @@ public class idCEATest2therapiesTests {
         EvidenceCase evidenceCase = new EvidenceCase();
         Variable disease = null;
         Variable doTest = null;
-        VEResolution veResolution;
+        VEEvaluation veEvaluation;
         Finding finding;
         Finding secondFinding;
 
@@ -83,8 +83,8 @@ public class idCEATest2therapiesTests {
             disease = probNet.getVariable("Disease");
             finding = new Finding(disease, 0);
             evidenceCase.addFinding(finding);
-            veResolution = new VEResolution(probNet, evidenceCase, null);
-            TablePotential utility = veResolution.getUtility();
+            veEvaluation = new VEEvaluation(probNet, evidenceCase, null);
+            TablePotential utility = veEvaluation.getUtility();
             Assert.assertEquals(utility.getValues()[0], 10*30000, deltaEquals);
 
         } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException | InvalidStateException e) {
@@ -98,8 +98,8 @@ public class idCEATest2therapiesTests {
             // Set disease as present
             finding = new Finding(disease, 1);
             evidenceCase.addFinding(finding);
-            veResolution = new VEResolution(probNet, evidenceCase, null);
-            TablePotential utility = veResolution.getUtility();
+            veEvaluation = new VEEvaluation(probNet, evidenceCase, null);
+            TablePotential utility = veEvaluation.getUtility();
             Assert.assertEquals(utility.getValues()[0], 125000, deltaEquals);
 
         } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException | InvalidStateException e) {
@@ -120,8 +120,8 @@ public class idCEATest2therapiesTests {
             secondFinding = new Finding(doTest, 1);
             evidenceCase.addFinding(secondFinding);
 
-            veResolution = new VEResolution(probNet, evidenceCase, null);
-            TablePotential utility = veResolution.getUtility();
+            veEvaluation = new VEEvaluation(probNet, evidenceCase, null);
+            TablePotential utility = veEvaluation.getUtility();
             Assert.assertEquals(utility.getValues()[0], 124850, deltaEquals);
 
         } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException | InvalidStateException e) {

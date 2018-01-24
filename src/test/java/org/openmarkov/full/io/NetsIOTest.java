@@ -28,7 +28,7 @@ import org.openmarkov.inference.variableElimination.tasks.VECEAGlobal;
 import org.openmarkov.inference.variableElimination.tasks.VECEPSA;
 import org.openmarkov.inference.variableElimination.tasks.VEOptimalIntervention;
 import org.openmarkov.inference.variableElimination.tasks.VEPropagation;
-import org.openmarkov.inference.variableElimination.tasks.VEResolution;
+import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
 import org.openmarkov.inference.variableElimination.tasks.VETemporalEvolution;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 import org.openmarkov.io.probmodel.writer.PGMXWriter;
@@ -383,11 +383,11 @@ public class NetsIOTest {
 	}
 
 	private void testResolveNetwork(ProbNet probNet, EvidenceCase evidenceCase, Boolean checkStrategy) throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
-		VEResolution veResolution;
+		VEEvaluation veEvaluation;
 		if (evidenceCase != null) {
-			veResolution = new VEResolution(probNet, evidenceCase, null);
+			veEvaluation = new VEEvaluation(probNet, evidenceCase, null);
 		} else {
-			veResolution = new VEResolution(probNet, null, null);
+			veEvaluation = new VEEvaluation(probNet, null, null);
 		}
 
 
