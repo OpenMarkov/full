@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmarkov.core.exception.*;
+import org.openmarkov.core.inference.tasks.CEAnalysis;
 import org.openmarkov.core.inference.tasks.OptimalPolicies;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.*;
@@ -19,6 +20,7 @@ import org.openmarkov.core.model.network.potential.GTablePotential;
 import org.openmarkov.core.model.network.potential.StrategyTree;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.potential.treeadd.TreeADDBranch;
+import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
 import org.openmarkov.inference.variableElimination.tasks.VEOptimalIntervention;
 import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
@@ -94,7 +96,7 @@ public class idCEATest2therapiesTests {
 			finding = new Finding(disease, 1);
 			evidenceCase.addFinding(finding);
 			veEvaluation = new VEEvaluation(probNet);
-			veEvaluation.setPreResolutionEvidence(preResolutionEvidence);
+			veEvaluation.setPreResolutionEvidence(evidenceCase);
 			TablePotential utility = veEvaluation.getUtility();
 			Assert.assertEquals(utility.getValues()[0], 125000, deltaEquals);
 
@@ -175,11 +177,12 @@ public class idCEATest2therapiesTests {
 	}
 
 	@Test public void veCEAGlobalTests() {
-		VEEvaluation veceaGlobal;
+		CEAnalysis veceaGlobal;
 		try {
-			veceaGlobal = new VEEvaluation(probNet);
+			veceaGlobal = new VECEAnalysis(probNet);
 			veceaGlobal.setPreResolutionEvidence(preResolutionEvidence);
-			CEP cep = (CEP) ((GTablePotential) veceaGlobal.getUtility()).elementTable.get(0);
+
+			CEP cep = (CEP) (veceaGlobal.getGTablePotential()).elementTable.get(0);
 			Assert.assertTrue(cep.getNumIntervals() == 3);
 
 			// First interval
@@ -200,7 +203,7 @@ public class idCEATest2therapiesTests {
 	}
 
 	@Test public void veCEADecisionDecTestTests() {
-		VEEvaluation veceaDecision;
+		CEAnalysis veceaDecision;
 		try {
 			Variable decisionVariable = null;
 			EvidenceCase evidenceCaseWithScenario = new EvidenceCase();
@@ -222,10 +225,10 @@ public class idCEATest2therapiesTests {
 				e.printStackTrace();
 			}
 
-			veceaDecision = new VEEvaluation(probNet);
+			veceaDecision = new VECEAnalysis(probNet);
 			veceaDecision.setPreResolutionEvidence(evidenceCaseWithScenario);
 			veceaDecision.setDecisionVariable(decisionVariable);
-			GTablePotential cepPotential = (GTablePotential) veceaDecision.getUtility();
+			GTablePotential cepPotential = veceaDecision.getGTablePotential();
 			// There are three therapies (no, therapy 1, therapy 2)
 			Assert.assertTrue(cepPotential.elementTable.size() == 3);
 

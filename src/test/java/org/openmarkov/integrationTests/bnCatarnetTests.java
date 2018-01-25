@@ -175,11 +175,12 @@ public class bnCatarnetTests {
             vePropagation.setVariablesOfInterest(variablesOfInterest);
             vePropagation.setPreResolutionEvidence(preResolutionEvidence);
             vePropagation.setPostResolutionEvidence(postResolutionEvidence);
+            vePropagation.getPosteriorValues();
         } catch (NotEvaluableNetworkException e) {
             e.printStackTrace();
-        }/* catch (IncompatibleEvidenceException e) {
+        } catch (IncompatibleEvidenceException e) {
             incompatibleEvidenceExceptionOcurred = true;
-        }*/
+        }
 
         Assert.assertTrue(incompatibleEvidenceExceptionOcurred);
     }

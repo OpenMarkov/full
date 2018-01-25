@@ -49,7 +49,7 @@ public class midCochlearTests {
 		}
 	}
 
-	@Test public void veTemporalEvolutionTest() {
+	@Test public void veTemporalEvaluationTest() {
 		try {
 			VETemporalEvaluation veTemporalEvaluation = new VETemporalEvaluation(probNet, preResolutionEvidence, null);
 			TablePotential atemporalUtility = veTemporalEvaluation.getAtemporalUtility();
