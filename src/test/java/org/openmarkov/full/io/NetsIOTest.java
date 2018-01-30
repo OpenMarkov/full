@@ -15,6 +15,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmarkov.core.exception.*;
+import org.openmarkov.core.inference.tasks.CEAnalysis;
 import org.openmarkov.core.model.network.potential.GTablePotential;
 import org.openmarkov.gui.dialog.io.NetsIO;
 import org.openmarkov.core.io.ProbNetInfo;
@@ -24,11 +25,7 @@ import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.type.BayesianNetworkType;
 import org.openmarkov.core.model.network.type.InfluenceDiagramType;
 import org.openmarkov.core.model.network.type.MIDType;
-import org.openmarkov.inference.variableElimination.tasks.VECEPSA;
-import org.openmarkov.inference.variableElimination.tasks.VEOptimalIntervention;
-import org.openmarkov.inference.variableElimination.tasks.VEPropagation;
-import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
-import org.openmarkov.inference.variableElimination.tasks.VETemporalEvolution;
+import org.openmarkov.inference.variableElimination.tasks.*;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 import org.openmarkov.io.probmodel.writer.PGMXWriter;
 
@@ -311,9 +308,9 @@ public class NetsIOTest {
     }
 
     private void testCEAGlobalNetwork(ProbNet probNet, EvidenceCase evidenceCase) throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
-        VEEvaluation veceaGlobal = new VEEvaluation(probNet);
+        CEAnalysis veceaGlobal = new VECEAnalysis(probNet);
         veceaGlobal.setPreResolutionEvidence(evidenceCase);
-        assertNotNull((GTablePotential) veceaGlobal.getUtility());
+        assertNotNull(veceaGlobal.getGTablePotential());
         System.out.println("VECEAGlobal successful");
     }
 
@@ -333,10 +330,10 @@ public class NetsIOTest {
                     e.printStackTrace();
                 }
             }
-            VEEvaluation veceaDecision = new VEEvaluation(probNet);
+            CEAnalysis veceaDecision = new VECEAnalysis(probNet);
             veceaDecision.setPreResolutionEvidence(evidenceCase);
             veceaDecision.setDecisionVariable(decisionVariable);
-            assertNotNull((GTablePotential) veceaDecision.getUtility());
+            assertNotNull(veceaDecision.getGTablePotential());
         }
         System.out.println("VECEADecision successful");
     }
