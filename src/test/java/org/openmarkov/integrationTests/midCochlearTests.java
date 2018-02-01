@@ -14,7 +14,7 @@ import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.*;
 import org.openmarkov.core.model.network.potential.GTablePotential;
 import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.inference.temporalevaluation.TemporalEvaluation;
+import org.openmarkov.inference.temporalevaluation.tasks.TemporalEvaluation;
 import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 
