@@ -26,6 +26,7 @@ import org.openmarkov.core.model.network.potential.GTablePotential;
 import org.openmarkov.core.model.network.potential.StrategyTree;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.potential.treeadd.TreeADDBranch;
+import org.openmarkov.inference.temporalevaluation.tasks.TemporalEvaluation;
 import org.openmarkov.inference.variableElimination.tasks.*;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 
@@ -111,12 +112,12 @@ public class midChancellorTests {
 
     @Test
     public void veCEAGlobalTests() {
-        VECEAnalysis veceaGlobal;
+        CEAnalysis veceaGlobal;
         try {
             veceaGlobal = new VECEAnalysis(probNet);
             veceaGlobal.setPreResolutionEvidence(preResolutionEvidence);
 //			veceaGlobal.setUnicriterion(false);
-            CEP cep = (CEP) veceaGlobal.getGTablePotential().elementTable.get(0);
+            CEP cep = veceaGlobal.getCEP();
             Assert.assertTrue(cep.getNumIntervals() == 2);
 
             // First interval
@@ -475,11 +476,12 @@ public class midChancellorTests {
     @Test
     public void veTemporalEvaluationTest() {
         try {
-            VETemporalEvaluation veTemporalEvaluation = new VETemporalEvaluation(probNet, preResolutionEvidence, null);
-            TablePotential atemporalUtility = veTemporalEvaluation.getAtemporalUtility();
+            TemporalEvaluation temporalEvaluation = new TemporalEvaluation(probNet);
+            temporalEvaluation.setPreResolutionEvidence(preResolutionEvidence);
+            TablePotential atemporalUtility = temporalEvaluation.getAtemporalUtility();
             Assert.assertEquals(atemporalUtility.values[0], 0, deltaEquals);
 
-            List<TablePotential> potentialsPerSlice = veTemporalEvaluation.getUtilityPotentialsPerSlice();
+            List<TablePotential> potentialsPerSlice = temporalEvaluation.getUtilityPotentialsPerSlice();
             double[] costs_monotherapy = new double[21];
             double[] effectiveness_monotherapy = new double[21];
             double[] costs_combtherapy = new double[21];
@@ -511,11 +513,11 @@ public class midChancellorTests {
 
             //Asserting that Left Rieman summ is equals to a transition at the end
             probNet.getInferenceOptions().getTemporalOptions().setTransition(TransitionTime.END);
-            VEEvaluation veceaDecision = new VEEvaluation(probNet);
+            CEAnalysis veceaDecision = new VECEAnalysis(probNet);
             veceaDecision.setPreResolutionEvidence(preResolutionEvidence);
             veceaDecision.setDecisionVariable(decisionVariable);
 
-            GTablePotential ceaResult = (GTablePotential) veceaDecision.getUtility();
+            GTablePotential ceaResult = veceaDecision.getGTablePotential();
             double c_monotherapy_cea = ((CEP) (ceaResult.elementTable.get(0))).getCost(0);
             double e_monotherapy_cea = ((CEP) (ceaResult.elementTable.get(0))).getEffectiveness(0);
             double c_combtherapy_cea = ((CEP) (ceaResult.elementTable.get(1))).getCost(0);
@@ -533,10 +535,10 @@ public class midChancellorTests {
             c_combtherapy = UtilityOperations.applyRightRiemannSum(costs_combtherapy, 1);
             e_combtherapy = UtilityOperations.applyRightRiemannSum(effectiveness_combtherapy, 1);
 
-            veceaDecision = new VEEvaluation(probNet);
+            veceaDecision = new VECEAnalysis(probNet);
             veceaDecision.setPreResolutionEvidence(preResolutionEvidence);
             veceaDecision.setDecisionVariable(decisionVariable);
-            ceaResult = (GTablePotential) veceaDecision.getUtility();
+            ceaResult = veceaDecision.getGTablePotential();
             c_monotherapy_cea = ((CEP) (ceaResult.elementTable.get(0))).getCost(0);
             e_monotherapy_cea = ((CEP) (ceaResult.elementTable.get(0))).getEffectiveness(0);
             c_combtherapy_cea = ((CEP) (ceaResult.elementTable.get(1))).getCost(0);

@@ -49,57 +49,64 @@ public class NetsIOTest {
     @Before
     public void setUp() {
 //		//Already passed with VEPropagation
-//		skippedNetworkNames.add("BN-alarm.pgmx");
-//		skippedNetworkNames.add("BN-asia.pgmx");
-//		skippedNetworkNames.add("BN-catarnet.pgmx");
-//		skippedNetworkNames.add("BN-hepar.pgmx");
-//		skippedNetworkNames.add("BN-nasonet.pgmx");
-//		skippedNetworkNames.add("BN-one-disease.pgmx");
-//		skippedNetworkNames.add("BN-prostanet.pgmx");
-//		skippedNetworkNames.add("BN-two-diseases.pgmx");
-//
-//		//Already passed with load, save and reload
-//		skippedNetworkNames.add("DAN-3-test-problem.pgmx");
-//		skippedNetworkNames.add("DAN-4-test-problem.pgmx");
-//		skippedNetworkNames.add("DAN-5-test-problem.pgmx");
-//		skippedNetworkNames.add("DAN-6-test-problem.pgmx");
-//		skippedNetworkNames.add("DAN-7-test-problem.pgmx");
-//		skippedNetworkNames.add("DAN-arthronet.pgmx");
-//		skippedNetworkNames.add("DAN-dating.pgmx");
-//		skippedNetworkNames.add("DAN-decide-test-ce.pgmx");
-//		skippedNetworkNames.add("DAN-decide-test-ordered.pgmx");
-//		skippedNetworkNames.add("DAN-decide-test-symptom.pgmx");
-//		skippedNetworkNames.add("DAN-decide-test-with-restrictive-symptom.pgmx");
-//		skippedNetworkNames.add("DAN-decide-test-with-symptom.pgmx");
-//		skippedNetworkNames.add("DAN-decide-test.pgmx");
-//		skippedNetworkNames.add("DAN-delayed-result-of-test.pgmx");
-//		skippedNetworkNames.add("DAN-diabetes.pgmx");
-//		skippedNetworkNames.add("DAN-economic-mediastinet.pgmx");
-//		skippedNetworkNames.add("DAN-king.pgmx");
-//		skippedNetworkNames.add("DAN-mediastinet.pgmx");
-//		skippedNetworkNames.add("DAN-qale-mediastinet.pgmx");
-//		skippedNetworkNames.add("DAN-reactor.pgmx");
-//		skippedNetworkNames.add("DAN-test-always.pgmx");
-//		skippedNetworkNames.add("DAN-unordered-two-decs.pgmx");
-//		skippedNetworkNames.add("DAN-used-car-buyer.pgmx");
-//		skippedNetworkNames.add("LIMID-Nilsson-Lauritzen.pgmx");
-//		skippedNetworkNames.add("LIMID-decide-test-symptom.pgmx");
-//		skippedNetworkNames.add("Dec-POMDP-wireless-network.pgmx");
-//		skippedNetworkNames.add("POMDP-coffee-robot.pgmx");
+		skippedNetworkNames.add("BN-alarm.pgmx");
+		skippedNetworkNames.add("BN-asia.pgmx");
+		skippedNetworkNames.add("BN-catarnet.pgmx");
+		skippedNetworkNames.add("BN-hepar.pgmx");
+		skippedNetworkNames.add("BN-nasonet.pgmx");
+		skippedNetworkNames.add("BN-one-disease.pgmx");
+		skippedNetworkNames.add("BN-prostanet.pgmx");
+		skippedNetworkNames.add("BN-two-diseases.pgmx");
+        skippedNetworkNames.add("BN-two-diseases-naive.pgmx");
+        skippedNetworkNames.add("BN-noisy-or-four-parents.pgmx");
+
+		//Already passed with load, save and reload
+		skippedNetworkNames.add("DAN-3-test-problem.pgmx");
+		skippedNetworkNames.add("DAN-4-test-problem.pgmx");
+		skippedNetworkNames.add("DAN-5-test-problem.pgmx");
+		skippedNetworkNames.add("DAN-6-test-problem.pgmx");
+		skippedNetworkNames.add("DAN-7-test-problem.pgmx");
+		skippedNetworkNames.add("DAN-arthronet.pgmx");
+		skippedNetworkNames.add("DAN-dating.pgmx");
+		skippedNetworkNames.add("DAN-decide-test-ce.pgmx");
+		skippedNetworkNames.add("DAN-decide-test-ordered.pgmx");
+		skippedNetworkNames.add("DAN-decide-test-symptom.pgmx");
+		skippedNetworkNames.add("DAN-decide-test-with-restrictive-symptom.pgmx");
+		skippedNetworkNames.add("DAN-decide-test-with-symptom.pgmx");
+		skippedNetworkNames.add("DAN-decide-test.pgmx");
+        skippedNetworkNames.add("DAN-decide-test-2therapies.pgmx");
+		skippedNetworkNames.add("DAN-delayed-result-of-test.pgmx");
+		skippedNetworkNames.add("DAN-diabetes.pgmx");
+		skippedNetworkNames.add("DAN-economic-mediastinet.pgmx");
+		skippedNetworkNames.add("DAN-king.pgmx");
+		skippedNetworkNames.add("DAN-mediastinet.pgmx");
+        skippedNetworkNames.add("DAN-mediastinet-ce.pgmx");
+        skippedNetworkNames.add("DAN-symmetric-test1.pgmx");
+		skippedNetworkNames.add("DAN-qale-mediastinet.pgmx");
+		skippedNetworkNames.add("DAN-reactor.pgmx");
+		skippedNetworkNames.add("DAN-test-always.pgmx");
+        skippedNetworkNames.add("DAN-test-2therapies.pgmx");
+        skippedNetworkNames.add("DAN-unordered-two-decs.pgmx");
+		skippedNetworkNames.add("DAN-used-car-buyer.pgmx");
+		skippedNetworkNames.add("LIMID-Nilsson-Lauritzen.pgmx");
+		skippedNetworkNames.add("LIMID-decide-test-symptom.pgmx");
+		skippedNetworkNames.add("Dec-POMDP-wireless-network.pgmx");
+		skippedNetworkNames.add("POMDP-coffee-robot.pgmx");
 //
 ////		// TODO - Check CEA: Already passed with VEResolution, VEPropagation, VETemporalEvolution, VECEADecision, VECEAGlobal, VECEPSA
-//		skippedNetworkNames.add("ID-CEA-minimal.pgmx");
-//		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
-//		skippedNetworkNames.add("ID-CEA-test-2therapies-new-test.pgmx");
-//		skippedNetworkNames.add("ID-CEA-test-2therapies.pgmx");
-//		skippedNetworkNames.add("ID-decide-test-without-dummy-state.pgmx");
-//		skippedNetworkNames.add("ID-decide-test.pgmx");
-//		skippedNetworkNames.add("MID-Chancellor.pgmx");
-//		skippedNetworkNames.add("MID-hip-Briggs.pgmx");
-//		skippedNetworkNames.add("MID-dmhee-2.5.pgmx");
-//		skippedNetworkNames.add("MID-dmhee-3.5.pgmx");
-//		skippedNetworkNames.add("MID-dmhee-4.7.pgmx");
-//		skippedNetworkNames.add("MID-dmhee-4.8.pgmx");
+		skippedNetworkNames.add("ID-CEA-minimal.pgmx");
+		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
+		skippedNetworkNames.add("ID-CEA-test-2therapies-new-test.pgmx");
+		skippedNetworkNames.add("ID-CEA-test-2therapies.pgmx");
+		skippedNetworkNames.add("ID-decide-test-without-dummy-state.pgmx");
+		skippedNetworkNames.add("ID-decide-test.pgmx");
+        skippedNetworkNames.add("ID-Monty-Hall-spanish.pgmx");
+        skippedNetworkNames.add("MID-Chancellor.pgmx");
+		skippedNetworkNames.add("MID-hip-Briggs.pgmx");
+		skippedNetworkNames.add("MID-dmhee-2.5.pgmx");
+		skippedNetworkNames.add("MID-dmhee-3.5.pgmx");
+		skippedNetworkNames.add("MID-dmhee-4.7.pgmx");
+		skippedNetworkNames.add("MID-dmhee-4.8.pgmx");
 //
 //		// TODO - Failed on VEPropagation (Draw/Tie Policy ?)
         skippedNetworkNames.add("ID-delayed-result-of-test.pgmx");

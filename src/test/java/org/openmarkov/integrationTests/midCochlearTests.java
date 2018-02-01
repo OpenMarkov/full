@@ -9,12 +9,14 @@ import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.inference.TransitionTime;
+import org.openmarkov.core.inference.tasks.CEAnalysis;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.*;
 import org.openmarkov.core.model.network.potential.GTablePotential;
 import org.openmarkov.core.model.network.potential.TablePotential;
+import org.openmarkov.inference.temporalevaluation.tasks.TemporalEvaluation;
+import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
 import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
-import org.openmarkov.inference.variableElimination.tasks.VETemporalEvaluation;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 
 import java.io.InputStream;
@@ -51,13 +53,14 @@ public class midCochlearTests {
 
 	@Test public void veTemporalEvaluationTest() {
 		try {
-			VETemporalEvaluation veTemporalEvaluation = new VETemporalEvaluation(probNet, preResolutionEvidence, null);
-			TablePotential atemporalUtility = veTemporalEvaluation.getAtemporalUtility();
+			TemporalEvaluation temporalEvaluation = new TemporalEvaluation(probNet);
+			temporalEvaluation.setPreResolutionEvidence(preResolutionEvidence);
+			TablePotential atemporalUtility = temporalEvaluation.getAtemporalUtility();
 			Assert.assertEquals(0, atemporalUtility.values[0], deltaEquals);
 			Assert.assertEquals(21639.98, atemporalUtility.values[1], deltaEquals);
 			Assert.assertEquals(26100, atemporalUtility.values[2], deltaEquals);
 
-			List<TablePotential> potentialsPerSlice = veTemporalEvaluation.getUtilityPotentialsPerSlice();
+			List<TablePotential> potentialsPerSlice = temporalEvaluation.getUtilityPotentialsPerSlice();
 			double[] costs_UCI = new double[101];
 			double[] effectiveness_UCI = new double[101];
 			double[] costs_BCI_Sim = new double[101];
@@ -97,10 +100,10 @@ public class midCochlearTests {
 
 			//Asserting that Left Rieman summ is equals to a transition at the end
 			probNet.getInferenceOptions().getTemporalOptions().setTransition(TransitionTime.END);
-			VEEvaluation veceaDecision = new VEEvaluation(probNet);
+			CEAnalysis veceaDecision = new VECEAnalysis(probNet);
 			veceaDecision.setPreResolutionEvidence(preResolutionEvidence);
 			veceaDecision.setDecisionVariable(decisionVariable);
-			GTablePotential ceaResult = (GTablePotential) veceaDecision.getUtility();
+			GTablePotential ceaResult = veceaDecision.getGTablePotential();
 			double c_uci_cea = ((CEP) (ceaResult.elementTable.get(0))).getCost(0);
 			double e_uci_cea = ((CEP) (ceaResult.elementTable.get(0))).getEffectiveness(0);
 			double c_bciSim_cea = ((CEP) (ceaResult.elementTable.get(1))).getCost(0);
@@ -126,10 +129,10 @@ public class midCochlearTests {
 			c_BCI_Seq = UtilityOperations.applyRightRiemannSum(costs_BCI_Seq, 1) + atemporalUtility.values[2];
 			e_BCI_Seq = UtilityOperations.applyRightRiemannSum(effectiveness_BCI_Seq, 1);
 
-			veceaDecision = new VEEvaluation(probNet);
+			veceaDecision = new VECEAnalysis(probNet);
 			veceaDecision.setPreResolutionEvidence(preResolutionEvidence);
 			veceaDecision.setDecisionVariable(decisionVariable);
-			ceaResult = (GTablePotential) veceaDecision.getUtility();
+			ceaResult = veceaDecision.getGTablePotential();
 			c_uci_cea = ((CEP) (ceaResult.elementTable.get(0))).getCost(0);
 			e_uci_cea = ((CEP) (ceaResult.elementTable.get(0))).getEffectiveness(0);
 			c_bciSim_cea = ((CEP) (ceaResult.elementTable.get(1))).getCost(0);
