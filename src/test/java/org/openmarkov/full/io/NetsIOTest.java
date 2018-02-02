@@ -95,18 +95,24 @@ public class NetsIOTest {
 //
 ////		// TODO - Check CEA: Already passed with VEResolution, VEPropagation, VETemporalEvolution, VECEADecision, VECEAGlobal, VECEPSA
 		skippedNetworkNames.add("ID-CEA-minimal.pgmx");
-		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
+//		skippedNetworkNames.add("ID-CEA-test-2therapies-3criteria.pgmx");
 		skippedNetworkNames.add("ID-CEA-test-2therapies-new-test.pgmx");
 		skippedNetworkNames.add("ID-CEA-test-2therapies.pgmx");
 		skippedNetworkNames.add("ID-decide-test-without-dummy-state.pgmx");
 		skippedNetworkNames.add("ID-decide-test.pgmx");
         skippedNetworkNames.add("ID-Monty-Hall-spanish.pgmx");
         skippedNetworkNames.add("MID-Chancellor.pgmx");
-		skippedNetworkNames.add("MID-hip-Briggs.pgmx");
+        skippedNetworkNames.add("MID-Chancellor-new.pgmx");
+        skippedNetworkNames.add("MID-Chancellor-corrected.pgmx");
+        skippedNetworkNames.add("MID-mammography.pgmx");
+        skippedNetworkNames.add("MID-hip-Briggs.pgmx");
 		skippedNetworkNames.add("MID-dmhee-2.5.pgmx");
 		skippedNetworkNames.add("MID-dmhee-3.5.pgmx");
 		skippedNetworkNames.add("MID-dmhee-4.7.pgmx");
 		skippedNetworkNames.add("MID-dmhee-4.8.pgmx");
+        skippedNetworkNames.add("MID-HPV-without-supervalue.pgmx");
+
+
 //
 //		// TODO - Failed on VEPropagation (Draw/Tie Policy ?)
         skippedNetworkNames.add("ID-delayed-result-of-test.pgmx");
@@ -363,13 +369,14 @@ public class NetsIOTest {
             }
             try {
                 VECEPSA vecepsa = null;
-                try {
-                    vecepsa = new VECEPSA(probNet, evidenceCase, decisionVariable, numSimulations, useMultithreading);
-                } catch (UnexpectedInferenceException e) {
-                    e.printStackTrace();
-                }
-                assertNotNull(vecepsa.getCeaResults());
-            } catch (NotEvaluableNetworkException | IncompatibleEvidenceException e) {
+                vecepsa = new VECEPSA(probNet);
+                vecepsa.setPreResolutionEvidence(evidenceCase);
+                vecepsa.setDecisionVariable(decisionVariable);
+                vecepsa.setNumSimulations(numSimulations);
+                vecepsa.setUseMultithreading(useMultithreading);
+                assertNotNull(vecepsa.getCEPPotentials());
+
+            } catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
                 e.printStackTrace();
             }
 
@@ -383,9 +390,9 @@ public class NetsIOTest {
         vePropagation.setPreResolutionEvidence(evidenceCase);
         HashMap<Variable, TablePotential> posteriorValues = vePropagation.getPosteriorValues();
         for (Variable variable : probNet.getVariables()) {
-//			if(!variable.getVariableType().equals(VariableType.NUMERIC)) {
+            if (!variable.getVariableType().equals(VariableType.NUMERIC)) {
             assertNotNull(posteriorValues.get(variable));
-//			}
+            }
         }
         System.out.println("VEPropagation successful");
     }
