@@ -109,7 +109,7 @@ public class midCochlearTests {
 			CEAnalysis veceaDecision = new VECEAnalysis(probNet);
 			veceaDecision.setPreResolutionEvidence(preResolutionEvidence);
 			veceaDecision.setDecisionVariable(decisionVariable);
-			GTablePotential ceaResult = veceaDecision.getGTablePotential();
+			GTablePotential ceaResult = veceaDecision.getUtility();
 			double c_uci_cea = ((CEP) (ceaResult.elementTable.get(0))).getCost(0);
 			double e_uci_cea = ((CEP) (ceaResult.elementTable.get(0))).getEffectiveness(0);
 			double c_bciSim_cea = ((CEP) (ceaResult.elementTable.get(1))).getCost(0);
@@ -138,7 +138,7 @@ public class midCochlearTests {
 			veceaDecision = new VECEAnalysis(probNet);
 			veceaDecision.setPreResolutionEvidence(preResolutionEvidence);
 			veceaDecision.setDecisionVariable(decisionVariable);
-			ceaResult = veceaDecision.getGTablePotential();
+			ceaResult = veceaDecision.getUtility();
 			c_uci_cea = ((CEP) (ceaResult.elementTable.get(0))).getCost(0);
 			e_uci_cea = ((CEP) (ceaResult.elementTable.get(0))).getEffectiveness(0);
 			c_bciSim_cea = ((CEP) (ceaResult.elementTable.get(1))).getCost(0);

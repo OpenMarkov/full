@@ -23,7 +23,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openmarkov.core.exception.*;
 import org.openmarkov.core.inference.tasks.CEAnalysis;
-import org.openmarkov.core.model.network.potential.GTablePotential;
 import org.openmarkov.gui.dialog.io.NetsIO;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.*;
@@ -330,7 +329,7 @@ public class NetsIOTest {
     private void testCEAGlobalNetwork(ProbNet probNet, EvidenceCase evidenceCase) throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
         CEAnalysis veceaGlobal = new VECEAnalysis(probNet);
         veceaGlobal.setPreResolutionEvidence(evidenceCase);
-        assertNotNull(veceaGlobal.getGTablePotential());
+        assertNotNull(veceaGlobal.getUtility());
         System.out.println("VECEAGlobal successful");
     }
 
@@ -353,7 +352,7 @@ public class NetsIOTest {
             CEAnalysis veceaDecision = new VECEAnalysis(probNet);
             veceaDecision.setPreResolutionEvidence(evidenceCase);
             veceaDecision.setDecisionVariable(decisionVariable);
-            assertNotNull(veceaDecision.getGTablePotential());
+            assertNotNull(veceaDecision.getUtility());
         }
         System.out.println("VECEADecision successful");
     }

@@ -188,7 +188,7 @@ public class idCEATest2therapiesTests {
             veceaGlobal = new VECEAnalysis(probNet);
             veceaGlobal.setPreResolutionEvidence(preResolutionEvidence);
 
-            CEP cep = (CEP) (veceaGlobal.getGTablePotential()).elementTable.get(0);
+            CEP cep = (CEP) (veceaGlobal.getUtility()).elementTable.get(0);
             Assert.assertTrue(cep.getNumIntervals() == 3);
 
             // First interval
@@ -236,7 +236,7 @@ public class idCEATest2therapiesTests {
             veceaDecision = new VECEAnalysis(probNet);
             veceaDecision.setPreResolutionEvidence(evidenceCaseWithScenario);
             veceaDecision.setDecisionVariable(decisionVariable);
-            GTablePotential cepPotential = veceaDecision.getGTablePotential();
+            GTablePotential cepPotential = veceaDecision.getUtility();
             // There are three therapies (no, therapy 1, therapy 2)
             Assert.assertTrue(cepPotential.elementTable.size() == 3);
 

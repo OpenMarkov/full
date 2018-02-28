@@ -148,7 +148,7 @@ public class midChancellorTests {
 //			veceaDecision.setUnicriterion(false);
             veceaDecision.setPreResolutionEvidence(evidenceCaseWithScenario);
             veceaDecision.setDecisionVariable(decisionVariable);
-            GTablePotential cepPotential = veceaDecision.getGTablePotential();
+            GTablePotential cepPotential = veceaDecision.getUtility();
             // There are two therapy types (monotherapy, combination therapy)
             Assert.assertTrue(cepPotential.elementTable.size() == 2);
 
@@ -515,7 +515,7 @@ public class midChancellorTests {
             veceaDecision.setPreResolutionEvidence(preResolutionEvidence);
             veceaDecision.setDecisionVariable(decisionVariable);
 
-            GTablePotential ceaResult = veceaDecision.getGTablePotential();
+            GTablePotential ceaResult = veceaDecision.getUtility();
             double c_monotherapy_cea = ((CEP) (ceaResult.elementTable.get(0))).getCost(0);
             double e_monotherapy_cea = ((CEP) (ceaResult.elementTable.get(0))).getEffectiveness(0);
             double c_combtherapy_cea = ((CEP) (ceaResult.elementTable.get(1))).getCost(0);
@@ -536,7 +536,7 @@ public class midChancellorTests {
             veceaDecision = new VECEAnalysis(probNet);
             veceaDecision.setPreResolutionEvidence(preResolutionEvidence);
             veceaDecision.setDecisionVariable(decisionVariable);
-            ceaResult = veceaDecision.getGTablePotential();
+            ceaResult = veceaDecision.getUtility();
             c_monotherapy_cea = ((CEP) (ceaResult.elementTable.get(0))).getCost(0);
             e_monotherapy_cea = ((CEP) (ceaResult.elementTable.get(0))).getEffectiveness(0);
             c_combtherapy_cea = ((CEP) (ceaResult.elementTable.get(1))).getCost(0);
