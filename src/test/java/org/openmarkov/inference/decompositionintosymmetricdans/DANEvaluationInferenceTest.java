@@ -13,42 +13,25 @@ import org.junit.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
-import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
-import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.StrategyTree;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANOperations;
-import org.openmarkov.io.probmodel.reader.PGMXReader;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class DANEvaluationInferenceTest {
+public abstract class DANEvaluationInferenceTest extends DANInferenceTest {
 
 	@Before
 	public void setUp() throws Exception {
 	}
 
-	public ProbNet loadDAN(String nameSuffix) {
-		String networkName = "networks/dan/DAN-" + nameSuffix + ".pgmx";
-		InputStream file = getClass().getClassLoader().getResourceAsStream(
-				networkName);
 
-		PGMXReader pgmxReader = new PGMXReader();
-		ProbNetInfo probNetInfo = null;
-		try {
-			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
-		} catch (ParserException e) {
-			e.printStackTrace();
-		}
-		return probNetInfo.getProbNet();
-	}
 
 	/*//@Test
 	public void testDiabetesDANCE() 
@@ -77,14 +60,8 @@ public abstract class DANEvaluationInferenceTest {
 	protected void testDANEvaluation(DANEvaluation eval,ProbNet network, double expectedEU,String ...namesVariablesIntervention) {
 		//DANExactAlgorithm dsd = new DANDecompositionAlgorithm();
 		TablePotential globalUtility = null;
-		try {
-			globalUtility = eval.getUtility();
-		} catch (UnexpectedInferenceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//Only debugging
-
+		globalUtility = eval.getUtility();
+				
 		//String strIntervention = globalUtility.interventions[0].toStringForGraphviz(network);
 		Assert.assertEquals(expectedEU, globalUtility.getFirstValue(), 0.0001);
 		StrategyTree[] inter = globalUtility.strategyTrees;
