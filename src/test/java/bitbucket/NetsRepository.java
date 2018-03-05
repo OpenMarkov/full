@@ -38,7 +38,7 @@ public class NetsRepository {
 	/**
 	 * Full path to the networks repository in bitbucket 
 	 */
-	private final String rootNetworksDirectory = "https://bitbucket.org/cisiad/org.probmodelxml.networks/raw/default/";
+	private final String rootNetworksDirectory = "https://bitbucket.org/cisiad/org.probmodelxml.networks/raw/master/";
 	/**
 	 * Bitbucket's API with the JSON in which we have all the files in the directory
 	 */
