@@ -25,7 +25,7 @@ public class Util {
 	
 	/**
 	 * Reads all the networks from the repository that meet the restriction given in the parameter "networkType"
-	 * @param networkType. <code>NetworkType</code>
+	 * @param networkType <code>NetworkType</code>
 	 * @return <code>List</code> of <code>ProbNet</code>s
 	 */
 	public static List<ProbNet> readProbNetsDB(NetworkType networkType) {

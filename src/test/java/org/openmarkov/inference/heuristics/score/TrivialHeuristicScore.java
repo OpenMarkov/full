@@ -52,10 +52,10 @@ public class TrivialHeuristicScore extends Thread implements EliminationHeuristi
 	 * This constructor is to be used internally to evaluate networks in parallel.<p>
 	 * A single instance of this class applies one <code>EliminationHeuristic</code> to one <code>ProbNet</code> and 
 	 * stores the result in <code>scores[scoreIndex]</code>
-	 * @param scores. <code>double[]</code>
-	 * @param scoreIndex. <code>double</code> 
-	 * @param probNet. <code>ProbNet</code> 
-	 * @param heuristic. <code>EliminationHeuristic</code>
+	 * @param scores <code>double[]</code>
+	 * @param scoreIndex <code>double</code>
+	 * @param probNet <code>ProbNet</code>
+	 * @param heuristic <code>EliminationHeuristic</code>
 	 * @throws WrongGraphStructureException 
 	 */
 	private TrivialHeuristicScore(double[] scores, int scoreIndex, ProbNet probNet,	EliminationHeuristic heuristic) throws WrongGraphStructureException {

@@ -16,8 +16,8 @@ import org.openmarkov.core.model.network.ProbNet;
 public interface EliminationHeuristicScore {
 
 	/**
-	 * @param probNet. <code>ProbNet</code>
-	 * @param heuristicsClasses. Set of heuristics to test. <code>Class[]</code>
+	 * @param probNet <code>ProbNet</code>
+	 * @param heuristicsClasses Set of heuristics to test. <code>Class[]</code>
 	 * @return A measure of the quality of each heuristic. The bigger score is better. <code>double[]</code>
 	 * @throws WrongGraphStructureException 
 	 */
