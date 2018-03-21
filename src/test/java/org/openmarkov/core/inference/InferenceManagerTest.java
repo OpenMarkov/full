@@ -15,9 +15,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class InferenceManagerTest {
+	private final static String VariableEliminationName = "VariableElimination";
 	private InferenceManager inferenceManager;
 	private ProbNet probNet;
-	private final static String VariableEliminationName = "VariableElimination";
 
 	@Before public void setUp() throws Exception {
 		inferenceManager = new InferenceManager();
