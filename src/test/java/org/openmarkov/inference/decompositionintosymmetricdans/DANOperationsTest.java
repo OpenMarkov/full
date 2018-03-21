@@ -8,27 +8,19 @@
 package org.openmarkov.inference.decompositionintosymmetricdans;
 
 import junit.framework.Assert;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANOperations;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
-import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.ParserException;
-import org.openmarkov.core.exception.UnexpectedInferenceException;
-import org.openmarkov.core.exception.WriterException;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.graph.Link;
 import org.openmarkov.core.model.network.Node;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
-import org.openmarkov.core.model.network.factory.DANFactory;
 import org.openmarkov.core.model.network.potential.ExactDistrPotential;
 import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.*;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANOperations;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
-import org.openmarkov.io.probmodel.writer.PGMXWriter;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -36,185 +28,175 @@ import java.util.List;
 
 public class DANOperationsTest {
 
-    private ProbNet danTest2Therapies;
-    private ProbNet danDecideTest2TherapiesNoCost;
-    private ProbNet danDecideTest2TherapiesNoCostSymmetrized;
-    private ProbNet danDiabetes;
-    private ProbNet danDiabetesCE;
+	private ProbNet danTest2Therapies;
+	private ProbNet danDecideTest2TherapiesNoCost;
+	private ProbNet danDecideTest2TherapiesNoCostSymmetrized;
+	private ProbNet danDiabetes;
+	private ProbNet danDiabetesCE;
 
-    @Before
-    public void setUp(){
-        String networkName;
-        InputStream file;
-        PGMXReader pgmxReader = new PGMXReader();
-        ProbNetInfo probNetInfo;
-        try {
-            // Initialize danTest2Therapies network
-            networkName = "networks/dan/DAN-test-2therapies.pgmx";
-            file = getClass().getClassLoader ().getResourceAsStream (networkName);
-            danTest2Therapies = pgmxReader.loadProbNet(networkName, file);
+	@Before public void setUp() {
+		String networkName;
+		InputStream file;
+		PGMXReader pgmxReader = new PGMXReader();
+		ProbNetInfo probNetInfo;
+		try {
+			// Initialize danTest2Therapies network
+			networkName = "networks/dan/DAN-test-2therapies.pgmx";
+			file = getClass().getClassLoader().getResourceAsStream(networkName);
+			danTest2Therapies = pgmxReader.loadProbNet(networkName, file);
 
-            // Initialize danDecideTest2TherapiesNoCost network
-            networkName = "networks/dan/DAN-decide-test-2therapies-no-cost.pgmx";
-            file = getClass().getClassLoader ().getResourceAsStream (networkName);
-            danDecideTest2TherapiesNoCost = pgmxReader.loadProbNet(networkName, file);
+			// Initialize danDecideTest2TherapiesNoCost network
+			networkName = "networks/dan/DAN-decide-test-2therapies-no-cost.pgmx";
+			file = getClass().getClassLoader().getResourceAsStream(networkName);
+			danDecideTest2TherapiesNoCost = pgmxReader.loadProbNet(networkName, file);
 
-            // Initialize danDecideTest2TherapiesNoCost network
-            networkName = "networks/dan/DAN-decide-test-2therapies-no-cost-symmetrized.pgmx";
-            file = getClass().getClassLoader ().getResourceAsStream (networkName);
-            danDecideTest2TherapiesNoCostSymmetrized = pgmxReader.loadProbNet(networkName, file);
+			// Initialize danDecideTest2TherapiesNoCost network
+			networkName = "networks/dan/DAN-decide-test-2therapies-no-cost-symmetrized.pgmx";
+			file = getClass().getClassLoader().getResourceAsStream(networkName);
+			danDecideTest2TherapiesNoCostSymmetrized = pgmxReader.loadProbNet(networkName, file);
 
-            // Initialize danDiabetes network
-            networkName = "networks/dan/DAN-diabetes.pgmx";
-            file = getClass().getClassLoader ().getResourceAsStream (networkName);
-            danDiabetes = pgmxReader.loadProbNet(networkName, file);
-            
-            // Initialize ID-A-D1-D2 network
-            networkName = "networks/dan/DAN-diabetes-CE.pgmx";
-            file = getClass().getClassLoader ().getResourceAsStream (networkName);
-            danDiabetesCE = pgmxReader.loadProbNet(networkName, file);
-            
-            
-        } catch (ParserException e) {
-            e.printStackTrace();
-        }
-    }
+			// Initialize danDiabetes network
+			networkName = "networks/dan/DAN-diabetes.pgmx";
+			file = getClass().getClassLoader().getResourceAsStream(networkName);
+			danDiabetes = pgmxReader.loadProbNet(networkName, file);
 
-    @Test
-    public void instantiateTest(){
+			// Initialize ID-A-D1-D2 network
+			networkName = "networks/dan/DAN-diabetes-CE.pgmx";
+			file = getClass().getClassLoader().getResourceAsStream(networkName);
+			danDiabetesCE = pgmxReader.loadProbNet(networkName, file);
 
+		} catch (ParserException e) {
+			e.printStackTrace();
+		}
+	}
 
-        try {
-            ProbNet probNet = danTest2Therapies;
+	@Test public void instantiateTest() {
 
-            // Instantiate the network for Disease
-            Variable variableToInstantiate = probNet.getVariable("Disease");
-            List<ProbNet> instantiatedNetworks = DANOperations.instantiate(probNet, variableToInstantiate);
+		try {
+			ProbNet probNet = danTest2Therapies;
 
-            // Assert that there are two instantiated networks (one per each state of disease)
-            Assert.assertEquals(instantiatedNetworks.size(),2);
-            double [] expectedPotential;
-            double [] obtainedPotential;
-            Node diseaseNode;
-            Node testNode;
-            Node effectivenessNode;
+			// Instantiate the network for Disease
+			Variable variableToInstantiate = probNet.getVariable("Disease");
+			List<ProbNet> instantiatedNetworks = DANOperations.instantiate(probNet, variableToInstantiate);
 
-            // TESTS FOR DISEASE = ABSENT
-            diseaseNode = instantiatedNetworks.get(0).getNode("Disease");
-            testNode = instantiatedNetworks.get(0).getNode("Test");
-            effectivenessNode = instantiatedNetworks.get(0).getNode("Effectiveness");
+			// Assert that there are two instantiated networks (one per each state of disease)
+			Assert.assertEquals(instantiatedNetworks.size(), 2);
+			double[] expectedPotential;
+			double[] obtainedPotential;
+			Node diseaseNode;
+			Node testNode;
+			Node effectivenessNode;
 
-            // Check disease potential
-            expectedPotential = new double[]{0.86 ,0.14};
-            obtainedPotential = ((TablePotential)diseaseNode.getPotentials().get(0)).getValues();
-            Assert.assertTrue(Arrays.equals(obtainedPotential, expectedPotential));
+			// TESTS FOR DISEASE = ABSENT
+			diseaseNode = instantiatedNetworks.get(0).getNode("Disease");
+			testNode = instantiatedNetworks.get(0).getNode("Test");
+			effectivenessNode = instantiatedNetworks.get(0).getNode("Effectiveness");
 
-            // Check Test potential. Assert that the potential of Test is now 0.07, 0.93 for the first instantiation
-            expectedPotential = new double[]{0.93, 0.07};
-            obtainedPotential = ((TablePotential)testNode.getPotentials().get(0)).getValues();
-            Assert.assertTrue(Arrays.equals(obtainedPotential, expectedPotential));
+			// Check disease potential
+			expectedPotential = new double[] { 0.86, 0.14 };
+			obtainedPotential = ((TablePotential) diseaseNode.getPotentials().get(0)).getValues();
+			Assert.assertTrue(Arrays.equals(obtainedPotential, expectedPotential));
 
-            // Check Effectiveness potential. Assert that the potential is now 10,9.9,9.3
-            expectedPotential = new double[]{10, 9.9, 9.3};
-            obtainedPotential = ((ExactDistrPotential)effectivenessNode.getPotentials().get(0)).getValues();
-            Assert.assertTrue(Arrays.equals(obtainedPotential, expectedPotential));
+			// Check Test potential. Assert that the potential of Test is now 0.07, 0.93 for the first instantiation
+			expectedPotential = new double[] { 0.93, 0.07 };
+			obtainedPotential = ((TablePotential) testNode.getPotentials().get(0)).getValues();
+			Assert.assertTrue(Arrays.equals(obtainedPotential, expectedPotential));
 
-            // Check that the links from disease to test and effectiveness are removed
-            Assert.assertTrue(instantiatedNetworks.get(0).getLinks(diseaseNode).isEmpty());
+			// Check Effectiveness potential. Assert that the potential is now 10,9.9,9.3
+			expectedPotential = new double[] { 10, 9.9, 9.3 };
+			obtainedPotential = ((ExactDistrPotential) effectivenessNode.getPotentials().get(0)).getValues();
+			Assert.assertTrue(Arrays.equals(obtainedPotential, expectedPotential));
 
-            // TESTS FOR DISEASE = PRESENT
-            diseaseNode = instantiatedNetworks.get(1).getNode("Disease");
-            testNode = instantiatedNetworks.get(1).getNode("Test");
-            effectivenessNode = instantiatedNetworks.get(1).getNode("Effectiveness");
+			// Check that the links from disease to test and effectiveness are removed
+			Assert.assertTrue(instantiatedNetworks.get(0).getLinks(diseaseNode).isEmpty());
 
-            // Tests for disease = present
-            expectedPotential = new double[]{0.86 ,0.14};
-            obtainedPotential = ((TablePotential)diseaseNode.getPotentials().get(0)).getValues();
-            Assert.assertTrue(Arrays.equals(obtainedPotential, expectedPotential));
+			// TESTS FOR DISEASE = PRESENT
+			diseaseNode = instantiatedNetworks.get(1).getNode("Disease");
+			testNode = instantiatedNetworks.get(1).getNode("Test");
+			effectivenessNode = instantiatedNetworks.get(1).getNode("Effectiveness");
 
-            // Assert that the potential of Test is now 0.1,0.9 for the second instantiation
-            expectedPotential = new double[]{0.1, 0.9};
-            obtainedPotential = ((TablePotential)testNode.getPotentials().get(0)).getValues();
-            Assert.assertTrue(Arrays.equals(obtainedPotential, expectedPotential));
+			// Tests for disease = present
+			expectedPotential = new double[] { 0.86, 0.14 };
+			obtainedPotential = ((TablePotential) diseaseNode.getPotentials().get(0)).getValues();
+			Assert.assertTrue(Arrays.equals(obtainedPotential, expectedPotential));
 
-            // Check Effectiveness potential. Assert that the potential is now 1.2, 4, 6.5
-            expectedPotential = new double[]{1.2, 4, 6.5};
-            obtainedPotential = ((ExactDistrPotential)effectivenessNode.getPotentials().get(0)).getValues();
-            Assert.assertTrue(Arrays.equals(obtainedPotential, expectedPotential));
+			// Assert that the potential of Test is now 0.1,0.9 for the second instantiation
+			expectedPotential = new double[] { 0.1, 0.9 };
+			obtainedPotential = ((TablePotential) testNode.getPotentials().get(0)).getValues();
+			Assert.assertTrue(Arrays.equals(obtainedPotential, expectedPotential));
 
-            // Check that the links from disease to test and effectiveness are removed
-            Assert.assertTrue(instantiatedNetworks.get(1).getLinks(diseaseNode).isEmpty());
+			// Check Effectiveness potential. Assert that the potential is now 1.2, 4, 6.5
+			expectedPotential = new double[] { 1.2, 4, 6.5 };
+			obtainedPotential = ((ExactDistrPotential) effectivenessNode.getPotentials().get(0)).getValues();
+			Assert.assertTrue(Arrays.equals(obtainedPotential, expectedPotential));
+
+			// Check that the links from disease to test and effectiveness are removed
+			Assert.assertTrue(instantiatedNetworks.get(1).getLinks(diseaseNode).isEmpty());
 
             /*
             PGMXWriter pgmxWriter = new PGMXWriter();
             pgmxWriter.writeProbNet("D://Instantiated-disease-absent_DAN-Test2Therapies.pgmx", instantiatedNetworks.get(0));
             pgmxWriter.writeProbNet("D://Instantiated-disease-present_DAN-Test2Therapies.pgmx", instantiatedNetworks.get(1));
             */
-        } catch (NodeNotFoundException e) {
-            e.printStackTrace();
-        }
-//        catch (WriterException e) {
-//            e.printStackTrace();
-//        }
-    }
+		} catch (NodeNotFoundException e) {
+			e.printStackTrace();
+		}
+		//        catch (WriterException e) {
+		//            e.printStackTrace();
+		//        }
+	}
 
-    @Test
-    public void prioritizeTest(){
-        try {
-            Variable urineTestVariable = danDiabetes.getVariable("Dec: Urine test");
-            Variable bloodTestVariable = danDiabetes.getVariable("Dec: Blood Test");
-            Node urineTestNode, bloodTestNode;
-            ProbNet prioritizedNetwork;
+	@Test public void prioritizeTest() {
+		try {
+			Variable urineTestVariable = danDiabetes.getVariable("Dec: Urine test");
+			Variable bloodTestVariable = danDiabetes.getVariable("Dec: Blood Test");
+			Node urineTestNode, bloodTestNode;
+			ProbNet prioritizedNetwork;
 
-            // Check the prioritization of urine test decision
-            prioritizedNetwork = DANOperations.prioritize(danDiabetes, urineTestVariable);
-            urineTestNode = prioritizedNetwork.getNode(urineTestVariable);
-            bloodTestNode = prioritizedNetwork.getNode(bloodTestVariable);
-            Link<Node> link = prioritizedNetwork.getLink(urineTestNode, bloodTestNode, true);
-            Assert.assertNotNull(link);
-            Assert.assertEquals(link.getNode1().getVariable(), urineTestVariable);
-            Assert.assertEquals(link.getNode2().getVariable(), bloodTestVariable);
+			// Check the prioritization of urine test decision
+			prioritizedNetwork = DANOperations.prioritize(danDiabetes, urineTestVariable);
+			urineTestNode = prioritizedNetwork.getNode(urineTestVariable);
+			bloodTestNode = prioritizedNetwork.getNode(bloodTestVariable);
+			Link<Node> link = prioritizedNetwork.getLink(urineTestNode, bloodTestNode, true);
+			Assert.assertNotNull(link);
+			Assert.assertEquals(link.getNode1().getVariable(), urineTestVariable);
+			Assert.assertEquals(link.getNode2().getVariable(), bloodTestVariable);
 
-            // Check the prioritization of blood test decision
-            prioritizedNetwork = DANOperations.prioritize(danDiabetes, bloodTestVariable);
-            bloodTestNode = prioritizedNetwork.getNode(bloodTestVariable);
-            urineTestNode = prioritizedNetwork.getNode(urineTestVariable);
-            link = prioritizedNetwork .getLink(bloodTestNode, urineTestNode, true);
-            Assert.assertNotNull(link);
-            Assert.assertEquals(link.getNode1().getVariable(), bloodTestVariable);
-            Assert.assertEquals(link.getNode2().getVariable(), urineTestVariable);
+			// Check the prioritization of blood test decision
+			prioritizedNetwork = DANOperations.prioritize(danDiabetes, bloodTestVariable);
+			bloodTestNode = prioritizedNetwork.getNode(bloodTestVariable);
+			urineTestNode = prioritizedNetwork.getNode(urineTestVariable);
+			link = prioritizedNetwork.getLink(bloodTestNode, urineTestNode, true);
+			Assert.assertNotNull(link);
+			Assert.assertEquals(link.getNode1().getVariable(), bloodTestVariable);
+			Assert.assertEquals(link.getNode2().getVariable(), urineTestVariable);
 
-        } catch (NodeNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+		} catch (NodeNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 
-        
+	@Test public void getNextDecisionsTest() {
+		List<Node> nextDecisions = DANOperations.getNextDecisions(danDecideTest2TherapiesNoCost);
+		Assert.assertEquals(nextDecisions.size(), 1);
 
-    @Test
-    public void getNextDecisionsTest(){
-        List<Node> nextDecisions = DANOperations.getNextDecisions(danDecideTest2TherapiesNoCost);
-        Assert.assertEquals(nextDecisions.size(), 1);
+		nextDecisions = DANOperations.getNextDecisions(danDecideTest2TherapiesNoCostSymmetrized);
+		Assert.assertEquals(nextDecisions.size(), 1);
 
-        nextDecisions = DANOperations.getNextDecisions(danDecideTest2TherapiesNoCostSymmetrized);
-        Assert.assertEquals(nextDecisions.size(), 1);
+		nextDecisions = DANOperations.getNextDecisions(danDiabetes);
+		Assert.assertEquals(nextDecisions.size(), 2);
+	}
 
-        nextDecisions = DANOperations.getNextDecisions(danDiabetes);
-        Assert.assertEquals(nextDecisions.size(), 2);
-    }
+	@Test public void isSymmetricTest() {
+		Assert.assertTrue(DANOperations.isSymmetric(danTest2Therapies, null));
+		Assert.assertFalse(DANOperations.isSymmetric(danDecideTest2TherapiesNoCost, null));
+		Assert.assertFalse(DANOperations.isSymmetric(danDiabetes, null));
 
-    @Test
-    public void isSymmetricTest() { 
-        Assert.assertTrue(DANOperations.isSymmetric(danTest2Therapies,null));
-        Assert.assertFalse(DANOperations.isSymmetric(danDecideTest2TherapiesNoCost,null));
-        Assert.assertFalse(DANOperations.isSymmetric(danDiabetes,null));
+		//Assert.assertTrue(DANOperations.isSymmetric(danDecideTest2TherapiesNoCostSymmetrized));
+	}
 
-        //Assert.assertTrue(DANOperations.isSymmetric(danDecideTest2TherapiesNoCostSymmetrized));
-    }
-    
-    @Test
-    public void ceaIDAD1D2() {
-    	
-    }
-    
+	@Test public void ceaIDAD1D2() {
+
+	}
+
 }

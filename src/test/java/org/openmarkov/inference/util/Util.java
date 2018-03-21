@@ -7,11 +7,7 @@
 
 package org.openmarkov.inference.util;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
+import bitbucket.NetsRepository;
 import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.potential.Potential;
@@ -19,26 +15,30 @@ import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.type.NetworkType;
 import org.openmarkov.io.probmodel.reader.PGMXReader;
 
-import bitbucket.NetsRepository;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Util {
-	
+
 	/**
 	 * Reads all the networks from the repository that meet the restriction given in the parameter "networkType"
+	 *
 	 * @param networkType <code>NetworkType</code>
 	 * @return <code>List</code> of <code>ProbNet</code>s
 	 */
 	public static List<ProbNet> readProbNetsDB(NetworkType networkType) {
 
 		NetsRepository netsRepository = new NetsRepository();
-    	List<URL> bayesianNetworksURLList = netsRepository.getNetworks(networkType);
-    	PGMXReader reader = new PGMXReader();
-    	List<ProbNet> probNetsDB = new ArrayList<ProbNet>();
-    	List<String> wrongNetworksNames = new ArrayList<String>();
-    	int readingErrors = 0;
-    	for (URL bayesianNetworkURL : bayesianNetworksURLList) {
-    		ProbNet probNet = null;
-    		String fileName = null;
+		List<URL> bayesianNetworksURLList = netsRepository.getNetworks(networkType);
+		PGMXReader reader = new PGMXReader();
+		List<ProbNet> probNetsDB = new ArrayList<ProbNet>();
+		List<String> wrongNetworksNames = new ArrayList<String>();
+		int readingErrors = 0;
+		for (URL bayesianNetworkURL : bayesianNetworksURLList) {
+			ProbNet probNet = null;
+			String fileName = null;
 			try {
 				fileName = bayesianNetworkURL.getFile();
 				probNet = reader.loadProbNet(fileName, bayesianNetworkURL.openStream());
@@ -47,36 +47,36 @@ public class Util {
 				readingErrors++;
 				wrongNetworksNames.add(fileName);
 			}
-    	}
-    	if (readingErrors > 0) {
-    		if (probNetsDB.isEmpty()) {
-    			System.err.println("No Bayesian networks for testing due to reading errors.");
-    		} else {
-    			System.err.println("Some errors reading these networks:");
-    		}
-    		System.err.println();
+		}
+		if (readingErrors > 0) {
+			if (probNetsDB.isEmpty()) {
+				System.err.println("No Bayesian networks for testing due to reading errors.");
+			} else {
+				System.err.println("Some errors reading these networks:");
+			}
+			System.err.println();
 			for (String wrongNetworkName : wrongNetworksNames) {
 				System.err.println(wrongNetworkName);
 			}
-    	} else {
-    		if (probNetsDB.isEmpty()) {
-    			System.err.println("No networks found in repository.");
-    		}
-    	}
-    	// Order the networks, from smallest to largest number of variables
-    	int numNetworks = probNetsDB.size();
-    	ProbNet aux;
-    	for (int i = 0; i < numNetworks - 1; i++) {
-    		for (int j = i+1; j < numNetworks; j++) {
-    			if (probNetsDB.get(i).getVariables().size() > probNetsDB.get(j).getVariables().size()) {
-    				aux = probNetsDB.get(j);
-    				probNetsDB.set(j, probNetsDB.get(i));
-    				probNetsDB.set(i, aux);
-    			}
-    		}
-    	}
-    	
-    	return probNetsDB;
+		} else {
+			if (probNetsDB.isEmpty()) {
+				System.err.println("No networks found in repository.");
+			}
+		}
+		// Order the networks, from smallest to largest number of variables
+		int numNetworks = probNetsDB.size();
+		ProbNet aux;
+		for (int i = 0; i < numNetworks - 1; i++) {
+			for (int j = i + 1; j < numNetworks; j++) {
+				if (probNetsDB.get(i).getVariables().size() > probNetsDB.get(j).getVariables().size()) {
+					aux = probNetsDB.get(j);
+					probNetsDB.set(j, probNetsDB.get(i));
+					probNetsDB.set(i, aux);
+				}
+			}
+		}
+
+		return probNetsDB;
 	}
 
 	// TODO - Remove this method

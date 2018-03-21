@@ -27,36 +27,32 @@ import static org.junit.Assert.assertTrue;
 public class MulticriteriaEditTest {
 
 	private ProbNet probNet;
-	
-	@Before
-	public void setUp() throws Exception {
+
+	@Before public void setUp() throws Exception {
 		this.probNet = getProbNet4Test();
 		probNet.getPNESupport().setWithUndo(true);
 	}
 
-	@Test
-	public void multiCriteriaOptionsTest() {
+	@Test public void multiCriteriaOptionsTest() {
 
 		MulticriteriaOptions multicriteriaOptions = new MulticriteriaOptions();
 		multicriteriaOptions.setMainUnit("Unit A");
 		multicriteriaOptions.setMulticriteriaType(MulticriteriaOptions.Type.UNICRITERION);
-		
+
 		List<Criterion> decisionCriteria = new ArrayList<>();
 		Criterion criterion1 = new Criterion("Criterion A");
 		decisionCriteria.add(criterion1);
 		probNet.setDecisionCriteria(decisionCriteria);
 		MulticriteriaEdit edit = new MulticriteriaEdit(probNet, decisionCriteria, multicriteriaOptions);
-		
+
 		try {
 			probNet.getPNESupport().doEdit(edit);
 			assertTrue(probNet.getInferenceOptions().getMultiCriteriaOptions().getMainUnit().equals("Unit A"));
 			assertTrue(probNet.getDecisionCriteria().equals(decisionCriteria));
-		} catch (DoEditException | NonProjectablePotentialException
-				| WrongCriterionException e) {
+		} catch (DoEditException | NonProjectablePotentialException | WrongCriterionException e) {
 			e.printStackTrace();
 			assertTrue(false);
 		}
-		
 
 		MulticriteriaOptions multicriteriaOptions2 = new MulticriteriaOptions();
 		multicriteriaOptions2.setMainUnit("Unit B");
@@ -65,32 +61,28 @@ public class MulticriteriaEditTest {
 		Criterion criterion2 = new Criterion("Criterion B");
 		decisionCriteria2.add(criterion2);
 		probNet.setDecisionCriteria(decisionCriteria2);
-		
+
 		MulticriteriaEdit edit2 = new MulticriteriaEdit(probNet, decisionCriteria2, multicriteriaOptions2);
 		try {
 			probNet.getPNESupport().doEdit(edit2);
 			assertTrue(probNet.getInferenceOptions().getMultiCriteriaOptions().getMainUnit().equals("Unit B"));
 			assertTrue(probNet.getDecisionCriteria().equals(decisionCriteria2));
-		} catch (DoEditException | NonProjectablePotentialException
-				| WrongCriterionException e) {
+		} catch (DoEditException | NonProjectablePotentialException | WrongCriterionException e) {
 			e.printStackTrace();
 			assertTrue(false);
 		}
-		
+
 		probNet.getPNESupport().undo();
-		
+
 		assertTrue(probNet.getInferenceOptions().getMultiCriteriaOptions().getMainUnit().equals("Unit A"));
 		assertTrue(!probNet.getDecisionCriteria().equals(decisionCriteria));
-		
-		
+
 	}
-	
-	
 
 	private ProbNet getProbNet4Test() {
 		String bayesNetworkName = "networks/bn/BN-MulticriteriaEditTest.pgmx";
-		InputStream file = getClass().getClassLoader ().
-				getResourceAsStream (bayesNetworkName);
+		InputStream file = getClass().getClassLoader().
+				getResourceAsStream(bayesNetworkName);
 
 		// Load the Bayesian network
 		PGMXReader pgmxReader = new PGMXReader();
