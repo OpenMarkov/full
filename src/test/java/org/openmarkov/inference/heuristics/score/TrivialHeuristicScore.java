@@ -129,7 +129,7 @@ public class TrivialHeuristicScore extends Thread implements EliminationHeuristi
 	}
 	
 	/**
-	 * @param forest. <code>HuginForest</code>
+	 * @param forest <code>HuginForest</code>
 	 * @return Sum of the clusters sizes. <code>int</code>
 	 */
 	public int getSumClustersSize(HuginForest forest) {
