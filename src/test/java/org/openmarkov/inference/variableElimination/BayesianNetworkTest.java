@@ -39,7 +39,7 @@ public class BayesianNetworkTest {
 	//				fail();
 	//			}
 	//    		try {
-	//				elimination.getProbsAndUtilities();
+	//				elimination.getPosteriorValues();
 	//			} catch (Exception e) {
 	//				System.err.println("VariableElimination inference fails in: " + bayesianNetworkURL.getFile());
 	//				fail();
