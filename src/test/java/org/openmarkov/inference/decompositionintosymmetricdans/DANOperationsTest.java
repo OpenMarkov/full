@@ -134,7 +134,7 @@ public class DANOperationsTest {
 			Assert.assertTrue(instantiatedNetworks.get(1).getLinks(diseaseNode).isEmpty());
 
             /*
-            PGMXWriter pgmxWriter = new PGMXWriter();
+            PGMXWriter0_2 pgmxWriter = new PGMXWriter0_2();
             pgmxWriter.writeProbNet("D://Instantiated-disease-absent_DAN-Test2Therapies.pgmx", instantiatedNetworks.get(0));
             pgmxWriter.writeProbNet("D://Instantiated-disease-present_DAN-Test2Therapies.pgmx", instantiatedNetworks.get(1));
             */
