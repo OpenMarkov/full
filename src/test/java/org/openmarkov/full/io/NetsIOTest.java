@@ -39,8 +39,8 @@ import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
 import org.openmarkov.inference.variableElimination.tasks.VEOptimalIntervention;
 import org.openmarkov.inference.variableElimination.tasks.VEPropagation;
 import org.openmarkov.inference.variableElimination.tasks.VETemporalEvolution;
-import org.openmarkov.io.probmodel.reader.PGMXReader;
-import org.openmarkov.io.probmodel.writer.PGMXWriter;
+import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
+import org.openmarkov.io.probmodel.writer.PGMXWriter_0_2;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -221,7 +221,7 @@ public class NetsIOTest {
 				continue;
 			}
 
-			PGMXReader pgmxReader = new PGMXReader();
+            PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 
 			try {
 				ProbNetInfo probNetInfo = null;
@@ -235,7 +235,7 @@ public class NetsIOTest {
 				assertNotNull(probNet);
 				assertNotNull(probNet.getNodes());
 
-				PGMXWriter pgmxWritter = new PGMXWriter();
+				PGMXWriter_0_2 pgmxWritter = new PGMXWriter_0_2();
 				pgmxWritter.writeProbNet(networkName, probNet, probNetInfo.getEvidence());
 
 				FileInputStream file = new FileInputStream(networkName);

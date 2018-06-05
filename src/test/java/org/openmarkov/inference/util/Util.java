@@ -13,7 +13,7 @@ import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.potential.Potential;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.type.NetworkType;
-import org.openmarkov.io.probmodel.reader.PGMXReader;
+import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,7 +32,7 @@ public class Util {
 
 		NetsRepository netsRepository = new NetsRepository();
 		List<URL> bayesianNetworksURLList = netsRepository.getNetworks(networkType);
-		PGMXReader reader = new PGMXReader();
+		PGMXReader_0_2 reader = new PGMXReader_0_2();
 		List<ProbNet> probNetsDB = new ArrayList<ProbNet>();
 		List<String> wrongNetworksNames = new ArrayList<String>();
 		int readingErrors = 0;

@@ -16,7 +16,7 @@ import org.openmarkov.core.exception.WrongCriterionException;
 import org.openmarkov.core.inference.MulticriteriaOptions;
 import org.openmarkov.core.model.network.Criterion;
 import org.openmarkov.core.model.network.ProbNet;
-import org.openmarkov.io.probmodel.reader.PGMXReader;
+import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -85,7 +85,7 @@ public class MulticriteriaEditTest {
 				getResourceAsStream(bayesNetworkName);
 
 		// Load the Bayesian network
-		PGMXReader pgmxReader = new PGMXReader();
+		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		ProbNet probNet = null;
 		try {
 			probNet = pgmxReader.loadProbNet(bayesNetworkName, file);

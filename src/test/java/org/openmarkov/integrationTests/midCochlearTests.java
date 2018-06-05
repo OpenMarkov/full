@@ -27,7 +27,7 @@ import org.openmarkov.core.model.network.potential.GTablePotential;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.temporalevaluation.tasks.TemporalEvaluation;
 import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
-import org.openmarkov.io.probmodel.reader.PGMXReader;
+import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 import java.io.InputStream;
 import java.util.List;
@@ -48,7 +48,7 @@ public class midCochlearTests {
 		InputStream file = getClass().getClassLoader().getResourceAsStream(networkName);
 
 		// Load the network: ID-decide-test
-		PGMXReader pgmxReader = new PGMXReader();
+		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		ProbNetInfo probNetInfo = null;
 		try {
 			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);

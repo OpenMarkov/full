@@ -20,7 +20,7 @@ import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.ExactDistrPotential;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANOperations;
-import org.openmarkov.io.probmodel.reader.PGMXReader;
+import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -37,7 +37,7 @@ public class DANOperationsTest {
 	@Before public void setUp() {
 		String networkName;
 		InputStream file;
-		PGMXReader pgmxReader = new PGMXReader();
+		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		ProbNetInfo probNetInfo;
 		try {
 			// Initialize danTest2Therapies network

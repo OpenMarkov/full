@@ -32,7 +32,7 @@ import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
 import org.openmarkov.inference.variableElimination.tasks.VEExpectedUtilityDecision;
 import org.openmarkov.inference.variableElimination.tasks.VEOptimalIntervention;
 import org.openmarkov.inference.variableElimination.tasks.VESensAnTornadoSpider;
-import org.openmarkov.io.probmodel.reader.PGMXReader;
+import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -52,7 +52,7 @@ public class idDecideTestNetworkTests {
 		InputStream file = getClass().getClassLoader().getResourceAsStream(networkName);
 
 		// Load the network: ID-decide-test
-		PGMXReader pgmxReader = new PGMXReader();
+		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		ProbNetInfo probNetInfo = null;
 		try {
 			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
