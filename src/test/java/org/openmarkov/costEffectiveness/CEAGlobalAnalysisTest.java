@@ -347,7 +347,7 @@ public class CEAGlobalAnalysisTest {
 		probNet.getCycleLength().setValue(1);
 
 		// Set number of slices and transition time in temporal options
-		probNet.getInferenceOptions().getTemporalOptions().setNumberOfSlices(numberOfSlices);
+		probNet.getInferenceOptions().getTemporalOptions().setHorizon(numberOfSlices);
 		probNet.getInferenceOptions().getTemporalOptions().setTransition(transitionTime);
 
 		// Set the cost/effectiveness discount to all nodes with that criterion

@@ -474,7 +474,7 @@ public class NetsIOTest {
 			ProbNet expandedNetwork = veTemporalEvolution.getExpandedNetwork();
 			assertNotNull(veTemporalEvolution.getTemporalEvolution());
 			for (int i = variable.getTimeSlice();
-				 i < expandedNetwork.getInferenceOptions().getTemporalOptions().getNumberOfSlices(); i++) {
+                 i < expandedNetwork.getInferenceOptions().getTemporalOptions().getHorizon(); i++) {
 				try {
 					Variable variableInSlicei = expandedNetwork.getVariable(variable.getBaseName(), i);
 					assertNotNull(veTemporalEvolution.getTemporalEvolution().get(variableInSlicei));

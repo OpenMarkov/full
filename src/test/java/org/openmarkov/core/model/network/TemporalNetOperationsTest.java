@@ -31,7 +31,7 @@ public class TemporalNetOperationsTest {
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		try {
 			probNet = pgmxReader.loadProbNet(networkName, file);
-			probNet.getInferenceOptions().getTemporalOptions().setNumberOfSlices(15);
+			probNet.getInferenceOptions().getTemporalOptions().setHorizon(15);
 
 		} catch (ParserException e) {
 			// TODO Auto-generated catch block
