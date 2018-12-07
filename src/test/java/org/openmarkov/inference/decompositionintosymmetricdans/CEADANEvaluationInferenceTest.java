@@ -10,10 +10,11 @@ import org.openmarkov.core.inference.tasks.CEAnalysis;
 import org.openmarkov.core.model.network.CEP;
 import org.openmarkov.core.model.network.ProbNet;
 
-public abstract class CEADANEvaluationInferenceTest extends DANInferenceTest {
+public abstract class CEADANEvaluationInferenceTest {
 
 	public void testCEADANEvaluation(String danName, int globalNumberOfCEPIntervals, double... expectedThreshods) {
-		ProbNet network = loadDAN(danName);
+		Tools t = new Tools();
+		ProbNet network = t.loadDAN(danName);
 		System.out.println("*** CEA with DAN " + danName + " ***");
 		System.out.println();
 		CEAnalysis eval = buildCEAnalysis(network);

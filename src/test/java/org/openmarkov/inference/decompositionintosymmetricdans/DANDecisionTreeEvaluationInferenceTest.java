@@ -26,7 +26,7 @@ public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferen
 		Assert.assertNotNull(((DANDecisionTreeEvaluation) eval).getDecisionTree());
 	}
 
-	@Override protected DANEvaluation buildDANEvaluation(ProbNet network) {
+	@Override protected DANEvaluation buildNetworkEvaluation(ProbNet network) {
 		DANEvaluation eval = null;
 		try {
 			eval = new DANDecisionTreeEvaluation(network);
