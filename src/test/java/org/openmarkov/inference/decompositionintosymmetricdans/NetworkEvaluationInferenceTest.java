@@ -19,6 +19,11 @@ public abstract class NetworkEvaluationInferenceTest {
 		ProbNet network = loadNetwork(networkName);
 		System.out.println("*** Evaluating network " + networkName + " ***");
 		System.out.println();
+		testNetworkEvaluation(network,expectedEU,namesVariablesIntervention);
+	}
+	
+	public void testNetworkEvaluation(ProbNet network, double expectedEU, String... namesVariablesIntervention) {
+		System.out.println();
 		DANEvaluation eval = buildNetworkEvaluation(network);
 		testDANEvaluation(eval, network, expectedEU, namesVariablesIntervention);
 	}

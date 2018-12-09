@@ -7,7 +7,6 @@
 
 package org.openmarkov.inference.decompositionintosymmetricdans;
 
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
@@ -15,17 +14,13 @@ import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.model.network.ProbNet;
-import org.openmarkov.core.model.network.Variable;
-import org.openmarkov.core.model.network.potential.StrategyTree;
-import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANEvaluation;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANOperations;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public abstract class DANEvaluationInferenceTest extends NetworkEvaluationInferenceTest {
+
+	
+
+
+
 
 	@Before public void setUp() throws Exception {
 	}
@@ -221,6 +216,8 @@ public abstract class DANEvaluationInferenceTest extends NetworkEvaluationInfere
 		testNetworkEvaluation("mediastinet", 1.4710368294106826);
 
 	}
+	
+	
 
 
 

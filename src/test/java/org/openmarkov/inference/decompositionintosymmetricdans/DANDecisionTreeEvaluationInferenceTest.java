@@ -79,4 +79,12 @@ public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferen
 		//testDANEvaluation("king",7.73);
 	}
 	*/
+	
+	@Override
+	public void testNetworkEvaluation(ProbNet network, double expectedEU, String... namesVariablesIntervention) {
+		// TODO Auto-generated method stub
+		super.testNetworkEvaluation(network, expectedEU, namesVariablesIntervention);
+		//TODO Test dt expansion
+		//Tools.buildDecisionTreePanelAndExpandLevels(network);
+	}
 }

@@ -6,10 +6,11 @@ import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.gui.window.dt.DecisionTreePanel;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.IDDecisionTreeEvaluation;
 
-public class IDInferenceTest extends NetworkEvaluationInferenceTest {
+public class IDDecisionTreeEvaluationInferenceTest extends NetworkEvaluationInferenceTest {
 
 	@Override
 	protected DANEvaluation buildNetworkEvaluation(ProbNet network) {
@@ -59,6 +60,16 @@ public class IDInferenceTest extends NetworkEvaluationInferenceTest {
 			NotEvaluableNetworkException {
 		testNetworkEvaluation("test-2therapies", 9.39366, "Test", "Therapy");
 	}
+
+	@Override
+	public void testNetworkEvaluation(ProbNet network, double expectedEU, String... namesVariablesIntervention) {
+		// TODO Auto-generated method stub
+		super.testNetworkEvaluation(network, expectedEU, namesVariablesIntervention);
+		//TODO Test dt expansion
+		//Tools.buildDecisionTreePanelAndExpandLevels(network);
+	}
+
+	
 
 	
 
