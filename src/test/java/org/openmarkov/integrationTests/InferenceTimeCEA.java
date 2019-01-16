@@ -1,6 +1,10 @@
 package org.openmarkov.integrationTests;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.poi.ss.usermodel.Table;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +12,7 @@ import org.openmarkov.core.exception.*;
 import org.openmarkov.core.inference.tasks.CEAnalysis;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.CEP;
+import org.openmarkov.core.model.network.Criterion;
 import org.openmarkov.core.model.network.EvidenceCase;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
@@ -15,6 +20,7 @@ import org.openmarkov.core.model.network.potential.Potential;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.CEADecompositionIntoSymmetricDANsEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANDecisionTreeEvaluation;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionIntoSymmetricDANsEvaluation;
 import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
 import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
@@ -27,12 +33,13 @@ import static org.junit.Assert.assertTrue;
 public class InferenceTimeCEA {
 
     private final String[] networkNames = {"networks/IDCEAnTherapies/DAN-2tests.pgmx",
-            "networks/IDCEAnTherapies/DAN-3tests.pgmx",
-            "networks/IDCEAnTherapies/DAN-4tests.pgmx",
-            "networks/IDCEAnTherapies/DAN-5tests.pgmx",
-            "networks/IDCEAnTherapies/DAN-6tests.pgmx",
-            "networks/IDCEAnTherapies/DAN-7tests.pgmx",
-            "networks/IDCEAnTherapies/DAN-8tests.pgmx"};
+//            "networks/IDCEAnTherapies/DAN-3tests.pgmx",
+//            "networks/IDCEAnTherapies/DAN-4tests.pgmx",
+//            "networks/IDCEAnTherapies/DAN-5tests.pgmx",
+//            "networks/IDCEAnTherapies/DAN-6tests.pgmx",
+//            "networks/IDCEAnTherapies/DAN-7tests.pgmx",
+//            "networks/IDCEAnTherapies/DAN-8tests.pgmx"
+    };
 
     private ProbNet[] probNets;
 
@@ -44,6 +51,7 @@ public class InferenceTimeCEA {
 
     @Before
     public void setUp() throws Exception {
+        Configurator.setRootLevel(Level.DEBUG);
         probNets = new ProbNet[networkNames.length];
         for (int i = 0; i < networkNames.length; i++) {
             System.out.println("Reading: " + networkNames[i]);
@@ -129,21 +137,55 @@ public class InferenceTimeCEA {
     @Test public void demo() throws IncompatibleEvidenceException, UnexpectedInferenceException {
         long startTime, endTime;
         ProbNet probNet = probNets[0];
+        CEP cep;
+        TablePotential utility;
 
         try {
-            LogManager.getLogger().debug("CEA_DSD for " + probNet.getName());
+            for (Criterion criterion : probNet.getDecisionCriteria()) {
+                LogManager.getLogger().debug(criterion.getCriterionName() + " scale = (x " + criterion.getUnicriteriaScale() + ")");
+            }
+
+            // UNICRITERION ANALYSIS
+            LogManager.getLogger().debug("DSD for " + probNet.getName());
             startTime = System.nanoTime();
-            CEADecompositionIntoSymmetricDANsEvaluation evaluationDSD = new CEADecompositionIntoSymmetricDANsEvaluation(probNet);
-            CEP cep = evaluationDSD.getCEP();
+            DecompositionIntoSymmetricDANsEvaluation evaluationDSD = new DecompositionIntoSymmetricDANsEvaluation(probNet);
+            utility = evaluationDSD.getUtility();
             endTime = System.nanoTime();
             LogManager.getLogger().debug("Time = " + (endTime - startTime));
+            LogManager.getLogger().debug("Result = " + utility);
+            evaluationDSD = null;
 
-            LogManager.getLogger().debug("DT_DAN for " + probNet.getName());
+            LogManager.getLogger().debug("DT for " + probNet.getName());
             startTime = System.nanoTime();
             DANDecisionTreeEvaluation evaluationDT = new DANDecisionTreeEvaluation(probNet);
-            TablePotential utility = evaluationDT.getUtility();
+            utility = evaluationDT.getUtility();
             endTime = System.nanoTime();
             LogManager.getLogger().debug("Time = " + (endTime - startTime));
+            LogManager.getLogger().debug("Result = " + utility);
+            evaluationDT = null;
+
+
+            // COST-EFFECTIVENESS ANALYSIS
+            LogManager.getLogger().debug("CEA_DSD for " + probNet.getName());
+            startTime = System.nanoTime();
+            CEADecompositionIntoSymmetricDANsEvaluation evaluationCEADSD = new CEADecompositionIntoSymmetricDANsEvaluation(probNet);
+            cep = evaluationCEADSD.getCEP();
+            endTime = System.nanoTime();
+            LogManager.getLogger().debug("Time = " + (endTime - startTime));
+            LogManager.getLogger().debug("Result = " + cep);
+            evaluationCEADSD = null;
+
+            // TODO - Change for the CE version of this algorithm
+            LogManager.getLogger().debug("CEA_DT for " + probNet.getName());
+            startTime = System.nanoTime();
+            DANDecisionTreeEvaluation evaluationCEADT = new DANDecisionTreeEvaluation(probNet);
+            // TODO - uncomment getCEP and remove getUtility
+//            cep = evaluationCEADT.getCEP();
+            utility = evaluationCEADT.getUtility();
+            endTime = System.nanoTime();
+            LogManager.getLogger().debug("Time = " + (endTime - startTime));
+            LogManager.getLogger().debug("Result = " + cep);
+            evaluationCEADT = null;
         } catch (NotEvaluableNetworkException e) {
             e.printStackTrace();
         }
