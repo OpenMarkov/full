@@ -1,5 +1,6 @@
 package org.openmarkov.integrationTests;
 
+import org.apache.logging.log4j.LogManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,14 +14,13 @@ import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.Potential;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.CEADecompositionIntoSymmetricDANsEvaluation;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANDecisionTreeEvaluation;
 import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
 import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.logging.Handler;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.assertTrue;
 
@@ -126,4 +126,27 @@ public class InferenceTimeCEA {
     }
 
 
+    @Test public void demo() throws IncompatibleEvidenceException, UnexpectedInferenceException {
+        long startTime, endTime;
+        ProbNet probNet = probNets[0];
+
+        try {
+            LogManager.getLogger().debug("CEA_DSD for " + probNet.getName());
+            startTime = System.nanoTime();
+            CEADecompositionIntoSymmetricDANsEvaluation evaluationDSD = new CEADecompositionIntoSymmetricDANsEvaluation(probNet);
+            CEP cep = evaluationDSD.getCEP();
+            endTime = System.nanoTime();
+            LogManager.getLogger().debug("Time = " + (endTime - startTime));
+
+            LogManager.getLogger().debug("DT_DAN for " + probNet.getName());
+            startTime = System.nanoTime();
+            DANDecisionTreeEvaluation evaluationDT = new DANDecisionTreeEvaluation(probNet);
+            TablePotential utility = evaluationDT.getUtility();
+            endTime = System.nanoTime();
+            LogManager.getLogger().debug("Time = " + (endTime - startTime));
+        } catch (NotEvaluableNetworkException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
