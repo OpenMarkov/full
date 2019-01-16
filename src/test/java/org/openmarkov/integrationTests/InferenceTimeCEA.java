@@ -139,8 +139,8 @@ public class InferenceTimeCEA {
     @Test public void demo() throws IncompatibleEvidenceException, UnexpectedInferenceException {
         long startTime, endTime;
         ProbNet probNet = probNets[0];
-        CEP cepDSD;
-        CEP cepDT;
+        CEP cepDSD = null;
+        CEP cepDT = null;
         TablePotential utilityDSD;
         TablePotential utilityDT;
 
@@ -195,6 +195,7 @@ public class InferenceTimeCEA {
 
             // Check that the result of both CE algorithms are the same
 //            Assert.assertArrayEquals(utilityDSD.values, utilityDT.values, deltaEquals);
+            Assert.assertTrue(cepDSD.equals(cepDT));
 
 
             // Check that the result obtained for CE algorithms (lambda=30,000) and Unicriterion algorithms are the same
@@ -204,4 +205,5 @@ public class InferenceTimeCEA {
         }
 
     }
+
 }
