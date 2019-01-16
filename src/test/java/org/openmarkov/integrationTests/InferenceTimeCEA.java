@@ -21,6 +21,7 @@ import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.CEADecompositionIntoSymmetricDANsEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANDecisionTreeEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionIntoSymmetricDANsEvaluation;
+import org.openmarkov.inference.variableElimination.operation.CEPotentialOperation;
 import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
 import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
@@ -45,6 +46,7 @@ public class InferenceTimeCEA {
 
     // Delta parameter for Assert.Equals methods
     private final double deltaEquals = Math.pow(10, -4);
+    private final double lambda = 30000;
 
     private ProbNet probNet;
     private EvidenceCase preResolutionEvidence;
@@ -137,8 +139,10 @@ public class InferenceTimeCEA {
     @Test public void demo() throws IncompatibleEvidenceException, UnexpectedInferenceException {
         long startTime, endTime;
         ProbNet probNet = probNets[0];
-        CEP cep;
-        TablePotential utility;
+        CEP cepDSD;
+        CEP cepDT;
+        TablePotential utilityDSD;
+        TablePotential utilityDT;
 
         try {
             for (Criterion criterion : probNet.getDecisionCriteria()) {
@@ -149,30 +153,32 @@ public class InferenceTimeCEA {
             LogManager.getLogger().debug("DSD for " + probNet.getName());
             startTime = System.nanoTime();
             DecompositionIntoSymmetricDANsEvaluation evaluationDSD = new DecompositionIntoSymmetricDANsEvaluation(probNet);
-            utility = evaluationDSD.getUtility();
+            utilityDSD = evaluationDSD.getUtility();
             endTime = System.nanoTime();
             LogManager.getLogger().debug("Time = " + (endTime - startTime));
-            LogManager.getLogger().debug("Result = " + utility);
+            LogManager.getLogger().debug("Result = " + utilityDSD);
             evaluationDSD = null;
 
             LogManager.getLogger().debug("DT for " + probNet.getName());
             startTime = System.nanoTime();
             DANDecisionTreeEvaluation evaluationDT = new DANDecisionTreeEvaluation(probNet);
-            utility = evaluationDT.getUtility();
+            utilityDT = evaluationDT.getUtility();
             endTime = System.nanoTime();
             LogManager.getLogger().debug("Time = " + (endTime - startTime));
-            LogManager.getLogger().debug("Result = " + utility);
+            LogManager.getLogger().debug("Result = " + utilityDT);
             evaluationDT = null;
 
+            // Check that the result of both unicriterion algorithms are the same
+            Assert.assertArrayEquals(utilityDSD.values, utilityDT.values, deltaEquals);
 
             // COST-EFFECTIVENESS ANALYSIS
             LogManager.getLogger().debug("CEA_DSD for " + probNet.getName());
             startTime = System.nanoTime();
             CEADecompositionIntoSymmetricDANsEvaluation evaluationCEADSD = new CEADecompositionIntoSymmetricDANsEvaluation(probNet);
-            cep = evaluationCEADSD.getCEP();
+            cepDSD = evaluationCEADSD.getCEP();
             endTime = System.nanoTime();
             LogManager.getLogger().debug("Time = " + (endTime - startTime));
-            LogManager.getLogger().debug("Result = " + cep);
+            LogManager.getLogger().debug("Result = " + cepDSD);
             evaluationCEADSD = null;
 
             // TODO - Change for the CE version of this algorithm
@@ -180,12 +186,19 @@ public class InferenceTimeCEA {
             startTime = System.nanoTime();
             DANDecisionTreeEvaluation evaluationCEADT = new DANDecisionTreeEvaluation(probNet);
             // TODO - uncomment getCEP and remove getUtility
-//            cep = evaluationCEADT.getCEP();
-            utility = evaluationCEADT.getUtility();
+//            cepDT = evaluationCEADT.getCEP();
+//            utility = evaluationCEADT.getUtility();
             endTime = System.nanoTime();
             LogManager.getLogger().debug("Time = " + (endTime - startTime));
-            LogManager.getLogger().debug("Result = " + cep);
+//            LogManager.getLogger().debug("Result = " + cepDT);
             evaluationCEADT = null;
+
+            // Check that the result of both CE algorithms are the same
+//            Assert.assertArrayEquals(utilityDSD.values, utilityDT.values, deltaEquals);
+
+
+            // Check that the result obtained for CE algorithms (lambda=30,000) and Unicriterion algorithms are the same
+            Assert.assertEquals(utilityDSD.values[0], cepDSD.getEffectiveness(lambda) * lambda - cepDSD.getCost(lambda), deltaEquals);
         } catch (NotEvaluableNetworkException e) {
             e.printStackTrace();
         }
