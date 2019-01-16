@@ -141,4 +141,31 @@ public class danAlgorithmTests {
 			e.printStackTrace();
 		}
 	}
+
+
+	@Test public void oneChanceCETest() {
+		String networkName = "DAN-one-chance-ce.pgmx";
+		String path = "networks/dan/";
+		double lambda = 30000;
+		InputStream file = getClass().getClassLoader().getResourceAsStream(path + networkName);
+		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
+		ProbNetInfo probNetInfo = null;
+		try {
+			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
+			ProbNet probNet = probNetInfo.getProbNet();
+
+			CEP resultCEA = new CEADecompositionIntoSymmetricDANsEvaluation(probNet).getCEP();
+			TablePotential resultUNI = new DecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
+
+			Assert.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
+		} catch (ParserException e) {
+			e.printStackTrace();
+		} catch (UnexpectedInferenceException e) {
+			e.printStackTrace();
+		} catch (NotEvaluableNetworkException e) {
+			e.printStackTrace();
+		} catch (IncompatibleEvidenceException e) {
+			e.printStackTrace();
+		}
+	}
 }
