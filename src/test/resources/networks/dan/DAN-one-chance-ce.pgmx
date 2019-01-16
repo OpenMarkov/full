@@ -6,52 +6,58 @@
       <Criterion name="Cost" unit="€" />
       <Criterion name="Effectiveness" unit="QALY" />
     </DecisionCriteria>
-    <AdditionalProperties />
+    <Properties />
     <Variables>
-      <Variable name="CostU" type="numeric" role="utility">
-        <Coordinates x="452" y="271" />
+      <Variable name="C" type="numeric" role="utility">
+        <Coordinates x="366" y="380" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="Cost" />
       </Variable>
-      <Variable name="D" type="finiteStates" role="decision">
-        <Coordinates x="520" y="127" />
-        <States>
-          <State name="no" />
-          <State name="yes" />
-        </States>
-      </Variable>
-      <Variable name="EffectivenessU" type="numeric" role="utility">
-        <Coordinates x="638" y="268" />
+      <Variable name="E" type="numeric" role="utility">
+        <Coordinates x="676" y="376" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="Effectiveness" />
       </Variable>
+      <Variable name="A" type="finiteStates" role="chance">
+        <Coordinates x="500" y="218" />
+        <States>
+          <State name="absent" />
+          <State name="present" />
+        </States>
+      </Variable>
     </Variables>
     <Links>
       <Link directed="true">
-        <Variable name="D" />
-        <Variable name="CostU" />
+        <Variable name="A" />
+        <Variable name="C" />
       </Link>
       <Link directed="true">
-        <Variable name="D" />
-        <Variable name="EffectivenessU" />
+        <Variable name="A" />
+        <Variable name="E" />
       </Link>
     </Links>
     <Potentials>
-      <Potential type="Table" role="utility">
-        <UtilityVariable name="CostU" />
+      <Potential type="Table" role="conditionalProbability">
+        <UtilityVariable name="C" />
         <Variables>
-          <Variable name="D" />
+          <Variable name="A" />
         </Variables>
-        <Values>2.0 10.0</Values>
+        <Values>0.0 0.0</Values>
       </Potential>
       <Potential type="Table" role="conditionalProbability">
-        <UtilityVariable name="EffectivenessU" />
+        <UtilityVariable name="E" />
         <Variables>
-          <Variable name="D" />
+          <Variable name="A" />
         </Variables>
-        <Values>3.0 9.0</Values>
+        <Values>0.0 0.0</Values>
+      </Potential>
+      <Potential type="Table" role="conditionalProbability">
+        <Variables>
+          <Variable name="A" />
+        </Variables>
+        <Values>0.5 0.5</Values>
       </Potential>
     </Potentials>
   </ProbNet>
@@ -60,8 +66,8 @@
       <SelectedAnalysisType>UNICRITERION</SelectedAnalysisType>
       <Unicriterion>
         <Scales>
-          <Scale Criterion="Cost" Value="-1.0" />
-          <Scale Criterion="Effectiveness" Value="30000.0" />
+          <Scale Criterion="Cost" Value="1.0" />
+          <Scale Criterion="Effectiveness" Value="1.0" />
         </Scales>
       </Unicriterion>
       <CostEffectiveness>
