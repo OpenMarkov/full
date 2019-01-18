@@ -35,17 +35,37 @@ public abstract class CEADANEvaluationInferenceTest {
 	}
 
 	protected abstract CEAnalysis buildCEAnalysis(ProbNet network);
-
-	@Test public void testDANTest2Therapies()
-			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
-			NotEvaluableNetworkException {
-		testCEADANEvaluation("decide-test-2therapies", 3, 11171.3, 33383.5);
+	
+	@Test
+	public void testDANOnlyNonZeroUtility() throws IncompatibleEvidenceException, UnexpectedInferenceException,
+			NodeNotFoundException, NotEvaluableNetworkException {
+		testCEADANEvaluation("only-non-zero-utility-ce", 1);
 	}
-
-	@Test public void testDANOneDecisionCE()
-			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
-			NotEvaluableNetworkException {
+	
+	@Test
+	public void testDANOnlyZeroyUtility() throws IncompatibleEvidenceException, UnexpectedInferenceException,
+			NodeNotFoundException, NotEvaluableNetworkException {
+		testCEADANEvaluation("only-zero-utility-ce", 1);
+	}
+	
+	@Test
+	public void testDANOneDecisionCE() throws IncompatibleEvidenceException, UnexpectedInferenceException,
+			NodeNotFoundException, NotEvaluableNetworkException {
 		testCEADANEvaluation("one-decision-CE", 2, 1.333333333);
 	}
+
+	@Test
+	public void testDANOneChanceCE() throws IncompatibleEvidenceException, UnexpectedInferenceException,
+			NodeNotFoundException, NotEvaluableNetworkException {
+		testCEADANEvaluation("one-chance-ce", 1);
+	}
+
+	//@Test
+	public void testDANDecideTest() throws IncompatibleEvidenceException, UnexpectedInferenceException,
+			NodeNotFoundException, NotEvaluableNetworkException {
+		testCEADANEvaluation("decide-test-ce", 3, 111171.34, 33383.5);
+	}
+		
+	
 
 }
