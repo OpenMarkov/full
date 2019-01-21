@@ -30,12 +30,17 @@ import org.openmarkov.inference.variableElimination.operation.CEPotentialOperati
 import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
 import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
+import org.openmarkov.learning.algorithm.pc.independencetester.StatisticalUtilities;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 
@@ -223,6 +228,7 @@ public class InferenceTimeCEA {
 	//    }
 
 	@Test public void checkCEPThresholdsWithUnicreterionAnalysis() {
+	    double precision = Math.pow(10, 4);
 		for (String networkName : networkNames) {
 			InputStream file = getClass().getClassLoader().getResourceAsStream(path + networkName);
 			PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
@@ -264,57 +270,78 @@ public class InferenceTimeCEA {
 					Assert.assertArrayEquals(cepDSD.getCosts(), cepDT.getCosts(), deltaEquals);
 					Assert.assertArrayEquals(cepDSD.getEffectivities(), cepDT.getEffectivities(), deltaEquals);
 				} catch (AssertionError error) {
-					LogManager.getLogger().error("CEPs are not equals, analyzing with unicreterion analysis");
+					LogManager.getLogger().error("CEPs are not equals, analyzing with unicriterion analysis. " + error.getMessage());
 
-					Arrays.asList(cepDSD.getThresholds());
+					List<Double> allThresholds = new ArrayList<>();
+                    LogManager.getLogger().debug("DSD thresholds");
+                    String loggerThresholds = "";
+                    for (double threshold : cepDSD.getThresholds()) {
+                        allThresholds.add(threshold);
+                        loggerThresholds += threshold + "\t";
+                    }
+                    LogManager.getLogger().debug(loggerThresholds);
 
-					for (double lambda : cepDSD.getThresholds()) {
-						// Set effectiveness scale to lambda - 1
-						probNet.getDecisionCriteria().get(1).setUnicriteriaScale(lambda);
+                    LogManager.getLogger().debug("DT thresholds");
+                    loggerThresholds = "";
+                    for (double threshold : cepDT.getThresholds()) {
+                        allThresholds.add(threshold);
+                        loggerThresholds += threshold + "\t";
+                    }
+                    LogManager.getLogger().debug(loggerThresholds);
 
-						// UNICRITERION ANALYSIS
-						LogManager.getLogger().debug("DSD for " + probNet.getName());
-						DecompositionIntoSymmetricDANsEvaluation evaluationDSD = new DecompositionIntoSymmetricDANsEvaluation(
-								probNet, evidenceCase);
-						utilityDSD = evaluationDSD.getUtility();
-						evaluationDSD = null;
+                    allThresholds = new ArrayList<>(new HashSet<>(allThresholds));
+                    Collections.sort(allThresholds);
 
-						LogManager.getLogger().debug("DT for " + probNet.getName());
-						DANDecisionTreeEvaluation evaluationDT = new DANDecisionTreeEvaluation(probNet, evidenceCase);
-						utilityDT = evaluationDT.getUtility();
-						evaluationDT = null;
+                    LogManager.getLogger().debug("Threshold \t DSD Unicriterion \t DT Unicriterion \t DSD Cost \t DT Cost \t DSD Effectiveness \t DT Effectiveness");
+					for (double lambda : allThresholds) {
+                        // Set effectiveness scale to lambda - 1
+                        probNet.getDecisionCriteria().get(1).setUnicriteriaScale(lambda);
 
-						// Check that the result of both unicriterion algorithms are the same
-						Assert.assertArrayEquals(utilityDSD.values, utilityDT.values, deltaEquals);
+                        // UNICRITERION ANALYSIS
+                        DecompositionIntoSymmetricDANsEvaluation evaluationDSD = new DecompositionIntoSymmetricDANsEvaluation(
+                                probNet, evidenceCase);
+                        utilityDSD = evaluationDSD.getUtility();
+                        evaluationDSD = null;
 
-						// Check that the result obtained for CE algorithms (lambda=30,000) and Unicriterion algorithms are the same
-						Assert.assertEquals(utilityDSD.values[0],
-								cepDSD.getEffectiveness(lambda) * lambda - cepDSD.getCost(lambda), deltaEquals);
-					}
+                        DANDecisionTreeEvaluation evaluationDT = new DANDecisionTreeEvaluation(probNet, evidenceCase);
+                        utilityDT = evaluationDT.getUtility();
+                        evaluationDT = null;
 
-					for (double lambda : cepDT.getThresholds()) {
-						// Set effectiveness scale to lambda - 1
-						probNet.getDecisionCriteria().get(1).setUnicriteriaScale(lambda);
+                        LogManager.getLogger().debug(
+                                lambda + "\t"
+                                + utilityDSD + "\t"
+                                + utilityDT + "\t"
+                                + cepDSD.getCost(lambda) + "\t"
+                                + cepDT.getCost(lambda) + "\t"
+                                + cepDSD.getEffectiveness(lambda) + "\t"
+                                + cepDT.getEffectiveness(lambda));
+//                        LogManager.getLogger().debug(utilityDSD);
+//                        LogManager.getLogger().debug(utilityDT);
+//                        LogManager.getLogger().debug(cepDSD.getCost(lambda));
+//                        LogManager.getLogger().debug(cepDT.getCost(lambda));
+//                        LogManager.getLogger().debug(cepDSD.getEffectiveness(lambda));
+//                        LogManager.getLogger().debug(cepDT.getEffectiveness(lambda));
 
-						// UNICRITERION ANALYSIS
-						LogManager.getLogger().debug("DSD for " + probNet.getName());
-						DecompositionIntoSymmetricDANsEvaluation evaluationDSD = new DecompositionIntoSymmetricDANsEvaluation(
-								probNet, evidenceCase);
-						utilityDSD = evaluationDSD.getUtility();
-						evaluationDSD = null;
+                        try {
+                            // Check that the result of both unicriterion algorithms are the same
+                            Assert.assertArrayEquals(utilityDSD.values, utilityDT.values, deltaEquals);
+                        } catch (AssertionError err) {
+                            LogManager.getLogger().error("Unicriterion utilities are not equals for lambda = " + lambda + ". " +err.getMessage());
+                        }
 
-						LogManager.getLogger().debug("DT for " + probNet.getName());
-						DANDecisionTreeEvaluation evaluationDT = new DANDecisionTreeEvaluation(probNet, evidenceCase);
-						utilityDT = evaluationDT.getUtility();
-						evaluationDT = null;
+                        try {
+                            // Check that the result obtained for CE algorithms and Unicriterion algorithms are the same
+                            Assert.assertEquals(utilityDSD.values[0], cepDSD.getEffectiveness(lambda) * lambda - cepDSD.getCost(lambda), deltaEquals);
+                        } catch (AssertionError err) {
+                            LogManager.getLogger().error("DSD CEP are not equal to unicriterion case for lambda = " + lambda + ". " +err.getMessage());
+                        }
 
-						// Check that the result of both unicriterion algorithms are the same
-						Assert.assertArrayEquals(utilityDSD.values, utilityDT.values, deltaEquals);
-
-						// Check that the result obtained for CE algorithms (lambda=30,000) and Unicriterion algorithms are the same
-						Assert.assertEquals(utilityDSD.values[0],
-								cepDSD.getEffectiveness(lambda) * lambda - cepDSD.getCost(lambda), deltaEquals);
-					}
+                        try {
+                            Assert.assertEquals(utilityDSD.values[0], cepDT.getEffectiveness(lambda) * lambda - cepDT.getCost(lambda), deltaEquals);
+                        } catch (AssertionError err) {
+                            LogManager.getLogger().error("DT CEP are not equal to unicriterion case for lambda = " + lambda + ". " +err.getMessage());
+                        }
+                    }
 				}
 			} catch (ParserException | UnexpectedInferenceException | NotEvaluableNetworkException | IncompatibleEvidenceException e) {
 				e.printStackTrace();
