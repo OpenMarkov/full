@@ -270,7 +270,8 @@ public class InferenceTimeCEA {
 					Assert.assertArrayEquals(cepDSD.getCosts(), cepDT.getCosts(), deltaEquals);
 					Assert.assertArrayEquals(cepDSD.getEffectivities(), cepDT.getEffectivities(), deltaEquals);
 				} catch (AssertionError error) {
-					LogManager.getLogger().error("CEPs are not equals, analyzing with unicriterion analysis. " + error.getMessage());
+					LogManager.getLogger()
+							.error("CEPs are different, analyzing with unicriterion analysis. " + error.getMessage());
 
 					List<Double> allThresholds = new ArrayList<>();
                     LogManager.getLogger().debug("DSD thresholds");
@@ -326,7 +327,9 @@ public class InferenceTimeCEA {
                             // Check that the result of both unicriterion algorithms are the same
                             Assert.assertArrayEquals(utilityDSD.values, utilityDT.values, deltaEquals);
                         } catch (AssertionError err) {
-                            LogManager.getLogger().error("Unicriterion utilities are not equals for lambda = " + lambda + ". " +err.getMessage());
+							LogManager.getLogger()
+									.error("Unicriterion utilities are different for lambda = " + lambda + ". " + err
+											.getMessage());
                         }
 
                         try {
