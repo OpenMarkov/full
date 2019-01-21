@@ -65,10 +65,10 @@ public class midCochlearTests {
 		try {
 			TemporalEvaluation temporalEvaluation = new TemporalEvaluation(probNet);
 			temporalEvaluation.setPreResolutionEvidence(preResolutionEvidence);
-			TablePotential atemporalUtility = temporalEvaluation.getAtemporalUtility();
-			Assert.assertEquals(0, atemporalUtility.values[0], deltaEquals);
-			Assert.assertEquals(21639.98, atemporalUtility.values[1], deltaEquals);
-			Assert.assertEquals(26100, atemporalUtility.values[2], deltaEquals);
+			GTablePotential atemporalUtility = (GTablePotential) temporalEvaluation.getAtemporalUtility();
+			Assert.assertEquals(0, ((CEP) atemporalUtility.elementTable.get(0)).getCost(0), deltaEquals);
+			Assert.assertEquals(21639.98, ((CEP) atemporalUtility.elementTable.get(1)).getCost(0), deltaEquals);
+			Assert.assertEquals(26100, ((CEP) atemporalUtility.elementTable.get(2)).getCost(0), deltaEquals);
 
 			List<TablePotential> potentialsPerSlice = temporalEvaluation.getUtilityPotentialsPerSlice();
 			double[] costs_UCI = new double[101];
