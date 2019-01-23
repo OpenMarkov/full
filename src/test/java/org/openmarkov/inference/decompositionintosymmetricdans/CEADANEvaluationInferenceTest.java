@@ -18,6 +18,10 @@ public abstract class CEADANEvaluationInferenceTest {
 		System.out.println("*** CEA with DAN " + danName + " ***");
 		System.out.println();
 		CEAnalysis eval = buildCEAnalysis(network);
+		testCEADANEvaluation(globalNumberOfCEPIntervals, eval, expectedThreshods);
+	}
+
+	protected void testCEADANEvaluation(int globalNumberOfCEPIntervals, CEAnalysis eval, double... expectedThreshods) {
 		CEP cep = null;
 		try {
 			cep = eval.getCEP();

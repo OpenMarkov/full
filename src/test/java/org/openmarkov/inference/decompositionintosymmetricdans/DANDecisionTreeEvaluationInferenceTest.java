@@ -10,6 +10,7 @@ package org.openmarkov.inference.decompositionintosymmetricdans;
 import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openmarkov.core.dt.DecisionTreeNode;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
@@ -19,17 +20,34 @@ import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANDecisionTreeEv
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANEvaluation;
 
 public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferenceTest {
+	
 
-	@Override protected void testDANEvaluation(DANEvaluation eval, ProbNet network, double expectedEU,
-			String... namesVariablesIntervention) {
-		super.testDANEvaluation(eval, network, expectedEU, namesVariablesIntervention);
-		Assert.assertNotNull(((DANDecisionTreeEvaluation) eval).getDecisionTree());
+	
+	
+	@Override public void testNetworkEvaluation(ProbNet network, double expectedEU, String... namesVariablesIntervention) {
+		System.out.println();
+		boolean computeDTValues []= {true, false};
+		for (boolean computeDT: computeDTValues) {			
+			DANEvaluation eval = buildNetworkEvaluation(network, computeDT);
+			testDANEvaluation(eval, network, expectedEU, namesVariablesIntervention);
+			DecisionTreeNode dt = ((DANDecisionTreeEvaluation) eval).getDecisionTree();
+			if (computeDT) {
+				Assert.assertNotNull(dt);
+			}
+			else {
+				Assert.assertNull(dt);
+			}
+		}
 	}
 
-	@Override protected DANEvaluation buildNetworkEvaluation(ProbNet network) {
+
+	
+	
+
+	protected DANEvaluation buildNetworkEvaluation(ProbNet network, boolean computeDecisionTreeForGUI) {
 		DANEvaluation eval = null;
 		try {
-			eval = new DANDecisionTreeEvaluation(network);
+			eval = new DANDecisionTreeEvaluation(network, computeDecisionTreeForGUI);
 		} catch (NotEvaluableNetworkException e) {
 			e.printStackTrace();
 		}
@@ -69,6 +87,16 @@ public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferen
 		//testDANEvaluation("king",7.73);
 	}
 
+
+
+
+
+	@Override
+	protected DANEvaluation buildNetworkEvaluation(ProbNet network) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	/*	
 	@Test
@@ -80,11 +108,5 @@ public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferen
 	}
 	*/
 	
-	@Override
-	public void testNetworkEvaluation(ProbNet network, double expectedEU, String... namesVariablesIntervention) {
-		// TODO Auto-generated method stub
-		super.testNetworkEvaluation(network, expectedEU, namesVariablesIntervention);
-		//TODO Test dt expansion
-		//Tools.buildDecisionTreePanelAndExpandLevels(network);
-	}
+
 }
