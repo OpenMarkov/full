@@ -16,7 +16,7 @@ public class IDDecisionTreeEvaluationInferenceTest extends NetworkEvaluationInfe
 	protected DANEvaluation buildNetworkEvaluation(ProbNet network) {
 		DANEvaluation eval = null;
 		try {
-			eval = new IDDecisionTreeEvaluation(network);
+			eval = new IDDecisionTreeEvaluation(network, true);
 		} catch (NotEvaluableNetworkException e) {
 			e.printStackTrace();
 		}
