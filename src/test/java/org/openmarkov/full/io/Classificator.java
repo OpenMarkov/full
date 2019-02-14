@@ -12,7 +12,6 @@ import org.openmarkov.io.probmodel.strings.XMLAttributes;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -53,6 +52,12 @@ public class Classificator extends PGMXReader_0_2 {
         File fileToPathToTestFiles = new File(pathToNewFiles);
         if (!fileToPathToTestFiles.exists() || !fileToPathToTestFiles.isDirectory()) {
             throw new Exception("No test path.");
+        } else {
+            File testNodeFile = new File(pathToTestFiles);
+            for (FileIterator iterator = new FileIterator(testNodeFile); iterator.hasNext(); ) {
+                File file = iterator.next();
+                // TODO
+            }
         }
     }
 
@@ -206,11 +211,24 @@ public class Classificator extends PGMXReader_0_2 {
         boolean hasNext();
     }
 
+    private interface StringFilter {
+        boolean matchCondition(String string);
+    }
+
+    private class PGMXFiles implements StringFilter {
+        private String string;
+
+        @Override
+        public boolean matchCondition(String string) {
+            return string.endsWith(this.string);
+        }
+    }
+
     private class FileIterator implements Next {
 
         // Attributes
-        private List<File[]> parentsFolders;
-        private List<Integer> parentsIndexes;
+        private List<File[]> subNodes;
+        private List<Integer> subNodesIndexes;
         private boolean hasNext;
         private File next;
 
@@ -224,11 +242,12 @@ public class Classificator extends PGMXReader_0_2 {
             next = null;
 
             if (rootFolder.isDirectory()) {
-                parentsFolders = new ArrayList<File[]>();
-                parentsFolders.add(rootFolder.listFiles());
+                subNodes = new ArrayList<File[]>();
+                File[] rootChildren = rootFolder.listFiles();
+                subNodes.add(rootChildren);
 
-                parentsIndexes = new ArrayList<Integer>();
-                parentsIndexes.add(0);
+                subNodesIndexes = new ArrayList<Integer>();
+                subNodesIndexes.add(-1);
 
                 next = lookForNext();
             } else {
@@ -252,30 +271,33 @@ public class Classificator extends PGMXReader_0_2 {
          * @return Next File element
          */
         private File lookForNext() {
-            int numParentsFolders = parentsFolders == null ? 0 : parentsFolders.size();
-            if (numParentsFolders == 0) {
+            int treeDepth = subNodes == null ? 0 : subNodes.size();
+            if (treeDepth == 0) {
                 hasNext = false;
                 next = null;
             } else {
-                int lastIndexFile = parentsIndexes.get(numParentsFolders - 1); // Last element
-                // TODO Terminar esto.
-
-                if (lastIndexFile == parentsFolders.get(numParentsFolders - 1).length) {
-                    parentsFolders.remove(numParentsFolders - 1);
-                    parentsIndexes.remove(numParentsFolders - 1);
-                }
-                File candidate = parentsFolders.get(numParentsFolders - 1)[lastIndexFile];
-                if (candidate.isDirectory()) {
-                    parentsFolders.add(candidate.listFiles());
-                    parentsIndexes.add(0);
-                    candidate = next();
+                int treeDepthMinusOne = treeDepth - 1;
+                File[] deepestNodes = subNodes.get(treeDepthMinusOne);
+                int deepestIndexesNode = subNodesIndexes.get(treeDepthMinusOne);
+                subNodesIndexes.set(treeDepthMinusOne, ++deepestIndexesNode);
+                if (deepestNodes == null || deepestNodes.length == 0 || (deepestIndexesNode + 1) > deepestNodes.length) {// Empty sub folder or finished folder
+                    subNodes.remove(treeDepthMinusOne);
+                    subNodesIndexes.remove(treeDepthMinusOne);
+                    next = lookForNext();
                 } else {
-
+                    File lastFile = deepestNodes[deepestIndexesNode];
+                    if (lastFile.isDirectory()) {
+                        subNodes.add(lastFile.listFiles());
+                        subNodesIndexes.add(-1);
+                        next = lookForNext();
+                    } else {
+                        hasNext = true;
+                        next = lastFile;
+                    }
                 }
             }
             return next;
         }
-
     }
 
 
