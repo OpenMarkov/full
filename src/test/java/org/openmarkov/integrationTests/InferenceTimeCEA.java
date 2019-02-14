@@ -60,20 +60,20 @@ public class InferenceTimeCEA {
 	@Before public void setUp() {
 		Configurator.setRootLevel(Level.DEBUG);
 		// New cost-effectiveness networks
-		//		networkNames.add("DAN-CE-2-test-problem.pgmx");
-		//		networkNames.add("DAN-CE-3-test-problem.pgmx");
+//		networkNames.add("DAN-CE-2-test-problem.pgmx");
+//		networkNames.add("DAN-CE-3-test-problem.pgmx");
 //		networkNames.add("DAN-CE-4-test-problem.pgmx");
-		//		networkNames.add("DAN-CE-5-test-problem.pgmx");
-		//		networkNames.add("DAN-CE-6-test-problem.pgmx");
-		//		networkNames.add("DAN-CE-7-test-problem.pgmx");
-		//		networkNames.add("DAN-CE-8-test-problem.pgmx");
+//		networkNames.add("DAN-CE-5-test-problem.pgmx");
+//		networkNames.add("DAN-CE-6-test-problem.pgmx");
+//		networkNames.add("DAN-CE-7-test-problem.pgmx");
+//		networkNames.add("DAN-CE-8-test-problem.pgmx");
 
-		// Old unicriterion n-test DANs
-		//		networkNames.add("DAN-3-test-problem.pgmx");
-		//		networkNames.add("DAN-4-test-problem.pgmx");
-		//		networkNames.add("DAN-5-test-problem.pgmx");
-		//		networkNames.add("DAN-6-test-problem.pgmx");
-//				networkNames.add("DAN-7-test-problem.pgmx");
+//		 Old unicriterion n-test DANs
+//		networkNames.add("DAN-3-test-problem.pgmx");
+//		networkNames.add("DAN-4-test-problem.pgmx");
+//		networkNames.add("DAN-5-test-problem.pgmx");
+//		networkNames.add("DAN-6-test-problem.pgmx");
+//		networkNames.add("DAN-7-test-problem.pgmx");
         networkNames.add("DAN-mediastinet-ce.pgmx");
 	}
 
