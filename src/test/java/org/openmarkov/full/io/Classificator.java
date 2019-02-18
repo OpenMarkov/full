@@ -7,6 +7,7 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.located.LocatedJDOMFactory;
 import org.openmarkov.core.exception.*;
 import org.openmarkov.core.io.ProbNetInfo;
+import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 import org.openmarkov.io.probmodel.strings.XMLAttributes;
 
@@ -31,6 +32,10 @@ public class Classificator extends PGMXReader_0_2 {
     private static final String defaultPpathToTestFiles="/home/manuel/Redes/OriginalNetworks";
     private static final String defaultPathToNewFiles = "/home/manuel/Redes/NewNetworks";
 
+    private final String V0_2 = "0.2.0";
+    private final String V0_5 = "0.5.0";
+    private final String V0_7 = "0.7.0";
+
     private String pathToTestFiles;
     private String pathToNewFiles;
 
@@ -54,9 +59,20 @@ public class Classificator extends PGMXReader_0_2 {
             throw new Exception("No test path.");
         } else {
             File testNodeFile = new File(pathToTestFiles);
-            for (FileIterator iterator = new FileIterator(testNodeFile); iterator.hasNext(); ) {
+            StringFilter filter = new PGMXFiles();
+            List<StringFilter> filters = new ArrayList<StringFilter>(1);
+            filters.add(new PGMXFiles());
+            for (FileIterator iterator = new FileIterator(testNodeFile, filters); iterator.hasNext(); ) {
                 File file = iterator.next();
-                // TODO
+                String version = getVersion(file);
+                PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
+                InputStream networkStream = getClass().getClassLoader().getResourceAsStream(file.getAbsolutePath());
+                ProbNetInfo probNetInfo = pgmxReader.loadProbNetInfo(file.getAbsolutePath(), networkStream);
+                ProbNet originalProbNet = probNetInfo.getProbNet();
+
+                // Test begins here
+
+                // Test ends here
             }
         }
     }
@@ -206,6 +222,20 @@ public class Classificator extends PGMXReader_0_2 {
         }
     }
 
+    /**
+     * Gets the version of a PGMX file
+     * @param pgmxFile
+     * @return
+     */
+    private String getVersion(File pgmxFile) throws ParserException {
+        PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
+        String absolutePath = pgmxFile.getAbsolutePath();
+        InputStream networkStream = getClass().getClassLoader().getResourceAsStream(absolutePath);
+        return pgmxReader.getVersion(absolutePath, networkStream);
+    }
+
+    // Auxiliar clases and interfaces
+
     private interface Next {
         File next();
         boolean hasNext();
@@ -216,11 +246,11 @@ public class Classificator extends PGMXReader_0_2 {
     }
 
     private class PGMXFiles implements StringFilter {
-        private String string;
+        private final String PGMX_FILES = ".PGMX";
 
         @Override
         public boolean matchCondition(String string) {
-            return string.endsWith(this.string);
+            return string.toUpperCase().endsWith(PGMX_FILES);
         }
     }
 
@@ -232,12 +262,15 @@ public class Classificator extends PGMXReader_0_2 {
         private boolean hasNext;
         private File next;
 
+        private List<StringFilter> filters;
+
         // Constructor
         /**
          * Constructor
          * @param rootFolder
          */
-        public FileIterator(File rootFolder) {
+        public FileIterator(File rootFolder, List<StringFilter> filters) {
+            this.filters = filters;
             hasNext = false;
             next = null;
 
@@ -251,8 +284,8 @@ public class Classificator extends PGMXReader_0_2 {
 
                 next = lookForNext();
             } else {
-                hasNext = true;
-                next = rootFolder;
+                hasNext = matches(rootFolder);
+                next = hasNext ? rootFolder : null;
             }
         }
 
@@ -296,9 +329,18 @@ public class Classificator extends PGMXReader_0_2 {
                     }
                 }
             }
+            next = (next == null) ? next : matches(next) ? next : lookForNext();
             return next;
         }
-    }
 
+        private boolean matches(File file) {
+            boolean match = true;
+            for (StringFilter filter : filters) {
+                match &= filter.matchCondition(file.getName());
+            }
+            return match;
+        }
+
+    }
 
 }
