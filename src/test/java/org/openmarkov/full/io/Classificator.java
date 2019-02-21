@@ -5,16 +5,14 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.located.LocatedJDOMFactory;
+import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.ParserException;
-import org.openmarkov.core.exception.WriterException;
 import org.openmarkov.core.io.ProbNetInfo;
-import org.openmarkov.core.io.ProbNetWriter;
 import org.openmarkov.core.model.graph.Link;
 import org.openmarkov.core.model.network.*;
 import org.openmarkov.core.model.network.constraint.PNConstraint;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 import org.openmarkov.io.probmodel.strings.XMLAttributes;
-import org.openmarkov.io.probmodel.writer.PGMXWriter_0_2;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -138,15 +136,14 @@ public class Classificator extends PGMXReader_0_2 {
      */
 
     private boolean compareNetworks(ProbNet pr1, ProbNet pr2) {
-        boolean equals = true;
         boolean notNull = pr1 != null && pr2 != null;
-        equals &= notNull || (pr1 == null && pr2 == null);
+        boolean equals = notNull || (pr1 == null && pr2 == null);
         if (notNull) {
-            equals &= compareMiscelanea(pr1, pr2);
-            equals &= compareConstraints(pr1, pr2);
-            equals &= compareListOfVariables(pr1, pr2);
-            equals &= compareLinks(pr1, pr2);
-            equals &= comparePotentials(pr1, pr2);
+            equals &= equalsMiscelanea(pr1, pr2);
+            equals &= equalsConstraints(pr1, pr2);
+            equals &= equalsListOfVariables(pr1, pr2);
+            equals &= equalsLinksCollection(pr1, pr2);
+            equals &= equalsPotentialsCollection(pr1, pr2);
         }
         return equals;
     }
@@ -157,13 +154,12 @@ public class Classificator extends PGMXReader_0_2 {
      * @param pr2
      * @return
      */
-    private boolean compareMiscelanea(ProbNet pr1, ProbNet pr2) {
-        boolean equals = true;
-        equals &= compareStrings(pr1.getName(), pr2.getName());
-        equals &= compareStrings(pr1.getComment(), pr2.getComment());
-        equals &= compareCycleLength(pr1.getCycleLength(), pr2.getCycleLength());
-        equals &= compareMapsStrings(pr1.additionalProperties, pr2.additionalProperties);
-        equals &= compareAgents(pr1.getAgents(), pr2.getAgents());
+    private boolean equalsMiscelanea(ProbNet pr1, ProbNet pr2) {
+        boolean equals = equalsStrings(pr1.getName(), pr2.getName());
+        equals &= equalsStrings(pr1.getComment(), pr2.getComment());
+        equals &= equalsCycleLength(pr1.getCycleLength(), pr2.getCycleLength());
+        equals &= equalsMapsStrings(pr1.additionalProperties, pr2.additionalProperties);
+        equals &= equalsAgents(pr1.getAgents(), pr2.getAgents());
         return equals;
     }
 
@@ -173,73 +169,29 @@ public class Classificator extends PGMXReader_0_2 {
      * @param agents2
      * @return true if both lists are equal
      */
-    private boolean compareAgents(List<StringWithProperties> agents1, List<StringWithProperties> agents2) {
-        boolean equals = true;
+    private boolean equalsAgents(List<StringWithProperties> agents1, List<StringWithProperties> agents2) {
         boolean notNull = agents1 != null && agents2 != null;
-        equals &= (agents1 == null && agents2 == null) || (notNull && agents1.size() == agents2.size());
+        boolean equals = (agents1 == null && agents2 == null) || (notNull && agents1.size() == agents2.size());
         if (equals && notNull) {
             int size = agents1.size();
             // Asumption that contents are in the same order in both lists
             for (int i = 0; i < size && equals; i++) {
-                equals &= compareStringsWithProperties(agents1.get(i), agents2.get(i));
+                equals &= equalsStringsWithProperties(agents1.get(i), agents2.get(i));
             }
         }
         return equals;
     }
 
     /**
-     * Compares two wrappings of a Map with a name.
-     * @param swp1
-     * @param swp2
+     *
+     * @param cycleLength1
+     * @param cycleLength2
      * @return
      */
-    private boolean compareStringsWithProperties(StringWithProperties swp1, StringWithProperties swp2) {
-        boolean equals = true;
-        boolean notNull = swp1 != null && swp2!= null;
-        equals &= notNull || (swp1 == null && swp2 == null);
-        if (notNull) {
-            equals &= swp1.getString().matches(swp2.getString());
-            equals &= compareMapsStrings(swp1.getAdditionalProperties().getInformation(), swp2.getAdditionalProperties().getInformation());
-        }
-        return equals;
-    }
-
-    /**
-     * Compares two HashMaps key = String,value = String
-     * @param map1
-     * @param map2
-     * @return
-     */
-    private boolean compareMapsStrings(Map<String,String> map1, Map<String,String> map2) {
-        boolean equals = true;
-        boolean notNull = map1 != null && map2 != null;
-        equals &= notNull || (map1 == null && map2 == null);
-        if (equals && notNull) {
-            Set<String> set1 = map1.keySet();
-            Set<String> set2 = map1.keySet();
-            equals &= set1.size() == set2.size();
-            if (equals) {
-                for (String key : set1) {
-                    if (set2.contains(key)) {
-                        String string1 = map1.get(key);
-                        String string2 = map2.get(key);
-                        equals &= string1 != null ? string1.matches(string2) : string2 == null;
-                    } else {
-                        equals = false;
-                    }
-                    if (!equals) break;
-                }
-            }
-        }
-        return equals;
-    }
-
-    private boolean compareCycleLength(CycleLength cycleLength1, CycleLength cycleLength2) {
-        boolean equals = true;
+    private boolean equalsCycleLength(CycleLength cycleLength1, CycleLength cycleLength2) {
         boolean notNull = cycleLength1 != null && cycleLength2 != null;
-        equals &= notNull || (cycleLength1 == null && cycleLength2 == null);
-        equals &= notNull && cycleLength1.getUnit() == cycleLength2.getUnit();
-        equals &= notNull && cycleLength1.getValue() == cycleLength2.getValue();
+        boolean equals = notNull || (cycleLength1 == null && cycleLength2 == null);
+        equals &= notNull && cycleLength1.getUnit() == cycleLength2.getUnit() && cycleLength1.getValue() == cycleLength2.getValue();
         return equals;
     }
 
@@ -249,12 +201,11 @@ public class Classificator extends PGMXReader_0_2 {
      * @param pr2
      * @return
      */
-    private boolean compareConstraints(ProbNet pr1, ProbNet pr2) {
-        boolean equals = true;
+    private boolean equalsConstraints(ProbNet pr1, ProbNet pr2) {
         List<PNConstraint> constraints1 = pr1.getConstraints();
         List<PNConstraint> constraints2 = pr2.getConstraints();
         int size = constraints1 == null ? 0 : constraints1.size();
-        equals &= (constraints1 == null && constraints2 == null) || (constraints1 != null && constraints2 != null && size == constraints2.size());
+        boolean equals = (constraints1 == null && constraints2 == null) || (constraints1 != null && constraints2 != null && size == constraints2.size());
         for (int i = 0; i < size && equals; i++) {
             equals &= constraints1.get(i).getClass() == constraints2.get(i).getClass();
         }
@@ -267,16 +218,13 @@ public class Classificator extends PGMXReader_0_2 {
      * @param pr2
      * @return
      */
-    private boolean compareListOfVariables(ProbNet pr1, ProbNet pr2) {
-        boolean equals = true;
+    private boolean equalsListOfVariables(ProbNet pr1, ProbNet pr2) {
         List<Variable> variables1 = pr1.getVariables();
         List<Variable> variables2 = pr2.getVariables();
         int size = variables1.size();
-        equals &= size == variables2.size();
-        if (equals) {
-            for (int i = 0; i < size && equals; i++) {
-                equals &= compareVariables(variables1.get(i), variables2.get(i));
-            }
+        boolean equals = size == variables2.size();
+        for (int i = 0; i < size && equals; i++) {
+            equals &= equalsVariables(variables1.get(i), variables2.get(i));
         }
         return equals;
     }
@@ -287,61 +235,124 @@ public class Classificator extends PGMXReader_0_2 {
      * @param variable2
      * @return
      */
-    private boolean compareVariables(Variable variable1, Variable variable2) {
-        boolean equals = true;
-        equals &= variable1.getName().matches(variable2.getName());
+    private boolean equalsVariables(Variable variable1, Variable variable2) {
+        boolean equals = equalsStrings(variable1.getName(), variable2.getName());
         State[] states1 = variable1.getStates();
         State[] states2 = variable2.getStates();
         boolean notNull = states1 != null && states2 != null;
         equals &= (states1 == null && states2 == null) || (notNull && states1.length == states2.length);
         if (equals && notNull) {
             for (int i = 0; i < states1.length && equals; i++) {
-                equals &= states1[i].getName().matches(states2[i].getName());
-                equals &= compareMapsStrings(states1[i].additionalProperties, states2[i].additionalProperties);
+                equals &= equalsStrings(states1[i].getName(), states2[i].getName());
+                equals &= equalsMapsStrings(states1[i].additionalProperties, states2[i].additionalProperties);
             }
-            equals &= compareStringsWithProperties(variable1.getAgent(), variable2.getAgent());
-            equals &= compareStringsWithProperties(variable1.getUnit(), variable2.getUnit());
-            equals &= variable1.getPrecision() == variable2.getPrecision();
-            equals &= variable1.getTimeSlice() == variable2.getTimeSlice();
-            equals &= variable1.isTemporal() == variable2.isTemporal();
-            equals &= variable1.getVariableType() == variable2.getVariableType();
-            PartitionedInterval interval1 = variable1.getPartitionedInterval();
-            PartitionedInterval interval2 = variable2.getPartitionedInterval();
-            boolean notNullIntervals = interval1 != null && interval2 != null;
-            boolean bothIntervalsNull = interval1 == null && interval2 == null;
-            equals &= bothIntervalsNull || notNullIntervals;
-            equals &= notNullIntervals ? interval1.equals(variable2.getPartitionedInterval()) : bothIntervalsNull;
-            equals &= variable1.getDecisionCriterion() == variable2.getDecisionCriterion();
-            equals &= variable1.getTimeSlice() == variable2.getTimeSlice();
         }
+        equals &= equalsStringsWithProperties(variable1.getAgent(), variable2.getAgent());
+        equals &= equalsStringsWithProperties(variable1.getUnit(), variable2.getUnit());
+        equals &= variable1.getPrecision() == variable2.getPrecision();
+        equals &= variable1.getTimeSlice() == variable2.getTimeSlice();
+        equals &= variable1.isTemporal() == variable2.isTemporal();
+        equals &= variable1.getVariableType() == variable2.getVariableType();
+        PartitionedInterval interval1 = variable1.getPartitionedInterval();
+        PartitionedInterval interval2 = variable2.getPartitionedInterval();
+        boolean notNullIntervals = interval1 != null && interval2 != null;
+        boolean bothIntervalsNull = interval1 == null && interval2 == null;
+        equals &= notNullIntervals ? interval1.equals(variable2.getPartitionedInterval()) : bothIntervalsNull;
+        equals &= variable1.getDecisionCriterion() == variable2.getDecisionCriterion();
+        equals &= variable1.getTimeSlice() == variable2.getTimeSlice();
         return equals;
     }
 
-    private boolean compareLinks(ProbNet pr1, ProbNet pr2) {
-        boolean equals = true;
-        List<Link<Node>> links = pr1.getLinks();
+    /**
+     *
+     * @param pr1
+     * @param pr2
+     * @return
+     */
+    private boolean equalsLinksCollection(ProbNet pr1, ProbNet pr2) {
+        List<Link<Node>> links1 = pr1.getLinks();
+        List<Link<Node>> links2 = pr2.getLinks();
+        boolean equals = links1.size() == links2.size();
+        if (equals) {
+            for (Link<Node> link11 : links1) {
+                Node node11 = link11.getNode1();
+                Variable variable11 = node11.getVariable();
+                String name11 = variable11.getName();
+
+                Node node12 = link11.getNode2();
+                Variable variable12 = node12.getVariable();
+                String name12 = variable12.getName();
+
+                try {
+                    Node node21 = pr2.getNode(name11);
+                    Node node22 = pr2.getNode(name12);
+                    equals &= (node21 != null && node22 != null);
+                    Link link22 = equals ? pr2.getLink(node21, node22, link11.isDirected()) : null;
+                    equals &= !(link22 == null);
+                } catch (NodeNotFoundException e) {
+                    equals = false;
+                    break;
+                }
+
+            }
+        }
         // TODO
         return equals;
     }
 
-    private boolean comparePotentials(ProbNet pr1, ProbNet pr2) {
+    private boolean equalsPotentialsCollection(ProbNet pr1, ProbNet pr2) {
         boolean equals = true;
         // TODO
         return equals;
     }
 
 
-/**
+    /**
      * Compare two strings that can be null
      * @param name1
      * @param name2
      * @return
      */
+    private boolean equalsStrings(String name1, String name2) {
+        return ((name1 == null && name2 == null) || (name1 != null && name2 != null && name1.compareTo(name2) == 0));
+    }
 
-    private boolean compareStrings(String name1, String name2) {
-        boolean equals = true;
-        equals &= (name1 == null && name2 == null) || (name1 != null && name2 != null);
-        equals &= name1 != null && name1.matches(name2);
+    /**
+     * Compares two wrappings of a Map with a name.
+     * @param swp1
+     * @param swp2
+     * @return
+     */
+    private boolean equalsStringsWithProperties(StringWithProperties swp1, StringWithProperties swp2) {
+        boolean notNull = swp1 != null && swp2!= null;
+        boolean equals = notNull || (swp1 == null && swp2 == null);
+        if (equals && notNull) {
+            equals = equalsStrings(swp1.getString(), swp2.getString()) &&
+                     equalsMapsStrings(swp1.getAdditionalProperties().getInformation(), swp2.getAdditionalProperties().getInformation());
+        }
+        return equals;
+    }
+
+    /**
+     * Compares two HashMaps key = String,value = String
+     * @param map1
+     * @param map2
+     * @return
+     */
+    private boolean equalsMapsStrings(Map<String,String> map1, Map<String,String> map2) {
+        boolean notNull = map1 != null && map2 != null;
+        boolean equals = notNull || (map1 == null && map2 == null);
+        if (equals && notNull) {
+            Set<String> set1 = map1.keySet();
+            Set<String> set2 = map1.keySet();
+            equals = set1.size() == set2.size();
+            if (equals) {
+                for (String key : set1) {
+                    equals = set2.contains(key) ? equalsStrings(map1.get(key), map2.get(key)) : false;
+                    if (!equals) break;
+                }
+            }
+        }
         return equals;
     }
 
