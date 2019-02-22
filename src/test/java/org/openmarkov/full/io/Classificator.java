@@ -11,6 +11,9 @@ import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.graph.Link;
 import org.openmarkov.core.model.network.*;
 import org.openmarkov.core.model.network.constraint.PNConstraint;
+import org.openmarkov.core.model.network.modelUncertainty.UncertainValue;
+import org.openmarkov.core.model.network.potential.Potential;
+import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 import org.openmarkov.io.probmodel.strings.XMLAttributes;
 
@@ -116,25 +119,12 @@ public class Classificator extends PGMXReader_0_2 {
         }
     }
 
-    private boolean compareEvidenceCases(List<EvidenceCase> evidenceCases1, List<EvidenceCase> evidenceCases2) {
-        boolean equals = true;
-        // TODO
-        return equals;
-    }
-
-    private boolean compareEvidence(EvidenceCase ev1, EvidenceCase ev2) {
-        boolean equals = true;
-        // TODO
-        return equals;
-    }
-
+    // Methods
     /**
-     *
      * @param pr1
      * @param pr2
      * @return True if networks are equal
      */
-
     private boolean compareNetworks(ProbNet pr1, ProbNet pr2) {
         boolean notNull = pr1 != null && pr2 != null;
         boolean equals = notNull || (pr1 == null && pr2 == null);
@@ -144,6 +134,42 @@ public class Classificator extends PGMXReader_0_2 {
             equals &= equalsListOfVariables(pr1, pr2);
             equals &= equalsLinksCollection(pr1, pr2);
             equals &= equalsPotentialsCollection(pr1, pr2);
+        }
+        return equals;
+    }
+
+    private boolean equalsListsOfEvidencecases(List<EvidenceCase> evidenceCases1, List<EvidenceCase> evidenceCases2) {
+        boolean bothNotNull = evidenceCases1 != null && evidenceCases2 != null;
+        boolean equals = (evidenceCases1 == null && evidenceCases2 == null) || bothNotNull;
+        if (bothNotNull && equals) {
+            int size = evidenceCases1.size();
+            equals &= size == evidenceCases2.size();
+            for (int i = 0; i < size && equals; i++) {
+                equals &= equalsEvidenceCases(evidenceCases1.get(i), evidenceCases2.get(i));
+            }
+        }
+        return equals;
+    }
+
+    /**
+     *
+     * @param evidenceCase1
+     * @param evidenceCase2
+     * @return
+     */
+    private boolean equalsEvidenceCases(EvidenceCase evidenceCase1, EvidenceCase evidenceCase2) {
+        int numberOfFindings = evidenceCase1.getNumberOfFindings();
+        boolean equals = numberOfFindings == evidenceCase2.getNumberOfFindings();
+        if (equals) {
+            List<Variable> variables1 = evidenceCase1.getVariables(); // Number of findings == number of variables
+            for (int i = 0; i < numberOfFindings && equals; i++) {
+                Finding findingVariable1 = evidenceCase1.getFinding(variables1.get(i)); // Always not null
+                Finding findingVariable2 = evidenceCase2.getFinding(variables1.get(i));  // Same variables in both evidence case, otherwise findingVariable2 == null
+                equals &= findingVariable2 != null &&
+                          findingVariable1.getState() == findingVariable2.getState() &&
+                          findingVariable1.getStateIndex() == findingVariable2.getStateIndex() &&
+                          findingVariable1.getNumericalValue() == findingVariable2.getNumericalValue();
+            }
         }
         return equals;
     }
@@ -301,11 +327,117 @@ public class Classificator extends PGMXReader_0_2 {
     }
 
     private boolean equalsPotentialsCollection(ProbNet pr1, ProbNet pr2) {
-        boolean equals = true;
-        // TODO
+        int numPotentials = pr1.getNumPotentials();
+        boolean equals = numPotentials == pr2.getNumPotentials();
+        if (equals && numPotentials > 0) {
+
+            // Constant potentials
+            Set<TablePotential> constantPotentials1 = pr1.getConstantPotentials();
+            Set<TablePotential> constantPotentials2 = pr2.getConstantPotentials();
+            boolean bothNotNull = constantPotentials1 != null && constantPotentials2 != null;
+            if (bothNotNull) {
+                int numConstantPotentials = constantPotentials1.size();
+                equals &= constantPotentials1.size() == constantPotentials1.size();
+                if (equals && numConstantPotentials > 0) {
+                    List<TablePotential> list1 = new ArrayList<TablePotential>(constantPotentials1);
+                    List<TablePotential> list2 = new ArrayList<TablePotential>(constantPotentials2);
+                    for (int i = 0; i < numConstantPotentials && equals; i++) {
+                        boolean found = false;
+                        for (int j = 0; j < numConstantPotentials && !found; j++) {
+                            found = equalsTablePotentials(list1.get(i), list2.get(i));
+                        }
+                        equals = found;
+                    }
+                }
+            }
+
+            // Other potentials
+            // TODO
+        }
         return equals;
     }
 
+    /**
+     * Compare two not null constant potentials
+     * @param tablePotential1
+     * @param tablePotential2
+     * @return
+     */
+    private boolean equalsTablePotentials(TablePotential tablePotential1, TablePotential tablePotential2) {
+        // Common part for all potentials
+        boolean equals = equalsPotentials(tablePotential1, tablePotential2);
+
+        // Compare values
+        equals &= tablePotential1.values.length == tablePotential2.values.length;
+        if (equals) {
+            int i;
+            for (i = 0; i < tablePotential1.values.length && tablePotential1.values[i] == tablePotential2.values[i]; i++);
+            equals &= i == tablePotential1.values.length;
+        }
+        equals &= tablePotential1.getInitialPosition() == tablePotential2.getInitialPosition();
+        // It does not compare offsets and dimensions because variables are already checked.
+
+        boolean bothNull = tablePotential1.uncertainValues == null && tablePotential2.uncertainValues == null;
+        boolean bothNotNull = tablePotential1.uncertainValues != null && tablePotential2.uncertainValues != null;
+        equals &= bothNotNull || (bothNull && tablePotential1.uncertainValues.length == tablePotential2.uncertainValues.length);
+        if (equals && bothNotNull) {
+            int i;
+            for (i = 0; i < tablePotential1.uncertainValues.length && equalsUncertainValues(tablePotential1.uncertainValues[i], tablePotential2.uncertainValues[i]); i++);
+            equals = i == tablePotential1.uncertainValues.length;
+        }
+    // TODO comprobar que he terminado
+        return equals;
+    }
+
+    private boolean equalsUncertainValues(UncertainValue uncertainValue1, UncertainValue uncertainValue2) {
+        boolean equals = (uncertainValue1.hasName() && uncertainValue2.hasName()) || (!uncertainValue1.hasName() && !uncertainValue2.hasName());
+        equals |= uncertainValue1.hasName() && equalsStrings(uncertainValue1.getName(), uncertainValue2.getName());
+        // TODO continuar por aquí
+        return equals;
+    }
+
+    private boolean equalsPotentials(Potential potential1, Potential potential2) {
+        // Compare miscelanea attributes
+        boolean equals = potential1.getCriterion() == potential2.getCriterion() &&
+                potential1.isAdditive() == potential2.isAdditive() &&
+                potential1.isUncertain() == potential2.isUncertain() &&
+                equalsStrings(potential1.getComment(), potential2.getComment()) &&
+                potential1.getPotentialRole() == potential2.getPotentialRole();
+        if (equals) { // Compare properties
+            Map<String, Object> properties1 = potential1.properties;
+            Map<String, Object> properties2 = potential2.properties;
+            int numProperties = properties1.size();
+            equals &= numProperties == properties2.size();
+            if (equals && numProperties > 0) {
+                Set<String> keys1 = properties1.keySet();
+                for (String key : keys1) {
+                    Object object1 = properties1.get(key);
+                    Object object2 = properties1.get(key);
+                    boolean bothNotNull = object1 != null && object2 != null;
+                    boolean bothNull = object1 == null && object2 == null;
+                    equals &= bothNull || (bothNotNull && object1.getClass() == object2.getClass());
+                    if (bothNotNull && equals && object1.getClass() == String.class) {
+                        equals &= equalsStrings(((String)object1), ((String)object2));
+                    }
+                }
+            }
+        }
+
+        // Variables (assumption that variables are in the same order)
+        if (equals) {
+            List<Variable> variables1 = potential1.getVariables();
+            List<Variable> variables2 = potential2.getVariables();
+            int numVariables = variables1.size();
+            equals &= numVariables == variables2.size();
+            if (equals) {
+                for (int i = 0; i < numVariables && equals; i++) {
+                    equals &= equalsStrings(variables1.get(i).getName(), variables2.get(i).getName());
+                }
+            }
+        }
+
+        return equals;
+    }
 
     /**
      * Compare two strings that can be null
@@ -365,7 +497,7 @@ public class Classificator extends PGMXReader_0_2 {
     private boolean networkNameIsIncludedInListOfAdvancedFeatures(String netName) {
         boolean advancedFeatures = false;
         for (int i = 0; i < networksWithAdvancedFeatures.length && !advancedFeatures; i++) {
-            advancedFeatures = networksWithAdvancedFeatures[i].matches(netName);
+            advancedFeatures = networksWithAdvancedFeatures[i].compareTo(netName) == 0;
         }
         return advancedFeatures;
     }
@@ -383,14 +515,10 @@ public class Classificator extends PGMXReader_0_2 {
         return pathToNewFiles + File.separator + version + File.separator + absolutePathOld.substring(pathToTestFiles.length());
     }
 
-    // Methods
-
-
-/**
+    /**
      * Read networks from directory 'pathToTestFiles' and writes them in 0.2 and 0.7 version in
      * 'pathToNewFiles/0.2' and 'pathToNewFiles/0.7'.
      */
-
     public void testConversionBetweenVersions() throws IOException {
         String pathToNewFiles02 = pathToNewFiles + "/0_2";
         String pathToNewFiles07 = pathToNewFiles + "/0_7";
@@ -581,14 +709,14 @@ public class Classificator extends PGMXReader_0_2 {
     }
 
     private interface StringFilter {
-        boolean matchCondition(String string);
+        boolean meetsCondition(String string);
     }
 
     private class PGMXFiles implements StringFilter {
         private final String PGMX_FILES = ".PGMX";
 
         @Override
-        public boolean matchCondition(String string) {
+        public boolean meetsCondition(String string) {
             return string.toUpperCase().endsWith(PGMX_FILES);
         }
     }
@@ -679,7 +807,7 @@ public class Classificator extends PGMXReader_0_2 {
         private boolean matches(File file) {
             boolean match = true;
             for (StringFilter filter : filters) {
-                match &= filter.matchCondition(file.getName());
+                match &= filter.meetsCondition(file.getName());
             }
             return match;
         }
