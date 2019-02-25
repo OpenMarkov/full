@@ -8,7 +8,12 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.located.LocatedJDOMFactory;
 import org.openmarkov.core.exception.NodeNotFoundException;
+import org.openmarkov.core.exception.NonProjectablePotentialException;
 import org.openmarkov.core.exception.ParserException;
+import org.openmarkov.core.exception.WrongCriterionException;
+import org.openmarkov.core.inference.InferenceOptions;
+import org.openmarkov.core.inference.MulticriteriaOptions;
+import org.openmarkov.core.inference.TemporalOptions;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.graph.Link;
 import org.openmarkov.core.model.network.*;
@@ -17,6 +22,7 @@ import org.openmarkov.core.model.network.modelUncertainty.ProbDensFunction;
 import org.openmarkov.core.model.network.modelUncertainty.UncertainValue;
 import org.openmarkov.core.model.network.potential.Potential;
 import org.openmarkov.core.model.network.potential.TablePotential;
+import org.openmarkov.core.model.network.potential.canonical.ICIPotential;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 import org.openmarkov.io.probmodel.strings.XMLAttributes;
 
@@ -189,7 +195,27 @@ public class Classificator extends PGMXReader_0_2 {
         equals &= equalsCycleLength(pr1.getCycleLength(), pr2.getCycleLength());
         equals &= equalsMapsStrings(pr1.additionalProperties, pr2.additionalProperties);
         equals &= equalsAgents(pr1.getAgents(), pr2.getAgents());
+        equals &= equalsInferenceOptions(pr1.getInferenceOptions(), pr2.getInferenceOptions());
         return equals;
+    }
+
+    private boolean equalsInferenceOptions(InferenceOptions inferenceOptions1, InferenceOptions inferenceOptions2) {
+        return inferenceOptions1.discountRate == inferenceOptions2.discountRate &&
+               equalsVariables(inferenceOptions1.simulationIndexVariable, inferenceOptions2.simulationIndexVariable) &&
+               equalsMultiCriteriaOptions(inferenceOptions1.getMultiCriteriaOptions(), inferenceOptions2.getMultiCriteriaOptions()) &&
+               equalsTemporalOptions(inferenceOptions1.getTemporalOptions(), inferenceOptions2.getTemporalOptions());
+    }
+
+    private boolean equalsTemporalOptions(TemporalOptions temporalOptions1, TemporalOptions temporalOptions2) {
+        return temporalOptions1.getHorizon() == temporalOptions2.getHorizon() &&
+               temporalOptions1.getTransition() == temporalOptions2.getTransition();
+    }
+
+    private boolean equalsMultiCriteriaOptions(MulticriteriaOptions multicriteria1, MulticriteriaOptions multicriteria2) {
+        return multicriteria1.isCeOptionsShowed() == multicriteria2.isCeOptionsShowed() &&
+                        multicriteria1.isUnicriterionOptionsShowed() == multicriteria2.isCeOptionsShowed() &&
+                        equalsStrings(multicriteria1.getMainUnit(), multicriteria2.getMainUnit()) &&
+                        multicriteria1.getMulticriteriaType() == multicriteria2.getMulticriteriaType();
     }
 
     /**
@@ -265,30 +291,35 @@ public class Classificator extends PGMXReader_0_2 {
      * @return
      */
     private boolean equalsVariables(Variable variable1, Variable variable2) {
-        boolean equals = equalsStrings(variable1.getName(), variable2.getName());
-        State[] states1 = variable1.getStates();
-        State[] states2 = variable2.getStates();
-        boolean notNull = states1 != null && states2 != null;
-        equals &= (states1 == null && states2 == null) || (notNull && states1.length == states2.length);
-        if (equals && notNull) {
-            for (int i = 0; i < states1.length && equals; i++) {
-                equals &= equalsStrings(states1[i].getName(), states2[i].getName());
-                equals &= equalsMapsStrings(states1[i].additionalProperties, states2[i].additionalProperties);
+        boolean bothVariablesNotNull = variable1 != null && variable2 != null;
+        boolean bothVariablesNull = variable1 == null && variable2 == null;
+
+        boolean equals = bothVariablesNull || (bothVariablesNotNull && equalsStrings(variable1.getName(), variable2.getName()));
+        if (equals && bothVariablesNotNull) {
+            State[] states1 = variable1.getStates();
+            State[] states2 = variable2.getStates();
+            boolean notNull = states1 != null && states2 != null;
+            equals &= (states1 == null && states2 == null) || (notNull && states1.length == states2.length);
+            if (equals && notNull) {
+                for (int i = 0; i < states1.length && equals; i++) {
+                    equals &= equalsStrings(states1[i].getName(), states2[i].getName());
+                    equals &= equalsMapsStrings(states1[i].additionalProperties, states2[i].additionalProperties);
+                }
             }
+            equals &= equalsStringsWithProperties(variable1.getAgent(), variable2.getAgent());
+            equals &= equalsStringsWithProperties(variable1.getUnit(), variable2.getUnit());
+            equals &= variable1.getPrecision() == variable2.getPrecision();
+            equals &= variable1.getTimeSlice() == variable2.getTimeSlice();
+            equals &= variable1.isTemporal() == variable2.isTemporal();
+            equals &= variable1.getVariableType() == variable2.getVariableType();
+            PartitionedInterval interval1 = variable1.getPartitionedInterval();
+            PartitionedInterval interval2 = variable2.getPartitionedInterval();
+            boolean notNullIntervals = interval1 != null && interval2 != null;
+            boolean bothIntervalsNull = interval1 == null && interval2 == null;
+            equals &= notNullIntervals ? interval1.equals(variable2.getPartitionedInterval()) : bothIntervalsNull;
+            equals &= variable1.getDecisionCriterion() == variable2.getDecisionCriterion();
+            equals &= variable1.getTimeSlice() == variable2.getTimeSlice();
         }
-        equals &= equalsStringsWithProperties(variable1.getAgent(), variable2.getAgent());
-        equals &= equalsStringsWithProperties(variable1.getUnit(), variable2.getUnit());
-        equals &= variable1.getPrecision() == variable2.getPrecision();
-        equals &= variable1.getTimeSlice() == variable2.getTimeSlice();
-        equals &= variable1.isTemporal() == variable2.isTemporal();
-        equals &= variable1.getVariableType() == variable2.getVariableType();
-        PartitionedInterval interval1 = variable1.getPartitionedInterval();
-        PartitionedInterval interval2 = variable2.getPartitionedInterval();
-        boolean notNullIntervals = interval1 != null && interval2 != null;
-        boolean bothIntervalsNull = interval1 == null && interval2 == null;
-        equals &= notNullIntervals ? interval1.equals(variable2.getPartitionedInterval()) : bothIntervalsNull;
-        equals &= variable1.getDecisionCriterion() == variable2.getDecisionCriterion();
-        equals &= variable1.getTimeSlice() == variable2.getTimeSlice();
         return equals;
     }
 
@@ -366,10 +397,7 @@ public class Classificator extends PGMXReader_0_2 {
                 int j;
                 for (j = 0; j < belongs1.length && belongs1[j] == belongs2[j]; j++);
                 equals &= j == belongs1.length;
-                double[] limits1 = interval1.getLimits();
-                double[] limits2 = interval2.getLimits();
-                for (j = 0; j < limits1.length && limits1[j] == limits2[j]; j++);
-                equals &= j == limits1.length;
+                equals &= equalsArrayOfDoubles(interval1.getLimits(), interval2.getLimits());
             }
         }
         return equals;
@@ -393,29 +421,54 @@ public class Classificator extends PGMXReader_0_2 {
         int numPotentials = pr1.getNumPotentials();
         boolean equals = numPotentials == pr2.getNumPotentials();
         if (equals && numPotentials > 0) {
+            equals = equalsConstantPotentials(pr1.getConstantPotentials(), pr2.getConstantPotentials());
 
-            // Constant potentials
-            Set<TablePotential> constantPotentials1 = pr1.getConstantPotentials();
-            Set<TablePotential> constantPotentials2 = pr2.getConstantPotentials();
-            boolean bothNotNull = constantPotentials1 != null && constantPotentials2 != null;
-            if (bothNotNull) {
-                int numConstantPotentials = constantPotentials1.size();
-                equals &= constantPotentials1.size() == constantPotentials1.size();
-                if (equals && numConstantPotentials > 0) {
-                    List<TablePotential> list1 = new ArrayList<TablePotential>(constantPotentials1);
-                    List<TablePotential> list2 = new ArrayList<TablePotential>(constantPotentials2);
-                    for (int i = 0; i < numConstantPotentials && equals; i++) {
-                        boolean found = false;
-                        for (int j = 0; j < numConstantPotentials && !found; j++) {
-                            found = equalsTablePotentials(list1.get(i), list2.get(i));
-                        }
-                        equals = found;
+            List<Potential> potentials1 = pr1.getPotentials();
+            List<Potential> potentials2 = pr2.getPotentials();
+            // Other potentials
+            potentials1.removeAll(pr1.getConstantPotentials());
+            potentials2.removeAll(pr2.getConstantPotentials());
+            int size = potentials1.size();
+            for (int i = 0; i < size && equals; i++) {
+                Potential potential1 = potentials1.get(i);
+                Potential potential2 = potentials2.get(i);
+                Class potentialClass = potential1.getClass();
+                equals = potentialClass == potential2.getClass();
+                if (equals) {
+                    if (potentialClass == TablePotential.class) {
+                        equals = equalsTablePotentials((TablePotential)potential1, (TablePotential)potential2);
+                    } else if (ICIPotential.class.isAssignableFrom(potentialClass)) {
+                        equals = equalsICIPotentials((ICIPotential)potential1, (ICIPotential)potential2);
                     }
+                    // TODO Finish this
+
                 }
             }
 
-            // Other potentials
-            // TODO
+        }
+        return equals;
+    }
+
+    private boolean equalsICIPotentials(ICIPotential potential1, ICIPotential potential2) {
+        // TODO Finish this
+        return false;
+    }
+
+    private boolean equalsConstantPotentials(Set<TablePotential> constantPotentials1, Set<TablePotential> constantPotentials2) {
+        boolean bothNotNull = constantPotentials1 != null && constantPotentials2 != null;
+        boolean bothNull = constantPotentials1 == null && constantPotentials2 == null;
+        boolean equals = bothNull || (bothNotNull && constantPotentials1.size() == constantPotentials2.size());
+        if (bothNotNull && equals) {
+            int numConstantPotentials = constantPotentials1.size();
+            if (numConstantPotentials > 0) {
+                List<TablePotential> list1 = new ArrayList<TablePotential>(constantPotentials1);
+                List<TablePotential> list2 = new ArrayList<TablePotential>(constantPotentials2);
+                for (int i = 0; i < numConstantPotentials && equals; i++) {
+                    int j;
+                    for (j = 0; j < numConstantPotentials && !equalsTablePotentials(list1.get(i), list2.get(j)); j++);
+                    equals = j < numConstantPotentials;
+                }
+            }
         }
         return equals;
     }
@@ -456,8 +509,22 @@ public class Classificator extends PGMXReader_0_2 {
         boolean equals = equalsStrings(uncertainValue1.getName(), uncertainValue2.getName());
         ProbDensFunction probDensFunction1 = uncertainValue1.getProbDensFunction();
         ProbDensFunction probDensFunction2 = uncertainValue2.getProbDensFunction();
+        equals &=   equalsArrayOfDoubles(probDensFunction1.getParameters(), probDensFunction2.getParameters()) &&
+                    probDensFunction1.getMinimum() == probDensFunction2.getMinimum() &&
+                    probDensFunction1.getMaximum() == probDensFunction2.getMaximum() &&
+                    probDensFunction1.getMean() == probDensFunction2.getMean() &&
+                    probDensFunction1.getStandardDeviation() == probDensFunction2.getStandardDeviation();
 
-        // TODO continuar por aquí
+        return equals;
+    }
+
+    private boolean equalsArrayOfDoubles(double[] parameters1, double[] parameters2) {
+        boolean bothNull = parameters1 == null && parameters2 == null;
+        boolean bothNotNull = parameters1 != null && parameters2 != null;
+        boolean equals = bothNull || (bothNotNull & parameters1.length == parameters2.length);
+        int i;
+        for (i = 0; equals && bothNotNull && i < parameters1.length && parameters1[i] == parameters2[i]; i++);
+        equals &= i == parameters1.length;
         return equals;
     }
 
