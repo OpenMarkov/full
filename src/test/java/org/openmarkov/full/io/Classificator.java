@@ -13,6 +13,7 @@ import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.graph.Link;
 import org.openmarkov.core.model.network.*;
 import org.openmarkov.core.model.network.constraint.PNConstraint;
+import org.openmarkov.core.model.network.modelUncertainty.ProbDensFunction;
 import org.openmarkov.core.model.network.modelUncertainty.UncertainValue;
 import org.openmarkov.core.model.network.potential.Potential;
 import org.openmarkov.core.model.network.potential.TablePotential;
@@ -441,7 +442,7 @@ public class Classificator extends PGMXReader_0_2 {
 
         boolean bothNull = tablePotential1.uncertainValues == null && tablePotential2.uncertainValues == null;
         boolean bothNotNull = tablePotential1.uncertainValues != null && tablePotential2.uncertainValues != null;
-        equals &= bothNotNull || (bothNull && tablePotential1.uncertainValues.length == tablePotential2.uncertainValues.length);
+        equals &= bothNull || (bothNotNull && tablePotential1.uncertainValues.length == tablePotential2.uncertainValues.length);
         if (equals && bothNotNull) {
             int i;
             for (i = 0; i < tablePotential1.uncertainValues.length && equalsUncertainValues(tablePotential1.uncertainValues[i], tablePotential2.uncertainValues[i]); i++);
@@ -452,8 +453,10 @@ public class Classificator extends PGMXReader_0_2 {
     }
 
     private boolean equalsUncertainValues(UncertainValue uncertainValue1, UncertainValue uncertainValue2) {
-        boolean equals = (uncertainValue1.hasName() && uncertainValue2.hasName()) || (!uncertainValue1.hasName() && !uncertainValue2.hasName());
-        equals |= uncertainValue1.hasName() && equalsStrings(uncertainValue1.getName(), uncertainValue2.getName());
+        boolean equals = equalsStrings(uncertainValue1.getName(), uncertainValue2.getName());
+        ProbDensFunction probDensFunction1 = uncertainValue1.getProbDensFunction();
+        ProbDensFunction probDensFunction2 = uncertainValue2.getProbDensFunction();
+
         // TODO continuar por aquí
         return equals;
     }
