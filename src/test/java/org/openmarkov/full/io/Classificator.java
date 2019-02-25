@@ -1,5 +1,7 @@
 package org.openmarkov.full.io;
 
+import org.apache.poi.ss.usermodel.Table;
+import org.apache.xmlbeans.StringEnumAbstractBase;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -298,31 +300,91 @@ public class Classificator extends PGMXReader_0_2 {
     private boolean equalsLinksCollection(ProbNet pr1, ProbNet pr2) {
         List<Link<Node>> links1 = pr1.getLinks();
         List<Link<Node>> links2 = pr2.getLinks();
-        boolean equals = links1.size() == links2.size();
-        if (equals) {
-            for (Link<Node> link11 : links1) {
-                Node node11 = link11.getNode1();
-                Variable variable11 = node11.getVariable();
-                String name11 = variable11.getName();
+        int size = links1.size();
+        boolean equals = size == links2.size();
+        for (int i = 0; i < size && equals; i++) {
+            Link<Node> link11 = links1.get(i);
+            Node node11 = link11.getNode1();
+            Variable variable11 = node11.getVariable();
+            String name11 = variable11.getName();
 
-                Node node12 = link11.getNode2();
-                Variable variable12 = node12.getVariable();
-                String name12 = variable12.getName();
+            Node node12 = link11.getNode2();
+            Variable variable12 = node12.getVariable();
+            String name12 = variable12.getName();
 
-                try {
-                    Node node21 = pr2.getNode(name11);
-                    Node node22 = pr2.getNode(name12);
-                    equals &= (node21 != null && node22 != null);
-                    Link link22 = equals ? pr2.getLink(node21, node22, link11.isDirected()) : null;
-                    equals &= !(link22 == null);
-                } catch (NodeNotFoundException e) {
-                    equals = false;
-                    break;
+            Link link22 = null;
+            try {
+                Node node21 = pr2.getNode(name11);
+                Node node22 = pr2.getNode(name12);
+                equals &= (node21 != null && node22 != null);
+                link22 = equals ? pr2.getLink(node21, node22, link11.isDirected()) : null;
+                equals &= !(link22 == null);
+
+                // Compare restrictions
+                if (equals) {
+                    Potential restrictions1 = link11.getRestrictionsPotential();
+                    Potential restrictions2 = link22.getRestrictionsPotential();
+                    boolean bothNull = restrictions1 == null && restrictions2 == null;
+                    boolean bothNotNull = restrictions1 != null && restrictions2 != null;
+                    equals &= bothNull || (bothNotNull && restrictions1.getClass() == restrictions2.getClass());
+                    if (equals && bothNotNull) {
+                        if (restrictions1.getClass() == TablePotential.class) {
+                            equals &= equalsTablePotentials((TablePotential)restrictions1, (TablePotential)restrictions2);
+                        } else { // At this moment, restrictions are TablePotentials,
+                            equals &= equalsCommonPartPotentials(restrictions1, restrictions2);
+                        }
+                    }
                 }
+            } catch (NodeNotFoundException e) {
+                equals = false;
+                break;
+            }
 
+            // Checks revealingStates and revealingIntervals
+            if (equals && link22 != null) {
+                equals &= equalsListOfStates(link11.getRevealingStates(), link22.getRevealingStates());
+                equals &= equalsListOfRevealingIntervals(link11.getRevealingIntervals(), link22.getRevealingIntervals());
             }
         }
-        // TODO
+
+        return equals;
+    }
+
+    private boolean equalsListOfRevealingIntervals(List<PartitionedInterval> revealingIntervals1, List<PartitionedInterval> revealingIntervals2) {
+        boolean bothEmpty = revealingIntervals1.isEmpty() && revealingIntervals2.isEmpty();
+        boolean bothNotEmpty = !revealingIntervals1.isEmpty() && !revealingIntervals2.isEmpty();
+        boolean equals = bothEmpty || bothNotEmpty;
+        int numStates = revealingIntervals1.size();
+        for (int i = 0; i < numStates && equals; i++) {
+            PartitionedInterval interval1 = revealingIntervals1.get(i);
+            PartitionedInterval interval2 = revealingIntervals2.get(i);
+            equals &= interval1.getMin() == interval2.getMin() && interval1.getMax() == interval2.getMax() && interval1.getNumSubintervals() == interval2.getNumSubintervals();
+            if (equals) {
+                boolean[] belongs1 = interval1.getBelongsToLeftSide();
+                boolean[] belongs2 = interval2.getBelongsToLeftSide();
+                int j;
+                for (j = 0; j < belongs1.length && belongs1[j] == belongs2[j]; j++);
+                equals &= j == belongs1.length;
+                double[] limits1 = interval1.getLimits();
+                double[] limits2 = interval2.getLimits();
+                for (j = 0; j < limits1.length && limits1[j] == limits2[j]; j++);
+                equals &= j == limits1.length;
+            }
+        }
+        return equals;
+    }
+
+    private boolean equalsListOfStates(List<State> states1, List<State> states2) {
+        boolean bothEmpty = states1.isEmpty() && states2.isEmpty();
+        boolean bothNotEmpty = !states1.isEmpty() && !states2.isEmpty();
+        boolean equals = bothEmpty || bothNotEmpty;
+        int numStates = states1.size();
+        for (int i = 0; i < numStates && equals; i++) {
+            State state11 = states1.get(i);
+            State state22 = states2.get(i);
+            equals &= equalsStrings(state11.getName(), state22.getName());
+            equals &= equalsMapsStrings(state11.additionalProperties, state22.additionalProperties);
+        }
         return equals;
     }
 
@@ -365,7 +427,7 @@ public class Classificator extends PGMXReader_0_2 {
      */
     private boolean equalsTablePotentials(TablePotential tablePotential1, TablePotential tablePotential2) {
         // Common part for all potentials
-        boolean equals = equalsPotentials(tablePotential1, tablePotential2);
+        boolean equals = equalsCommonPartPotentials(tablePotential1, tablePotential2);
 
         // Compare values
         equals &= tablePotential1.values.length == tablePotential2.values.length;
@@ -385,7 +447,7 @@ public class Classificator extends PGMXReader_0_2 {
             for (i = 0; i < tablePotential1.uncertainValues.length && equalsUncertainValues(tablePotential1.uncertainValues[i], tablePotential2.uncertainValues[i]); i++);
             equals = i == tablePotential1.uncertainValues.length;
         }
-    // TODO comprobar que he terminado
+
         return equals;
     }
 
@@ -396,7 +458,7 @@ public class Classificator extends PGMXReader_0_2 {
         return equals;
     }
 
-    private boolean equalsPotentials(Potential potential1, Potential potential2) {
+    private boolean equalsCommonPartPotentials(Potential potential1, Potential potential2) {
         // Compare miscelanea attributes
         boolean equals = potential1.getCriterion() == potential2.getCriterion() &&
                 potential1.isAdditive() == potential2.isAdditive() &&
@@ -672,7 +734,6 @@ public class Classificator extends PGMXReader_0_2 {
      * @param pgmxFile
      * @return
      */
-
     private String getVersion(File pgmxFile) throws ParserException {
         PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
         String absolutePath = pgmxFile.getAbsolutePath();
@@ -686,7 +747,6 @@ public class Classificator extends PGMXReader_0_2 {
      * @param paths
      * @return
      */
-
     private void setPaths(String[] paths) {
         pathToTestFiles = null;
         if (paths.length >=1 ) {
