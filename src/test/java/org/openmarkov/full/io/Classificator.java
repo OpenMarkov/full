@@ -27,10 +27,7 @@ import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 import org.openmarkov.io.probmodel.strings.XMLAttributes;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Classificator extends PGMXReader_0_2 {
 
@@ -296,16 +293,7 @@ public class Classificator extends PGMXReader_0_2 {
 
         boolean equals = bothVariablesNull || (bothVariablesNotNull && equalsStrings(variable1.getName(), variable2.getName()));
         if (equals && bothVariablesNotNull) {
-            State[] states1 = variable1.getStates();
-            State[] states2 = variable2.getStates();
-            boolean notNull = states1 != null && states2 != null;
-            equals &= (states1 == null && states2 == null) || (notNull && states1.length == states2.length);
-            if (equals && notNull) {
-                for (int i = 0; i < states1.length && equals; i++) {
-                    equals &= equalsStrings(states1[i].getName(), states2[i].getName());
-                    equals &= equalsMapsStrings(states1[i].additionalProperties, states2[i].additionalProperties);
-                }
-            }
+            equals = equalsListOfStates(Arrays.asList(variable1.getStates()), Arrays.asList(variable2.getStates()));
             equals &= equalsStringsWithProperties(variable1.getAgent(), variable2.getAgent());
             equals &= equalsStringsWithProperties(variable1.getUnit(), variable2.getUnit());
             equals &= variable1.getPrecision() == variable2.getPrecision();
@@ -439,6 +427,7 @@ public class Classificator extends PGMXReader_0_2 {
                         equals = equalsTablePotentials((TablePotential)potential1, (TablePotential)potential2);
                     } else if (ICIPotential.class.isAssignableFrom(potentialClass)) {
                         equals = equalsICIPotentials((ICIPotential)potential1, (ICIPotential)potential2);
+                        ((ICIPotential) potential1).getFamily()
                     }
                     // TODO Finish this
 
@@ -449,9 +438,35 @@ public class Classificator extends PGMXReader_0_2 {
         return equals;
     }
 
+    /**
+     * Compares the common part of two ICI Potentials
+     * @param potential1
+     * @param potential2
+     * @return
+     */
     private boolean equalsICIPotentials(ICIPotential potential1, ICIPotential potential2) {
-        // TODO Finish this
-        return false;
+        boolean equals = equalsCommonPartPotentials(potential1, potential2) &&
+                potential1.getModelType() == potential2.getModelType() &&
+                potential1.getFamily() == potential2.getFamily() &&
+                equalsArrayOfDoubles(potential1.getLeakyParameters(), potential2.getLeakyParameters());
+        List<Variable> variables = potential1.getVariables();
+        if (equals) {
+            for (Variable variable : variables) {
+                equals &= equalsArrayOfDoubles(potential1.getNoisyParameters(variable), potential2.getNoisyParameters(variable));
+            }
+        }
+        if (equals) {
+            // Compare subpotentials, that include the functional potential and the noisy potentials
+            List<TablePotential> subPotentials1 = potential1.getSubpotentials();
+            List<TablePotential> subPotentials2 = potential2.getSubpotentials();
+            int size = subPotentials1.size();
+            equals &= size == subPotentials2.size();
+            int i;
+            for (i = 0; i < size && equalsTablePotentials(subPotentials1.get(i), subPotentials2.get(i)); i++);
+            equals &= i == size && equalsTablePotentials(potential1.getLeakyPotential(), potential2.getLeakyPotential());
+        }
+
+        return equals;
     }
 
     private boolean equalsConstantPotentials(Set<TablePotential> constantPotentials1, Set<TablePotential> constantPotentials2) {
