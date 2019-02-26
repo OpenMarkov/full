@@ -1,16 +1,12 @@
 package org.openmarkov.full.io;
 
-import org.apache.poi.ss.usermodel.Table;
-import org.apache.xmlbeans.StringEnumAbstractBase;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.located.LocatedJDOMFactory;
 import org.openmarkov.core.exception.NodeNotFoundException;
-import org.openmarkov.core.exception.NonProjectablePotentialException;
 import org.openmarkov.core.exception.ParserException;
-import org.openmarkov.core.exception.WrongCriterionException;
 import org.openmarkov.core.inference.InferenceOptions;
 import org.openmarkov.core.inference.MulticriteriaOptions;
 import org.openmarkov.core.inference.TemporalOptions;
@@ -22,7 +18,10 @@ import org.openmarkov.core.model.network.modelUncertainty.ProbDensFunction;
 import org.openmarkov.core.model.network.modelUncertainty.UncertainValue;
 import org.openmarkov.core.model.network.potential.Potential;
 import org.openmarkov.core.model.network.potential.TablePotential;
+import org.openmarkov.core.model.network.potential.UniformPotential;
 import org.openmarkov.core.model.network.potential.canonical.ICIPotential;
+import org.openmarkov.core.model.network.potential.canonical.MinMaxPotential;
+import org.openmarkov.core.model.network.potential.treeadd.TreeADDPotential;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 import org.openmarkov.io.probmodel.strings.XMLAttributes;
 
@@ -223,12 +222,15 @@ public class Classificator extends PGMXReader_0_2 {
      */
     private boolean equalsAgents(List<StringWithProperties> agents1, List<StringWithProperties> agents2) {
         boolean notNull = agents1 != null && agents2 != null;
-        boolean equals = (agents1 == null && agents2 == null) || (notNull && agents1.size() == agents2.size());
+        boolean equals = (agents1 == null && agents2 == null) || notNull;
         if (equals && notNull) {
             int size = agents1.size();
+            equals = size == agents2.size();
             // Asumption that contents are in the same order in both lists
-            for (int i = 0; i < size && equals; i++) {
-                equals &= equalsStringsWithProperties(agents1.get(i), agents2.get(i));
+            if (equals) {
+                int i;
+                for (i = 0; i < size && equalsStringsWithProperties(agents1.get(i), agents2.get(i)); i++);
+                equals = i == size;
             }
         }
         return equals;
@@ -241,10 +243,12 @@ public class Classificator extends PGMXReader_0_2 {
      * @return
      */
     private boolean equalsCycleLength(CycleLength cycleLength1, CycleLength cycleLength2) {
-        boolean notNull = cycleLength1 != null && cycleLength2 != null;
-        boolean equals = notNull || (cycleLength1 == null && cycleLength2 == null);
-        equals &= notNull && cycleLength1.getUnit() == cycleLength2.getUnit() && cycleLength1.getValue() == cycleLength2.getValue();
-        return equals;
+        boolean bothNotNull = cycleLength1 != null && cycleLength2 != null;
+        boolean bothNull = cycleLength1 == null && cycleLength2 == null;
+        return bothNull ||
+                        ( bothNotNull &&
+                        cycleLength1.getUnit() == cycleLength2.getUnit() &&
+                        cycleLength1.getValue() == cycleLength2.getValue() );
     }
 
     /**
@@ -259,7 +263,7 @@ public class Classificator extends PGMXReader_0_2 {
         int size = constraints1 == null ? 0 : constraints1.size();
         boolean equals = (constraints1 == null && constraints2 == null) || (constraints1 != null && constraints2 != null && size == constraints2.size());
         for (int i = 0; i < size && equals; i++) {
-            equals &= constraints1.get(i).getClass() == constraints2.get(i).getClass();
+            equals = constraints1.get(i).getClass() == constraints2.get(i).getClass();
         }
         return equals;
     }
@@ -293,20 +297,46 @@ public class Classificator extends PGMXReader_0_2 {
 
         boolean equals = bothVariablesNull || (bothVariablesNotNull && equalsStrings(variable1.getName(), variable2.getName()));
         if (equals && bothVariablesNotNull) {
-            equals = equalsListOfStates(Arrays.asList(variable1.getStates()), Arrays.asList(variable2.getStates()));
-            equals &= equalsStringsWithProperties(variable1.getAgent(), variable2.getAgent());
-            equals &= equalsStringsWithProperties(variable1.getUnit(), variable2.getUnit());
-            equals &= variable1.getPrecision() == variable2.getPrecision();
-            equals &= variable1.getTimeSlice() == variable2.getTimeSlice();
-            equals &= variable1.isTemporal() == variable2.isTemporal();
-            equals &= variable1.getVariableType() == variable2.getVariableType();
-            PartitionedInterval interval1 = variable1.getPartitionedInterval();
-            PartitionedInterval interval2 = variable2.getPartitionedInterval();
-            boolean notNullIntervals = interval1 != null && interval2 != null;
-            boolean bothIntervalsNull = interval1 == null && interval2 == null;
-            equals &= notNullIntervals ? interval1.equals(variable2.getPartitionedInterval()) : bothIntervalsNull;
-            equals &= variable1.getDecisionCriterion() == variable2.getDecisionCriterion();
-            equals &= variable1.getTimeSlice() == variable2.getTimeSlice();
+            equals = equalsListOfStates(Arrays.asList(variable1.getStates()), Arrays.asList(variable2.getStates())) &&
+                     equalsStringsWithProperties(variable1.getAgent(), variable2.getAgent()) &&
+                     equalsStringsWithProperties(variable1.getUnit(), variable2.getUnit()) &&
+                     variable1.getPrecision() == variable2.getPrecision() &&
+                     variable1.getTimeSlice() == variable2.getTimeSlice() &&
+                     variable1.isTemporal() == variable2.isTemporal() &&
+                     variable1.getVariableType() == variable2.getVariableType();
+            if (equals) {
+                PartitionedInterval interval1 = variable1.getPartitionedInterval();
+                PartitionedInterval interval2 = variable2.getPartitionedInterval();
+                boolean notNullIntervals = interval1 != null && interval2 != null;
+                boolean bothIntervalsNull = interval1 == null && interval2 == null;
+                equals = bothIntervalsNull ||
+                        ( notNullIntervals && equalsPartitionedIntervals(interval1, interval2) &&
+                        variable1.getDecisionCriterion() == variable2.getDecisionCriterion() &&
+                        variable1.getTimeSlice() == variable2.getTimeSlice() );
+            }
+        }
+        return equals;
+    }
+
+    private boolean equalsPartitionedIntervals(PartitionedInterval interval1, PartitionedInterval interval2) {
+        boolean bothNull = interval1 == null && interval2 == null;
+        boolean bothNotNull = interval1 != null && interval2 != null;
+        return bothNull ||
+                ( bothNotNull && interval1.getMin() == interval2.getMin() &&
+                interval1.getMax() == interval2.getMax() &&
+                interval1.getNumSubintervals() == interval2.getNumSubintervals() &&
+                equalsArraysOfBooleans(interval1.getBelongsToLeftSide(), interval2.getBelongsToLeftSide()) &&
+                equalsArrayOfDoubles(interval1.getLimits(), interval2.getLimits()) );
+    }
+
+    private boolean equalsArraysOfBooleans(boolean[] booleans1, boolean[] booleans2) {
+        boolean bothNull = booleans1 == null && booleans2 == null;
+        boolean bothNotNull = booleans1 != null && booleans2 != null;
+        boolean equals = bothNull || (bothNotNull && booleans1.length == booleans2.length);
+        if (equals && bothNotNull) {
+            int i;
+            for (i = 0; i < booleans1.length && booleans1[i] == booleans2[i]; i++);
+            equals = i == booleans1.length;
         }
         return equals;
     }
@@ -362,8 +392,8 @@ public class Classificator extends PGMXReader_0_2 {
 
             // Checks revealingStates and revealingIntervals
             if (equals && link22 != null) {
-                equals &= equalsListOfStates(link11.getRevealingStates(), link22.getRevealingStates());
-                equals &= equalsListOfRevealingIntervals(link11.getRevealingIntervals(), link22.getRevealingIntervals());
+                equals = equalsListOfStates(link11.getRevealingStates(), link22.getRevealingStates()) &&
+                         equalsListOfRevealingIntervals(link11.getRevealingIntervals(), link22.getRevealingIntervals());
             }
         }
 
@@ -376,17 +406,7 @@ public class Classificator extends PGMXReader_0_2 {
         boolean equals = bothEmpty || bothNotEmpty;
         int numStates = revealingIntervals1.size();
         for (int i = 0; i < numStates && equals; i++) {
-            PartitionedInterval interval1 = revealingIntervals1.get(i);
-            PartitionedInterval interval2 = revealingIntervals2.get(i);
-            equals &= interval1.getMin() == interval2.getMin() && interval1.getMax() == interval2.getMax() && interval1.getNumSubintervals() == interval2.getNumSubintervals();
-            if (equals) {
-                boolean[] belongs1 = interval1.getBelongsToLeftSide();
-                boolean[] belongs2 = interval2.getBelongsToLeftSide();
-                int j;
-                for (j = 0; j < belongs1.length && belongs1[j] == belongs2[j]; j++);
-                equals &= j == belongs1.length;
-                equals &= equalsArrayOfDoubles(interval1.getLimits(), interval2.getLimits());
-            }
+            equals = equalsPartitionedIntervals(revealingIntervals1.get(i), revealingIntervals2.get(i));
         }
         return equals;
     }
@@ -399,8 +419,8 @@ public class Classificator extends PGMXReader_0_2 {
         for (int i = 0; i < numStates && equals; i++) {
             State state11 = states1.get(i);
             State state22 = states2.get(i);
-            equals &= equalsStrings(state11.getName(), state22.getName());
-            equals &= equalsMapsStrings(state11.additionalProperties, state22.additionalProperties);
+            equals = equalsStrings(state11.getName(), state22.getName()) &&
+                     equalsMapsStrings(state11.additionalProperties, state22.additionalProperties);
         }
         return equals;
     }
@@ -427,7 +447,13 @@ public class Classificator extends PGMXReader_0_2 {
                         equals = equalsTablePotentials((TablePotential)potential1, (TablePotential)potential2);
                     } else if (ICIPotential.class.isAssignableFrom(potentialClass)) {
                         equals = equalsICIPotentials((ICIPotential)potential1, (ICIPotential)potential2);
-                        ((ICIPotential) potential1).getFamily()
+                        if (equals && MinMaxPotential.class.isAssignableFrom(potentialClass)) {
+                            equals = equalsMinMaxPotentials((MinMaxPotential)potential1, (MinMaxPotential)potential2);
+                        }
+                    } else if (potentialClass == UniformPotential.class) {
+                        equals = equalsUniformPotentials((UniformPotential)potential1, (UniformPotential)potential2);
+                    } else if (TreeADDPotential.class.isAssignableFrom(potentialClass)) {
+                        equals = equalsTreeADDPotentials((TreeADDPotential)potential1, (TreeADDPotential)potential2);
                     }
                     // TODO Finish this
 
@@ -436,6 +462,23 @@ public class Classificator extends PGMXReader_0_2 {
 
         }
         return equals;
+    }
+
+    private boolean equalsTreeADDPotentials(TreeADDPotential potential1, TreeADDPotential potential2) {
+        boolean equals = equalsCommonPartPotentials(potential1, potential2);
+        // TODO
+        return equals;
+    }
+
+    private boolean equalsUniformPotentials(UniformPotential potential1, UniformPotential potential2) {
+        return equalsCommonPartPotentials(potential1, potential2) &&
+                potential1.isUncertain() == potential2.isUncertain() &&
+                potential1.getDiscreteValue() == potential2.getDiscreteValue();
+    }
+
+    private boolean equalsMinMaxPotentials(MinMaxPotential potential1, MinMaxPotential potential2) {
+        return equalsVariables(potential1.getPseudoVariable(), potential2.getPseudoVariable()) &&
+                equalsTablePotentials(potential1.getCPT(), potential2.getCPT());
     }
 
     /**
@@ -460,10 +503,10 @@ public class Classificator extends PGMXReader_0_2 {
             List<TablePotential> subPotentials1 = potential1.getSubpotentials();
             List<TablePotential> subPotentials2 = potential2.getSubpotentials();
             int size = subPotentials1.size();
-            equals &= size == subPotentials2.size();
+            equals = size == subPotentials2.size();
             int i;
             for (i = 0; i < size && equalsTablePotentials(subPotentials1.get(i), subPotentials2.get(i)); i++);
-            equals &= i == size && equalsTablePotentials(potential1.getLeakyPotential(), potential2.getLeakyPotential());
+            equals = i == size && equalsTablePotentials(potential1.getLeakyPotential(), potential2.getLeakyPotential());
         }
 
         return equals;
@@ -503,7 +546,7 @@ public class Classificator extends PGMXReader_0_2 {
         if (equals) {
             int i;
             for (i = 0; i < tablePotential1.values.length && tablePotential1.values[i] == tablePotential2.values[i]; i++);
-            equals &= i == tablePotential1.values.length;
+            equals = i == tablePotential1.values.length;
         }
         equals &= tablePotential1.getInitialPosition() == tablePotential2.getInitialPosition();
         // It does not compare offsets and dimensions because variables are already checked.
@@ -539,10 +582,16 @@ public class Classificator extends PGMXReader_0_2 {
         boolean equals = bothNull || (bothNotNull & parameters1.length == parameters2.length);
         int i;
         for (i = 0; equals && bothNotNull && i < parameters1.length && parameters1[i] == parameters2[i]; i++);
-        equals &= i == parameters1.length;
+        equals = i == parameters1.length;
         return equals;
     }
 
+    /**
+     * Compares two potentials
+     * @param potential1
+     * @param potential2
+     * @return
+     */
     private boolean equalsCommonPartPotentials(Potential potential1, Potential potential2) {
         // Compare miscelanea attributes
         boolean equals = potential1.getCriterion() == potential2.getCriterion() &&
@@ -562,9 +611,11 @@ public class Classificator extends PGMXReader_0_2 {
                     Object object2 = properties1.get(key);
                     boolean bothNotNull = object1 != null && object2 != null;
                     boolean bothNull = object1 == null && object2 == null;
-                    equals &= bothNull || (bothNotNull && object1.getClass() == object2.getClass());
-                    if (bothNotNull && equals && object1.getClass() == String.class) {
-                        equals &= equalsStrings(((String)object1), ((String)object2));
+                    Class class1 = object1.getClass();
+                    Class class2 = object2.getClass();
+                    equals &= bothNull || (bothNotNull && class1 == class2);
+                    if (bothNotNull && equals && class1 == String.class) {
+                        equals = equalsStrings(((String)object1), ((String)object2));
                     }
                 }
             }
@@ -575,11 +626,11 @@ public class Classificator extends PGMXReader_0_2 {
             List<Variable> variables1 = potential1.getVariables();
             List<Variable> variables2 = potential2.getVariables();
             int numVariables = variables1.size();
-            equals &= numVariables == variables2.size();
+            equals = numVariables == variables2.size();
             if (equals) {
-                for (int i = 0; i < numVariables && equals; i++) {
-                    equals &= equalsStrings(variables1.get(i).getName(), variables2.get(i).getName());
-                }
+                int i;
+                for (i = 0; i < numVariables && equals && equalsStrings(variables1.get(i).getName(), variables2.get(i).getName()); i++);
+                equals = i == numVariables;
             }
         }
 
@@ -956,8 +1007,6 @@ public class Classificator extends PGMXReader_0_2 {
             }
             return match;
         }
-
     }
-
 
 }
