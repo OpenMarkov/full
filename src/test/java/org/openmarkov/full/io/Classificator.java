@@ -135,14 +135,20 @@ public class Classificator extends PGMXReader_0_2 {
         boolean equals = notNull || (pr1 == null && pr2 == null);
         if (notNull) {
             equals &= equalsMiscelanea(pr1, pr2);
-            equals &= equalsConstraints(pr1, pr2);
+            equals &= equalsListOfConstraints(pr1, pr2);
             equals &= equalsListOfVariables(pr1, pr2);
-            equals &= equalsLinksCollection(pr1, pr2);
-            equals &= equalsPotentialsCollection(pr1, pr2);
+            equals &= equalsListOfLinks(pr1, pr2);
+            equals &= equalsListOfPotentials(pr1, pr2);
         }
         return equals;
     }
 
+    /**
+     * Compares list of evidence cases
+     * @param evidenceCases1
+     * @param evidenceCases2
+     * @return
+     */
     private boolean equalsListsOfEvidencecases(List<EvidenceCase> evidenceCases1, List<EvidenceCase> evidenceCases2) {
         boolean bothNotNull = evidenceCases1 != null && evidenceCases2 != null;
         boolean equals = (evidenceCases1 == null && evidenceCases2 == null) || bothNotNull;
@@ -257,7 +263,7 @@ public class Classificator extends PGMXReader_0_2 {
      * @param pr2
      * @return
      */
-    private boolean equalsConstraints(ProbNet pr1, ProbNet pr2) {
+    private boolean equalsListOfConstraints(ProbNet pr1, ProbNet pr2) {
         List<PNConstraint> constraints1 = pr1.getConstraints();
         List<PNConstraint> constraints2 = pr2.getConstraints();
         int size = constraints1 == null ? 0 : constraints1.size();
@@ -347,7 +353,7 @@ public class Classificator extends PGMXReader_0_2 {
      * @param pr2
      * @return
      */
-    private boolean equalsLinksCollection(ProbNet pr1, ProbNet pr2) {
+    private boolean equalsListOfLinks(ProbNet pr1, ProbNet pr2) {
         List<Link<Node>> links1 = pr1.getLinks();
         List<Link<Node>> links2 = pr2.getLinks();
         int size = links1.size();
@@ -425,7 +431,7 @@ public class Classificator extends PGMXReader_0_2 {
         return equals;
     }
 
-    private boolean equalsPotentialsCollection(ProbNet pr1, ProbNet pr2) {
+    private boolean equalsListOfPotentials(ProbNet pr1, ProbNet pr2) {
         int numPotentials = pr1.getNumPotentials();
         boolean equals = numPotentials == pr2.getNumPotentials();
         if (equals && numPotentials > 0) {
