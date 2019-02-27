@@ -21,6 +21,8 @@ import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.potential.UniformPotential;
 import org.openmarkov.core.model.network.potential.canonical.ICIPotential;
 import org.openmarkov.core.model.network.potential.canonical.MinMaxPotential;
+import org.openmarkov.core.model.network.potential.treeadd.Threshold;
+import org.openmarkov.core.model.network.potential.treeadd.TreeADDBranch;
 import org.openmarkov.core.model.network.potential.treeadd.TreeADDPotential;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 import org.openmarkov.io.probmodel.strings.XMLAttributes;
@@ -28,6 +30,9 @@ import org.openmarkov.io.probmodel.strings.XMLAttributes;
 import java.io.*;
 import java.util.*;
 
+/**
+ * @author Manuel Arias
+ */
 public class Classificator extends PGMXReader_0_2 {
 
 
@@ -278,13 +283,13 @@ public class Classificator extends PGMXReader_0_2 {
 
     /**
      * Compare two list of constraints, that include the constraints
-     * @param pr1
-     * @param pr2
+     * @param probNet1
+     * @param probNet2
      * @return
      */
-    private boolean sameInfoListOfConstraints(ProbNet pr1, ProbNet pr2) {
-        List<PNConstraint> constraints1 = pr1.getConstraints();
-        List<PNConstraint> constraints2 = pr2.getConstraints();
+    private boolean sameInfoListOfConstraints(ProbNet probNet1, ProbNet probNet2) {
+        List<PNConstraint> constraints1 = probNet1.getConstraints();
+        List<PNConstraint> constraints2 = probNet2.getConstraints();
         boolean bothNull = constraints1 == null && constraints2 == null;
         boolean bothNotNull = constraints1 != null && constraints2 != null;
         boolean same = bothNull || bothNotNull;
@@ -450,60 +455,95 @@ public class Classificator extends PGMXReader_0_2 {
     private boolean sameInfoListOfStates(List<State> states1, List<State> states2) {
         boolean bothEmpty = states1.isEmpty() && states2.isEmpty();
         boolean bothNotEmpty = !states1.isEmpty() && !states2.isEmpty();
-        boolean same = bothEmpty || bothNotEmpty;
         int numStates = states1.size();
-        for (int i = 0; i < numStates && same; i++) {
-            State state11 = states1.get(i);
-            State state22 = states2.get(i);
-            same = sameInfoStrings(state11.getName(), state22.getName()) &&
-                     sameInfoMapsStrings(state11.additionalProperties, state22.additionalProperties);
+        boolean same = bothEmpty || (bothNotEmpty && numStates == states2.size());
+        if (same && bothNotEmpty) {
+            for (int i = 0; i < numStates && same; i++) {
+                State state11 = states1.get(i);
+                State state22 = states2.get(i);
+                same = sameInfoStrings(state11.getName(), state22.getName()) &&
+                       sameInfoMapsStrings(state11.additionalProperties, state22.additionalProperties);
+            }
         }
         return same;
     }
 
-    private boolean sameInfoListOfPotentials(ProbNet pr1, ProbNet pr2) {
-        int numPotentials = pr1.getNumPotentials();
-        boolean same = numPotentials == pr2.getNumPotentials();
+    private boolean sameInfoListOfPotentials(ProbNet probNet1, ProbNet probNet2) {
+        int numPotentials = probNet1.getNumPotentials();
+        boolean same = numPotentials == probNet2.getNumPotentials();
         if (same && numPotentials > 0) {
-            same = sameInfoConstantPotentials(pr1.getConstantPotentials(), pr2.getConstantPotentials());
+            same = sameInfoConstantPotentials(probNet1.getConstantPotentials(), probNet2.getConstantPotentials());
 
-            List<Potential> potentials1 = pr1.getPotentials();
-            List<Potential> potentials2 = pr2.getPotentials();
+            List<Potential> potentials1 = probNet1.getPotentials();
+            List<Potential> potentials2 = probNet2.getPotentials();
             // Other potentials
-            potentials1.removeAll(pr1.getConstantPotentials());
-            potentials2.removeAll(pr2.getConstantPotentials());
+            potentials1.removeAll(probNet1.getConstantPotentials());
+            potentials2.removeAll(probNet2.getConstantPotentials());
             int size = potentials1.size();
             for (int i = 0; i < size && same; i++) {
-                Potential potential1 = potentials1.get(i);
-                Potential potential2 = potentials2.get(i);
-                Class potentialClass = potential1.getClass();
-                same = potentialClass == potential2.getClass();
-                if (same) {
-                    if (potentialClass == TablePotential.class) {
-                        same = sameInfoTablePotentials((TablePotential)potential1, (TablePotential)potential2);
-                    } else if (ICIPotential.class.isAssignableFrom(potentialClass)) {
-                        same = sameInfoICIPotentials((ICIPotential)potential1, (ICIPotential)potential2);
-                        if (same && MinMaxPotential.class.isAssignableFrom(potentialClass)) {
-                            same = sameInfoMinMaxPotentials((MinMaxPotential)potential1, (MinMaxPotential)potential2);
-                        }
-                    } else if (potentialClass == UniformPotential.class) {
-                        same = sameInfoUniformPotentials((UniformPotential)potential1, (UniformPotential)potential2);
-                    } else if (TreeADDPotential.class.isAssignableFrom(potentialClass)) {
-                        same = sameInfoTreeADDPotentials((TreeADDPotential)potential1, (TreeADDPotential)potential2);
-                    }
-                    // TODO Finish this
-
-                }
+                same = sameInfoPotentials(potentials1.get(i), potentials2.get(i));
             }
 
         }
         return same;
     }
 
-    private boolean sameInfoTreeADDPotentials(TreeADDPotential potential1, TreeADDPotential potential2) {
-        boolean same = sameInfoCommonPartPotentials(potential1, potential2);
-        // TODO
+    private boolean sameInfoPotentials(Potential potential1, Potential potential2) {
+        Class potentialClass = potential1.getClass();
+        boolean same = potentialClass == potential2.getClass();
+        if (same) {
+            if (potentialClass == TablePotential.class) {
+                same = sameInfoTablePotentials((TablePotential)potential1, (TablePotential)potential2);
+            } else if (ICIPotential.class.isAssignableFrom(potentialClass)) {
+                same = sameInfoICIPotentials((ICIPotential)potential1, (ICIPotential)potential2);
+                if (same && MinMaxPotential.class.isAssignableFrom(potentialClass)) {
+                    same = sameInfoMinMaxPotentials((MinMaxPotential)potential1, (MinMaxPotential)potential2);
+                }
+            } else if (potentialClass == UniformPotential.class) {
+                same = sameInfoUniformPotentials((UniformPotential)potential1, (UniformPotential)potential2);
+            } else if (TreeADDPotential.class.isAssignableFrom(potentialClass)) {
+                same = sameInfoTreeADDPotentials((TreeADDPotential)potential1, (TreeADDPotential)potential2);
+            }
+            // TODO Finish this
+
+        }
         return same;
+    }
+
+    private boolean sameInfoTreeADDPotentials(TreeADDPotential potential1, TreeADDPotential potential2) {
+        boolean same = sameInfoCommonPartPotentials(potential1, potential2) &&
+                       sameInfoVariables(potential1.getRootVariable(), potential2.getRootVariable());
+        List<TreeADDBranch> branches1 = potential1.getBranches();
+        List<TreeADDBranch> branches2 = potential2.getBranches();
+        same &= sameInfoListOfBranches(branches1, branches2);
+        return same;
+    }
+
+    private boolean sameInfoListOfBranches(List<TreeADDBranch> branches1, List<TreeADDBranch> branches2) {
+        boolean bothNull = branches1 == null && branches2 == null;
+        boolean bothNotNull = branches1 != null && branches2 != null;
+        int size = branches1.size();
+        boolean same = bothNull ||
+                       (bothNotNull && size == branches2.size());
+        if (same && bothNotNull) {
+            int i;
+            for (i = 0; i < size && sameInfoBranches(branches1.get(i), branches2.get(i)); i++);
+            same = i == size;
+        }
+        return same;
+    }
+
+    private boolean sameInfoBranches(TreeADDBranch treeADDBranch1, TreeADDBranch treeADDBranch2) {
+        return sameListOfVariablesNames(treeADDBranch1.getAddableVariables(), treeADDBranch2.getAddableVariables()) &&
+               sameInfoStrings(treeADDBranch1.getLabel(), treeADDBranch2.getLabel()) &&
+               sameThresholds(treeADDBranch1.getLowerBound(), treeADDBranch2.getLowerBound()) &&
+               sameThresholds(treeADDBranch1.getUpperBound(), treeADDBranch2.getUpperBound()) &&
+               sameInfoListOfStates(treeADDBranch1.getStates(), treeADDBranch2.getStates()) &&
+               sameInfoPotentials(treeADDBranch1.getPotential(), treeADDBranch2.getPotential());
+    }
+
+    private boolean sameThresholds(Threshold threshold1, Threshold threshold2) {
+        return threshold1.getLimit() == threshold2.getLimit() && threshold1.belongsToLeft() == threshold2.belongsToLeft();
     }
 
     private boolean sameInfoUniformPotentials(UniformPotential potential1, UniformPotential potential2) {
@@ -601,27 +641,14 @@ public class Classificator extends PGMXReader_0_2 {
 
     private boolean sameInfoUncertainValues(UncertainValue uncertainValue1, UncertainValue uncertainValue2) {
         boolean same = sameInfoStrings(uncertainValue1.getName(), uncertainValue2.getName());
-        ProbDensFunction probDensFunction1 = uncertainValue1.getProbDensFunction();
-        ProbDensFunction probDensFunction2 = uncertainValue2.getProbDensFunction();
-        same &= sameInfoArrayOfDoubles(probDensFunction1.getParameters(), probDensFunction2.getParameters()) &&
-                probDensFunction1.getMinimum() == probDensFunction2.getMinimum() &&
-                probDensFunction1.getMaximum() == probDensFunction2.getMaximum() &&
-                probDensFunction1.getMean() == probDensFunction2.getMean() &&
-                probDensFunction1.getStandardDeviation() == probDensFunction2.getStandardDeviation();
-
-        return same;
-    }
-
-    private boolean sameInfoArrayOfDoubles(double[] parameters1, double[] parameters2) {
-        boolean bothNull = parameters1 == null && parameters2 == null;
-        boolean bothNotNull = parameters1 != null && parameters2 != null;
-        boolean same = bothNull || bothNotNull;
-        if (bothNotNull && parameters1.length == parameters2.length) {
-            int i;
-            for (i = 0; i < parameters1.length && parameters1[i] == parameters2[i]; i++) ;
-            same = i == parameters1.length;
-        } else {
-            same = false;
+        if (same) {
+            ProbDensFunction probDensFunction1 = uncertainValue1.getProbDensFunction();
+            ProbDensFunction probDensFunction2 = uncertainValue2.getProbDensFunction();
+            same &= sameInfoArrayOfDoubles(probDensFunction1.getParameters(), probDensFunction2.getParameters()) &&
+                    probDensFunction1.getMinimum() == probDensFunction2.getMinimum() &&
+                    probDensFunction1.getMaximum() == probDensFunction2.getMaximum() &&
+                    probDensFunction1.getMean() == probDensFunction2.getMean() &&
+                    probDensFunction1.getStandardDeviation() == probDensFunction2.getStandardDeviation();
         }
         return same;
     }
@@ -662,29 +689,9 @@ public class Classificator extends PGMXReader_0_2 {
         }
 
         // Variables (assumption that variables are in the same order)
-        if (same) {
-            List<Variable> variables1 = potential1.getVariables();
-            List<Variable> variables2 = potential2.getVariables();
-            int numVariables = variables1.size();
-            same = numVariables == variables2.size();
-            if (same) {
-                int i;
-                for (i = 0; i < numVariables && same && sameInfoStrings(variables1.get(i).getName(), variables2.get(i).getName()); i++);
-                same = i == numVariables;
-            }
-        }
+        same &= sameListOfVariablesNames(potential1.getVariables(), potential2.getVariables());
 
         return same;
-    }
-
-    /**
-     * Compare two strings that can be null
-     * @param name1
-     * @param name2
-     * @return
-     */
-    private boolean sameInfoStrings(String name1, String name2) {
-        return ( (name1 == null && name2 == null) || (name1 != null && name2 != null && name1.compareTo(name2) == 0) );
     }
 
     /**
@@ -723,6 +730,47 @@ public class Classificator extends PGMXReader_0_2 {
             }
         }
         return same;
+    }
+
+    private boolean sameListOfVariablesNames(List<Variable> variables1, List<Variable> variables2) {
+        int numVariables = variables1.size();
+        boolean same = numVariables == variables2.size();
+        if (same) {
+            int i;
+            for (i = 0; i < numVariables && same && sameInfoStrings(variables1.get(i).getName(), variables2.get(i).getName()); i++);
+            same = i == numVariables;
+        }
+        return same;
+    }
+
+    /**
+     *
+     * @param parameters1
+     * @param parameters2
+     * @return
+     */
+    private boolean sameInfoArrayOfDoubles(double[] parameters1, double[] parameters2) {
+        boolean bothNull = parameters1 == null && parameters2 == null;
+        boolean bothNotNull = parameters1 != null && parameters2 != null;
+        boolean same = bothNull || bothNotNull;
+        if (bothNotNull && parameters1.length == parameters2.length) {
+            int i;
+            for (i = 0; i < parameters1.length && parameters1[i] == parameters2[i]; i++) ;
+            same = i == parameters1.length;
+        } else {
+            same = false;
+        }
+        return same;
+    }
+
+    /**
+     * Compare two strings that can be null
+     * @param name1
+     * @param name2
+     * @return
+     */
+    private boolean sameInfoStrings(String name1, String name2) {
+        return ( (name1 == null && name2 == null) || (name1 != null && name2 != null && name1.compareTo(name2) == 0) );
     }
 
 
@@ -936,8 +984,7 @@ public class Classificator extends PGMXReader_0_2 {
         }
     }
 
-    // Auxiliar clases and interfaces
-
+    // Auxiliar internal clases and interfaces
     private interface Next {
         File next();
         boolean hasNext();
@@ -967,23 +1014,21 @@ public class Classificator extends PGMXReader_0_2 {
         private List<StringFilter> filters;
 
         // Constructor
-
-/**
+        /**
          * Constructor
          * @param rootFolder
          */
-
-        public FileIterator(File rootFolder, List<StringFilter> filters) {
-            this.filters = filters;
+        public FileIterator(File rootFolder, List<StringFilter>... filters) {
+            this.filters = filters != null && filters.length == 1 ? filters[0] : null;
             hasNext = false;
             next = null;
 
             if (rootFolder.isDirectory()) {
-                subNodes = new ArrayList<File[]>();
+                subNodes = new ArrayList<>();
                 File[] rootChildren = rootFolder.listFiles();
                 subNodes.add(rootChildren);
 
-                subNodesIndexes = new ArrayList<Integer>();
+                subNodesIndexes = new ArrayList<>();
                 subNodesIndexes.add(-1);
 
                 next = lookForNext();
@@ -1040,8 +1085,10 @@ public class Classificator extends PGMXReader_0_2 {
 
         private boolean matches(File file) {
             boolean match = true;
-            for (StringFilter filter : filters) {
-                match &= filter.meetsCondition(file.getName());
+            if (filters != null) {
+                for (StringFilter filter : filters) {
+                    match &= filter.meetsCondition(file.getName());
+                }
             }
             return match;
         }
