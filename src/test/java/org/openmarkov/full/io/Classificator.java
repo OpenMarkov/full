@@ -16,6 +16,7 @@ import org.openmarkov.core.model.network.*;
 import org.openmarkov.core.model.network.constraint.PNConstraint;
 import org.openmarkov.core.model.network.modelUncertainty.ProbDensFunction;
 import org.openmarkov.core.model.network.modelUncertainty.UncertainValue;
+import org.openmarkov.core.model.network.potential.AugmentedTable;
 import org.openmarkov.core.model.network.potential.Potential;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.potential.UniformPotential;
@@ -173,7 +174,7 @@ public class Classificator extends PGMXReader_0_2 {
         boolean bothNotNull = evidenceCases1 != null && evidenceCases2 != null;
         boolean bothNull = evidenceCases1 == null && evidenceCases2 == null;
         boolean same = bothNull || bothNotNull;
-        if (bothNotNull && same) {
+        if (bothNotNull) {
             int size = evidenceCases1.size();
             if (size == evidenceCases2.size()) {
                 int i;
@@ -250,9 +251,9 @@ public class Classificator extends PGMXReader_0_2 {
      * @return true if both lists are equal
      */
     private boolean sameInfoAgents(List<StringWithProperties> agents1, List<StringWithProperties> agents2) {
-        boolean notNull = agents1 != null && agents2 != null;
-        boolean same = (agents1 == null && agents2 == null) || notNull;
-        if (same && notNull) {
+        boolean bothNotNull = agents1 != null && agents2 != null;
+        boolean same = bothNotNull || (agents1 == null && agents2 == null);
+        if (bothNotNull) {
             int size = agents1.size();
             // Asumption that contents are in the same order in both lists
             if (size == agents2.size()) {
@@ -340,19 +341,19 @@ public class Classificator extends PGMXReader_0_2 {
         boolean same = bothVariablesNull || (bothVariablesNotNull && sameInfoStrings(variable1.getName(), variable2.getName()));
         if (same && bothVariablesNotNull) {
             same = sameInfoListOfStates(Arrays.asList(variable1.getStates()), Arrays.asList(variable2.getStates())) &&
-                     sameInfoStringsWithProperties(variable1.getAgent(), variable2.getAgent()) &&
-                     sameInfoStringsWithProperties(variable1.getUnit(), variable2.getUnit()) &&
-                     variable1.getPrecision() == variable2.getPrecision() &&
-                     variable1.getTimeSlice() == variable2.getTimeSlice() &&
-                     variable1.isTemporal() == variable2.isTemporal() &&
-                     variable1.getVariableType() == variable2.getVariableType();
+                   sameInfoStringsWithProperties(variable1.getAgent(), variable2.getAgent()) &&
+                   sameInfoStringsWithProperties(variable1.getUnit(), variable2.getUnit()) &&
+                   variable1.getPrecision() == variable2.getPrecision() &&
+                   variable1.getTimeSlice() == variable2.getTimeSlice() &&
+                   variable1.isTemporal() == variable2.isTemporal() &&
+                   variable1.getVariableType() == variable2.getVariableType();
             if (same) {
                 PartitionedInterval interval1 = variable1.getPartitionedInterval();
                 PartitionedInterval interval2 = variable2.getPartitionedInterval();
-                boolean notNullIntervals = interval1 != null && interval2 != null;
+                boolean bothIntervalsNotNull = interval1 != null && interval2 != null;
                 boolean bothIntervalsNull = interval1 == null && interval2 == null;
                 same = bothIntervalsNull ||
-                        ( notNullIntervals && sameInfoPartitionedIntervals(interval1, interval2) &&
+                        ( bothIntervalsNotNull && sameInfoPartitionedIntervals(interval1, interval2) &&
                           variable1.getDecisionCriterion() == variable2.getDecisionCriterion() &&
                           variable1.getTimeSlice() == variable2.getTimeSlice() );
             }
@@ -365,10 +366,10 @@ public class Classificator extends PGMXReader_0_2 {
         boolean bothNotNull = interval1 != null && interval2 != null;
         return bothNull ||
                 ( bothNotNull && interval1.getMin() == interval2.getMin() &&
-                interval1.getMax() == interval2.getMax() &&
-                interval1.getNumSubintervals() == interval2.getNumSubintervals() &&
-                sameInfoArraysOfBooleans(interval1.getBelongsToLeftSide(), interval2.getBelongsToLeftSide()) &&
-                sameInfoArrayOfDoubles(interval1.getLimits(), interval2.getLimits()) );
+                  interval1.getMax() == interval2.getMax() &&
+                  interval1.getNumSubintervals() == interval2.getNumSubintervals() &&
+                  sameInfoArraysOfBooleans(interval1.getBelongsToLeftSide(), interval2.getBelongsToLeftSide()) &&
+                  sameInfoArrayOfDoubles(interval1.getLimits(), interval2.getLimits()) );
     }
 
     private boolean sameInfoArraysOfBooleans(boolean[] booleans1, boolean[] booleans2) {
@@ -472,18 +473,19 @@ public class Classificator extends PGMXReader_0_2 {
         int numPotentials = probNet1.getNumPotentials();
         boolean same = numPotentials == probNet2.getNumPotentials();
         if (same && numPotentials > 0) {
-            same = sameInfoConstantPotentials(probNet1.getConstantPotentials(), probNet2.getConstantPotentials());
-
-            List<Potential> potentials1 = probNet1.getPotentials();
-            List<Potential> potentials2 = probNet2.getPotentials();
-            // Other potentials
-            potentials1.removeAll(probNet1.getConstantPotentials());
-            potentials2.removeAll(probNet2.getConstantPotentials());
-            int size = potentials1.size();
-            for (int i = 0; i < size && same; i++) {
-                same = sameInfoPotentials(potentials1.get(i), potentials2.get(i));
+            Set<TablePotential> constantPotentials1 = probNet1.getConstantPotentials();
+            Set<TablePotential> constantPotentials2 = probNet2.getConstantPotentials();
+            same = sameInfoConstantPotentials(constantPotentials1, constantPotentials1);
+            if (same) {
+                List<Potential> potentials1 = probNet1.getPotentials();
+                potentials1.removeAll(constantPotentials1);
+                List<Potential> potentials2 = probNet2.getPotentials();
+                potentials2.removeAll(constantPotentials1);
+                int size = potentials1.size();
+                int i;
+                for (i = 0; i < size && sameInfoPotentials(potentials1.get(i), potentials2.get(i)); i++);
+                same = i == size;
             }
-
         }
         return same;
     }
@@ -492,9 +494,13 @@ public class Classificator extends PGMXReader_0_2 {
         Class potentialClass = potential1.getClass();
         boolean same = potentialClass == potential2.getClass();
         if (same) {
-            if (potentialClass == TablePotential.class) {
+            if (TablePotential.class.isAssignableFrom(potentialClass)) {
                 same = sameInfoTablePotentials((TablePotential)potential1, (TablePotential)potential2);
-            } else if (ICIPotential.class.isAssignableFrom(potentialClass)) {
+                if (same && AugmentedTable.class.isAssignableFrom(potentialClass)) {
+                    same = sameInfoAugmentedTablePotentials((AugmentedTable)potential1, (AugmentedTable)potential2);
+                }
+            } else if () {
+            }else if (ICIPotential.class.isAssignableFrom(potentialClass)) {
                 same = sameInfoICIPotentials((ICIPotential)potential1, (ICIPotential)potential2);
                 if (same && MinMaxPotential.class.isAssignableFrom(potentialClass)) {
                     same = sameInfoMinMaxPotentials((MinMaxPotential)potential1, (MinMaxPotential)potential2);
@@ -503,6 +509,7 @@ public class Classificator extends PGMXReader_0_2 {
                 same = sameInfoUniformPotentials((UniformPotential)potential1, (UniformPotential)potential2);
             } else if (TreeADDPotential.class.isAssignableFrom(potentialClass)) {
                 same = sameInfoTreeADDPotentials((TreeADDPotential)potential1, (TreeADDPotential)potential2);
+
             }
             // TODO Finish this
 
@@ -510,21 +517,41 @@ public class Classificator extends PGMXReader_0_2 {
         return same;
     }
 
+    private boolean sameInfoAugmentedTablePotentials(AugmentedTable potential1, AugmentedTable potential2) {
+        return sameInfoArrayOfStrings(potential1.getFunctionValues(), potential2.getFunctionValues());
+    }
+
+    private boolean sameInfoArrayOfStrings(String[] functionValues1, String[] functionValues2) {
+        boolean bothNull = functionValues1 == null && functionValues2 == null;
+        boolean bothNotNull = functionValues1 != null && functionValues2 != null;
+        boolean same = bothNull || (bothNotNull && functionValues1.length == functionValues2.length);
+        if (same) {
+            int i;
+            for (i = 0; i < functionValues1.length && sameInfoStrings(functionValues1[i], functionValues2[i]); i++);
+            same = i == functionValues1.length;
+        }
+        return same;
+    }
+
+    private boolean sameInfoUniformPotentials(UniformPotential potential1, UniformPotential potential2) {
+        return sameInfoCommonPartPotentials(potential1, potential2) &&
+                potential1.isUncertain() == potential2.isUncertain() &&
+                potential1.getDiscreteValue() == potential2.getDiscreteValue();
+    }
+
     private boolean sameInfoTreeADDPotentials(TreeADDPotential potential1, TreeADDPotential potential2) {
         boolean same = sameInfoCommonPartPotentials(potential1, potential2) &&
                        sameInfoVariables(potential1.getRootVariable(), potential2.getRootVariable());
-        List<TreeADDBranch> branches1 = potential1.getBranches();
-        List<TreeADDBranch> branches2 = potential2.getBranches();
-        same &= sameInfoListOfBranches(branches1, branches2);
+        same &= sameInfoListOfBranches(potential1.getBranches(), potential2.getBranches());
         return same;
     }
 
     private boolean sameInfoListOfBranches(List<TreeADDBranch> branches1, List<TreeADDBranch> branches2) {
         boolean bothNull = branches1 == null && branches2 == null;
         boolean bothNotNull = branches1 != null && branches2 != null;
-        int size = branches1.size();
+        int size = bothNotNull ? branches1.size() : 0;
         boolean same = bothNull ||
-                       (bothNotNull && size == branches2.size());
+                       ( bothNotNull && size == branches2.size() );
         if (same && bothNotNull) {
             int i;
             for (i = 0; i < size && sameInfoBranches(branches1.get(i), branches2.get(i)); i++);
@@ -544,12 +571,6 @@ public class Classificator extends PGMXReader_0_2 {
 
     private boolean sameThresholds(Threshold threshold1, Threshold threshold2) {
         return threshold1.getLimit() == threshold2.getLimit() && threshold1.belongsToLeft() == threshold2.belongsToLeft();
-    }
-
-    private boolean sameInfoUniformPotentials(UniformPotential potential1, UniformPotential potential2) {
-        return sameInfoCommonPartPotentials(potential1, potential2) &&
-                potential1.isUncertain() == potential2.isUncertain() &&
-                potential1.getDiscreteValue() == potential2.getDiscreteValue();
     }
 
     private boolean sameInfoMinMaxPotentials(MinMaxPotential potential1, MinMaxPotential potential2) {
