@@ -16,10 +16,7 @@ import org.openmarkov.core.model.network.*;
 import org.openmarkov.core.model.network.constraint.PNConstraint;
 import org.openmarkov.core.model.network.modelUncertainty.ProbDensFunction;
 import org.openmarkov.core.model.network.modelUncertainty.UncertainValue;
-import org.openmarkov.core.model.network.potential.AugmentedTable;
-import org.openmarkov.core.model.network.potential.Potential;
-import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.core.model.network.potential.UniformPotential;
+import org.openmarkov.core.model.network.potential.*;
 import org.openmarkov.core.model.network.potential.canonical.ICIPotential;
 import org.openmarkov.core.model.network.potential.canonical.MinMaxPotential;
 import org.openmarkov.core.model.network.potential.treeadd.Threshold;
@@ -453,18 +450,20 @@ public class Classificator extends PGMXReader_0_2 {
         return same;
     }
 
+    private boolean sameStates(State state1, State state2) {
+        return sameInfoStrings(state1.getName(), state2.getName()) &&
+                sameInfoMapsStrings(state1.additionalProperties, state2.additionalProperties);
+    }
+
     private boolean sameInfoListOfStates(List<State> states1, List<State> states2) {
         boolean bothEmpty = states1.isEmpty() && states2.isEmpty();
         boolean bothNotEmpty = !states1.isEmpty() && !states2.isEmpty();
         int numStates = states1.size();
         boolean same = bothEmpty || (bothNotEmpty && numStates == states2.size());
         if (same && bothNotEmpty) {
-            for (int i = 0; i < numStates && same; i++) {
-                State state11 = states1.get(i);
-                State state22 = states2.get(i);
-                same = sameInfoStrings(state11.getName(), state22.getName()) &&
-                       sameInfoMapsStrings(state11.additionalProperties, state22.additionalProperties);
-            }
+            int i;
+            for (i = 0; i < numStates && sameStates(states1.get(i), states2.get(i)); i++);
+            same = i == numStates;
         }
         return same;
     }
@@ -499,8 +498,7 @@ public class Classificator extends PGMXReader_0_2 {
                 if (same && AugmentedTable.class.isAssignableFrom(potentialClass)) {
                     same = sameInfoAugmentedTablePotentials((AugmentedTable)potential1, (AugmentedTable)potential2);
                 }
-            } else if () {
-            }else if (ICIPotential.class.isAssignableFrom(potentialClass)) {
+            } else if (ICIPotential.class.isAssignableFrom(potentialClass)) {
                 same = sameInfoICIPotentials((ICIPotential)potential1, (ICIPotential)potential2);
                 if (same && MinMaxPotential.class.isAssignableFrom(potentialClass)) {
                     same = sameInfoMinMaxPotentials((MinMaxPotential)potential1, (MinMaxPotential)potential2);
@@ -509,12 +507,84 @@ public class Classificator extends PGMXReader_0_2 {
                 same = sameInfoUniformPotentials((UniformPotential)potential1, (UniformPotential)potential2);
             } else if (TreeADDPotential.class.isAssignableFrom(potentialClass)) {
                 same = sameInfoTreeADDPotentials((TreeADDPotential)potential1, (TreeADDPotential)potential2);
-
+            } else if (CycleLengthShift.class == potentialClass) {
+                same = sameInfoCycleLengthShiftPotentials((CycleLengthShift)potential1, (CycleLengthShift)potential2);
+            } else if (DiscretizedCauchyPotential.class == potentialClass) {
+                same = sameInfoDiscretizedCauchyPotentials((DiscretizedCauchyPotential)potential1, (DiscretizedCauchyPotential)potential2);
+            } else if (ExactDistrPotential.class == potentialClass) {
+                same = sameInfoExactDistrPotentials((ExactDistrPotential)potential1, (ExactDistrPotential)potential2);
+            } else if (UnivariateDistrPotential.class == potentialClass) {
+                same = sameInfoUnivariableDistrPotentials((UnivariateDistrPotential)potential1, (UnivariateDistrPotential)potential2);
+            } else if (GLMPotential.class.isAssignableFrom(potentialClass)) {
+                same = sameInfoGLMPotentials((GLMPotential)potential1, (GLMPotential)potential2);
+                if (same && WeibullHazardPotential.class.isAssignableFrom(potentialClass)) {
+                    same = sameInfoWeibullHazardPotentials((WeibullHazardPotential)potential1, (WeibullHazardPotential)potential2);
+                } else if (same && FunctionPotential.class == potentialClass) {
+                    same = sameInfoFunctionPotentials((FunctionPotential)potential1, (FunctionPotential)potential2);
+                }
+            } else if (BinomialPotential.class == potentialClass) {
+                same = sameInfoBinomialPotentials((BinomialPotential)potential1, (BinomialPotential)potential2);
+            } else if (DeltaPotential.class == potentialClass) {
+                same = sameInfoDeltaPotentials((DeltaPotential)potential1, (DeltaPotential)potential2);
+            } else {
+                same = sameInfoCommonPartPotentials(potential1, potential2);
             }
-            // TODO Finish this
-
         }
         return same;
+    }
+
+    private boolean sameInfoDeltaPotentials(DeltaPotential potential1, DeltaPotential potential2) {
+        return  potential1.getNumericValue() == potential2.getNumericValue() &&
+                potential1.getStateIndex() == potential2.getStateIndex() &&
+                sameStates(potential1.getState(), potential2.getState());
+    }
+
+    private boolean sameInfoBinomialPotentials(BinomialPotential potential1, BinomialPotential potential2) {
+        return potential1.getN() == potential2.getN() && potential1.gettheta() == potential2.gettheta();
+    }
+
+    private boolean sameInfoFunctionPotentials(FunctionPotential potential1, FunctionPotential potential2) {
+        return potential1.getFunction().matches(potential2.getFunction());
+    }
+
+    private boolean sameInfoWeibullHazardPotentials(WeibullHazardPotential potential1, WeibullHazardPotential potential2) {
+        return sameInfoVariables(potential1.getTimeVariable(), potential2.getTimeVariable()) &&
+                potential1.getGamma() == potential2.getGamma();
+    }
+
+    private boolean sameInfoGLMPotentials(GLMPotential potential1, GLMPotential potential2) {
+        return sameInfoCommonPartPotentials(potential1, potential2) &&
+                sameInfoArrayOfDoubles(potential1.getCholeskyDecomposition(), potential2.getCholeskyDecomposition()) &&
+                sameInfoArrayOfDoubles(potential1.getCoefficients(), potential2.getCoefficients()) &&
+                sameInfoArrayOfDoubles(potential1.getCovarianceMatrix(), potential2.getCovarianceMatrix()) &&
+                potential1.getConstant() == potential2.getConstant() &&
+                sameInfoArrayOfStrings(potential1.getCovariates(), potential2.getCovariates());
+    }
+
+    private boolean sameInfoUnivariableDistrPotentials(UnivariateDistrPotential potential1, UnivariateDistrPotential potential2) {
+        return sameInfoCommonPartPotentials(potential1, potential2) &&
+                sameInfoAugmentedTablePotentials(potential1.getAugmentedTable(), potential2.getAugmentedTable()) &&
+                sameInfoVariables(potential1.getChildVariable(), potential2.getChildVariable()) &&
+                sameInfoAugmentedTablePotentials(potential1.getDistributionTable(), potential2.getDistributionTable()) &&
+                sameListOfVariablesNames(potential1.getParameterVariables(), potential2.getParameterVariables()) &&
+                sameListOfVariablesNames(potential1.getFiniteStatesVariables(), potential2.getFiniteStatesVariables()) &&
+                sameInfoStrings(potential1.getProbDensFunctionName(), potential2.getProbDensFunctionName());
+    }
+
+    private boolean sameInfoExactDistrPotentials(ExactDistrPotential potential1, ExactDistrPotential potential2) {
+        return sameInfoCommonPartPotentials(potential1, potential2) &&
+                sameInfoTablePotentials(potential1.getTablePotential(), potential2.getTablePotential());
+    }
+
+    private boolean sameInfoDiscretizedCauchyPotentials(DiscretizedCauchyPotential potential1, DiscretizedCauchyPotential potential2) {
+        return sameInfoCommonPartPotentials(potential1, potential2) &&
+                sameInfoPotentials(potential1.getMedian(), potential2.getMedian()) &&
+                sameInfoPotentials(potential1.getScale(), potential2.getScale());
+    }
+
+    private boolean sameInfoCycleLengthShiftPotentials(CycleLengthShift potential1, CycleLengthShift potential2) {
+        return sameInfoCommonPartPotentials(potential1, potential2) &&
+               sameInfoCycleLength(potential1.getCycleLength(), potential2.getCycleLength());
     }
 
     private boolean sameInfoAugmentedTablePotentials(AugmentedTable potential1, AugmentedTable potential2) {
