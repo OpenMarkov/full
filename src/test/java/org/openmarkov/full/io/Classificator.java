@@ -7,10 +7,12 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.located.LocatedJDOMFactory;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.ParserException;
+import org.openmarkov.core.exception.WriterException;
 import org.openmarkov.core.inference.InferenceOptions;
 import org.openmarkov.core.inference.MulticriteriaOptions;
 import org.openmarkov.core.inference.TemporalOptions;
 import org.openmarkov.core.io.ProbNetInfo;
+import org.openmarkov.core.io.ProbNetWriter;
 import org.openmarkov.core.model.graph.Link;
 import org.openmarkov.core.model.network.*;
 import org.openmarkov.core.model.network.constraint.PNConstraint;
@@ -24,6 +26,8 @@ import org.openmarkov.core.model.network.potential.treeadd.TreeADDBranch;
 import org.openmarkov.core.model.network.potential.treeadd.TreeADDPotential;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 import org.openmarkov.io.probmodel.strings.XMLAttributes;
+import org.openmarkov.io.probmodel.writer.PGMXWriter_0_2;
+import org.openmarkov.io.probmodel.writer.PGMXWriter_0_5;
 
 import java.io.*;
 import java.util.*;
@@ -97,29 +101,34 @@ public class Classificator extends PGMXReader_0_2 {
 
                     // Write and read probNetInfo in versions 0.2 and 0.7.
 
-//                String pathToNewFile0_2 = getNewPath(originalFileName, V0_2);
-//                if (version.matches(V0_2) && !networkNameIsIncludedInListOfAdvancedFeatures(pathToNewFile0_2))) {
-//                    // Write 0.2
-//                    ProbNetWriter writer02 = new PGMXWriter_0_2();
-//                    try {
-//                        writer02.writeProbNet(pathToNewFile0_2, originalProbNet, originalEvidenceCases);
-//                        // Read 0.2
-//                        InputStream networkStream02_bis = getClass().getClassLoader().getResourceAsStream(originalFileName);
-//                        ProbNetInfo probNetInfo02_bis = pgmxReader.loadProbNetInfo(pathToNewFile0_2, networkStream02_bis);
-//                    } catch (WriterException e) {
-//                        e.printStackTrace();
-//                    } catch (ParserException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
+                String pathToNewFile0_2 = getNewPath(originalFileName, V0_2);
+                if (version.matches(V0_2) && !networkNameIsIncludedInListOfAdvancedFeatures(pathToNewFile0_2)) {
+                    // Write 0.2
+                    ProbNetWriter writer02 = new PGMXWriter_0_2();
+                    try {
+                        writer02.writeProbNet(pathToNewFile0_2, originalProbNet, originalEvidenceCases);
+                        // Read 0.2
+                        InputStream networkStream02_bis = getClass().getClassLoader().getResourceAsStream(originalFileName);
+                        ProbNetInfo probNetInfo02_bis = pgmxReader.loadProbNetInfo(pathToNewFile0_2, networkStream02_bis);
+                    } catch (WriterException e) {
+                        e.printStackTrace();
+                    } catch (ParserException e) {
+                        e.printStackTrace();
+                    }
+                }
 
 
-//                    String pathToNewFile0_5 = getNewPath(originalFile.getAbsolutePath(), V0_5);
-//                    ProbNetWriter writer05 = new PGMXWriter_0_5();
-//                    writer02.writeProbNet(pathToNewFile0_5, originalProbNet, originalEvidenceCases);
+                    String pathToNewFile0_5 = getNewPath(originalFile.getAbsolutePath(), V0_5);
+                    ProbNetWriter writer05 = new PGMXWriter_0_5();
+                try {
+                    writer05.writeProbNet(pathToNewFile0_5, originalProbNet, originalEvidenceCases);
+                } catch (WriterException e) {
+                    System.err.println(pathToNewFile0_5);
+                    System.err.println(e.getStackTrace());
+                }
 
 
-                    // Read the probNetInfo recently written in both versions.
+                // Read the probNetInfo recently written in both versions.
                     // Compare the contents with the original probNetInfo.
                     // Report differences for each network and write message
                 // Test ends here
