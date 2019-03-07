@@ -7,10 +7,10 @@ import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.gui.window.dt.DecisionTreePanel;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.IDDecisionTreeEvaluation;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;
 
-public class IDDecisionTreeEvaluationInferenceTest extends NetworkEvaluationInferenceTest {
+public class IDDecisionTreeEvaluationTest extends NetworkEvaluationInferenceTest {
 
 	@Override
 	protected DANEvaluation buildNetworkEvaluation(ProbNet network) {

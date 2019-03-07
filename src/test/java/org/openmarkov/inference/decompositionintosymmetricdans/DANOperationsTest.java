@@ -19,7 +19,7 @@ import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.ExactDistrPotential;
 import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANOperations;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.core.DANOperations;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 import java.io.InputStream;

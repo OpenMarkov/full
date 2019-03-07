@@ -5,7 +5,7 @@
  * WITHOUT WARRANTIES OF ANY KIND.
  */
 
-package org.openmarkov.inference.decompositionintosymmetricdans;
+package org.openmarkov.inference.decompositionintosymmetricdans.evaluation;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,8 +14,10 @@ import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.inference.decompositionintosymmetricdans.NetworkEvaluationInferenceTest;
+import org.openmarkov.inference.decompositionintosymmetricdans.Tools;
 
-public abstract class DANEvaluationInferenceTest extends NetworkEvaluationInferenceTest {
+public abstract class DANEvaluationTest extends NetworkEvaluationInferenceTest {
 
 	
 

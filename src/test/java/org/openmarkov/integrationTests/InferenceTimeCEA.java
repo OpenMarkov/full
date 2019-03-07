@@ -22,10 +22,10 @@ import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.Potential;
 import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.CEADANDecisionTreeEvaluation;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.CEADecompositionIntoSymmetricDANsEvaluation;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANDecisionTreeEvaluation;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionIntoSymmetricDANsEvaluation;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.ceanalysis.DANDecisionTreeCEA;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.ceanalysis.DANDecompositionIntoSymmetricDANsCEA;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANDecisionTreeEvaluation;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANDecompositionIntoSymmetricDANsEvaluation;
 import org.openmarkov.inference.variableElimination.operation.CEPotentialOperation;
 import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
 import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
@@ -106,7 +106,7 @@ public class InferenceTimeCEA {
 				// UNICRITERION ANALYSIS
 				LogManager.getLogger().debug("DSD for " + probNet.getName());
 				startTime = System.nanoTime();
-				DecompositionIntoSymmetricDANsEvaluation evaluationDSD = new DecompositionIntoSymmetricDANsEvaluation(
+				DANDecompositionIntoSymmetricDANsEvaluation evaluationDSD = new DANDecompositionIntoSymmetricDANsEvaluation(
 						probNet, evidenceCase);
 				utilityDSD = evaluationDSD.getUtility();
 				endTime = System.nanoTime();
@@ -129,7 +129,7 @@ public class InferenceTimeCEA {
 				// COST-EFFECTIVENESS ANALYSIS
 				LogManager.getLogger().debug("CEA_DSD with lambda = " + lambda);
 				startTime = System.nanoTime();
-				CEADecompositionIntoSymmetricDANsEvaluation evaluationCEADSD = new CEADecompositionIntoSymmetricDANsEvaluation(
+				DANDecompositionIntoSymmetricDANsCEA evaluationCEADSD = new DANDecompositionIntoSymmetricDANsCEA(
 						probNet, evidenceCase);
 				cepDSD = evaluationCEADSD.getCEP();
 				endTime = System.nanoTime();
@@ -139,7 +139,7 @@ public class InferenceTimeCEA {
 
 				LogManager.getLogger().debug("CEA_DT with lambda = " + lambda);
 				startTime = System.nanoTime();
-				CEADANDecisionTreeEvaluation evaluationCEADT = new CEADANDecisionTreeEvaluation(probNet);
+				DANDecisionTreeCEA evaluationCEADT = new DANDecisionTreeCEA(probNet);
 				cepDT = evaluationCEADT.getCEP();
 				endTime = System.nanoTime();
 				result.setDtCEEvaluationTime(endTime - startTime);
@@ -255,13 +255,13 @@ public class InferenceTimeCEA {
 
 				// COST-EFFECTIVENESS ANALYSIS
 				LogManager.getLogger().debug("CEA_DSD for " + probNet.getName());
-				CEADecompositionIntoSymmetricDANsEvaluation evaluationCEADSD = new CEADecompositionIntoSymmetricDANsEvaluation(
+				DANDecompositionIntoSymmetricDANsCEA evaluationCEADSD = new DANDecompositionIntoSymmetricDANsCEA(
 						probNet, evidenceCase);
 				cepDSD = evaluationCEADSD.getCEP();
 				evaluationCEADSD = null;
 
 				LogManager.getLogger().debug("CEA_DT for " + probNet.getName());
-				CEADANDecisionTreeEvaluation evaluationCEADT = new CEADANDecisionTreeEvaluation(probNet);
+				DANDecisionTreeCEA evaluationCEADT = new DANDecisionTreeCEA(probNet);
 				cepDT = evaluationCEADT.getCEP();
 				evaluationCEADT = null;
 
@@ -300,7 +300,7 @@ public class InferenceTimeCEA {
                         probNet.getDecisionCriteria().get(1).setUnicriteriaScale(lambda);
 
                         // UNICRITERION ANALYSIS
-                        DecompositionIntoSymmetricDANsEvaluation evaluationDSD = new DecompositionIntoSymmetricDANsEvaluation(
+                        DANDecompositionIntoSymmetricDANsEvaluation evaluationDSD = new DANDecompositionIntoSymmetricDANsEvaluation(
                                 probNet, evidenceCase);
                         utilityDSD = evaluationDSD.getUtility();
                         evaluationDSD = null;

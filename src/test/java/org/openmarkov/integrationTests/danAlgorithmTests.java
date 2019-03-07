@@ -18,8 +18,8 @@ import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.CEP;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.CEADecompositionIntoSymmetricDANsEvaluation;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecompositionIntoSymmetricDANsEvaluation;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.ceanalysis.DANDecompositionIntoSymmetricDANsCEA;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANDecompositionIntoSymmetricDANsEvaluation;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 import java.io.InputStream;
@@ -46,8 +46,8 @@ public class danAlgorithmTests {
 			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
 			ProbNet probNet = probNetInfo.getProbNet();
 
-			CEP resultCEA = new CEADecompositionIntoSymmetricDANsEvaluation(probNet).getCEP();
-			TablePotential resultUNI = new DecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
+			CEP resultCEA = new DANDecompositionIntoSymmetricDANsCEA(probNet).getCEP();
+			TablePotential resultUNI = new DANDecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
 
 			Assert.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
 		} catch (ParserException e) {
@@ -73,8 +73,8 @@ public class danAlgorithmTests {
 			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
 			ProbNet probNet = probNetInfo.getProbNet();
 
-			CEP resultCEA = new CEADecompositionIntoSymmetricDANsEvaluation(probNet).getCEP();
-			TablePotential resultUNI = new DecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
+			CEP resultCEA = new DANDecompositionIntoSymmetricDANsCEA(probNet).getCEP();
+			TablePotential resultUNI = new DANDecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
 
 			Assert.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
 		} catch (ParserException e) {
@@ -100,8 +100,8 @@ public class danAlgorithmTests {
 			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
 			ProbNet probNet = probNetInfo.getProbNet();
 
-			CEP resultCEA = new CEADecompositionIntoSymmetricDANsEvaluation(probNet).getCEP();
-			TablePotential resultUNI = new DecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
+			CEP resultCEA = new DANDecompositionIntoSymmetricDANsCEA(probNet).getCEP();
+			TablePotential resultUNI = new DANDecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
 
 			Assert.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
 		} catch (ParserException e) {
@@ -127,8 +127,8 @@ public class danAlgorithmTests {
 			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
 			ProbNet probNet = probNetInfo.getProbNet();
 
-			CEP resultCEA = new CEADecompositionIntoSymmetricDANsEvaluation(probNet).getCEP();
-			TablePotential resultUNI = new DecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
+			CEP resultCEA = new DANDecompositionIntoSymmetricDANsCEA(probNet).getCEP();
+			TablePotential resultUNI = new DANDecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
 
 			Assert.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
 		} catch (ParserException e) {
@@ -154,8 +154,8 @@ public class danAlgorithmTests {
 			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
 			ProbNet probNet = probNetInfo.getProbNet();
 
-			CEP resultCEA = new CEADecompositionIntoSymmetricDANsEvaluation(probNet).getCEP();
-			TablePotential resultUNI = new DecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
+			CEP resultCEA = new DANDecompositionIntoSymmetricDANsCEA(probNet).getCEP();
+			TablePotential resultUNI = new DANDecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
 
 			Assert.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
 		} catch (ParserException e) {

@@ -1,4 +1,4 @@
-package org.openmarkov.inference.decompositionintosymmetricdans;
+package org.openmarkov.inference.decompositionintosymmetricdans.ceanalysis;
 
 import junit.framework.Assert;
 import org.junit.Test;
@@ -9,8 +9,9 @@ import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.inference.tasks.CEAnalysis;
 import org.openmarkov.core.model.network.CEP;
 import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.inference.decompositionintosymmetricdans.Tools;
 
-public abstract class CEADANEvaluationInferenceTest {
+public abstract class DANCEATest {
 
 	public void testCEADANEvaluation(String danName, int globalNumberOfCEPIntervals, double... expectedThreshods) {
 		Tools t = new Tools();

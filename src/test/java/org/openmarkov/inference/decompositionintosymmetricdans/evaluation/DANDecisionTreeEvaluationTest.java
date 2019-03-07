@@ -5,7 +5,7 @@
  * WITHOUT WARRANTIES OF ANY KIND.
  */
 
-package org.openmarkov.inference.decompositionintosymmetricdans;
+package org.openmarkov.inference.decompositionintosymmetricdans.evaluation;
 
 import junit.framework.Assert;
 import org.junit.Ignore;
@@ -16,10 +16,10 @@ import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.model.network.ProbNet;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANDecisionTreeEvaluation;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DANEvaluation;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANDecisionTreeEvaluation;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;
 
-public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferenceTest {
+public class DANDecisionTreeEvaluationTest extends DANEvaluationTest {
 	
 
 	
@@ -46,11 +46,7 @@ public class DANDecisionTreeEvaluationInferenceTest extends DANEvaluationInferen
 
 	protected DANEvaluation buildNetworkEvaluation(ProbNet network, boolean computeDecisionTreeForGUI) {
 		DANEvaluation eval = null;
-		try {
-			eval = new DANDecisionTreeEvaluation(network, computeDecisionTreeForGUI);
-		} catch (NotEvaluableNetworkException e) {
-			e.printStackTrace();
-		}
+		eval = new DANDecisionTreeEvaluation(network, computeDecisionTreeForGUI);
 		return eval;
 	}
 
