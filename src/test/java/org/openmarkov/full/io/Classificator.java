@@ -52,7 +52,6 @@ public class Classificator extends PGMXReader_0_2 {
     private static final String defaultPathToNewFiles = "/home/manuel/Redes/NewNetworks";
 
     private final String V0_2 = "0.2.0";
-    private final String V0_5 = "0.5.0";
     private final String V0_7 = "0.7.0";
 
     private String pathToTestFiles;
@@ -64,9 +63,8 @@ public class Classificator extends PGMXReader_0_2 {
 
     // Constructor
 
-/** This class performs several operations with files in PGMX format.
+    /** This class performs several operations with files in PGMX format.
      * @param paths Optional String[] parameter. paths[0] = path to files; paths[1] = path to new files. */
-
     public Classificator(String[] paths) throws IOException {
         setPaths(paths);
         File fileToPathToTestFiles = new File(pathToNewFiles);
@@ -76,7 +74,7 @@ public class Classificator extends PGMXReader_0_2 {
             File testNodeFile = new File(pathToTestFiles);
             List<StringFilter> filters = new ArrayList<>(1);
             filters.add(new PGMXFiles());
-            for (FileIterator iterator = new FileIterator(testNodeFile, filters); iterator.hasNext(); ) {
+            for (IteratorPGMX iterator = new FileIterator(testNodeFile, filters); iterator.hasNext(); ) {
                 File originalFile = iterator.next();
                 String originalFileName = originalFile.getAbsolutePath();
                 String version = null;
@@ -87,7 +85,7 @@ public class Classificator extends PGMXReader_0_2 {
                     continue;
                 }
                 PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-                InputStream networkStream = getClass().getClassLoader().getResourceAsStream(originalFileName);
+                InputStream networkStream = new FileInputStream(originalFileName);
                 ProbNetInfo probNetInfo = null;
                 try {
                     probNetInfo = pgmxReader.loadProbNetInfo(originalFileName, networkStream);
@@ -99,7 +97,7 @@ public class Classificator extends PGMXReader_0_2 {
 
                 // Test begins here
 
-                    // Write and read probNetInfo in versions 0.2 and 0.7.
+                // Write and read probNetInfo in versions 0.2 and 0.7.
 
                 String pathToNewFile0_2 = getNewPath(originalFileName, V0_2);
                 if (version.matches(V0_2) && !networkNameIsIncludedInListOfAdvancedFeatures(pathToNewFile0_2)) {
@@ -111,19 +109,22 @@ public class Classificator extends PGMXReader_0_2 {
                         InputStream networkStream02_bis = getClass().getClassLoader().getResourceAsStream(originalFileName);
                         ProbNetInfo probNetInfo02_bis = pgmxReader.loadProbNetInfo(pathToNewFile0_2, networkStream02_bis);
                     } catch (WriterException e) {
-                        e.printStackTrace();
+                        System.err.println(e.getMessage());
+                        System.err.println(e.getStackTrace());
                     } catch (ParserException e) {
-                        e.printStackTrace();
+                        System.err.println(e.getMessage());
+                        System.err.println(e.getStackTrace());
                     }
                 }
 
-
-                    String pathToNewFile0_5 = getNewPath(originalFile.getAbsolutePath(), V0_5);
-                    ProbNetWriter writer05 = new PGMXWriter_0_5();
+                String pathToNewFile0_7 = getNewPath(originalFile.getAbsolutePath(), V0_7);
+                ProbNetWriter writer05 = new PGMXWriter_0_5();
                 try {
-                    writer05.writeProbNet(pathToNewFile0_5, originalProbNet, originalEvidenceCases);
+                    System.err.println(pathToNewFile0_7);
+                    System.err.println(V0_7);
+                    writer05.writeProbNet(pathToNewFile0_7, originalProbNet, originalEvidenceCases);
                 } catch (WriterException e) {
-                    System.err.println(pathToNewFile0_5);
+                    System.err.println(pathToNewFile0_7);
                     System.err.println(e.getStackTrace());
                 }
 
@@ -897,7 +898,7 @@ public class Classificator extends PGMXReader_0_2 {
     }
 
     private String getNewPath(String absolutePathOld, String version) {
-        return pathToNewFiles + File.separator + version + File.separator + absolutePathOld.substring(pathToTestFiles.length());
+        return pathToNewFiles + File.separator + version + absolutePathOld.substring(pathToTestFiles.length());
     }
 
     /**
@@ -905,8 +906,8 @@ public class Classificator extends PGMXReader_0_2 {
      * 'pathToNewFiles/0.2' and 'pathToNewFiles/0.7'.
      */
     public void testConversionBetweenVersions() throws IOException {
-        String pathToNewFiles02 = pathToNewFiles + "/0_2";
-        String pathToNewFiles07 = pathToNewFiles + "/0_7";
+        String pathToNewFiles02 = pathToNewFiles + File.separator + V0_2;
+        String pathToNewFiles07 = pathToNewFiles + File.separator + V0_7;
         cleanTestFoldersTree(pathToTestFiles, pathToNewFiles02, pathToNewFiles07);
         createTestFolders(pathToNewFiles02, pathToNewFiles07);
 
@@ -930,8 +931,7 @@ public class Classificator extends PGMXReader_0_2 {
     }
 
 
-/** List recursively files in PGMX version and writes its directory, version and name. */
-
+    /** List recursively files in PGMX version and writes its directory, version and name. */
     public void writeTreeFiles(String pathToFiles) throws Exception {
         File directory = new File(pathToFiles);
         File[] fList = directory.listFiles();
@@ -984,9 +984,7 @@ public class Classificator extends PGMXReader_0_2 {
         }
     }
 
-
-/** Replicates from pathToTestFiles a tree of new files in pathToNewFiles/0.2 and pathToNewFiles/0.7. */
-
+    /** Replicates from pathToTestFiles a tree of new files in pathToNewFiles/0.2 and pathToNewFiles/0.7. */
     private void createTestFolders(String pathToTestFiles, String pathToNewFiles) {
         String pathToNewFiles02 = pathToNewFiles + "/0_2";
         String pathToNewFiles07 = pathToNewFiles + "/0_7";
@@ -1016,7 +1014,6 @@ public class Classificator extends PGMXReader_0_2 {
      * @param pathToNewFiles07
      * @throws IOException
      */
-
     private void cleanTestFoldersTree(String pathToNewFiles, String pathToNewFiles02, String pathToNewFiles07) throws IOException {
         // Create test directories if they do not exists
         File newFiles = new File(pathToNewFiles);
@@ -1033,11 +1030,10 @@ public class Classificator extends PGMXReader_0_2 {
     }
 
 
-/**
+    /**
      * Remove recursively all the files and folders of 'folder'
      * @param folder
      */
-
     private void removeContentsFolder(File folder) {
         File[] files = folder.listFiles();
         if(files!=null) { //some JVMs return null for empty dirs
@@ -1051,8 +1047,7 @@ public class Classificator extends PGMXReader_0_2 {
         }
     }
 
-
-/**
+    /**
      * Gets the version of a PGMX file
      * @param pgmxFile
      * @return
@@ -1060,12 +1055,16 @@ public class Classificator extends PGMXReader_0_2 {
     private String getVersion(File pgmxFile) throws ParserException {
         PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
         String absolutePath = pgmxFile.getAbsolutePath();
-        InputStream networkStream = getClass().getClassLoader().getResourceAsStream(absolutePath);
+        InputStream networkStream = null;
+        try {
+            networkStream = new FileInputStream(absolutePath);
+        } catch (FileNotFoundException e) {
+            throw new ParserException("File: " + absolutePath + " does not exists.");
+        }
         return pgmxReader.getVersion(absolutePath, networkStream);
     }
 
-
-/**
+    /**
      * Sets the values of the variables pathToTestFiles and pathToNewFiles
      * @param paths
      * @return
@@ -1085,7 +1084,7 @@ public class Classificator extends PGMXReader_0_2 {
     }
 
     // Auxiliar internal clases and interfaces
-    private interface Next {
+    private interface IteratorPGMX {
         File next();
         boolean hasNext();
     }
@@ -1103,7 +1102,7 @@ public class Classificator extends PGMXReader_0_2 {
         }
     }
 
-    private class FileIterator implements Next {
+    private class FileIterator implements IteratorPGMX {
 
         // Attributes
         private List<File[]> subNodes;
@@ -1144,10 +1143,9 @@ public class Classificator extends PGMXReader_0_2 {
 
         public File next() {
             File aux = next;
-            next = next == null ? null : lookForNext();
+            next = next == null ? next : lookForNext();
             return aux;
         }
-
 
         /**
          * Looks for next file in the tree and updates <code>hasNext</code>
