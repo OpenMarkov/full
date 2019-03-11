@@ -42,6 +42,7 @@ public class Classificator extends PGMXReader_0_2 {
         try {
             Classificator classificator = new Classificator(args);
             classificator.testConversionBetweenVersions();
+            classificator.performTests();
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -62,11 +63,15 @@ public class Classificator extends PGMXReader_0_2 {
     };
 
     // Constructor
-
     /** This class performs several operations with files in PGMX format.
      * @param paths Optional String[] parameter. paths[0] = path to files; paths[1] = path to new files. */
+
     public Classificator(String[] paths) throws IOException {
         setPaths(paths);
+    }
+
+    // Methods
+    private void performTests() throws IOException {
         File fileToPathToTestFiles = new File(pathToNewFiles);
         if (!fileToPathToTestFiles.exists() || !fileToPathToTestFiles.isDirectory()) {
             throw new IOException("No test path.");
@@ -98,46 +103,47 @@ public class Classificator extends PGMXReader_0_2 {
                 // Test begins here
 
                 // Write and read probNetInfo in versions 0.2 and 0.7.
-
+                boolean v2 = false;
                 String pathToNewFile0_2 = getNewPath(originalFileName, V0_2);
                 if (version.matches(V0_2) && !networkNameIsIncludedInListOfAdvancedFeatures(pathToNewFile0_2)) {
                     // Write 0.2
                     ProbNetWriter writer02 = new PGMXWriter_0_2();
                     try {
+                        System.out.println("Writing: " + pathToNewFile0_2);
                         writer02.writeProbNet(pathToNewFile0_2, originalProbNet, originalEvidenceCases);
                         // Read 0.2
+                        v2 = true;
                         InputStream networkStream02_bis = getClass().getClassLoader().getResourceAsStream(originalFileName);
                         ProbNetInfo probNetInfo02_bis = pgmxReader.loadProbNetInfo(pathToNewFile0_2, networkStream02_bis);
                     } catch (WriterException e) {
-                        System.err.println(e.getMessage());
-                        System.err.println(e.getStackTrace());
+                        System.out.println(e.getMessage());
+                        System.out.println(e.getStackTrace());
                     } catch (ParserException e) {
-                        System.err.println(e.getMessage());
-                        System.err.println(e.getStackTrace());
+                        System.out.println(e.getMessage());
+                        System.out.println(e.getStackTrace());
                     }
                 }
 
                 String pathToNewFile0_7 = getNewPath(originalFile.getAbsolutePath(), V0_7);
                 ProbNetWriter writer05 = new PGMXWriter_0_5();
                 try {
-                    System.err.println(pathToNewFile0_7);
-                    System.err.println(V0_7);
+                    System.out.println("Writing: " + pathToNewFile0_7);
                     writer05.writeProbNet(pathToNewFile0_7, originalProbNet, originalEvidenceCases);
                 } catch (WriterException e) {
-                    System.err.println(pathToNewFile0_7);
-                    System.err.println(e.getStackTrace());
+                    System.out.println(pathToNewFile0_7);
+                    System.out.println(e.getStackTrace());
                 }
 
-
                 // Read the probNetInfo recently written in both versions.
-                    // Compare the contents with the original probNetInfo.
-                    // Report differences for each network and write message
+                if (v2) {
+
+                }
+                // Compare the contents with the original probNetInfo.
+                // Report differences for each network and write message
                 // Test ends here
             }
         }
     }
-
-    // Methods
 
     /**
      *
@@ -909,7 +915,7 @@ public class Classificator extends PGMXReader_0_2 {
         String pathToNewFiles02 = pathToNewFiles + File.separator + V0_2;
         String pathToNewFiles07 = pathToNewFiles + File.separator + V0_7;
         cleanTestFoldersTree(pathToTestFiles, pathToNewFiles02, pathToNewFiles07);
-        createTestFolders(pathToNewFiles02, pathToNewFiles07);
+        createTestFolders(pathToTestFiles, pathToNewFiles02, pathToNewFiles07);
 
         File testNetsDirectory = new File(pathToTestFiles);
         File[] testNetsFiles = testNetsDirectory.listFiles();
@@ -976,7 +982,8 @@ public class Classificator extends PGMXReader_0_2 {
         File[] subOriginFiles = originFolder.listFiles();
         for (File subOriginFolderFile : subOriginFiles) {
             if (subOriginFolderFile.isDirectory()) {
-                String newSubFolderString = newFolder.getAbsolutePath() + originFolder.getAbsolutePath().substring((int)originFolder.length());
+                String newSubFolderString = newFolder.getAbsolutePath() + File.separator +
+                        subOriginFolderFile.getAbsolutePath().substring(originFolder.getAbsolutePath().length() + 1);
                 File newSubFolder = new File(newSubFolderString);
                 newSubFolder.mkdir();
                 replicateOriginFolderStructureInOtherFolder(subOriginFolderFile, newSubFolder);
@@ -985,21 +992,19 @@ public class Classificator extends PGMXReader_0_2 {
     }
 
     /** Replicates from pathToTestFiles a tree of new files in pathToNewFiles/0.2 and pathToNewFiles/0.7. */
-    private void createTestFolders(String pathToTestFiles, String pathToNewFiles) {
-        String pathToNewFiles02 = pathToNewFiles + "/0_2";
-        String pathToNewFiles07 = pathToNewFiles + "/0_7";
-        File newFiles02 = new File(pathToNewFiles02);
-        File newFiles07 = new File(pathToNewFiles07);
+    private void createTestFolders(String pathToTestFiles, String pathToNewFiles0_2, String pathToNewFiles0_7) {
         File originalFiles = new File(pathToTestFiles);
         try {
             // Remove folders from previous tests
-            removeContentsFolder(newFiles02);
-            removeContentsFolder(newFiles07);
+            File new0_2 = new File(pathToNewFiles0_2);
+            File new0_7 = new File(pathToNewFiles0_7);
+            removeContentsFolder(new0_2);
+            removeContentsFolder(new0_7);
             // Create new folders
-            newFiles02.createNewFile();
-            replicateOriginFolderStructureInOtherFolder(originalFiles, newFiles02);
-            newFiles07.createNewFile();
-            replicateOriginFolderStructureInOtherFolder(originalFiles, newFiles07);
+            new0_2.createNewFile();
+            replicateOriginFolderStructureInOtherFolder(originalFiles, new0_2);
+            new0_7.createNewFile();
+            replicateOriginFolderStructureInOtherFolder(originalFiles, new0_7);
         } catch (IOException e) {
             System.err.println("Can not create new folder.\n" + e.getMessage());
             e.printStackTrace();
