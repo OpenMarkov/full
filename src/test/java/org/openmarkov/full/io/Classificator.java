@@ -54,97 +54,378 @@ public class Classificator extends PGMXReader_0_2 {
 
     private final String V0_2 = "0.2.0";
     private final String V0_7 = "0.7.0";
+    private final String advancedFeaturesFile = "Networks with advanced features.txt";
 
     private String pathToTestFiles;
     private String pathToNewFiles;
 
-    private String[] networksWithAdvancedFeatures = {
-
-    };
+    private List<String> networksWithAdvancedFeatures;
 
     // Constructor
     /** This class performs several operations with files in PGMX format.
      * @param paths Optional String[] parameter. paths[0] = path to files; paths[1] = path to new files. */
 
     public Classificator(String[] paths) throws IOException {
-        setPaths(paths);
+        // Sets path to test files and new files
+        pathToTestFiles = null;
+        if (paths.length >=1 ) {
+            pathToTestFiles = paths[0];
+        } else {
+            pathToTestFiles = defaultPpathToTestFiles;
+        }
+        if (paths.length >= 2) {
+            pathToNewFiles = paths[1];
+        } else {
+            pathToNewFiles = defaultPathToNewFiles;
+        }
+
+        networksWithAdvancedFeatures = getNetworksWithAdvancedFeatures(pathToTestFiles);
     }
 
-    // Methods
-    private void performTests() throws IOException {
-        File fileToPathToTestFiles = new File(pathToNewFiles);
-        if (!fileToPathToTestFiles.exists() || !fileToPathToTestFiles.isDirectory()) {
-            throw new IOException("No test path.");
-        } else {
-            File testNodeFile = new File(pathToTestFiles);
-            List<StringFilter> filters = new ArrayList<>(1);
-            filters.add(new PGMXFiles());
-            for (IteratorPGMX iterator = new FileIterator(testNodeFile, filters); iterator.hasNext(); ) {
-                File originalFile = iterator.next();
-                String originalFileName = originalFile.getAbsolutePath();
-                String version = null;
-                try {
-                    version = getVersion(originalFile);
-                } catch (ParserException e) {
-                    writeExceptionInfo("Can not read file: " + originalFileName, null, e);
-                    continue;
+    private List<String> getNetworksWithAdvancedFeatures(String pathToTestFiles) {
+        List<String> networksWithAdvancedFeatures = new ArrayList<String>();
+        String fileName = pathToTestFiles + File.separator + advancedFeaturesFile;
+        File pathToAdvancedFeaturesFile = new File(fileName);
+        if (pathToAdvancedFeaturesFile.exists()) {
+            BufferedReader buffer = null;
+            try {
+                buffer = new BufferedReader(new FileReader(pathToAdvancedFeaturesFile));
+            } catch (FileNotFoundException e) {
+                writeExceptionInfo("Can not open for reading file: " + fileName, null, e);
+            }
+            String string;
+            try {
+                while ((string = buffer.readLine()) != null) {
+                    networksWithAdvancedFeatures.add(string);
                 }
-                PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-                InputStream networkStream = new FileInputStream(originalFileName);
-                ProbNetInfo probNetInfo = null;
-                try {
-                    probNetInfo = pgmxReader.loadProbNetInfo(originalFileName, networkStream);
-                } catch (ParserException e) {
-                    e.printStackTrace();
-                }
-                ProbNet originalProbNet = probNetInfo.getProbNet();
-                List<EvidenceCase> originalEvidenceCases = probNetInfo.getEvidence();
+            } catch (IOException e) {
+                writeExceptionInfo("IOException while reading file: " + fileName, null, e);
+            }
+        }
+        return networksWithAdvancedFeatures;
+    }
 
-                // Test begins here
-
-                // Write and read probNetInfo in versions 0.2 and 0.7.
-                boolean v2 = false;
-                String pathToNewFile0_2 = getNewPath(originalFileName, V0_2);
-                if (version.matches(V0_2) && !networkNameIsIncludedInListOfAdvancedFeatures(pathToNewFile0_2)) {
-                    // Write 0.2
-                    ProbNetWriter writer02 = new PGMXWriter_0_2();
-                    try {
-                        System.out.println("Writing: " + pathToNewFile0_2);
-                        writer02.writeProbNet(pathToNewFile0_2, originalProbNet, originalEvidenceCases);
-                        // Read 0.2
-                        v2 = true;
-                        InputStream networkStream02_bis = getClass().getClassLoader().getResourceAsStream(originalFileName);
-                        ProbNetInfo probNetInfo02_bis = pgmxReader.loadProbNetInfo(pathToNewFile0_2, networkStream02_bis);
-                    } catch (WriterException e) {
-                        System.out.println(e.getMessage());
-                        System.out.println(e.getStackTrace());
-                    } catch (ParserException e) {
-                        System.out.println(e.getMessage());
-                        System.out.println(e.getStackTrace());
-                    }
-                }
-
-                String pathToNewFile0_7 = getNewPath(originalFile.getAbsolutePath(), V0_7);
-                ProbNetWriter writer05 = new PGMXWriter_0_5();
-                try {
-                    System.out.println("Writing: " + pathToNewFile0_7);
-                    writer05.writeProbNet(pathToNewFile0_7, originalProbNet, originalEvidenceCases);
-                } catch (WriterException e) {
-                    System.out.println(pathToNewFile0_7);
-                    System.out.println(e.getStackTrace());
-                }
-
-                // Read the probNetInfo recently written in both versions.
-                if (v2) {
-
-                }
-                // Compare the contents with the original probNetInfo.
-                // Report differences for each network and write message
-                // Test ends here
+    private void writeNetworksWithAdvancedFeatures(String patoToTestFiles) {
+        String fileName = pathToTestFiles + File.separator + advancedFeaturesFile;
+        BufferedWriter writer = null;
+        try {
+            //create a temporary file
+            File file = new File(fileName);
+            writer = new BufferedWriter(new FileWriter(file));
+            for (String networkName : networksWithAdvancedFeatures) {
+                writer.write(networkName);
+            }
+        } catch (Exception e) {
+            System.out.println("Can not write networks with advanced features.");
+        } finally {
+            try {
+                // Close the writer regardless of what happens...
+                writer.close();
+            } catch (Exception e) {
             }
         }
     }
 
+    // Methods
+    private void performTests() throws IOException {
+        File filePathToNewFiles = getPathToNewFiles(pathToNewFiles);
+        File testNodeFile = new File(pathToTestFiles);
+        List<StringFilter> filters = getPGMXFilters();
+        for (IteratorPGMX iterator = new FileIterator(testNodeFile, filters); iterator.hasNext(); ) {
+            File originalFile = iterator.next();
+            String originalFileName = originalFile.getAbsolutePath();
+            String version = null;
+            try {
+                version = getVersion(originalFile);
+            } catch (ParserException e) {
+                writeExceptionInfo("Can not read file: " + originalFileName, null, e);
+                continue;
+            }
+            PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
+            InputStream networkStream = new FileInputStream(originalFileName);
+            ProbNetInfo probNetInfo = null;
+            try {
+                probNetInfo = pgmxReader.loadProbNetInfo(originalFileName, networkStream);
+            } catch (ParserException e) {
+                e.printStackTrace();
+            }
+            ProbNet originalProbNet = probNetInfo.getProbNet();
+            List<EvidenceCase> originalEvidenceCases = probNetInfo.getEvidence();
+
+            // Write and read probNetInfo in versions 0.2 and 0.7.
+            String pathToNewFile0_2 = getNewPath(originalFileName, V0_2);
+            boolean canBeWrittenIn0_2 = version.matches(V0_2) || !networkNameIsIncludedInListOfAdvancedFeatures(pathToNewFile0_2);
+            boolean canBeWrittenIn0_5 = false;
+            boolean canBeReaded;
+            ProbNetInfo probNetInfo02_bis = null;
+            if (canBeWrittenIn0_2) {
+                // Write 0.2
+                ProbNetWriter writer02 = new PGMXWriter_0_2();
+                canBeReaded = true;
+                try {
+                    System.out.println("Writing: " + pathToNewFile0_2);
+                    writer02.writeProbNet(pathToNewFile0_2, originalProbNet, originalEvidenceCases);
+                    // Read 0.2
+                    InputStream networkStream02_bis = new FileInputStream(pathToNewFile0_2);
+                    probNetInfo02_bis = pgmxReader.loadProbNetInfo(pathToNewFile0_2, networkStream02_bis);
+                } catch (WriterException e) {
+                    canBeWrittenIn0_2 = false;
+                    writeExceptionInfo("Error writing " + originalFileName, V0_2, e);
+                } catch (ParserException e) {
+                    canBeReaded = false;
+                    writeExceptionInfo("Error reading " + originalFileName, V0_2, e);
+                }
+            }
+            if ((probNetInfo02_bis != null) && (!sameInfoProbNetsInfo(probNetInfo, probNetInfo02_bis))) {
+                System.out.println("Different networks in V0_2 " + originalFileName);
+            }
+
+            String pathToNewFile0_7 = getNewPath(originalFile.getAbsolutePath(), V0_7);
+            ProbNetWriter writer05 = new PGMXWriter_0_5();
+            try {
+                System.out.println("Writing: " + pathToNewFile0_7);
+                writer05.writeProbNet(pathToNewFile0_7, originalProbNet, originalEvidenceCases);
+                canBeWrittenIn0_5 = true;
+            } catch (WriterException e) {
+                networksWithAdvancedFeatures.add(originalFile.getName());
+                canBeWrittenIn0_2 = false;
+                writeExceptionInfo("Error writing "+ pathToNewFile0_7, V0_7, e);
+            }
+
+            // Read the probNetInfo recently written in both versions.
+            if (canBeWrittenIn0_5) {
+                PGMXReader_0_2 pgmxReader0_5 = new PGMXReader_0_2();
+                InputStream networkStream0_5 = new FileInputStream(pathToNewFile0_7);
+                ProbNetInfo probNetInfo0_5 = null;
+                try {
+                    probNetInfo0_5 = pgmxReader.loadProbNetInfo(originalFileName, networkStream0_5);
+                } catch (ParserException e) {
+                    writeExceptionInfo("Error reading " + originalFileName, V0_7, e);
+                }
+                if ((probNetInfo0_5 != null) && (!sameInfoProbNetsInfo(probNetInfo, probNetInfo0_5))) {
+                    System.out.println("Different networks in V0_5 " + originalFileName);
+                }
+
+            }
+            // Compare the contents with the original probNetInfo.
+            // Report differences for each network and write message
+            // Test ends here
+        }
+        if (!networksWithAdvancedFeatures.isEmpty()) {
+            System.out.println("Networks with advanced features: ");
+            for (String networkName : networksWithAdvancedFeatures) {
+                System.out.println(networkName);
+            }
+            writeNetworksWithAdvancedFeatures(pathToTestFiles);
+        }
+
+    }
+
+    private List<StringFilter> getPGMXFilters() {
+        List<StringFilter> filters = new ArrayList<>(1);
+        filters.add(new PGMXFiles());
+        return filters;
+    }
+
+    private File getPathToNewFiles(String pathToNewFiles) throws IOException {
+        File filePathToNewFiles = new File(pathToNewFiles);
+        if (!filePathToNewFiles.exists() || !filePathToNewFiles.isDirectory()) {
+            throw new IOException("No test path.");
+        }
+        return filePathToNewFiles;
+    }
+
+    /**
+     * Checks if a string is contained in an array of strings
+     * @param netName
+     * @return
+     */
+    private boolean networkNameIsIncludedInListOfAdvancedFeatures(String netName) {
+        boolean advancedFeatures = false;
+        int size = networksWithAdvancedFeatures.size();
+        int i;
+        for (i = 0; i < size && !networksWithAdvancedFeatures.get(i).contains(netName); i++);
+        return i != size;
+    }
+
+    private void writeExceptionInfo(String message, String version, Exception e) {
+        System.err.println(message);
+        if (version != null) {
+            System.err.println("Version: " + version);
+        }
+        System.err.println(e.getMessage());
+        System.err.println(e.getStackTrace());
+    }
+
+    /**
+     * Read networks from directory 'pathToTestFiles' and writes them in 0.2 and 0.7 version in
+     * 'pathToNewFiles/0.2' and 'pathToNewFiles/0.7'.
+     */
+    public void testConversionBetweenVersions() throws IOException {
+        String pathToNewFiles02 = pathToNewFiles + File.separator + V0_2;
+        String pathToNewFiles07 = pathToNewFiles + File.separator + V0_7;
+        cleanTestFoldersTree(pathToTestFiles, pathToNewFiles02, pathToNewFiles07);
+        createTestFolders(pathToTestFiles, pathToNewFiles02, pathToNewFiles07);
+
+/*
+        File testNetsDirectory = new File(pathToTestFiles);
+        File[] testNetsFiles = testNetsDirectory.listFiles();
+        int numCharsPathToNewFiles = pathToNewFiles.length();
+        for (File testFile : testNetsFiles) {
+            if (testFile.isDirectory()) {
+                // TODO
+            } else {
+                PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
+                ProbNetInfo probNetInfo = null;
+                InputStream networkStream = getClass().getClassLoader().getResourceAsStream(testFile.getAbsolutePath());
+                try {
+                    probNetInfo = pgmxReader.loadProbNetInfo(testFile.getAbsolutePath(), networkStream);
+                } catch (ParserException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+*/
+    }
+
+    private String getNewPath(String absolutePathOld, String version) {
+        return pathToNewFiles + File.separator + version + absolutePathOld.substring(pathToTestFiles.length());
+    }
+
+
+    /** List recursively files in PGMX version and writes its directory, version and name. */
+    public void writeTreeFiles(String pathToFiles) throws Exception {
+        File directory = new File(pathToFiles);
+        File[] fList = directory.listFiles();
+        for (File file : fList) {
+            if (file.isFile()) {
+                String canonicalPath = file.getCanonicalPath();
+
+                try {
+                    FileInputStream stream = new FileInputStream(canonicalPath);
+                    // Get root element.
+                    SAXBuilder builder = new SAXBuilder();
+                    builder.setJDOMFactory( new LocatedJDOMFactory() );
+                    Document document = null;
+                    try {
+                        document = builder.build(stream);
+                    } catch ( JDOMException e ) {
+                        throw new ParserException( "Can not parse XML document " + canonicalPath + ":" + e.getMessage() );
+                    } catch ( IOException e ) {
+                        throw new ParserException( "Error trying to open " + canonicalPath + ".\n" + e.getMessage() );
+                    }
+                    Element root = document.getRootElement();
+                    String strVersion = root.getAttributeValue( XMLAttributes.FORMAT_VERSION.toString() );
+                    System.out.print(strVersion + " ");
+                    System.out.println(canonicalPath);
+                }
+                catch (FileNotFoundException e ) {
+                    System.err.println("The " + canonicalPath + " does not exists.");
+                }
+            } else if (file.isDirectory()) {
+                String absolutePat = file.getAbsolutePath();
+                System.out.println();
+                System.out.println(file.getAbsolutePath());
+                for (int i = 0; i < absolutePat.length(); i++) {
+                    System.out.print("-");
+                }
+                System.out.println();
+            }
+        }
+    }
+
+    private void replicateOriginFolderStructureInOtherFolder(File originFolder, File newFolder) {
+        File[] subOriginFiles = originFolder.listFiles();
+        for (File subOriginFolderFile : subOriginFiles) {
+            if (subOriginFolderFile.isDirectory()) {
+                String newSubFolderString = newFolder.getAbsolutePath() + File.separator +
+                        subOriginFolderFile.getAbsolutePath().substring(originFolder.getAbsolutePath().length() + 1);
+                File newSubFolder = new File(newSubFolderString);
+                newSubFolder.mkdir();
+                replicateOriginFolderStructureInOtherFolder(subOriginFolderFile, newSubFolder);
+            }
+        }
+    }
+
+    /** Replicates from pathToTestFiles a tree of new files in pathToNewFiles/0.2 and pathToNewFiles/0.7. */
+    private void createTestFolders(String pathToTestFiles, String pathToNewFiles0_2, String pathToNewFiles0_7) {
+        File originalFiles = new File(pathToTestFiles);
+        try {
+            // Remove folders from previous tests
+            File new0_2 = new File(pathToNewFiles0_2);
+            File new0_7 = new File(pathToNewFiles0_7);
+            removeContentsFolder(new0_2);
+            removeContentsFolder(new0_7);
+            // Create new folders
+            new0_2.createNewFile();
+            replicateOriginFolderStructureInOtherFolder(originalFiles, new0_2);
+            new0_7.createNewFile();
+            replicateOriginFolderStructureInOtherFolder(originalFiles, new0_7);
+        } catch (IOException e) {
+            System.err.println("Can not create new folder.\n" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Creates folders to write files for testing. If the folders exist from previous tests, removes contents.
+     * @param pathToNewFiles
+     * @param pathToNewFiles02
+     * @param pathToNewFiles07
+     * @throws IOException
+     */
+    private void cleanTestFoldersTree(String pathToNewFiles, String pathToNewFiles02, String pathToNewFiles07) throws IOException {
+        // Create test directories if they do not exists
+        File newFiles = new File(pathToNewFiles);
+        newFiles.mkdir(); // Create path; if file already exists do nothing.
+
+        // Create test folders for 0.2 and 0.7 and remove previous contents
+        File newFiles02 = new File(pathToNewFiles02);
+        newFiles02.mkdir();
+        removeContentsFolder(newFiles02);
+
+        File newFiles07 = new File(pathToNewFiles07);
+        newFiles07.mkdir();
+        removeContentsFolder(newFiles07);
+    }
+
+
+    /**
+     * Remove recursively all the files and folders of 'folder'
+     * @param folder
+     */
+    private void removeContentsFolder(File folder) {
+        File[] files = folder.listFiles();
+        if(files!=null) { //some JVMs return null for empty dirs
+            for(File f: files) {
+                if(f.isDirectory()) {
+                    removeContentsFolder(f);
+                } else {
+                    f.delete();
+                }
+            }
+        }
+    }
+
+    /**
+     * Gets the version of a PGMX file
+     * @param pgmxFile
+     * @return
+     */
+    private String getVersion(File pgmxFile) throws ParserException {
+        PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
+        String absolutePath = pgmxFile.getAbsolutePath();
+        InputStream networkStream = null;
+        try {
+            networkStream = new FileInputStream(absolutePath);
+        } catch (FileNotFoundException e) {
+            throw new ParserException("File: " + absolutePath + " does not exists.");
+        }
+        return pgmxReader.getVersion(absolutePath, networkStream);
+    }
+
+    // Methods to compare data structures.
     /**
      *
      * @param probNetInfo1
@@ -878,214 +1159,6 @@ public class Classificator extends PGMXReader_0_2 {
      */
     private boolean sameInfoStrings(String name1, String name2) {
         return ( (name1 == null && name2 == null) || (name1 != null && name2 != null && name1.compareTo(name2) == 0) );
-    }
-
-
-    /**
-     * Checks if a string is contained in an array of strings
-     * @param netName
-     * @return
-     */
-    private boolean networkNameIsIncludedInListOfAdvancedFeatures(String netName) {
-        boolean advancedFeatures = false;
-        for (int i = 0; i < networksWithAdvancedFeatures.length && !advancedFeatures; i++) {
-            advancedFeatures = networksWithAdvancedFeatures[i].compareTo(netName) == 0;
-        }
-        return advancedFeatures;
-    }
-
-    private void writeExceptionInfo(String message, String version, Exception e) {
-        System.err.println(message);
-        if (version != null) {
-            System.err.println("Version: " + version);
-        }
-        System.err.println(e.getMessage());
-        System.err.println(e.getStackTrace());
-    }
-
-    private String getNewPath(String absolutePathOld, String version) {
-        return pathToNewFiles + File.separator + version + absolutePathOld.substring(pathToTestFiles.length());
-    }
-
-    /**
-     * Read networks from directory 'pathToTestFiles' and writes them in 0.2 and 0.7 version in
-     * 'pathToNewFiles/0.2' and 'pathToNewFiles/0.7'.
-     */
-    public void testConversionBetweenVersions() throws IOException {
-        String pathToNewFiles02 = pathToNewFiles + File.separator + V0_2;
-        String pathToNewFiles07 = pathToNewFiles + File.separator + V0_7;
-        cleanTestFoldersTree(pathToTestFiles, pathToNewFiles02, pathToNewFiles07);
-        createTestFolders(pathToTestFiles, pathToNewFiles02, pathToNewFiles07);
-
-        File testNetsDirectory = new File(pathToTestFiles);
-        File[] testNetsFiles = testNetsDirectory.listFiles();
-        int numCharsPathToNewFiles = pathToNewFiles.length();
-        for (File testFile : testNetsFiles) {
-            if (testFile.isDirectory()) {
-                // TODO
-            } else {
-                PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-                ProbNetInfo probNetInfo = null;
-                InputStream networkStream = getClass().getClassLoader().getResourceAsStream(testFile.getAbsolutePath());
-                try {
-                    probNetInfo = pgmxReader.loadProbNetInfo(testFile.getAbsolutePath(), networkStream);
-                } catch (ParserException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-
-    /** List recursively files in PGMX version and writes its directory, version and name. */
-    public void writeTreeFiles(String pathToFiles) throws Exception {
-        File directory = new File(pathToFiles);
-        File[] fList = directory.listFiles();
-        for (File file : fList) {
-            if (file.isFile()) {
-                String canonicalPath = file.getCanonicalPath();
-
-                try {
-                    FileInputStream stream = new FileInputStream(canonicalPath);
-                    // Get root element.
-                    SAXBuilder builder = new SAXBuilder();
-                    builder.setJDOMFactory( new LocatedJDOMFactory() );
-                    Document document = null;
-                    try {
-                        document = builder.build(stream);
-                    } catch ( JDOMException e ) {
-                        throw new ParserException( "Can not parse XML document " + canonicalPath + ":" + e.getMessage() );
-                    } catch ( IOException e ) {
-                        throw new ParserException( "Error trying to open " + canonicalPath + ".\n" + e.getMessage() );
-                    }
-                    Element root = document.getRootElement();
-                    String strVersion = root.getAttributeValue( XMLAttributes.FORMAT_VERSION.toString() );
-                    System.out.print(strVersion + " ");
-                    System.out.println(canonicalPath);
-                }
-                catch (FileNotFoundException e ) {
-                    System.err.println("The " + canonicalPath + " does not exists.");
-                }
-            } else if (file.isDirectory()) {
-                String absolutePat = file.getAbsolutePath();
-                System.out.println();
-                System.out.println(file.getAbsolutePath());
-                for (int i = 0; i < absolutePat.length(); i++) {
-                    System.out.print("-");
-                }
-                System.out.println();
-            }
-        }
-    }
-
-    private void replicateOriginFolderStructureInOtherFolder(File originFolder, File newFolder) {
-        File[] subOriginFiles = originFolder.listFiles();
-        for (File subOriginFolderFile : subOriginFiles) {
-            if (subOriginFolderFile.isDirectory()) {
-                String newSubFolderString = newFolder.getAbsolutePath() + File.separator +
-                        subOriginFolderFile.getAbsolutePath().substring(originFolder.getAbsolutePath().length() + 1);
-                File newSubFolder = new File(newSubFolderString);
-                newSubFolder.mkdir();
-                replicateOriginFolderStructureInOtherFolder(subOriginFolderFile, newSubFolder);
-            }
-        }
-    }
-
-    /** Replicates from pathToTestFiles a tree of new files in pathToNewFiles/0.2 and pathToNewFiles/0.7. */
-    private void createTestFolders(String pathToTestFiles, String pathToNewFiles0_2, String pathToNewFiles0_7) {
-        File originalFiles = new File(pathToTestFiles);
-        try {
-            // Remove folders from previous tests
-            File new0_2 = new File(pathToNewFiles0_2);
-            File new0_7 = new File(pathToNewFiles0_7);
-            removeContentsFolder(new0_2);
-            removeContentsFolder(new0_7);
-            // Create new folders
-            new0_2.createNewFile();
-            replicateOriginFolderStructureInOtherFolder(originalFiles, new0_2);
-            new0_7.createNewFile();
-            replicateOriginFolderStructureInOtherFolder(originalFiles, new0_7);
-        } catch (IOException e) {
-            System.err.println("Can not create new folder.\n" + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-
-/**
-     * Creates folders to write files for testing. If the folders exist from previous tests, removes contents.
-     * @param pathToNewFiles
-     * @param pathToNewFiles02
-     * @param pathToNewFiles07
-     * @throws IOException
-     */
-    private void cleanTestFoldersTree(String pathToNewFiles, String pathToNewFiles02, String pathToNewFiles07) throws IOException {
-        // Create test directories if they do not exists
-        File newFiles = new File(pathToNewFiles);
-        newFiles.mkdir(); // Create path; if file already exists do nothing.
-
-        // Create test folders for 0.2 and 0.7 and remove previous contents
-        File newFiles02 = new File(pathToNewFiles02);
-        newFiles02.mkdir();
-        removeContentsFolder(newFiles02);
-
-        File newFiles07 = new File(pathToNewFiles07);
-        newFiles07.mkdir();
-        removeContentsFolder(newFiles07);
-    }
-
-
-    /**
-     * Remove recursively all the files and folders of 'folder'
-     * @param folder
-     */
-    private void removeContentsFolder(File folder) {
-        File[] files = folder.listFiles();
-        if(files!=null) { //some JVMs return null for empty dirs
-            for(File f: files) {
-                if(f.isDirectory()) {
-                    removeContentsFolder(f);
-                } else {
-                    f.delete();
-                }
-            }
-        }
-    }
-
-    /**
-     * Gets the version of a PGMX file
-     * @param pgmxFile
-     * @return
-     */
-    private String getVersion(File pgmxFile) throws ParserException {
-        PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-        String absolutePath = pgmxFile.getAbsolutePath();
-        InputStream networkStream = null;
-        try {
-            networkStream = new FileInputStream(absolutePath);
-        } catch (FileNotFoundException e) {
-            throw new ParserException("File: " + absolutePath + " does not exists.");
-        }
-        return pgmxReader.getVersion(absolutePath, networkStream);
-    }
-
-    /**
-     * Sets the values of the variables pathToTestFiles and pathToNewFiles
-     * @param paths
-     * @return
-     */
-    private void setPaths(String[] paths) {
-        pathToTestFiles = null;
-        if (paths.length >=1 ) {
-            pathToTestFiles = paths[0];
-        } else {
-            pathToTestFiles = defaultPpathToTestFiles;
-        }
-        if (paths.length >= 2) {
-            pathToNewFiles = paths[1];
-        } else {
-            pathToNewFiles = defaultPathToNewFiles;
-        }
     }
 
     // Auxiliar internal clases and interfaces
