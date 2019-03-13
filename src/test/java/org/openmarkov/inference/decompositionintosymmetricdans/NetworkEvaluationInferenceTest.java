@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.StrategyTree;
@@ -15,14 +16,14 @@ import junit.framework.Assert;
 
 public abstract class NetworkEvaluationInferenceTest {
 
-	public void testNetworkEvaluation(String networkName, double expectedEU, String... namesVariablesIntervention) {
+	public void testNetworkEvaluation(String networkName, double expectedEU, String... namesVariablesIntervention) throws NotEvaluableNetworkException {
 		ProbNet network = loadNetwork(networkName);
 		System.out.println("*** Evaluating network " + networkName + " ***");
 		System.out.println();
 		testNetworkEvaluation(network,expectedEU,namesVariablesIntervention);
 	}
 	
-	public void testNetworkEvaluation(ProbNet network, double expectedEU, String... namesVariablesIntervention) {
+	public void testNetworkEvaluation(ProbNet network, double expectedEU, String... namesVariablesIntervention) throws NotEvaluableNetworkException {
 		System.out.println();
 		DANEvaluation eval = buildNetworkEvaluation(network);
 		testDANEvaluation(eval, network, expectedEU, namesVariablesIntervention);
@@ -46,7 +47,7 @@ public abstract class NetworkEvaluationInferenceTest {
 
 	protected abstract ProbNet loadNetwork(String networkName);
 	
-	protected abstract DANEvaluation buildNetworkEvaluation(ProbNet network);
+	protected abstract DANEvaluation buildNetworkEvaluation(ProbNet network) throws NotEvaluableNetworkException;
 
 
 

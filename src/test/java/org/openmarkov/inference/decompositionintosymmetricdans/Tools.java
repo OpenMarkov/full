@@ -32,14 +32,5 @@ public class Tools {
 	public ProbNet loadID(String nameSuffix) {
 		return loadNetwork(nameSuffix,"ID","id");
 	}
-	
-	public static void buildDecisionTreePanelAndExpandLevels(ProbNet network) {
-		DecisionTreePanel dt = new DecisionTreePanel(network);
-		for (int i=0;i<1;i++) {
-			dt.inferenceExpandLevels(1);
-		}
-	}
-
-
 
 }

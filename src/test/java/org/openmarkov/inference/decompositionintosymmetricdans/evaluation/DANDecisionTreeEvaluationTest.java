@@ -10,15 +10,17 @@ package org.openmarkov.inference.decompositionintosymmetricdans.evaluation;
 import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openmarkov.core.dt.DecisionTreeElement;
 import org.openmarkov.core.dt.DecisionTreeNode;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.gui.window.dt.DecisionTreePanel;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANDecisionTreeEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;
-
+@Ignore
 public class DANDecisionTreeEvaluationTest extends DANEvaluationTest {
 	
 
@@ -28,7 +30,13 @@ public class DANDecisionTreeEvaluationTest extends DANEvaluationTest {
 		System.out.println();
 		boolean computeDTValues []= {true, false};
 		for (boolean computeDT: computeDTValues) {			
-			DANEvaluation eval = buildNetworkEvaluation(network, computeDT);
+			DANEvaluation eval = null;
+			try {
+				eval = buildNetworkEvaluation(network, computeDT);
+			} catch (NotEvaluableNetworkException e1) {
+				e1.printStackTrace();
+				Assert.fail();
+			}
 			testDANEvaluation(eval, network, expectedEU, namesVariablesIntervention);
 			DecisionTreeNode dt = ((DANDecisionTreeEvaluation) eval).getDecisionTree();
 			if (computeDT) {
@@ -37,6 +45,19 @@ public class DANDecisionTreeEvaluationTest extends DANEvaluationTest {
 			else {
 				Assert.assertNull(dt);
 			}
+			if (computeDT) {
+				int maxNumberLevelsToExpandMore = 3;
+				DecisionTreePanel dtPanel;
+				try {
+					dtPanel = new DecisionTreePanel(network);
+					for (int i = 0; i < maxNumberLevelsToExpandMore; i++) {
+						dtPanel.inferenceExpandNextLevel();
+					}
+				} catch (NotEvaluableNetworkException e) {
+					e.printStackTrace();
+					Assert.fail();
+				}
+			}
 		}
 	}
 
@@ -44,7 +65,7 @@ public class DANDecisionTreeEvaluationTest extends DANEvaluationTest {
 	
 	
 
-	protected DANEvaluation buildNetworkEvaluation(ProbNet network, boolean computeDecisionTreeForGUI) {
+	protected DANEvaluation buildNetworkEvaluation(ProbNet network, boolean computeDecisionTreeForGUI) throws NotEvaluableNetworkException {
 		DANEvaluation eval = null;
 		eval = new DANDecisionTreeEvaluation(network, computeDecisionTreeForGUI);
 		return eval;

@@ -8,6 +8,7 @@
 package org.openmarkov.inference.decompositionintosymmetricdans.evaluation;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
@@ -196,7 +197,7 @@ public abstract class DANEvaluationTest extends NetworkEvaluationInferenceTest {
 	}
 	
 	
-	@Test public void testDANTutorial33()
+	 @Ignore @Test public void testDANTutorial33()
 			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
 			NotEvaluableNetworkException {
 		testNetworkEvaluation("tutorial-3-3", 7.73);
