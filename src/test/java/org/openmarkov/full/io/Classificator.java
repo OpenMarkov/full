@@ -5,9 +5,7 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.located.LocatedJDOMFactory;
-import org.openmarkov.core.exception.NodeNotFoundException;
-import org.openmarkov.core.exception.ParserException;
-import org.openmarkov.core.exception.WriterException;
+import org.openmarkov.core.exception.*;
 import org.openmarkov.core.inference.InferenceOptions;
 import org.openmarkov.core.inference.MulticriteriaOptions;
 import org.openmarkov.core.inference.TemporalOptions;
@@ -195,7 +193,7 @@ public class Classificator extends PGMXReader_0_2 {
                     continue;
                 }
             }
-            if (pathToNewFile0_2.contains("ID-decide-test.pgmx")) {
+            if (pathToNewFile0_2.contains("BN-catarnet-05.pgmx")) {
                 System.out.println("Diff");
             }
             if ((probNetInfo02_bis != null) && (!sameInfoProbNetsInfo(probNetInfo, probNetInfo02_bis))) {
@@ -808,15 +806,20 @@ public class Classificator extends PGMXReader_0_2 {
         if (same && numPotentials > 0) {
             Set<TablePotential> constantPotentials1 = probNet1.getConstantPotentials();
             Set<TablePotential> constantPotentials2 = probNet2.getConstantPotentials();
-            same = sameInfoConstantPotentials(constantPotentials1, constantPotentials1);
+            same = sameInfoConstantPotentials(constantPotentials1, constantPotentials2);
             if (same) {
                 List<Potential> potentials1 = probNet1.getPotentials();
                 potentials1.removeAll(constantPotentials1);
                 List<Potential> potentials2 = probNet2.getPotentials();
-                potentials2.removeAll(constantPotentials1);
+                potentials2.removeAll(constantPotentials2);
                 int size = potentials1.size();
                 int i;
-                for (i = 0; i < size && sameInfoPotentials(potentials1.get(i), potentials2.get(i)); i++);
+                for (i = 0; i < size; i++) {
+                    if (!sameInfoPotentials(potentials1.get(i), potentials2.get(i))) {
+                        break;
+                    }
+                    System.out.println("Potential " + i);
+                }
                 same = i == size;
             }
         }
@@ -993,21 +996,29 @@ public class Classificator extends PGMXReader_0_2 {
                 potential1.getModelType() == potential2.getModelType() &&
                 potential1.getFamily() == potential2.getFamily() &&
                 sameInfoArrayOfDoubles(potential1.getLeakyParameters(), potential2.getLeakyParameters());
-        List<Variable> variables = potential1.getVariables();
+        List<Variable> variables1 = potential1.getVariables();
+        List<Variable> variables2 = potential2.getVariables();
+        int numVariables = variables1.size();
         if (same) {
-            for (Variable variable : variables) {
-                same &= sameInfoArrayOfDoubles(potential1.getNoisyParameters(variable), potential2.getNoisyParameters(variable));
+            for (int i = 1; i < numVariables; i++) {
+                Variable variable1 = variables1.get(i);
+                Variable variable2 = variables2.get(i);
+                same &= sameInfoArrayOfDoubles(potential1.getNoisyParameters(variable1), potential2.getNoisyParameters(variable2));
             }
         }
         if (same) {
-            // Compare subpotentials, that include the functional potential and the noisy potentials
-            List<TablePotential> subPotentials1 = potential1.getSubpotentials();
-            List<TablePotential> subPotentials2 = potential2.getSubpotentials();
-            int size = subPotentials1.size();
-            same = size == subPotentials2.size();
-            int i;
-            for (i = 0; i < size && sameInfoTablePotentials(subPotentials1.get(i), subPotentials2.get(i)); i++);
-            same = i == size && sameInfoTablePotentials(potential1.getLeakyPotential(), potential2.getLeakyPotential());
+            // Compare subpotentials is equivalent to compare the CPT
+            try {
+                TablePotential cpt1 = potential1.getCPT();
+                TablePotential cpt2 = potential2.getCPT();
+                same = sameInfoTablePotentials(cpt1, cpt2);
+            } catch (NonProjectablePotentialException e) {
+                System.out.println("ICIPotentials do not project properly.");
+                e.printStackTrace();
+            } catch (WrongCriterionException e) {
+                System.out.println("ICIPotentials have a wrong criterion.");
+                e.printStackTrace();
+            }
         }
 
         return same;
