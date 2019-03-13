@@ -127,12 +127,23 @@ public class Classificator extends PGMXReader_0_2 {
     }
 
     // Methods
-    private void performTests() throws IOException {
-        File filePathToNewFiles = getPathToNewFiles(pathToNewFiles);
+    private void performTests() {
+        int differentNetworks = 0;
+        int differentNetworks0_2 = 0;
+        int differentNetworks0_7 = 0;
+        int numNetworks = 0;
+        File filePathToNewFiles = null;
+        try {
+            filePathToNewFiles = getPathToNewFiles(pathToNewFiles);
+        } catch (IOException e) {
+            System.out.println("Can not read directory to test files.");
+            System.exit(-1);
+        }
         File testNodeFile = new File(pathToTestFiles);
         List<StringFilter> filters = getPGMXFilters();
         for (IteratorPGMX iterator = new FileIterator(testNodeFile, filters); iterator.hasNext(); ) {
             File originalFile = iterator.next();
+            numNetworks++;
             String originalFileName = originalFile.getAbsolutePath();
             String version = null;
             try {
@@ -142,7 +153,13 @@ public class Classificator extends PGMXReader_0_2 {
                 continue;
             }
             PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-            InputStream networkStream = new FileInputStream(originalFileName);
+            InputStream networkStream = null;
+            try {
+                networkStream = new FileInputStream(originalFileName);
+            } catch (FileNotFoundException e) {
+                System.out.println("Can not read file " + originalFileName);
+                continue;
+            }
             ProbNetInfo probNetInfo = null;
             try {
                 probNetInfo = pgmxReader.loadProbNetInfo(originalFileName, networkStream);
@@ -163,7 +180,6 @@ public class Classificator extends PGMXReader_0_2 {
                 ProbNetWriter writer02 = new PGMXWriter_0_2();
                 canBeReaded = true;
                 try {
-                    System.out.println("Writing: " + pathToNewFile0_2);
                     writer02.writeProbNet(pathToNewFile0_2, originalProbNet, originalEvidenceCases);
                     // Read 0.2
                     InputStream networkStream02_bis = new FileInputStream(pathToNewFile0_2);
@@ -174,16 +190,22 @@ public class Classificator extends PGMXReader_0_2 {
                 } catch (ParserException e) {
                     canBeReaded = false;
                     writeExceptionInfo("Error reading " + originalFileName, V0_2, e);
+                } catch (FileNotFoundException e) {
+                    System.out.println("Can not read file " + pathToNewFile0_2);
+                    continue;
                 }
+            }
+            if (pathToNewFile0_2.contains("ID-decide-test.pgmx")) {
+                System.out.println("Diff");
             }
             if ((probNetInfo02_bis != null) && (!sameInfoProbNetsInfo(probNetInfo, probNetInfo02_bis))) {
                 System.out.println("Different networks in V0_2 " + originalFileName);
+                differentNetworks0_2++;
             }
 
             String pathToNewFile0_7 = getNewPath(originalFile.getAbsolutePath(), V0_7);
             ProbNetWriter writer05 = new PGMXWriter_0_5();
             try {
-                System.out.println("Writing: " + pathToNewFile0_7);
                 writer05.writeProbNet(pathToNewFile0_7, originalProbNet, originalEvidenceCases);
                 canBeWrittenIn0_5 = true;
             } catch (WriterException e) {
@@ -195,15 +217,20 @@ public class Classificator extends PGMXReader_0_2 {
             // Read the probNetInfo recently written in both versions.
             if (canBeWrittenIn0_5) {
                 PGMXReader_0_2 pgmxReader0_5 = new PGMXReader_0_2();
-                InputStream networkStream0_5 = new FileInputStream(pathToNewFile0_7);
+                InputStream networkStream0_5 = null;
                 ProbNetInfo probNetInfo0_5 = null;
                 try {
+                    networkStream0_5 = new FileInputStream(pathToNewFile0_7);
                     probNetInfo0_5 = pgmxReader.loadProbNetInfo(originalFileName, networkStream0_5);
                 } catch (ParserException e) {
                     writeExceptionInfo("Error reading " + originalFileName, V0_7, e);
+                } catch (FileNotFoundException e) {
+                    System.out.println("Can not read file " + pathToNewFile0_7);
+                    continue;
                 }
                 if ((probNetInfo0_5 != null) && (!sameInfoProbNetsInfo(probNetInfo, probNetInfo0_5))) {
                     System.out.println("Different networks in V0_5 " + originalFileName);
+                    differentNetworks0_7++;
                 }
 
             }
@@ -218,7 +245,17 @@ public class Classificator extends PGMXReader_0_2 {
             }
             writeNetworksWithAdvancedFeatures(pathToTestFiles);
         }
-
+        differentNetworks = differentNetworks0_2 + differentNetworks0_7;
+        System.out.println("Total networks: " + numNetworks);
+        if (differentNetworks != 0) {
+            if (differentNetworks0_2 != 0) {
+                System.out.println("Total different networks Version 0.2 = " + differentNetworks0_2);
+            }
+            if (differentNetworks0_7 != 0) {
+                System.out.println("Total different networks Version 0.7 = " + differentNetworks0_7);
+            }
+            System.out.println("Total different networks = " + differentNetworks);
+        }
     }
 
     private List<StringFilter> getPGMXFilters() {
@@ -438,7 +475,7 @@ public class Classificator extends PGMXReader_0_2 {
         return bothNull ||
                    ( bothNotNull &&
                      sameInfoListsOfEvidencecases(probNetInfo1.getEvidence(), probNetInfo2.getEvidence()) &&
-                     sameInfo(probNetInfo1.getProbNet(), probNetInfo2.getProbNet()) );
+                     sameInfoProbNets(probNetInfo1.getProbNet(), probNetInfo2.getProbNet()) );
     }
 
     /**
@@ -446,7 +483,7 @@ public class Classificator extends PGMXReader_0_2 {
      * @param probNet2
      * @return True if networks are equal
      */
-    private boolean sameInfo(ProbNet probNet1, ProbNet probNet2) {
+    private boolean sameInfoProbNets(ProbNet probNet1, ProbNet probNet2) {
         boolean bothNotNull = probNet1 != null && probNet2 != null;
         boolean bothNull = probNet1 == null && probNet2 == null;
         return bothNull ||
