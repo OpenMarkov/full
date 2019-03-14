@@ -10,17 +10,22 @@ package org.openmarkov.inference.decompositionintosymmetricdans.evaluation;
 import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openmarkov.core.dt.DecisionTreeBranch;
 import org.openmarkov.core.dt.DecisionTreeElement;
 import org.openmarkov.core.dt.DecisionTreeNode;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
+import org.openmarkov.core.model.network.NodeType;
 import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.gui.window.dt.DecisionTree;
+import org.openmarkov.gui.window.dt.DecisionTreeBranchPanel;
+import org.openmarkov.gui.window.dt.DecisionTreeModel;
 import org.openmarkov.gui.window.dt.DecisionTreePanel;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANDecisionTreeEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;
-@Ignore
+//@Ignore
 public class DANDecisionTreeEvaluationTest extends DANEvaluationTest {
 	
 
@@ -52,6 +57,7 @@ public class DANDecisionTreeEvaluationTest extends DANEvaluationTest {
 					dtPanel = new DecisionTreePanel(network);
 					for (int i = 0; i < maxNumberLevelsToExpandMore; i++) {
 						dtPanel.inferenceExpandNextLevel();
+						//checkNonRepeatedNodesInDT(dtPanel);
 					}
 				} catch (NotEvaluableNetworkException e) {
 					e.printStackTrace();
@@ -60,6 +66,31 @@ public class DANDecisionTreeEvaluationTest extends DANEvaluationTest {
 			}
 		}
 	}
+	
+	
+	/*
+	 * protected void checkNonRepeatedNodesInDT(DecisionTreePanel dtPanel) {
+	 * DecisionTree tree = dtPanel.getjTree(); DecisionTreeModel auxModel =
+	 * (DecisionTreeModel)tree.getModel(); DecisionTreeBranchPanel root =
+	 * (DecisionTreeBranchPanel) auxModel.getRoot();
+	 * 
+	 * tree. int i = 0; i++;
+	 * 
+	 * 
+	 * if (root instanceof DecisionTreeBranch ||
+	 * ((DecisionTreeNode)root).getNodeType()!= NodeType.UTILITY) { if (root
+	 * instanceof DecisionTreeNode) { parent = (DecisionTreeNode) root; } for
+	 * (DecisionTreeElement branch : root.getChildren()) {
+	 * inferenceExpandLevels(branch,parent, n); } } else { DecisionTreeNode rootDT =
+	 * (DecisionTreeNode)root; DecisionTreeNode auxRoot = ((DecisionTreeBranch)
+	 * buildDecisionTree(rootDT.getNetwork(), n)).getChild(); //if (parent != null)
+	 * { if (parent.getNodeType() == NodeType.DECISION ||
+	 * (!(parent.getVariable().getName().equalsIgnoreCase(auxRoot.getVariable().
+	 * getName())))) { rootDT.copy(auxRoot); } //} }
+	 * 
+	 * }
+	 */
+	 
 
 
 	
