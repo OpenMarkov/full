@@ -13,7 +13,7 @@ import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.IDDeci
 import org.openmarkov.inference.decompositionintosymmetricdans.NetworkEvaluationInferenceTest;
 import org.openmarkov.inference.decompositionintosymmetricdans.Tools;
 
-@Ignore
+//@Ignore
 public class IDDecisionTreeEvaluationTest extends NetworkEvaluationInferenceTest {
 
 	@Override
@@ -51,6 +51,12 @@ public class IDDecisionTreeEvaluationTest extends NetworkEvaluationInferenceTest
 	public void testIDNoKnowledge() throws IncompatibleEvidenceException, UnexpectedInferenceException,
 			NodeNotFoundException, NotEvaluableNetworkException {
 		testNetworkEvaluation("no-knowledge", 9.16, "D");
+	}
+	
+	@Test
+	public void testIDPerfectKnowledge() throws IncompatibleEvidenceException, UnexpectedInferenceException,
+			NodeNotFoundException, NotEvaluableNetworkException {
+		testNetworkEvaluation("perfect-knowledge", 9.72, "D","A");
 	}
 
 	@Test

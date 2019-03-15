@@ -202,8 +202,24 @@ public abstract class DANEvaluationTest extends NetworkEvaluationInferenceTest {
 			NotEvaluableNetworkException {
 		testNetworkEvaluation("tutorial-3-3", 7.73);
 	}
+	 
+	 
+	 @Ignore @Test public void testDANDatingAskNo()
+				throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
+				NotEvaluableNetworkException {
+		 //TODO I still have to find out the exact value of the evaluation, because I have found that different algorithms return different expected utilities
+			testNetworkEvaluation("dating-ask-no", 8.1632);
 
-	//@Test
+		}
+	 
+	 @Test public void testDANDatingAskNoNClubNo()
+				throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
+				NotEvaluableNetworkException {
+			testNetworkEvaluation("dating-ask-no-nclub-no", -7);
+
+		}
+
+	@Ignore @Test
 	public void testDANDating()
 			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
 			NotEvaluableNetworkException {
