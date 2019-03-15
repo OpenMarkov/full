@@ -1,5 +1,6 @@
 package org.openmarkov.full.io;
 
+import bitbucket.NetsRepository;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -28,6 +29,7 @@ import org.openmarkov.io.probmodel.writer.PGMXWriter_0_2;
 import org.openmarkov.io.probmodel.writer.PGMXWriter_0_5;
 
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -1227,6 +1229,56 @@ public class Classificator extends PGMXReader_0_2 {
             return string.toUpperCase().endsWith(PGMX_FILES);
         }
     }
+
+/*    private class URLIterator implements IteratorPGMX {
+
+        // Attributes
+        private boolean hasNext;
+        private File next;
+        private List<URL> listURL;
+        private int nextURLIndex;
+        private NetsRepository repository;
+
+        private List<StringFilter> filters;
+
+        @Override
+        public File next() {
+            URL url;
+            String networkName = url.getPath();
+            networkName = networkName.substring(networkName.lastIndexOf("/") + 1, networkName.length());
+
+            PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
+            ProbNetInfo probNetInfo = null;
+            ProbNet probNet = null;
+            try {
+                probNetInfo = pgmxReader.loadProbNetInfo(networkName, url.openStream());
+                probNet = probNetInfo.getProbNet();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParserException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return nextURLIndex < listURL.size();
+        }
+
+        // Constructor
+        public URLIterator(List<StringFilter>... filters) {
+            this.filters = filters != null && filters.length == 1 ? filters[0] : null;
+            hasNext = false;
+            next = null;
+            nextURLIndex = 0;
+            repository = new NetsRepository();
+            listURL = repository.getNetworks();
+
+            for (URL url : listURL) {
+                // The name is irrelevant because this nets will only be created for tests purposes and it will be deleted
+                // after each iteration
+            }
+    }*/
 
     private class FileIterator implements IteratorPGMX {
 
