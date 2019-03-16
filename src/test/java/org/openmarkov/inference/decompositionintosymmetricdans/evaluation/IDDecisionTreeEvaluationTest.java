@@ -86,7 +86,7 @@ public class IDDecisionTreeEvaluationTest extends NetworkEvaluationInferenceTest
 	public void testIDTest2Therapies_Tree() {
 		ProbNet network = loadNetwork("test-2therapies");
 		try {
-			DANDecisionTreeEvaluation eval = new DANDecisionTreeEvaluation(network, new EvidenceCase());
+            IDDecisionTreeEvaluation eval = new IDDecisionTreeEvaluation(network, Integer.MAX_VALUE, true, new EvidenceCase());
 			testDecisionTreeNode(eval.getDecisionTree());
 		} catch (NotEvaluableNetworkException e) {
 			e.printStackTrace();
