@@ -32,67 +32,11 @@ public class DANDecisionTreeEvaluationTest extends DANEvaluationTest {
 	
 	
 	@Override public void testNetworkEvaluation(ProbNet network, double expectedEU, String... namesVariablesIntervention) {
-		System.out.println();
-		boolean computeDTValues []= {true, false};
-		for (boolean computeDT: computeDTValues) {			
-			DANEvaluation eval = null;
-			try {
-				eval = buildNetworkEvaluation(network, computeDT);
-			} catch (NotEvaluableNetworkException e1) {
-				e1.printStackTrace();
-				Assert.fail();
-			}
-			testDANEvaluation(eval, network, expectedEU, namesVariablesIntervention);
-			DecisionTreeNode dt = ((DANDecisionTreeEvaluation) eval).getDecisionTree();
-			if (computeDT) {
-				Assert.assertNotNull(dt);
-			}
-			else {
-				Assert.assertNull(dt);
-			}
-			if (computeDT) {
-				int maxNumberLevelsToExpandMore = 3;
-				DecisionTreePanel dtPanel;
-				try {
-					dtPanel = new DecisionTreePanel(network);
-					for (int i = 0; i < maxNumberLevelsToExpandMore; i++) {
-						dtPanel.inferenceExpandNextLevel();
-						//checkNonRepeatedNodesInDT(dtPanel);
-					}
-				} catch (NotEvaluableNetworkException e) {
-					e.printStackTrace();
-					Assert.fail();
-				}
-			}
-		}
+		testNetworkEvaluationAndDecisionTree(network,expectedEU,namesVariablesIntervention);
 	}
-	
-	
-	/*
-	 * protected void checkNonRepeatedNodesInDT(DecisionTreePanel dtPanel) {
-	 * DecisionTree tree = dtPanel.getjTree(); DecisionTreeModel auxModel =
-	 * (DecisionTreeModel)tree.getModel(); DecisionTreeBranchPanel root =
-	 * (DecisionTreeBranchPanel) auxModel.getRoot();
-	 * 
-	 * tree. int i = 0; i++;
-	 * 
-	 * 
-	 * if (root instanceof DecisionTreeBranch ||
-	 * ((DecisionTreeNode)root).getNodeType()!= NodeType.UTILITY) { if (root
-	 * instanceof DecisionTreeNode) { parent = (DecisionTreeNode) root; } for
-	 * (DecisionTreeElement branch : root.getChildren()) {
-	 * inferenceExpandLevels(branch,parent, n); } } else { DecisionTreeNode rootDT =
-	 * (DecisionTreeNode)root; DecisionTreeNode auxRoot = ((DecisionTreeBranch)
-	 * buildDecisionTree(rootDT.getNetwork(), n)).getChild(); //if (parent != null)
-	 * { if (parent.getNodeType() == NodeType.DECISION ||
-	 * (!(parent.getVariable().getName().equalsIgnoreCase(auxRoot.getVariable().
-	 * getName())))) { rootDT.copy(auxRoot); } //} }
-	 * 
-	 * }
-	 */
-	 
 
 
+	
 	
 	
 

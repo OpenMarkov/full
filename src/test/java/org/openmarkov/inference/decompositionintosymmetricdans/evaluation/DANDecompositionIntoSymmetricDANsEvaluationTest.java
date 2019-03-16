@@ -7,6 +7,7 @@
 
 package org.openmarkov.inference.decompositionintosymmetricdans.evaluation;
 
+import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANDecompositionIntoSymmetricDANsEvaluation;
@@ -17,6 +18,12 @@ public class DANDecompositionIntoSymmetricDANsEvaluationTest extends DANEvaluati
 		DANEvaluation eval = null;
 		eval = new DANDecompositionIntoSymmetricDANsEvaluation(network);
 		return eval;
+	}
+
+	@Override
+	protected DANEvaluation buildNetworkEvaluation(ProbNet network, boolean computeDecisionTreeForGUI)
+			throws NotEvaluableNetworkException {
+		return buildNetworkEvaluation(network);
 	}
 
 }
