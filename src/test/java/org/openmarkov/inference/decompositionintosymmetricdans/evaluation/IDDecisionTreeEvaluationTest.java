@@ -1,13 +1,21 @@
 package org.openmarkov.inference.decompositionintosymmetricdans.evaluation;
 
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openmarkov.core.dt.DecisionTreeBranch;
+import org.openmarkov.core.dt.DecisionTreeElement;
+import org.openmarkov.core.dt.DecisionTreeNode;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
+import org.openmarkov.core.model.network.EvidenceCase;
+import org.openmarkov.core.model.network.NodeType;
 import org.openmarkov.core.model.network.ProbNet;
 
+import org.openmarkov.gui.window.dt.DecisionTree;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANDecisionTreeEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.IDDecisionTreeEvaluation;
 import org.openmarkov.inference.decompositionintosymmetricdans.NetworkEvaluationInferenceTest;
@@ -74,6 +82,56 @@ public class IDDecisionTreeEvaluationTest extends NetworkEvaluationInferenceTest
 		//Tools.buildDecisionTreePanelAndExpandLevels(network);
 	}
 
+	@Test
+	public void testIDTest2Therapies_Tree() {
+		ProbNet network = loadNetwork("test-2therapies");
+		try {
+			DANDecisionTreeEvaluation eval = new DANDecisionTreeEvaluation(network, new EvidenceCase());
+			testDecisionTreeNode(eval.getDecisionTree());
+		} catch (NotEvaluableNetworkException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void testDecisionTreeNode(DecisionTreeNode treeNode) {
+		double deltaEquals = Math.pow(10, -6);
+		if (treeNode.getNodeType().equals(NodeType.CHANCE)) {
+
+			double totalProbability = 0;
+			double weightedUtility = 0;
+			for (DecisionTreeElement childElement : treeNode.getChildren()) {
+				DecisionTreeBranch branch = (DecisionTreeBranch) childElement;
+				totalProbability += branch.getBranchProbability();
+				weightedUtility += branch.getBranchProbability() * branch.getUtility();
+
+				// Recursive call
+				DecisionTreeNode childNode = branch.getChild();
+				testDecisionTreeNode(childNode);
+			}
+
+			// Test that the configurations are exhaustive (the probability of all the possible configurations sum 1)
+			Assert.assertEquals(1.0, totalProbability, deltaEquals);
+
+			// Test that the utility assigned to a chance node is the weighted sum of the utility of its configurations
+			Assert.assertEquals(treeNode.getUtility(), weightedUtility, deltaEquals);
+
+		} else if (treeNode.getNodeType().equals(NodeType.DECISION)) {
+			double maxUtility = 0;
+			for (DecisionTreeElement childElement : treeNode.getChildren()) {
+				DecisionTreeBranch branch = (DecisionTreeBranch) childElement;
+				if (branch.getUtility() > maxUtility) {
+					maxUtility = branch.getUtility();
+				}
+
+				// Recursive call
+				DecisionTreeNode childNode = branch.getChild();
+				testDecisionTreeNode(childNode);
+			}
+
+			// Test that the utility assigned to a chance node is the max value of the utility of its configurations
+			Assert.assertEquals(maxUtility, treeNode.getUtility(), deltaEquals);
+		}
+	}
 	
 
 	
