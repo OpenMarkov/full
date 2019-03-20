@@ -30,6 +30,8 @@ import org.openmarkov.io.probmodel.writer.PGMXWriter_0_5;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -40,7 +42,7 @@ public class Classificator extends PGMXReader_0_2 {
 
     public static void main(String args[]) {
         try {
-            Classificator classificator = new Classificator(args);
+            Classificator classificator = new Classificator(PGMXOrigin.File, args);
             classificator.testConversionBetweenVersions();
             classificator.performTests();
         } catch (Exception e) {
@@ -59,27 +61,43 @@ public class Classificator extends PGMXReader_0_2 {
     private String pathToTestFiles;
     private String pathToNewFiles;
 
+    private File dirNewFiles;
+    private PGMXOrigin origin;
+
     private List<String> networksWithAdvancedFeatures;
+
+    public enum PGMXOrigin {
+        URL, File;
+    }
 
     // Constructor
     /** This class performs several operations with files in PGMX format.
      * @param paths Optional String[] parameter. paths[0] = path to files; paths[1] = path to new files. */
 
-    public Classificator(String[] paths) throws IOException {
+    public Classificator(PGMXOrigin origin, String ...paths) throws IOException {
         // Sets path to test files and new files
-        pathToTestFiles = null;
-        if (paths.length >=1 ) {
-            pathToTestFiles = paths[0];
+        this.origin = origin;
+        if (origin == PGMXOrigin.File) {
+            pathToTestFiles = null;
+            if (paths.length > 0) {
+                pathToTestFiles = paths[0];
+                if (paths.length > 1) {
+                    pathToNewFiles = paths[1];
+                } else {
+                    pathToNewFiles = defaultPathToNewFiles;
+                }
+            } else {
+                pathToTestFiles = defaultPpathToTestFiles;
+                pathToNewFiles = defaultPathToNewFiles;
+            }
         } else {
-            pathToTestFiles = defaultPpathToTestFiles;
+            Path tempDirWithPrefix = Files.createTempDirectory("temp-PGMX");
+            pathToNewFiles = tempDirWithPrefix.toString();
+            dirNewFiles = new File(pathToNewFiles);
         }
-        if (paths.length >= 2) {
-            pathToNewFiles = paths[1];
-        } else {
-            pathToNewFiles = defaultPathToNewFiles;
-        }
+        System.out.println("New files will be written in " + pathToNewFiles);
 
-        networksWithAdvancedFeatures = getNetworksWithAdvancedFeatures(pathToTestFiles);
+        networksWithAdvancedFeatures = getNetworksWithAdvancedFeatures(pathToNewFiles);
     }
 
     private List<String> getNetworksWithAdvancedFeatures(String pathToTestFiles) {
@@ -140,102 +158,65 @@ public class Classificator extends PGMXReader_0_2 {
             System.exit(-1);
         }
         File testNodeFile = new File(pathToTestFiles);
-        List<StringFilter> filters = getPGMXFilters();
-        for (IteratorPGMX iterator = new FileIterator(testNodeFile, filters); iterator.hasNext(); ) {
-            File originalFile = iterator.next();
+        List<PGMXFilter> filters = getPGMXFilters();
+        PGMXCompound compound = null;
+        for (PGMXIterator iterator = new FileIterator(testNodeFile, filters); iterator.hasNext(); ) {
+            compound = iterator.next();
             numNetworks++;
-            String originalFileName = originalFile.getAbsolutePath();
-            String version = null;
-            try {
-                version = getVersion(originalFile);
-            } catch (ParserException e) {
-                writeExceptionInfo("Can not read file: " + originalFileName, null, e);
-                continue;
+            File originalFile = compound.getFile();
+            String name = originalFile.getName();
+            System.out.println(name);
+
+            // Debug
+            if (name.contains("MID-dmhee-4.8.pgmx")) {
+                System.out.println("Network with problems");
             }
-            PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-            InputStream networkStream = null;
-            try {
-                networkStream = new FileInputStream(originalFileName);
-            } catch (FileNotFoundException e) {
-                System.out.println("Can not read file " + originalFileName);
-                continue;
+
+            String version = compound.getVersion();
+            ProbNetInfo probNetInfo = compound.getProbNetInfo();
+            if (compound.wasExceptionThrownWhileReading()) {
+                System.out.println("    Problems first read.");
             }
-            ProbNetInfo probNetInfo = null;
-            try {
-                probNetInfo = pgmxReader.loadProbNetInfo(originalFileName, networkStream);
-            } catch (ParserException e) {
-                e.printStackTrace();
-            }
-            ProbNet originalProbNet = probNetInfo.getProbNet();
-            List<EvidenceCase> originalEvidenceCases = probNetInfo.getEvidence();
 
             // Write and read probNetInfo in versions 0.2 and 0.7.
+            String originalFileName = originalFile.getAbsolutePath();
             String pathToNewFile0_2 = getNewPath(originalFileName, V0_2);
             boolean canBeWrittenIn0_2 = version.matches(V0_2) || !networkNameIsIncludedInListOfAdvancedFeatures(pathToNewFile0_2);
-            boolean canBeWrittenIn0_5 = false;
             boolean canBeReaded;
             ProbNetInfo probNetInfo02_bis = null;
             if (canBeWrittenIn0_2) {
                 // Write 0.2
                 ProbNetWriter writer02 = new PGMXWriter_0_2();
                 canBeReaded = true;
-                try {
-                    writer02.writeProbNet(pathToNewFile0_2, originalProbNet, originalEvidenceCases);
-                    // Read 0.2
-                    InputStream networkStream02_bis = new FileInputStream(pathToNewFile0_2);
-                    probNetInfo02_bis = pgmxReader.loadProbNetInfo(pathToNewFile0_2, networkStream02_bis);
-                } catch (WriterException e) {
-                    canBeWrittenIn0_2 = false;
-                    writeExceptionInfo("Error writing " + originalFileName, V0_2, e);
-                } catch (ParserException e) {
-                    canBeReaded = false;
-                    writeExceptionInfo("Error reading " + originalFileName, V0_2, e);
-                } catch (FileNotFoundException e) {
-                    System.out.println("Can not read file " + pathToNewFile0_2);
-                    continue;
+                compound.writeProbNetInfo(pathToNewFile0_2, V0_2);
+                canBeWrittenIn0_2 = !compound.wasExceptionThrownWhileWriting();
+                if (canBeWrittenIn0_2) {
+                    probNetInfo02_bis = compound.getProbNetInfo();
+                } else {
+                    System.out.println("    Can not be writen in " + V0_2);
                 }
             }
-            if (pathToNewFile0_2.contains("BN-catarnet-05.pgmx")) {
-                System.out.println("Diff");
-            }
             if ((probNetInfo02_bis != null) && (!sameInfoProbNetsInfo(probNetInfo, probNetInfo02_bis))) {
-                System.out.println("Different networks in V0_2 " + originalFileName);
+                System.out.println("    Different networks reading in V0_2.");
                 differentNetworks0_2++;
             }
 
             String pathToNewFile0_7 = getNewPath(originalFile.getAbsolutePath(), V0_7);
-            ProbNetWriter writer05 = new PGMXWriter_0_5();
-            try {
-                writer05.writeProbNet(pathToNewFile0_7, originalProbNet, originalEvidenceCases);
-                canBeWrittenIn0_5 = true;
-            } catch (WriterException e) {
+            compound.writeProbNetInfo(pathToNewFile0_7, V0_7);
+            boolean canBeWrittenIn0_7 = !compound.wasExceptionThrownWhileWriting();
+            if (!canBeWrittenIn0_7) {
                 networksWithAdvancedFeatures.add(originalFile.getName());
-                canBeWrittenIn0_2 = false;
-                writeExceptionInfo("Error writing "+ pathToNewFile0_7, V0_7, e);
-            }
-
-            // Read the probNetInfo recently written in both versions.
-            if (canBeWrittenIn0_5) {
-                PGMXReader_0_2 pgmxReader0_5 = new PGMXReader_0_2();
-                InputStream networkStream0_5 = null;
-                ProbNetInfo probNetInfo0_5 = null;
-                try {
-                    networkStream0_5 = new FileInputStream(pathToNewFile0_7);
-                    probNetInfo0_5 = pgmxReader.loadProbNetInfo(originalFileName, networkStream0_5);
-                } catch (ParserException e) {
-                    writeExceptionInfo("Error reading " + originalFileName, V0_7, e);
-                } catch (FileNotFoundException e) {
-                    System.out.println("Can not read file " + pathToNewFile0_7);
-                    continue;
+                System.out.println("    Error writing in V0.7.");
+            } else {
+                ProbNetInfo probNetInfo07_bis = compound.getProbNetInfo();
+                if (compound.wasExceptionThrownWhileReading()) {
+                    System.out.println("    Problems reading in V0.7.");
                 }
-                if ((probNetInfo0_5 != null) && (!sameInfoProbNetsInfo(probNetInfo, probNetInfo0_5))) {
-                    System.out.println("Different networks in V0_5 " + originalFileName);
+                if ((probNetInfo07_bis != null) && (!sameInfoProbNetsInfo(probNetInfo, probNetInfo07_bis))) {
+                    System.out.println("    Different networks in V0_7." + originalFileName);
                     differentNetworks0_7++;
                 }
-
             }
-            // Compare the contents with the original probNetInfo.
-            // Report differences for each network and write message
             // Test ends here
         }
         if (!networksWithAdvancedFeatures.isEmpty()) {
@@ -258,8 +239,8 @@ public class Classificator extends PGMXReader_0_2 {
         }
     }
 
-    private List<StringFilter> getPGMXFilters() {
-        List<StringFilter> filters = new ArrayList<>(1);
+    private List<PGMXFilter> getPGMXFilters() {
+        List<PGMXFilter> filters = new ArrayList<>(1);
         filters.add(new PGMXFiles());
         return filters;
     }
@@ -303,30 +284,17 @@ public class Classificator extends PGMXReader_0_2 {
         String pathToNewFiles07 = pathToNewFiles + File.separator + V0_7;
         cleanTestFoldersTree(pathToTestFiles, pathToNewFiles02, pathToNewFiles07);
         createTestFolders(pathToTestFiles, pathToNewFiles02, pathToNewFiles07);
-
-/*
-        File testNetsDirectory = new File(pathToTestFiles);
-        File[] testNetsFiles = testNetsDirectory.listFiles();
-        int numCharsPathToNewFiles = pathToNewFiles.length();
-        for (File testFile : testNetsFiles) {
-            if (testFile.isDirectory()) {
-                // TODO
-            } else {
-                PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-                ProbNetInfo probNetInfo = null;
-                InputStream networkStream = getClass().getClassLoader().getResourceAsStream(testFile.getAbsolutePath());
-                try {
-                    probNetInfo = pgmxReader.loadProbNetInfo(testFile.getAbsolutePath(), networkStream);
-                } catch (ParserException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-*/
     }
 
-    private String getNewPath(String absolutePathOld, String version) {
-        return pathToNewFiles + File.separator + version + absolutePathOld.substring(pathToTestFiles.length());
+    private String getNewPath(String fileName, String version) {
+        String newPath = null;
+        if (origin == PGMXOrigin.File) {
+            newPath = pathToNewFiles + File.separator + version + fileName.substring(pathToTestFiles.length());
+        } else {
+            File file = new File(fileName);
+            newPath = pathToNewFiles + file.getName() + "-" + version;
+        }
+        return newPath;
     }
 
 
@@ -816,12 +784,7 @@ public class Classificator extends PGMXReader_0_2 {
                 potentials2.removeAll(constantPotentials2);
                 int size = potentials1.size();
                 int i;
-                for (i = 0; i < size; i++) {
-                    if (!sameInfoPotentials(potentials1.get(i), potentials2.get(i))) {
-                        break;
-                    }
-                    System.out.println("Potential " + i);
-                }
+                for (i = 0; i < size && sameInfoPotentials(potentials1.get(i), potentials2.get(i)); i++);
                 same = i == size;
             }
         }
@@ -883,7 +846,14 @@ public class Classificator extends PGMXReader_0_2 {
     }
 
     private boolean sameInfoFunctionPotentials(FunctionPotential potential1, FunctionPotential potential2) {
-        return potential1.getFunction().matches(potential2.getFunction());
+        if (potential1.getFunction().contentEquals(potential2.getFunction())) {
+            return true;
+        } else {
+            System.out.println("    Function potentials are different:");
+            System.out.println("Potential 1: " + potential1.getFunction());
+            System.out.println("Potential 2: " + potential2.getFunction());
+            return false;
+        }
     }
 
     private boolean sameInfoWeibullHazardPotentials(WeibullHazardPotential potential1, WeibullHazardPotential potential2) {
@@ -1078,8 +1048,10 @@ public class Classificator extends PGMXReader_0_2 {
     }
 
     private boolean sameInfoUncertainValues(UncertainValue uncertainValue1, UncertainValue uncertainValue2) {
-        boolean same = sameInfoStrings(uncertainValue1.getName(), uncertainValue2.getName());
-        if (same) {
+        boolean bothNull = uncertainValue1 == null && uncertainValue2 == null;
+        boolean bothNotNull = uncertainValue1 != null && uncertainValue2 != null;
+        boolean same = bothNull || bothNotNull && sameInfoStrings(uncertainValue1.getName(), uncertainValue2.getName());
+        if (same && bothNotNull) {
             ProbDensFunction probDensFunction1 = uncertainValue1.getProbDensFunction();
             ProbDensFunction probDensFunction2 = uncertainValue2.getProbDensFunction();
             same &= sameInfoArrayOfDoubles(probDensFunction1.getParameters(), probDensFunction2.getParameters()) &&
@@ -1209,165 +1181,6 @@ public class Classificator extends PGMXReader_0_2 {
      */
     private boolean sameInfoStrings(String name1, String name2) {
         return ( (name1 == null && name2 == null) || (name1 != null && name2 != null && name1.compareTo(name2) == 0) );
-    }
-
-    // Auxiliar internal clases and interfaces
-    private interface IteratorPGMX {
-        File next();
-        boolean hasNext();
-    }
-
-    private interface StringFilter {
-        boolean meetsCondition(String string);
-    }
-
-    private class PGMXFiles implements StringFilter {
-        private final String PGMX_FILES = ".PGMX";
-
-        @Override
-        public boolean meetsCondition(String string) {
-            return string.toUpperCase().endsWith(PGMX_FILES);
-        }
-    }
-
-/*    private class URLIterator implements IteratorPGMX {
-
-        // Attributes
-        private boolean hasNext;
-        private File next;
-        private List<URL> listURL;
-        private int nextURLIndex;
-        private NetsRepository repository;
-
-        private List<StringFilter> filters;
-
-        @Override
-        public File next() {
-            URL url;
-            String networkName = url.getPath();
-            networkName = networkName.substring(networkName.lastIndexOf("/") + 1, networkName.length());
-
-            PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-            ProbNetInfo probNetInfo = null;
-            ProbNet probNet = null;
-            try {
-                probNetInfo = pgmxReader.loadProbNetInfo(networkName, url.openStream());
-                probNet = probNetInfo.getProbNet();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ParserException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public boolean hasNext() {
-            return nextURLIndex < listURL.size();
-        }
-
-        // Constructor
-        public URLIterator(List<StringFilter>... filters) {
-            this.filters = filters != null && filters.length == 1 ? filters[0] : null;
-            hasNext = false;
-            next = null;
-            nextURLIndex = 0;
-            repository = new NetsRepository();
-            listURL = repository.getNetworks();
-
-            for (URL url : listURL) {
-                // The name is irrelevant because this nets will only be created for tests purposes and it will be deleted
-                // after each iteration
-            }
-    }*/
-
-    private class FileIterator implements IteratorPGMX {
-
-        // Attributes
-        private List<File[]> subNodes;
-        private List<Integer> subNodesIndexes;
-        private boolean hasNext;
-        private File next;
-
-        private List<StringFilter> filters;
-
-        // Constructor
-        /**
-         * Constructor
-         * @param rootFolder
-         */
-        public FileIterator(File rootFolder, List<StringFilter>... filters) {
-            this.filters = filters != null && filters.length == 1 ? filters[0] : null;
-            hasNext = false;
-            next = null;
-
-            if (rootFolder.isDirectory()) {
-                subNodes = new ArrayList<>();
-                File[] rootChildren = rootFolder.listFiles();
-                subNodes.add(rootChildren);
-
-                subNodesIndexes = new ArrayList<>();
-                subNodesIndexes.add(-1);
-
-                next = lookForNext();
-            } else {
-                hasNext = matches(rootFolder);
-                next = hasNext ? rootFolder : null;
-            }
-        }
-
-        public boolean hasNext() {
-            return hasNext;
-        }
-
-        public File next() {
-            File aux = next;
-            next = next == null ? next : lookForNext();
-            return aux;
-        }
-
-        /**
-         * Looks for next file in the tree and updates <code>hasNext</code>
-         * @return Next File element
-         */
-        private File lookForNext() {
-            int treeDepth = subNodes == null ? 0 : subNodes.size();
-            if (treeDepth == 0) {
-                hasNext = false;
-                next = null;
-            } else {
-                int treeDepthMinusOne = treeDepth - 1;
-                File[] deepestNodes = subNodes.get(treeDepthMinusOne);
-                int deepestIndexesNode = subNodesIndexes.get(treeDepthMinusOne);
-                subNodesIndexes.set(treeDepthMinusOne, ++deepestIndexesNode);
-                if (deepestNodes == null || deepestNodes.length == 0 || (deepestIndexesNode + 1) > deepestNodes.length) {// Empty sub folder or finished folder
-                    subNodes.remove(treeDepthMinusOne);
-                    subNodesIndexes.remove(treeDepthMinusOne);
-                    next = lookForNext();
-                } else {
-                    File lastFile = deepestNodes[deepestIndexesNode];
-                    if (lastFile.isDirectory()) {
-                        subNodes.add(lastFile.listFiles());
-                        subNodesIndexes.add(-1);
-                        next = lookForNext();
-                    } else {
-                        hasNext = true;
-                        next = lastFile;
-                    }
-                }
-            }
-            next = (next == null) ? next : matches(next) ? next : lookForNext();
-            return next;
-        }
-
-        private boolean matches(File file) {
-            boolean match = true;
-            if (filters != null) {
-                for (StringFilter filter : filters) {
-                    match &= filter.meetsCondition(file.getName());
-                }
-            }
-            return match;
-        }
     }
 
 }
