@@ -22,8 +22,6 @@ import org.openmarkov.core.model.network.NodeType;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.GTablePotential;
-import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.core.model.network.potential.operation.DiscretePotentialOperations;
 import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
 import org.openmarkov.inference.variableElimination.tasks.VECEPSA;
 import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
@@ -144,9 +142,9 @@ public class CEAGlobalAnalysisTest {
 		double wtp = 30000;
 		for (Criterion criterion : probNet.getDecisionCriteria()) {
 			if (criterion.getCECriterion().equals(CECriterion.Cost)) {
-				criterion.setUnicriteriaScale(-1);
+				criterion.setUnicriterizationScale(-1);
 			} else if (criterion.getCECriterion().equals(CECriterion.Effectiveness)) {
-				criterion.setUnicriteriaScale(wtp);
+				criterion.setUnicriterizationScale(wtp);
 			}
 		}
 
@@ -160,9 +158,9 @@ public class CEAGlobalAnalysisTest {
 		wtp = 8000;
 		for (Criterion criterion : probNet.getDecisionCriteria()) {
 			if (criterion.getCECriterion().equals(CECriterion.Cost)) {
-				criterion.setUnicriteriaScale(-1);
+				criterion.setUnicriterizationScale(-1);
 			} else if (criterion.getCECriterion().equals(CECriterion.Effectiveness)) {
-				criterion.setUnicriteriaScale(wtp);
+				criterion.setUnicriterizationScale(wtp);
 			}
 		}
 
