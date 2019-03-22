@@ -13,7 +13,7 @@ import org.openmarkov.inference.decompositionintosymmetricdans.Tools;
 
 public abstract class DANCEATest {
 
-	public void testCEADANEvaluation(String danName, int globalNumberOfCEPIntervals, double... expectedThreshods) {
+	public void testCEADANEvaluation(String danName, int globalNumberOfCEPIntervals, double... expectedThreshods) throws NotEvaluableNetworkException {
 		Tools t = new Tools();
 		ProbNet network = t.loadDAN(danName);
 		System.out.println("*** CEA with DAN " + danName + " ***");
@@ -39,7 +39,7 @@ public abstract class DANCEATest {
 		}
 	}
 
-	protected abstract CEAnalysis buildCEAnalysis(ProbNet network);
+	protected abstract CEAnalysis buildCEAnalysis(ProbNet network) throws NotEvaluableNetworkException;
 	
 	@Test
 	public void testDANOnlyNonZeroUtility() throws IncompatibleEvidenceException, UnexpectedInferenceException,
