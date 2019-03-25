@@ -12,11 +12,7 @@ import org.openmarkov.io.probmodel.writer.PGMXWriter_0_5;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
-
-import static sun.text.normalizer.ICUData.getStream;
 
 /**
  * Auxiliar class for tests
