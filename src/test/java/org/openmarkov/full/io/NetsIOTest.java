@@ -405,7 +405,15 @@ public class NetsIOTest {
 
 	private void testPropagateNetwork(ProbNet probNet, List<Variable> variables, EvidenceCase evidenceCase)
 			throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
-		VEPropagation vePropagation = new VEPropagation(probNet);
+		VEPropagation vePropagation = null;
+		if (!probNet.getNetworkType().equals(BayesianNetworkType.getUniqueInstance())) {
+			VEEvaluation veEvaluation = new VEEvaluation(probNet);
+			vePropagation = new VEPropagation(probNet, veEvaluation.getOptimalPolicies());
+		} else {
+			vePropagation = new VEPropagation(probNet);
+		}
+
+
 		vePropagation.setVariablesOfInterest(variables);
 		vePropagation.setPreResolutionEvidence(evidenceCase);
 		HashMap<Variable, TablePotential> posteriorValues = vePropagation.getPosteriorValues();
