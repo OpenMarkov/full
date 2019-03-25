@@ -1,6 +1,7 @@
 package org.openmarkov.inference.decompositionintosymmetricdans.ceanalysis;
 
 import org.openmarkov.core.dt.DecisionTreeNode;
+import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.inference.tasks.CEAnalysis;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.ceanalysis.DANDecisionTreeCEA;
@@ -11,19 +12,19 @@ import junit.framework.Assert;
 public class DANDecisionTreeCEATest extends DANCEATest {
 
 	@Override
-	protected CEAnalysis buildCEAnalysis(ProbNet network) {
+	protected CEAnalysis buildCEAnalysis(ProbNet network) throws NotEvaluableNetworkException {
 		return buildCEAnalysis(network, true);
 	}
 	
 	
-	protected CEAnalysis buildCEAnalysis(ProbNet network, boolean computeDTForGUI) {
+	protected CEAnalysis buildCEAnalysis(ProbNet network, boolean computeDTForGUI) throws NotEvaluableNetworkException {
 		CEAnalysis cea = null;
 		cea = new DANDecisionTreeCEA(network, computeDTForGUI);
 		return cea;
 	}
 
 	@Override
-	public void testCEADANEvaluation(String danName, int globalNumberOfCEPIntervals, double... expectedThreshods) {
+	public void testCEADANEvaluation(String danName, int globalNumberOfCEPIntervals, double... expectedThreshods) throws NotEvaluableNetworkException {
 		Tools t = new Tools();
 		ProbNet network = t.loadDAN(danName);
 		System.out.println("*** CEA with DAN " + danName + " ***");

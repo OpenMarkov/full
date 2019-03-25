@@ -14,7 +14,7 @@ import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANDec
 
 public class DANDecompositionIntoSymmetricDANsEvaluationTest extends DANEvaluationTest {
 
-	@Override protected DANEvaluation buildNetworkEvaluation(ProbNet network) {
+	@Override protected DANEvaluation buildNetworkEvaluation(ProbNet network) throws NotEvaluableNetworkException {
 		DANEvaluation eval = null;
 		eval = new DANDecompositionIntoSymmetricDANsEvaluation(network);
 		return eval;

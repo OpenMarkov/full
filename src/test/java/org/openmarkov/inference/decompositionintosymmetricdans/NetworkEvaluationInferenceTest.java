@@ -136,6 +136,7 @@ public abstract class NetworkEvaluationInferenceTest {
 	
 	public void testNetworkEvaluationAndDecisionTree(ProbNet network, double expectedEU, String... namesVariablesIntervention) {
 		System.out.println();
+		
 		boolean computeDTValues []= {true, false};
 		for (boolean computeDT: computeDTValues) {			
 			DANEvaluation eval = null;
@@ -154,13 +155,13 @@ public abstract class NetworkEvaluationInferenceTest {
 				Assert.assertNull(dt);
 			}
 			if (computeDT) {
-				testDecisionTreeNode(dt);
-				testDecisionTreeAfterLevelsExpansion(network);
+				testDecisionTreeNode(dt, false);
+				testDecisionTreeAfterLevelsExpansion(network, false);
 			}
 		}
 	}
 	
-	protected void testDecisionTreeAfterLevelsExpansion(ProbNet network) {
+	protected void testDecisionTreeAfterLevelsExpansion(ProbNet network, boolean exploreZeroProbabilityBranches) {
 		int maxNumberLevelsToExpandMore = 3;
 		DecisionTreePanel dtPanel;
 		
@@ -168,7 +169,7 @@ public abstract class NetworkEvaluationInferenceTest {
 			dtPanel = new DecisionTreePanel(network);
 			for (int i = 0; i < maxNumberLevelsToExpandMore; i++) {
 				dtPanel.inferenceExpandNextLevel();				
-				testDecisionTreeNode(dtPanel.getDecisionTreeNode());
+				testDecisionTreeNode(dtPanel.getDecisionTreeNode(), exploreZeroProbabilityBranches);
 			}
 		} catch (NotEvaluableNetworkException e) {
 			e.printStackTrace();
@@ -176,7 +177,7 @@ public abstract class NetworkEvaluationInferenceTest {
 		}
 	}
 	
-	protected void testDecisionTreeNode(DecisionTreeNode treeNode) {
+	protected void testDecisionTreeNode(DecisionTreeNode treeNode, boolean exploreZeroProbabilityBranches) {
 		double deltaEquals = Math.pow(10, -6);
 		if (treeNode.getNodeType().equals(NodeType.CHANCE)) {
 
@@ -195,7 +196,9 @@ public abstract class NetworkEvaluationInferenceTest {
 
 				// Recursive call
 				DecisionTreeNode childNode = branch.getChild();
-				testDecisionTreeNode(childNode);
+				if (exploreZeroProbabilityBranches || branchProbability > deltaEquals) {
+					testDecisionTreeNode(childNode, exploreZeroProbabilityBranches);
+				}
 			}
 
 			// Test that the configurations are exhaustive (the probability of all the possible configurations sum 1)
@@ -214,7 +217,7 @@ public abstract class NetworkEvaluationInferenceTest {
 
 				// Recursive call
 				DecisionTreeNode childNode = branch.getChild();
-				testDecisionTreeNode(childNode);
+				testDecisionTreeNode(childNode, exploreZeroProbabilityBranches);
 			}
 
 			// Test that the utility assigned to a chance node is the max value of the utility of its configurations

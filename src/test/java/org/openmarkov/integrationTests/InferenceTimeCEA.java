@@ -2,45 +2,32 @@ package org.openmarkov.integrationTests;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Table;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openmarkov.core.exception.*;
-import org.openmarkov.core.inference.tasks.CEAnalysis;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.CEP;
 import org.openmarkov.core.model.network.Criterion;
 import org.openmarkov.core.model.network.EvidenceCase;
 import org.openmarkov.core.model.network.ProbNet;
-import org.openmarkov.core.model.network.Variable;
-import org.openmarkov.core.model.network.potential.Potential;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.ceanalysis.DANDecisionTreeCEA;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.ceanalysis.DANDecompositionIntoSymmetricDANsCEA;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANDecisionTreeEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANDecompositionIntoSymmetricDANsEvaluation;
-import org.openmarkov.inference.variableElimination.operation.CEPotentialOperation;
-import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
-import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
-import org.openmarkov.learning.algorithm.pc.independencetester.StatisticalUtilities;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 
@@ -99,7 +86,7 @@ public class InferenceTimeCEA {
 
 				for (Criterion criterion : probNet.getDecisionCriteria()) {
 					LogManager.getLogger()
-							.debug(criterion.getCriterionName() + " scale = (x " + criterion.getUnicriteriaScale()
+                            .debug(criterion.getCriterionName() + " scale = (x " + criterion.getUnicriterizationScale()
 									+ ")");
 				}
 
@@ -241,7 +228,7 @@ public class InferenceTimeCEA {
 						new EvidenceCase() :
 						probNetInfo.getEvidence().get(0);
 				// Set effectiveness scale to lambda - 1
-				probNet.getDecisionCriteria().get(1).setUnicriteriaScale(lambda);
+                probNet.getDecisionCriteria().get(1).setUnicriterizationScale(lambda);
 				CEP cepDSD = null;
 				CEP cepDT = null;
 				TablePotential utilityDSD;
@@ -249,7 +236,7 @@ public class InferenceTimeCEA {
 
 				for (Criterion criterion : probNet.getDecisionCriteria()) {
 					LogManager.getLogger()
-							.debug(criterion.getCriterionName() + " scale = (x " + criterion.getUnicriteriaScale()
+                            .debug(criterion.getCriterionName() + " scale = (x " + criterion.getUnicriterizationScale()
 									+ ")");
 				}
 
@@ -297,7 +284,7 @@ public class InferenceTimeCEA {
                     LogManager.getLogger().debug("Threshold \t DSD Unicriterion \t DT Unicriterion \t DSD Cost \t DT Cost \t DSD Effectiveness \t DT Effectiveness");
 					for (double lambda : allThresholds) {
                         // Set effectiveness scale to lambda - 1
-                        probNet.getDecisionCriteria().get(1).setUnicriteriaScale(lambda);
+                        probNet.getDecisionCriteria().get(1).setUnicriterizationScale(lambda);
 
                         // UNICRITERION ANALYSIS
                         DANDecompositionIntoSymmetricDANsEvaluation evaluationDSD = new DANDecompositionIntoSymmetricDANsEvaluation(
