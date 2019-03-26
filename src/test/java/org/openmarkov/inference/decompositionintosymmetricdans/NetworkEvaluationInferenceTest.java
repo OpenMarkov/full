@@ -3,9 +3,6 @@ package org.openmarkov.inference.decompositionintosymmetricdans;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import javax.swing.tree.TreeModel;
-
 import org.openmarkov.core.dt.DecisionTreeBranch;
 import org.openmarkov.core.dt.DecisionTreeElement;
 import org.openmarkov.core.dt.DecisionTreeNode;
@@ -15,11 +12,9 @@ import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.StrategyTree;
 import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.gui.window.dt.DecisionTree;
-import org.openmarkov.gui.window.dt.DecisionTreeBranchPanel;
-import org.openmarkov.gui.window.dt.DecisionTreeNodePanel;
 import org.openmarkov.gui.window.dt.DecisionTreePanel;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.core.DANOperations;
+import org.openmarkov.inference.decompositionIntoSymmetricDANs.core.EvaluationDecisionTreeNode;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANDecisionTreeEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;
 
@@ -177,7 +172,7 @@ public abstract class NetworkEvaluationInferenceTest {
 		}
 	}
 	
-	protected void testDecisionTreeNode(DecisionTreeNode treeNode, boolean exploreZeroProbabilityBranches) {
+	protected void testDecisionTreeNode(DecisionTreeNode<Double> treeNode, boolean exploreZeroProbabilityBranches) {
 		double deltaEquals = Math.pow(10, -6);
 		if (treeNode.getNodeType().equals(NodeType.CHANCE)) {
 
@@ -186,13 +181,14 @@ public abstract class NetworkEvaluationInferenceTest {
 			for (DecisionTreeElement childElement : treeNode.getChildren()) {
 				DecisionTreeBranch branch = (DecisionTreeBranch) childElement;
 				double branchProbability = branch.getBranchProbability();
-				
-				//Test that the probability is between 0 and 1
+
+				// Test that the probability is between 0 and 1
 				Assert.assertTrue(branchProbability >= -deltaEquals);
 				Assert.assertTrue(branchProbability <= 1.0 + deltaEquals);
-				
+
 				totalProbability += branchProbability;
-				weightedUtility += branchProbability * branch.getUtility();
+
+				weightedUtility += branchProbability * (double) branch.getValuation();
 
 				// Recursive call
 				DecisionTreeNode childNode = branch.getChild();
@@ -201,18 +197,23 @@ public abstract class NetworkEvaluationInferenceTest {
 				}
 			}
 
-			// Test that the configurations are exhaustive (the probability of all the possible configurations sum 1)
+			// Test that the configurations are exhaustive (the probability of all the
+			// possible configurations sum 1)
 			Assert.assertEquals(1.0, totalProbability, deltaEquals);
 
-			// Test that the utility assigned to a chance node is the weighted sum of the utility of its configurations
-			Assert.assertEquals(treeNode.getUtility(), weightedUtility, deltaEquals);
+			// Test that the utility assigned to a chance node is the weighted sum of the
+			// utility of its configurations
+			if (treeNode.getClass() == EvaluationDecisionTreeNode.class) {
+				Assert.assertEquals(treeNode.getValuation(), weightedUtility, deltaEquals);
+			}
 
 		} else if (treeNode.getNodeType().equals(NodeType.DECISION)) {
 			double maxUtility = Double.MIN_VALUE;
 			for (DecisionTreeElement childElement : treeNode.getChildren()) {
 				DecisionTreeBranch branch = (DecisionTreeBranch) childElement;
-				if (branch.getUtility() > maxUtility) {
-					maxUtility = branch.getUtility();
+				double auxUtility = (double) branch.getValuation();
+				if (auxUtility > maxUtility) {
+					maxUtility = auxUtility;
 				}
 
 				// Recursive call
@@ -220,8 +221,9 @@ public abstract class NetworkEvaluationInferenceTest {
 				testDecisionTreeNode(childNode, exploreZeroProbabilityBranches);
 			}
 
-			// Test that the utility assigned to a chance node is the max value of the utility of its configurations
-			Assert.assertEquals(maxUtility, treeNode.getUtility(), deltaEquals);
+			// Test that the utility assigned to a chance node is the max value of the
+			// utility of its configurations
+			Assert.assertEquals(maxUtility, treeNode.getValuation(), deltaEquals);
 		}
 	}
 }
