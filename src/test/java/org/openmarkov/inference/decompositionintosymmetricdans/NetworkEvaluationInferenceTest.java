@@ -172,7 +172,9 @@ public abstract class NetworkEvaluationInferenceTest {
 		}
 	}
 	
-	protected void testDecisionTreeNode(DecisionTreeNode<Double> treeNode, boolean exploreZeroProbabilityBranches) {
+	protected static void testDecisionTreeNode(DecisionTreeNode<Double> treeNode, boolean exploreZeroProbabilityBranches) {
+		
+		boolean isCEA = !(treeNode.getClass() == EvaluationDecisionTreeNode.class);
 		double deltaEquals = Math.pow(10, -6);
 		if (treeNode.getNodeType().equals(NodeType.CHANCE)) {
 
@@ -187,8 +189,9 @@ public abstract class NetworkEvaluationInferenceTest {
 				Assert.assertTrue(branchProbability <= 1.0 + deltaEquals);
 
 				totalProbability += branchProbability;
-
-				weightedUtility += branchProbability * (double) branch.getValuation();
+				if (!isCEA) {
+					weightedUtility += branchProbability * (double) branch.getValuation();
+				}
 
 				// Recursive call
 				DecisionTreeNode childNode = branch.getChild();
@@ -203,11 +206,11 @@ public abstract class NetworkEvaluationInferenceTest {
 
 			// Test that the utility assigned to a chance node is the weighted sum of the
 			// utility of its configurations
-			if (treeNode.getClass() == EvaluationDecisionTreeNode.class) {
+			if (!isCEA) {
 				Assert.assertEquals(treeNode.getValuation(), weightedUtility, deltaEquals);
 			}
 
-		} else if (treeNode.getNodeType().equals(NodeType.DECISION)) {
+		} else if (treeNode.getNodeType().equals(NodeType.DECISION) && !isCEA) {
 			double maxUtility = Double.MIN_VALUE;
 			for (DecisionTreeElement childElement : treeNode.getChildren()) {
 				DecisionTreeBranch branch = (DecisionTreeBranch) childElement;
@@ -226,4 +229,7 @@ public abstract class NetworkEvaluationInferenceTest {
 			Assert.assertEquals(maxUtility, treeNode.getValuation(), deltaEquals);
 		}
 	}
+	
+	
+	
 }
