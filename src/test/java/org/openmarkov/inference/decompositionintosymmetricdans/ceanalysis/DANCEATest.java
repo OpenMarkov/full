@@ -65,10 +65,10 @@ public abstract class DANCEATest {
 		testCEADANEvaluation("one-chance-ce", 1);
 	}
 
-	//@Test
+	@Test
 	public void testDANDecideTest() throws IncompatibleEvidenceException, UnexpectedInferenceException,
 			NodeNotFoundException, NotEvaluableNetworkException {
-		testCEADANEvaluation("decide-test-ce", 3, 111171.34, 33383.5);
+		testCEADANEvaluation("decide-test-ce", 3, 11171.347828594418, 33383.5);
 	}
 		
 	
