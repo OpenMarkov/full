@@ -62,7 +62,7 @@ public class Tools {
 	
 				totalProbability += branchProbability;
 				if (!isCEA) {
-					weightedUtility += branchProbability * (double) branch.getValuation();
+					weightedUtility += branchProbability * (double) branch.getUtility();
 				}
 	
 				// Recursive call
@@ -79,14 +79,14 @@ public class Tools {
 			// Test that the utility assigned to a chance node is the weighted sum of the
 			// utility of its configurations
 			if (!isCEA) {
-				Assert.assertEquals(treeNode.getValuation(), weightedUtility, deltaEquals);
+				Assert.assertEquals(treeNode.getUtility(), weightedUtility, deltaEquals);
 			}
 	
 		} else if (treeNode.getNodeType().equals(NodeType.DECISION) && !isCEA) {
 			double maxUtility = Double.MIN_VALUE;
 			for (DecisionTreeElement childElement : treeNode.getChildren()) {
 				DecisionTreeBranch branch = (DecisionTreeBranch) childElement;
-				double auxUtility = (double) branch.getValuation();
+				double auxUtility = (double) branch.getUtility();
 				if (auxUtility > maxUtility) {
 					maxUtility = auxUtility;
 				}
@@ -98,7 +98,7 @@ public class Tools {
 	
 			// Test that the utility assigned to a chance node is the max value of the
 			// utility of its configurations
-			Assert.assertEquals(maxUtility, treeNode.getValuation(), deltaEquals);
+			Assert.assertEquals(maxUtility, treeNode.getUtility(), deltaEquals);
 		}
 	}
 
