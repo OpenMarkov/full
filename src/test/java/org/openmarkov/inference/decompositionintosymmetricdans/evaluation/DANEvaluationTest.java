@@ -218,6 +218,8 @@ public abstract class DANEvaluationTest extends NetworkEvaluationInferenceTest {
 			testNetworkEvaluation("dating-ask-no-nclub-no", -7);
 
 		}
+	 
+	
 
 	@Ignore @Test
 	public void testDANDating()
@@ -237,12 +239,43 @@ public abstract class DANEvaluationTest extends NetworkEvaluationInferenceTest {
 	}
 	
 	
-
-
-
-
-
-
+	@Test public void testDANOnlyTwoUtilitySumSV()
+				throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
+				NotEvaluableNetworkException {
+			testNetworkEvaluation("only-two-utility-sum-sv", 5);
+	}
+	
+	@Test public void testDANOnlyTwoUtilityProductSV()
+			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
+			NotEvaluableNetworkException {
+		testNetworkEvaluation("only-two-utility-product-sv", 6);
+	}
+		
+	@Test
+	public void testDANNestedSumSV() throws IncompatibleEvidenceException, UnexpectedInferenceException,
+			NodeNotFoundException, NotEvaluableNetworkException {
+		// 2+3+4+5 = 14
+		testNetworkEvaluation("nested-sum-sv", 14);
+	}
+	
+	@Test
+	public void testDANNestedProductSV() throws IncompatibleEvidenceException, UnexpectedInferenceException,
+			NodeNotFoundException, NotEvaluableNetworkException {
+		testNetworkEvaluation("nested-product-sv", 120);
+	}
+	
+	@Test
+	public void testDANNestedSumOfProductsSV() throws IncompatibleEvidenceException, UnexpectedInferenceException,
+			NodeNotFoundException, NotEvaluableNetworkException {
+		testNetworkEvaluation("nested-sum-of-products-sv", 26);
+	}
+	
+	@Test
+	public void testDANNestedProductOfSumsSV() throws IncompatibleEvidenceException, UnexpectedInferenceException,
+			NodeNotFoundException, NotEvaluableNetworkException {
+		testNetworkEvaluation("nested-product-of-sums-sv", 45);
+	}
+	
 
 
 	/*	
