@@ -61,6 +61,8 @@ public class IDDecisionTreeEvaluationTest extends NetworkEvaluationInferenceTest
 			NodeNotFoundException, NotEvaluableNetworkException {
 		testNetworkEvaluation("test-2therapies", 9.39366, "Test", "Therapy");
 	}
+	
+	
 	 
 
 	@Override
@@ -73,7 +75,7 @@ public class IDDecisionTreeEvaluationTest extends NetworkEvaluationInferenceTest
 		ProbNet network = loadNetwork("test-2therapies");
 		try {
             IDDecisionTreeEvaluation eval = new IDDecisionTreeEvaluation(network, Integer.MAX_VALUE, true, new EvidenceCase());
-			testDecisionTreeNode(eval.getDecisionTree(), false);
+			Tools.testDecisionTreeNode(eval.getDecisionTree(), false);
 		} catch (NotEvaluableNetworkException e) {
 			e.printStackTrace();
 		}
