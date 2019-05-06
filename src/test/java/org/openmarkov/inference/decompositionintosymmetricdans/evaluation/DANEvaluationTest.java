@@ -146,7 +146,7 @@ public abstract class DANEvaluationTest extends NetworkEvaluationInferenceTest {
 		testNetworkEvaluation("king-noble-descent-yes-first-task-1-second-task-2", 9.03);
 	}
 
-	@Test public void testDANSimplifiedTwoTasksKingNobleDescentYes()
+	 @Ignore @Test public void testDANSimplifiedTwoTasksKingNobleDescentYes()
 			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
 			NotEvaluableNetworkException {
 		testNetworkEvaluation("simplified-two-tasks-king-noble-descent-yes", 9.08);
@@ -155,7 +155,7 @@ public abstract class DANEvaluationTest extends NetworkEvaluationInferenceTest {
 	/**
 	 * This network is as "simplified-two-tasks-king-noble-descent-yes", but removing zero utility potentials.
 	 */
-	@Test public void testDANSimplified2TwoTasksKingNobleDescentYes()
+	 @Ignore @Test public void testDANSimplified2TwoTasksKingNobleDescentYes()
 			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
 			NotEvaluableNetworkException {
 		testNetworkEvaluation("simplified-2-two-tasks-king-noble-descent-yes", 9.08);
@@ -276,6 +276,12 @@ public abstract class DANEvaluationTest extends NetworkEvaluationInferenceTest {
 		testNetworkEvaluation("nested-product-of-sums-sv", 45);
 	}
 	
+	 @Ignore @Test public void testDANOnlyTwoUtilityProductAbsSV()
+			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
+			NotEvaluableNetworkException {
+		testNetworkEvaluation("only-two-utility-product-abs-sv", -13);
+	}
+		
 
 
 	/*	
