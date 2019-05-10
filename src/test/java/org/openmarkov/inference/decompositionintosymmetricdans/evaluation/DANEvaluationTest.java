@@ -276,10 +276,34 @@ public abstract class DANEvaluationTest extends NetworkEvaluationInferenceTest {
 		testNetworkEvaluation("nested-product-of-sums-sv", 45);
 	}
 	
-	 @Ignore @Test public void testDANOnlyTwoUtilityProductAbsSV()
+	@Test public void testDANOnlyOneUtilityAbsSV()
 			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
 			NotEvaluableNetworkException {
-		testNetworkEvaluation("only-two-utility-product-abs-sv", -13);
+		testNetworkEvaluation("only-one-utility-abs-sv", 2);
+	}
+	
+	@Test public void testDANOnlyOneUtilitySumAbsSV()
+			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
+			NotEvaluableNetworkException {
+		testNetworkEvaluation("only-one-utility-sum-abs-sv", 4);
+	}
+	
+	@Test public void testDANOnlyTwoUtilityProductAbsSV()
+			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
+			NotEvaluableNetworkException {
+		testNetworkEvaluation("only-two-utility-product-abs-sv", -6);
+	}
+	
+	@Test public void testDANUtilityAndChanceFunctionSV()
+			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
+			NotEvaluableNetworkException {
+		testNetworkEvaluation("utility-and-chance-function-sv", Math.abs(3)*0.7+Math.abs(-9)*0.3);
+	}
+	
+	@Ignore @Test public void testDANOnlyTwoUtilityAndChanceFunctionSV()
+			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
+			NotEvaluableNetworkException {
+		testNetworkEvaluation("only-two-utility-and-chance-function-sv", Math.abs(12*0.7+(-20)*0.3)+3*Math.abs(-2));
 	}
 		
 

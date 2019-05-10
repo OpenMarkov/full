@@ -8,22 +8,23 @@
     <Properties />
     <Variables>
       <Variable name="U0" type="numeric" role="utility">
-        <Coordinates x="922" y="265" />
+        <Coordinates x="802" y="280" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="---" />
       </Variable>
       <Variable name="U1" type="numeric" role="utility">
-        <Coordinates x="786" y="166" />
+        <Coordinates x="771" y="175" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="---" />
       </Variable>
-      <Variable name="U2" type="numeric" role="utility">
-        <Coordinates x="986" y="166" />
-        <Unit />
-        <Precision>0.01</Precision>
-        <Criterion name="---" />
+      <Variable name="A" type="finiteStates" role="chance">
+        <Coordinates x="744" y="58" />
+        <States>
+          <State name="absent" />
+          <State name="present" />
+        </States>
       </Variable>
     </Variables>
     <Links>
@@ -32,8 +33,8 @@
         <Variable name="U0" />
       </Link>
       <Link directed="true">
-        <Variable name="U2" />
-        <Variable name="U0" />
+        <Variable name="A" />
+        <Variable name="U1" />
       </Link>
     </Links>
     <Potentials>
@@ -41,17 +42,21 @@
         <UtilityVariable name="U0" />
         <Variables>
           <Variable name="U1" />
-          <Variable name="U2" />
         </Variables>
-        <Function>abs({U1})*{U2}</Function>
+        <Function>abs({U1})</Function>
       </Potential>
       <Potential type="Table" role="conditionalProbability">
         <UtilityVariable name="U1" />
-        <Values>-2.0</Values>
+        <Variables>
+          <Variable name="A" />
+        </Variables>
+        <Values>3.0 -9.0</Values>
       </Potential>
       <Potential type="Table" role="conditionalProbability">
-        <UtilityVariable name="U2" />
-        <Values>-3.0</Values>
+        <Variables>
+          <Variable name="A" />
+        </Variables>
+        <Values>0.7 0.3</Values>
       </Potential>
     </Potentials>
   </ProbNet>
