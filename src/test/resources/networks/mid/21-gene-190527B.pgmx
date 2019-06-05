@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ProbModelXML formatVersion="0.2.0">
+  <ProbNet type="InfluenceDiagram">
+    <Comment showWhenOpeningNetwork="false"><![CDATA[<<Double click to add/modify comment>>]]></Comment>
+    <DecisionCriteria>
+      <Criterion name="---" unit="---" />
+    </DecisionCriteria>
+    <AdditionalProperties />
+    <Variables>
+      <Variable name="AO risk" type="finiteStates" role="chance">
+        <Coordinates x="219" y="35" />
+        <States>
+          <State name="AO low" />
+          <State name="AO int" />
+          <State name="AO high" />
+        </States>
+      </Variable>
+      <Variable name="21g risk" type="finiteStates" role="chance">
+        <Coordinates x="642" y="129" />
+        <States>
+          <State name="21g low" />
+          <State name="21g int" />
+          <State name="21g high" />
+          <State name="21g N/A" />
+        </States>
+      </Variable>
+      <Variable name="Dec: chemo" type="finiteStates" role="chance">
+        <Coordinates x="434" y="156" />
+        <States>
+          <State name="random" />
+          <State name="no" />
+          <State name="yes" />
+        </States>
+      </Variable>
+      <Variable name="Chemo" type="finiteStates" role="chance">
+        <Coordinates x="426" y="342" />
+        <States>
+          <State name="no" />
+          <State name="yes" />
+        </States>
+      </Variable>
+      <Variable name="Group" type="finiteStates" role="chance">
+        <Coordinates x="138" y="368" />
+        <States>
+          <State name="L-L-NC" />
+          <State name="L-L-C" />
+          <State name="L-I-NC" />
+          <State name="L-I-C" />
+          <State name="L-H-NC" />
+          <State name="L-H-C" />
+          <State name="L-N-NC" />
+          <State name="L-N-C" />
+          <State name="I-L-NC" />
+          <State name="I-L-C" />
+          <State name="I-I-NC" />
+          <State name="I-I-C" />
+          <State name="I-H-NC" />
+          <State name="I-H-C" />
+          <State name="I-N-NC" />
+          <State name="I-N-C" />
+          <State name="H-L-NC" />
+          <State name="H-L-C" />
+          <State name="H-I-NC" />
+          <State name="H-I-C" />
+          <State name="H-H-NC" />
+          <State name="H-H-C" />
+          <State name="H-N-NC" />
+          <State name="H-N-C" />
+        </States>
+      </Variable>
+      <Variable name="U" type="numeric" role="utility">
+        <Coordinates x="413" y="460" />
+        <Unit />
+        <Precision>0.01</Precision>
+        <Criterion name="---" />
+      </Variable>
+      <Variable name="Dec: 21g" type="finiteStates" role="chance">
+        <Coordinates x="458" y="57" />
+        <States>
+          <State name="no" />
+          <State name="yes" />
+        </States>
+      </Variable>
+    </Variables>
+    <Links>
+      <Link directed="true">
+        <Variable name="AO risk" />
+        <Variable name="21g risk" />
+      </Link>
+      <Link directed="true">
+        <Variable name="AO risk" />
+        <Variable name="Chemo" />
+      </Link>
+      <Link directed="true">
+        <Variable name="AO risk" />
+        <Variable name="Group" />
+      </Link>
+      <Link directed="true">
+        <Variable name="AO risk" />
+        <Variable name="Dec: chemo" />
+      </Link>
+      <Link directed="true">
+        <Variable name="AO risk" />
+        <Variable name="Dec: 21g" />
+      </Link>
+      <Link directed="true">
+        <Variable name="21g risk" />
+        <Variable name="Dec: chemo" />
+      </Link>
+      <Link directed="true">
+        <Variable name="21g risk" />
+        <Variable name="Chemo" />
+      </Link>
+      <Link directed="true">
+        <Variable name="21g risk" />
+        <Variable name="Group" />
+      </Link>
+      <Link directed="true">
+        <Variable name="Dec: chemo" />
+        <Variable name="Chemo" />
+      </Link>
+      <Link directed="true">
+        <Variable name="Chemo" />
+        <Variable name="Group" />
+      </Link>
+      <Link directed="true">
+        <Variable name="Group" />
+        <Variable name="U" />
+      </Link>
+      <Link directed="true">
+        <Variable name="Dec: 21g" />
+        <Variable name="21g risk" />
+      </Link>
+    </Links>
+    <Potentials>
+      <Potential type="Table" role="conditionalProbability">
+        <Variables>
+          <Variable name="AO risk" />
+        </Variables>
+        <Values>0.2829341317 0.1871257485 0.5299401198</Values>
+        <UncertainValues>
+          <Value distribution="Dirichlet">189.0</Value>
+          <Value distribution="Dirichlet">125.0</Value>
+          <Value distribution="Dirichlet">354.0</Value>
+        </UncertainValues>
+      </Potential>
+      <Potential type="Table" role="conditionalProbability">
+        <Variables>
+          <Variable name="21g risk" />
+          <Variable name="Dec: 21g" />
+          <Variable name="AO risk" />
+        </Variables>
+        <Values>0.0 0.0 0.0 1.0 0.6101694915 0.2372881356 0.1525423729 0.0 0.0 0.0 0.0 1.0 0.456 0.192 0.352 0.0 0.0 0.0 0.0 1.0 0.3439153439 0.2169312169 0.4391534392 0.0</Values>
+        <UncertainValues>
+          <Value />
+          <Value />
+          <Value />
+          <Value />
+          <Value distribution="Dirichlet">216.0</Value>
+          <Value distribution="Dirichlet">84.0</Value>
+          <Value distribution="Dirichlet">54.0</Value>
+          <Value distribution="Exact">0.0</Value>
+          <Value />
+          <Value />
+          <Value />
+          <Value />
+          <Value distribution="Dirichlet">57.0</Value>
+          <Value distribution="Dirichlet">24.0</Value>
+          <Value distribution="Dirichlet">44.0</Value>
+          <Value distribution="Exact">0.0</Value>
+          <Value />
+          <Value />
+          <Value />
+          <Value />
+          <Value distribution="Dirichlet">65.0</Value>
+          <Value distribution="Dirichlet">41.0</Value>
+          <Value distribution="Dirichlet">83.0</Value>
+          <Value distribution="Exact">0.0</Value>
+        </UncertainValues>
+      </Potential>
+      <Potential type="Uniform" role="conditionalProbability">
+        <Variables>
+          <Variable name="Dec: chemo" />
+          <Variable name="AO risk" />
+        </Variables>
+      </Potential>
+      <Potential type="Tree/ADD" role="conditionalProbability">
+        <Variables>
+          <Variable name="Chemo" />
+          <Variable name="Dec: chemo" />
+          <Variable name="AO risk" />
+          <Variable name="21g risk" />
+        </Variables>
+        <TopVariable name="Dec: chemo" />
+        <Branches>
+          <Branch>
+            <States>
+              <State name="yes" />
+            </States>
+            <Potential type="Delta">
+              <Variables>
+                <Variable name="Chemo" />
+              </Variables>
+              <State>yes</State>
+            </Potential>
+          </Branch>
+          <Branch>
+            <States>
+              <State name="no" />
+            </States>
+            <Potential type="Delta">
+              <Variables>
+                <Variable name="Chemo" />
+              </Variables>
+              <State>no</State>
+            </Potential>
+          </Branch>
+          <Branch>
+            <States>
+              <State name="random" />
+            </States>
+            <Potential type="Table">
+              <Variables>
+                <Variable name="Chemo" />
+                <Variable name="AO risk" />
+                <Variable name="21g risk" />
+              </Variables>
+              <Values>0.5362 0.4638 0.4477 0.5523 0.4224 0.5776 0.8996 0.1004 0.8614 0.1386 0.8609 0.1391 0.8217 0.1783 0.6325 0.3675 0.6372 0.3628 0.3602 0.6398 0.0146 0.9854 0.0025 0.9975</Values>
+            </Potential>
+          </Branch>
+        </Branches>
+      </Potential>
+      <Potential type="Table" role="conditionalProbability">
+        <Variables>
+          <Variable name="Group" />
+          <Variable name="AO risk" />
+          <Variable name="21g risk" />
+          <Variable name="Chemo" />
+        </Variables>
+        <Values>1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 1.0</Values>
+      </Potential>
+      <Potential type="Table" role="conditionalProbability">
+        <Variables>
+          <Variable name="Group" />
+        </Variables>
+        <Values>0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0</Values>
+      </Potential>
+      <Potential type="Uniform" role="conditionalProbability">
+        <Variables>
+          <Variable name="Dec: 21g" />
+          <Variable name="AO risk" />
+        </Variables>
+      </Potential>
+    </Potentials>
+  </ProbNet>
+  <InferenceOptions>
+    <MulticriteriaOptions>
+      <SelectedAnalysisType>UNICRITERION</SelectedAnalysisType>
+      <Unicriterion>
+        <Scales>
+          <Scale Criterion="---" Value="1.0" />
+        </Scales>
+      </Unicriterion>
+      <CostEffectiveness>
+        <Scales>
+          <Scale Criterion="---" Value="1.0" />
+        </Scales>
+        <CE_Criteria>
+          <CE_Criterion Criterion="---" Value="Cost" />
+        </CE_Criteria>
+      </CostEffectiveness>
+    </MulticriteriaOptions>
+  </InferenceOptions>
+  <Evidence>
+    <EvidenceCase>
+      <Finding variable="Dec: chemo" state="random" />
+      <Finding variable="Dec: 21g" state="yes" />
+    </EvidenceCase>
+  </Evidence>
+</ProbModelXML>
