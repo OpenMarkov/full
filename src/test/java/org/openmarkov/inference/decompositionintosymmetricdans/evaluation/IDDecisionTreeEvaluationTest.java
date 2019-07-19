@@ -7,10 +7,10 @@ import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.model.network.EvidenceCase;
 import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.inference.Tools;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.IDDecisionTreeEvaluation;
 import org.openmarkov.inference.decompositionintosymmetricdans.NetworkEvaluationInferenceTest;
-import org.openmarkov.inference.decompositionintosymmetricdans.Tools;
 
 //@Ignore
 public class IDDecisionTreeEvaluationTest extends NetworkEvaluationInferenceTest {
@@ -60,6 +60,12 @@ public class IDDecisionTreeEvaluationTest extends NetworkEvaluationInferenceTest
 	public void testIDTest2Therapies() throws IncompatibleEvidenceException, UnexpectedInferenceException,
 			NodeNotFoundException, NotEvaluableNetworkException {
 		testNetworkEvaluation("test-2therapies", 9.39366, "Test", "Therapy");
+	}
+	
+	@Test
+	public void testIDOnlyDecisionNoUtility() throws IncompatibleEvidenceException, UnexpectedInferenceException,
+			NodeNotFoundException, NotEvaluableNetworkException {
+		testNetworkEvaluation("only-decision-no-utility", 0.0, "D");
 	}
 	
 	

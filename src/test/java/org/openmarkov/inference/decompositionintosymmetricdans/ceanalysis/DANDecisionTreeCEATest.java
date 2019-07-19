@@ -6,10 +6,10 @@ import org.openmarkov.core.inference.MulticriteriaOptions;
 import org.openmarkov.core.inference.MulticriteriaOptions.Type;
 import org.openmarkov.core.inference.tasks.CEAnalysis;
 import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.inference.Tools;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecisionTreeComputation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.ceanalysis.DANDecisionTreeCEA;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;
-import org.openmarkov.inference.decompositionintosymmetricdans.Tools;
 
 import junit.framework.Assert;
 

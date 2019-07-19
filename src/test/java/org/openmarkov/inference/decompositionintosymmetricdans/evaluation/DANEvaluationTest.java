@@ -15,8 +15,8 @@ import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.inference.Tools;
 import org.openmarkov.inference.decompositionintosymmetricdans.NetworkEvaluationInferenceTest;
-import org.openmarkov.inference.decompositionintosymmetricdans.Tools;
 
 public abstract class DANEvaluationTest extends NetworkEvaluationInferenceTest {
 
@@ -38,7 +38,11 @@ public abstract class DANEvaluationTest extends NetworkEvaluationInferenceTest {
 	}
 
 
-
+	@Test public void testDANOnlyDecisionNoUtility()
+			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
+			NotEvaluableNetworkException {
+		testNetworkEvaluation("only-decision-no-utility", 0.0, "D");
+	}	
 
 	@Test public void testDANOnlyUtility()
 			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,

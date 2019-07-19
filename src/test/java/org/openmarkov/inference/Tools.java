@@ -1,4 +1,4 @@
-package org.openmarkov.inference.decompositionintosymmetricdans;
+package org.openmarkov.inference;
 
 import java.io.InputStream;
 import java.util.ArrayList;

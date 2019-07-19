@@ -3,6 +3,7 @@ package org.openmarkov.inference.decompositionintosymmetricdans;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.potential.TablePotential;
+import org.openmarkov.inference.Tools;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecisionTreeComputation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANDecisionTreeEvaluation;
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;

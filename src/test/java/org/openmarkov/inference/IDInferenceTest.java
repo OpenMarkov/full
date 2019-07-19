@@ -7,7 +7,15 @@
 
 package org.openmarkov.inference;
 
+import org.openmarkov.core.model.network.ProbNet;
+
 public class IDInferenceTest {
+	
+	
+	
+	//	public void testInfluenceDiagramsInference() {
+
+	
 
 	//	@Test
 	//	public void testInfluenceDiagramsInference() {

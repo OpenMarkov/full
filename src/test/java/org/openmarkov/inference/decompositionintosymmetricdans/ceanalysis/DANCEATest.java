@@ -9,7 +9,7 @@ import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.inference.tasks.CEAnalysis;
 import org.openmarkov.core.model.network.CEP;
 import org.openmarkov.core.model.network.ProbNet;
-import org.openmarkov.inference.decompositionintosymmetricdans.Tools;
+import org.openmarkov.inference.Tools;
 
 public abstract class DANCEATest {
 

@@ -33,7 +33,12 @@ import org.openmarkov.inference.variableElimination.tasks.VETemporalEvolution;
 
 public class InferenceTestsTools {
 	
-	public static void testResolveNetwork(ProbNet probNet, EvidenceCase evidenceCase, Boolean checkStrategy)
+	public static void testResolveNetwork(ProbNet probNet, EvidenceCase evidenceCase)
+			throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
+		testResolveNetwork(probNet,evidenceCase, true);
+	}
+	
+	public static void testResolveNetwork(ProbNet probNet, EvidenceCase evidenceCase, boolean checkStrategyTree)
 			throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
 		VEEvaluation veEvaluation;
 		if (evidenceCase != null) {
@@ -42,9 +47,9 @@ public class InferenceTestsTools {
 		} else {
 			veEvaluation = new VEEvaluation(probNet);
 		}
-		veEvaluation.getUtility();
+		double meu = veEvaluation.getUtility().getFirstValue();
 
-		if (checkStrategy) {
+		if (checkStrategyTree && thereAreDecisionNodes(probNet)) {
 			VEOptimalIntervention veOptimalStrategy = new VEOptimalIntervention(probNet, evidenceCase);
 			assertNotNull(veOptimalStrategy.getOptimalIntervention());
 		}
@@ -84,10 +89,7 @@ public class InferenceTestsTools {
 			}
 		} else if (probNet.getNetworkType().equals(InfluenceDiagramType.getUniqueInstance())) {
 			try {
-				testResolveNetwork(probNet, preResolutionEvidence, probNet.getNodes(NodeType.DECISION).size() > 0);
-
-				// TODO - Check propagate errors
-				testPropagateNetwork(probNet, probNet.getVariables(), preResolutionEvidence);
+				testResolutionAndPropagation(probNet, preResolutionEvidence);
 
 				if (hasCostEffectiveness(probNet)) {
 					testCEADecisionNetwork(probNet, preResolutionEvidence);
@@ -100,13 +102,7 @@ public class InferenceTestsTools {
 			}
 		} else if (probNet.getNetworkType().equals(MIDType.getUniqueInstance())) {
 			try {
-				if (probNet.getNodes(NodeType.DECISION).size() > 0) {
-					InferenceTestsTools.testResolveNetwork(probNet, preResolutionEvidence, true);
-				} else {
-					InferenceTestsTools.testResolveNetwork(probNet, preResolutionEvidence, false);
-				}
-				// TODO - Check propagate errors
-				InferenceTestsTools.testPropagateNetwork(probNet, probNet.getVariables(), preResolutionEvidence);
+				testResolutionAndPropagation(probNet, preResolutionEvidence);
 
 				if (hasCostEffectiveness(probNet)) {
 					testCEADecisionNetwork(probNet, preResolutionEvidence);
@@ -122,6 +118,18 @@ public class InferenceTestsTools {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private static void testResolutionAndPropagation(ProbNet probNet, EvidenceCase preResolutionEvidence)
+			throws NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
+		testResolveNetwork(probNet, preResolutionEvidence);
+
+		// TODO - Check propagate errors
+		testPropagateNetwork(probNet, probNet.getVariables(), preResolutionEvidence);
+	}
+	
+	private static boolean thereAreDecisionNodes(ProbNet network) {
+		return network.getNodes(NodeType.DECISION).size() > 0;
 	}
 	
 	private static void testTemporalEvolutionNetwork(ProbNet probNet, EvidenceCase evidenceCase)
@@ -205,6 +213,7 @@ public class InferenceTestsTools {
 	}
 	
 	private static boolean hasCostEffectiveness(ProbNet probNet) {
+		
 		boolean hasCost = false;
 		boolean hasEffectiveness = false;
 
@@ -216,12 +225,7 @@ public class InferenceTestsTools {
 			}
 		}
 
-		if (hasCost && hasEffectiveness) {
-			return true;
-		} else {
-			return false;
-		}
-
+		return hasCost && hasEffectiveness;
 	}
 	
 	
