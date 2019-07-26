@@ -62,7 +62,7 @@ public class Tools {
 		return differentNames;
 	}
 
-
+//TODO Test that, if the network has decisions, then the intervention should be not null
 	public static void testEvaluationResults(ProbNet network, double expectedEU, TablePotential globalUtility,
 			String... namesVariablesIntervention) {
 		//String strIntervention = globalUtility.interventions[0].toStringForGraphviz(network);
