@@ -11,7 +11,7 @@
     <Properties />
     <Variables>
       <Variable name="AO risk" type="finiteStates" role="chance">
-        <Coordinates x="224" y="62" />
+        <Coordinates x="145" y="115" />
         <States>
           <State name="AO low" />
           <State name="AO int" />
@@ -19,7 +19,7 @@
         </States>
       </Variable>
       <Variable name="21g risk" type="finiteStates" role="chance">
-        <Coordinates x="542" y="87" />
+        <Coordinates x="416" y="158" />
         <States>
           <State name="21g low" />
           <State name="21g int" />
@@ -28,7 +28,7 @@
         </States>
       </Variable>
       <Variable name="Chemo cycle" timeSlice="0" type="finiteStates" role="chance">
-        <Coordinates x="742" y="454" />
+        <Coordinates x="748" y="588" />
         <States>
           <State name="chemo death" />
           <State name="cycle 1" />
@@ -41,7 +41,7 @@
         </States>
       </Variable>
       <Variable name="Chemo cycle" timeSlice="1" type="finiteStates" role="chance">
-        <Coordinates x="844" y="502" />
+        <Coordinates x="850" y="636" />
         <States>
           <State name="chemo death" />
           <State name="cycle 1" />
@@ -54,7 +54,7 @@
         </States>
       </Variable>
       <Variable name="State" timeSlice="0" type="finiteStates" role="chance">
-        <Coordinates x="804" y="367" />
+        <Coordinates x="810" y="501" />
         <States>
           <State name="recurrence-free" />
           <State name="distant recurrence" />
@@ -62,7 +62,7 @@
         </States>
       </Variable>
       <Variable name="State" timeSlice="1" type="finiteStates" role="chance">
-        <Coordinates x="983" y="400" />
+        <Coordinates x="967" y="514" />
         <States>
           <State name="recurrence-free" />
           <State name="distant recurrence" />
@@ -70,14 +70,14 @@
         </States>
       </Variable>
       <Variable name="Recurrence" timeSlice="1" type="finiteStates" role="chance">
-        <Coordinates x="536" y="242" />
+        <Coordinates x="542" y="352" />
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
       <Variable name="Cycle" timeSlice="0" type="numeric" role="chance">
-        <Coordinates x="640" y="150" />
+        <Coordinates x="627" y="311" />
         <Unit />
         <Precision>1.0</Precision>
         <Thresholds>
@@ -86,7 +86,7 @@
         </Thresholds>
       </Variable>
       <Variable name="Cycle" timeSlice="1" type="numeric" role="chance">
-        <Coordinates x="748" y="195" />
+        <Coordinates x="754" y="329" />
         <Unit />
         <Precision>1.0</Precision>
         <Thresholds>
@@ -105,28 +105,28 @@
     </p>
   </body>
 </html>]]></Comment>
-        <Coordinates x="771" y="264" />
+        <Coordinates x="777" y="398" />
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
       <Variable name="Chemo" type="finiteStates" role="chance">
-        <Coordinates x="378" y="209" />
+        <Coordinates x="418" y="289" />
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
       <Variable name="Dec: 21g" type="finiteStates" role="decision">
-        <Coordinates x="432" y="49" />
+        <Coordinates x="321" y="100" />
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
       <Variable name="Dec: chemo" type="finiteStates" role="decision">
-        <Coordinates x="251" y="142" />
+        <Coordinates x="219" y="229" />
         <States>
           <State name="random" />
           <State name="no" />
@@ -134,7 +134,7 @@
         </States>
       </Variable>
       <Variable name="Chemo Tox" timeSlice="0" type="finiteStates" role="chance">
-        <Coordinates x="538" y="515" />
+        <Coordinates x="544" y="649" />
         <States>
           <State name="tox" />
           <State name="none" />
@@ -142,7 +142,7 @@
         </States>
       </Variable>
       <Variable name="Chemo Tox" timeSlice="1" type="finiteStates" role="chance">
-        <Coordinates x="691" y="545" />
+        <Coordinates x="697" y="679" />
         <States>
           <State name="tox" />
           <State name="none" />
@@ -150,14 +150,14 @@
         </States>
       </Variable>
       <Variable name="Chemo death" type="finiteStates" role="chance">
-        <Coordinates x="194" y="390" />
+        <Coordinates x="200" y="524" />
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
       <Variable name="Chemo Type" type="finiteStates" role="chance">
-        <Coordinates x="114" y="237" />
+        <Coordinates x="120" y="371" />
         <States>
           <State name="None" />
           <State name="FEC-D" />
@@ -166,14 +166,14 @@
         </States>
       </Variable>
       <Variable name="Toxicity" type="finiteStates" role="chance">
-        <Coordinates x="359" y="518" />
+        <Coordinates x="365" y="652" />
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
       <Variable name="Cause hospital" type="finiteStates" role="chance">
-        <Coordinates x="362" y="570" />
+        <Coordinates x="368" y="704" />
         <States>
           <State name="none" />
           <State name="Chest pain" />
@@ -186,44 +186,20 @@
         </States>
       </Variable>
       <Variable name="Death Cancer" timeSlice="0" type="finiteStates" role="chance">
-        <Coordinates x="962" y="223" />
+        <Coordinates x="983" y="374" />
         <States>
           <State name="no" />
           <State name="yes" />
         </States>
       </Variable>
       <Variable name="U: Chemo tox" timeSlice="0" type="numeric" role="utility">
-        <Coordinates x="553" y="630" />
+        <Coordinates x="559" y="764" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="Eff" />
       </Variable>
-      <Variable name="C: Chemo Tox" timeSlice="0" type="numeric" role="utility">
-        <Coordinates x="737" y="619" />
-        <Unit />
-        <Precision>0.01</Precision>
-        <Criterion name="Cost" />
-      </Variable>
-      <Variable name="C: Hospital" type="numeric" role="utility">
-        <Coordinates x="358" y="624" />
-        <Unit />
-        <Precision>0.01</Precision>
-        <Criterion name="Cost" />
-      </Variable>
-      <Variable name="C: Chemo" type="numeric" role="utility">
-        <Coordinates x="74" y="315" />
-        <Unit />
-        <Precision>0.01</Precision>
-        <Criterion name="Cost" />
-      </Variable>
-      <Variable name="C: Chemo Death" type="numeric" role="utility">
-        <Coordinates x="140" y="501" />
-        <Unit />
-        <Precision>0.01</Precision>
-        <Criterion name="Cost" />
-      </Variable>
       <Variable name="Life time" timeSlice="0" type="numeric" role="utility">
-        <Coordinates x="1118" y="238" />
+        <Coordinates x="1124" y="372" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="Life time" />
@@ -240,25 +216,32 @@
     </p>
   </body>
 </html>]]></Comment>
-        <Coordinates x="1108" y="308" />
+        <Coordinates x="1161" y="415" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="Eff" />
       </Variable>
       <Variable name="U: RF" timeSlice="0" type="numeric" role="utility">
-        <Coordinates x="1122" y="163" />
+        <Coordinates x="956" y="299" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="Eff" />
       </Variable>
-      <Variable name="C: Test" type="numeric" role="utility">
-        <Coordinates x="662" y="80" />
+      <Variable name="Distance Recurrence" timeSlice="0" type="finiteStates" role="chance">
+        <Coordinates x="495" y="225" />
+        <States>
+          <State name="no" />
+          <State name="yes" />
+        </States>
+      </Variable>
+      <Variable name="C: After DR-1" timeSlice="0" type="numeric" role="utility">
+        <Coordinates x="833" y="179" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="Cost" />
       </Variable>
-      <Variable name="C: During last 3 months" timeSlice="0" type="numeric" role="utility">
-        <Coordinates x="970" y="107" />
+      <Variable name="C: After DR-2" timeSlice="0" type="numeric" role="utility">
+        <Coordinates x="957" y="226" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="Cost" />
@@ -292,7 +275,43 @@
     </p>
   </body>
 </html>]]></Comment>
-        <Coordinates x="822" y="61" />
+        <Coordinates x="741" y="132" />
+        <Unit />
+        <Precision>0.01</Precision>
+        <Criterion name="Cost" />
+      </Variable>
+      <Variable name="C: During last 3 months" timeSlice="0" type="numeric" role="utility">
+        <Coordinates x="1116" y="285" />
+        <Unit />
+        <Precision>0.01</Precision>
+        <Criterion name="Cost" />
+      </Variable>
+      <Variable name="C: Hospital" type="numeric" role="utility">
+        <Coordinates x="364" y="758" />
+        <Unit />
+        <Precision>0.01</Precision>
+        <Criterion name="Cost" />
+      </Variable>
+      <Variable name="C: Chemo" type="numeric" role="utility">
+        <Coordinates x="78" y="447" />
+        <Unit />
+        <Precision>0.01</Precision>
+        <Criterion name="Cost" />
+      </Variable>
+      <Variable name="C: Chemo Death" type="numeric" role="utility">
+        <Coordinates x="146" y="635" />
+        <Unit />
+        <Precision>0.01</Precision>
+        <Criterion name="Cost" />
+      </Variable>
+      <Variable name="C: Chemo Tox" timeSlice="0" type="numeric" role="utility">
+        <Coordinates x="753" y="762" />
+        <Unit />
+        <Precision>0.01</Precision>
+        <Criterion name="Cost" />
+      </Variable>
+      <Variable name="C: Test" type="numeric" role="utility">
+        <Coordinates x="554" y="123" />
         <Unit />
         <Precision>0.01</Precision>
         <Criterion name="Cost" />
@@ -302,10 +321,6 @@
       <Link directed="true">
         <Variable name="AO risk" />
         <Variable name="21g risk" />
-      </Link>
-      <Link directed="true">
-        <Variable name="AO risk" />
-        <Variable name="Recurrence" timeSlice="1" />
       </Link>
       <Link directed="true">
         <Variable name="AO risk" />
@@ -324,8 +339,8 @@
         <Variable name="Chemo Type" />
       </Link>
       <Link directed="true">
-        <Variable name="21g risk" />
-        <Variable name="Recurrence" timeSlice="1" />
+        <Variable name="AO risk" />
+        <Variable name="Distance Recurrence" timeSlice="0" />
       </Link>
       <Link directed="true">
         <Variable name="21g risk" />
@@ -341,6 +356,10 @@
       </Link>
       <Link directed="true">
         <Variable name="21g risk" />
+        <Variable name="Distance Recurrence" timeSlice="0" />
+      </Link>
+      <Link directed="true">
+        <Variable name="21g risk" />
         <Variable name="C: Test" />
       </Link>
       <Link directed="true">
@@ -350,10 +369,6 @@
       <Link directed="true">
         <Variable name="Chemo cycle" timeSlice="0" />
         <Variable name="State" timeSlice="1" />
-      </Link>
-      <Link directed="true">
-        <Variable name="Chemo cycle" timeSlice="0" />
-        <Variable name="Recurrence" timeSlice="1" />
       </Link>
       <Link directed="true">
         <Variable name="State" timeSlice="0" />
@@ -374,6 +389,14 @@
       <Link directed="true">
         <Variable name="State" timeSlice="0" />
         <Variable name="U: RF" timeSlice="0" />
+      </Link>
+      <Link directed="true">
+        <Variable name="State" timeSlice="0" />
+        <Variable name="C: After DR-1" timeSlice="0" />
+      </Link>
+      <Link directed="true">
+        <Variable name="State" timeSlice="0" />
+        <Variable name="C: After DR-2" timeSlice="0" />
       </Link>
       <Link directed="true">
         <Variable name="State" timeSlice="0" />
@@ -409,15 +432,19 @@
       </Link>
       <Link directed="true">
         <Variable name="Cycle" timeSlice="0" />
-        <Variable name="C: Chemo Tox" timeSlice="0" />
-      </Link>
-      <Link directed="true">
-        <Variable name="Cycle" timeSlice="0" />
         <Variable name="U: RF" timeSlice="0" />
       </Link>
       <Link directed="true">
         <Variable name="Cycle" timeSlice="0" />
+        <Variable name="C: After DR-2" timeSlice="0" />
+      </Link>
+      <Link directed="true">
+        <Variable name="Cycle" timeSlice="0" />
         <Variable name="C: Before DR" timeSlice="0" />
+      </Link>
+      <Link directed="true">
+        <Variable name="Cycle" timeSlice="0" />
+        <Variable name="C: Chemo Tox" timeSlice="0" />
       </Link>
       <Link directed="true">
         <Variable name="Death OC" timeSlice="0" />
@@ -434,6 +461,10 @@
       <Link directed="true">
         <Variable name="Death OC" timeSlice="0" />
         <Variable name="Toxicity" />
+      </Link>
+      <Link directed="true">
+        <Variable name="Death OC" timeSlice="0" />
+        <Variable name="C: After DR-2" timeSlice="0" />
       </Link>
       <Link directed="true">
         <Variable name="Death OC" timeSlice="0" />
@@ -470,6 +501,22 @@
       <Link directed="true">
         <Variable name="Chemo" />
         <Variable name="Toxicity" />
+      </Link>
+      <Link directed="true">
+        <Variable name="Chemo" />
+        <Variable name="Distance Recurrence" timeSlice="0" />
+      </Link>
+      <Link directed="true">
+        <Variable name="Chemo" />
+        <Variable name="C: Before DR" timeSlice="0" />
+      </Link>
+      <Link directed="true">
+        <Variable name="Chemo" />
+        <Variable name="U: RF" timeSlice="0" />
+      </Link>
+      <Link directed="true">
+        <Variable name="Chemo" />
+        <Variable name="C: After DR-2" timeSlice="0" />
       </Link>
       <Link directed="true">
         <Variable name="Dec: 21g" />
@@ -534,6 +581,14 @@
       <Link directed="true">
         <Variable name="Death Cancer" timeSlice="0" />
         <Variable name="C: During last 3 months" timeSlice="0" />
+      </Link>
+      <Link directed="true">
+        <Variable name="Distance Recurrence" timeSlice="0" />
+        <Variable name="Recurrence" timeSlice="1" />
+      </Link>
+      <Link directed="true">
+        <Variable name="Distance Recurrence" timeSlice="0" />
+        <Variable name="C: After DR-2" timeSlice="0" />
       </Link>
     </Links>
     <Potentials>
@@ -814,12 +869,10 @@
       <Potential type="Tree/ADD" role="conditionalProbability">
         <Variables>
           <Variable name="Recurrence" timeSlice="1" />
-          <Variable name="AO risk" />
-          <Variable name="21g risk" />
-          <Variable name="Chemo cycle" timeSlice="0" />
           <Variable name="State" timeSlice="0" />
           <Variable name="Chemo" />
           <Variable name="Cycle" timeSlice="0" />
+          <Variable name="Distance Recurrence" timeSlice="0" />
         </Variables>
         <TopVariable name="State" timeSlice="0" />
         <Branches>
@@ -842,12 +895,10 @@
             <Potential type="Tree/ADD">
               <Variables>
                 <Variable name="Recurrence" timeSlice="1" />
-                <Variable name="AO risk" />
-                <Variable name="21g risk" />
-                <Variable name="Chemo cycle" timeSlice="0" />
                 <Variable name="State" timeSlice="0" />
                 <Variable name="Chemo" />
                 <Variable name="Cycle" timeSlice="0" />
+                <Variable name="Distance Recurrence" timeSlice="0" />
               </Variables>
               <TopVariable name="Chemo" />
               <Branches>
@@ -858,12 +909,10 @@
                   <Potential type="Tree/ADD">
                     <Variables>
                       <Variable name="Recurrence" timeSlice="1" />
-                      <Variable name="AO risk" />
-                      <Variable name="21g risk" />
-                      <Variable name="Chemo cycle" timeSlice="0" />
                       <Variable name="State" timeSlice="0" />
                       <Variable name="Chemo" />
                       <Variable name="Cycle" timeSlice="0" />
+                      <Variable name="Distance Recurrence" timeSlice="0" />
                     </Variables>
                     <TopVariable name="Cycle" timeSlice="0" />
                     <Branches>
@@ -884,14 +933,39 @@
                           <Threshold value="8.0" belongsTo="right" />
                           <Threshold value="601.0" belongsTo="left" />
                         </Thresholds>
-                        <Potential type="Table">
+                        <Potential type="Tree/ADD">
                           <Variables>
                             <Variable name="Recurrence" timeSlice="1" />
-                            <Variable name="AO risk" />
-                            <Variable name="21g risk" />
+                            <Variable name="State" timeSlice="0" />
                             <Variable name="Chemo" />
+                            <Variable name="Cycle" timeSlice="0" />
+                            <Variable name="Distance Recurrence" timeSlice="0" />
                           </Variables>
-                          <Values>0.9997794165 2.205835E-4 0.9996390175 3.609825E-4 0.9996390175 3.609825E-4 0.9993337231 6.662769E-4 0.9985586701 0.0014413299 0.9985586701 0.0014413299 0.9969443899 0.0030556101 0.9948409548 0.0051590452 0.9948409548 0.0051590452 0.9992957531 7.042469E-4 0.9980099086 0.0019900914 0.9975818158 0.0024181842 0.9997246835 2.753165E-4 0.9996509497 3.490503E-4 0.9996509497 3.490503E-4 0.9996256232 3.743768E-4 0.9994824395 5.175605E-4 0.9994824395 5.175605E-4 0.999391815 6.08185E-4 0.9993415121 6.584879E-4 0.9993415121 6.584879E-4 0.9995991717 4.008283E-4 0.9995235581 4.764419E-4 0.9995189421 4.810579E-4</Values>
+                          <TopVariable name="Distance Recurrence" timeSlice="0" />
+                          <Branches>
+                            <Branch>
+                              <States>
+                                <State name="yes" />
+                              </States>
+                              <Potential type="Delta">
+                                <Variables>
+                                  <Variable name="Recurrence" timeSlice="1" />
+                                </Variables>
+                                <State>yes</State>
+                              </Potential>
+                            </Branch>
+                            <Branch>
+                              <States>
+                                <State name="no" />
+                              </States>
+                              <Potential type="Delta">
+                                <Variables>
+                                  <Variable name="Recurrence" timeSlice="1" />
+                                </Variables>
+                                <State>no</State>
+                              </Potential>
+                            </Branch>
+                          </Branches>
                         </Potential>
                       </Branch>
                     </Branches>
@@ -904,12 +978,10 @@
                   <Potential type="Tree/ADD">
                     <Variables>
                       <Variable name="Recurrence" timeSlice="1" />
-                      <Variable name="AO risk" />
-                      <Variable name="21g risk" />
-                      <Variable name="Chemo cycle" timeSlice="0" />
                       <Variable name="State" timeSlice="0" />
                       <Variable name="Chemo" />
                       <Variable name="Cycle" timeSlice="0" />
+                      <Variable name="Distance Recurrence" timeSlice="0" />
                     </Variables>
                     <TopVariable name="Cycle" timeSlice="0" />
                     <Branches>
@@ -930,14 +1002,39 @@
                           <Threshold value="2.0" belongsTo="right" />
                           <Threshold value="601.0" belongsTo="left" />
                         </Thresholds>
-                        <Potential type="Table">
+                        <Potential type="Tree/ADD">
                           <Variables>
                             <Variable name="Recurrence" timeSlice="1" />
-                            <Variable name="AO risk" />
-                            <Variable name="21g risk" />
+                            <Variable name="State" timeSlice="0" />
                             <Variable name="Chemo" />
+                            <Variable name="Cycle" timeSlice="0" />
+                            <Variable name="Distance Recurrence" timeSlice="0" />
                           </Variables>
-                          <Values>0.9997794165 2.205835E-4 0.9996390175 3.609825E-4 0.9996390175 3.609825E-4 0.9993337231 6.662769E-4 0.9985586701 0.0014413299 0.9985586701 0.0014413299 0.9969443899 0.0030556101 0.9948409548 0.0051590452 0.9948409548 0.0051590452 0.9992957531 7.042469E-4 0.9980099086 0.0019900914 0.9975818158 0.0024181842 0.9997246835 2.753165E-4 0.9996509497 3.490503E-4 0.9996509497 3.490503E-4 0.9996256232 3.743768E-4 0.9994824395 5.175605E-4 0.9994824395 5.175605E-4 0.999391815 6.08185E-4 0.9993415121 6.584879E-4 0.9993415121 6.584879E-4 0.9995991717 4.008283E-4 0.9995235581 4.764419E-4 0.9995189421 4.810579E-4</Values>
+                          <TopVariable name="Distance Recurrence" timeSlice="0" />
+                          <Branches>
+                            <Branch>
+                              <States>
+                                <State name="yes" />
+                              </States>
+                              <Potential type="Delta">
+                                <Variables>
+                                  <Variable name="Recurrence" timeSlice="1" />
+                                </Variables>
+                                <State>yes</State>
+                              </Potential>
+                            </Branch>
+                            <Branch>
+                              <States>
+                                <State name="no" />
+                              </States>
+                              <Potential type="Delta">
+                                <Variables>
+                                  <Variable name="Recurrence" timeSlice="1" />
+                                </Variables>
+                                <State>no</State>
+                              </Potential>
+                            </Branch>
+                          </Branches>
                         </Potential>
                       </Branch>
                     </Branches>
@@ -8751,99 +8848,600 @@
           </Branch>
         </Branches>
       </Potential>
-      <Potential type="Tree/ADD" role="conditionalProbability">
-        <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
+      <Potential type="Table" role="conditionalProbability">
+        <UtilityVariable name="Life time" timeSlice="0" />
         <Variables>
-          <Variable name="Chemo Type" />
-          <Variable name="Chemo Tox" timeSlice="0" />
-          <Variable name="Cycle" timeSlice="0" />
+          <Variable name="State" timeSlice="0" />
         </Variables>
-        <TopVariable name="Cycle" timeSlice="0" />
+        <Values>0.08333333333333333 0.08333333333333333 0.0</Values>
+      </Potential>
+      <Potential type="Tree/ADD" role="conditionalProbability">
+        <UtilityVariable name="U: DR" timeSlice="0" />
+        <Variables>
+          <Variable name="State" timeSlice="0" />
+        </Variables>
+        <TopVariable name="State" timeSlice="0" />
         <Branches>
           <Branch>
-            <Thresholds>
-              <Threshold value="1.0" belongsTo="right" />
-              <Threshold value="2.0" belongsTo="right" />
-            </Thresholds>
+            <States>
+              <State name="recurrence-free" />
+              <State name="dead" />
+            </States>
             <Potential type="Table">
-              <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
+              <UtilityVariable name="U: DR" timeSlice="0" />
               <Values>0.0</Values>
             </Potential>
           </Branch>
           <Branch>
-            <Thresholds>
-              <Threshold value="2.0" belongsTo="right" />
-              <Threshold value="601.0" belongsTo="left" />
-            </Thresholds>
+            <States>
+              <State name="distant recurrence" />
+            </States>
+            <Potential type="Table">
+              <UtilityVariable name="U: DR" timeSlice="0" />
+              <Values>0.0570833</Values>
+            </Potential>
+          </Branch>
+        </Branches>
+      </Potential>
+      <Potential type="Tree/ADD" role="conditionalProbability">
+        <UtilityVariable name="U: RF" timeSlice="0" />
+        <Variables>
+          <Variable name="Cycle" timeSlice="0" />
+          <Variable name="State" timeSlice="0" />
+          <Variable name="Chemo" />
+        </Variables>
+        <TopVariable name="State" timeSlice="0" />
+        <Branches>
+          <Branch>
+            <States>
+              <State name="distant recurrence" />
+              <State name="dead" />
+            </States>
+            <Potential type="Table">
+              <UtilityVariable name="U: RF" timeSlice="0" />
+              <Values>0.0</Values>
+            </Potential>
+          </Branch>
+          <Branch>
+            <States>
+              <State name="recurrence-free" />
+            </States>
             <Potential type="Tree/ADD">
-              <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
+              <UtilityVariable name="U: RF" timeSlice="0" />
               <Variables>
-                <Variable name="Chemo Type" />
-                <Variable name="Chemo Tox" timeSlice="0" />
                 <Variable name="Cycle" timeSlice="0" />
+                <Variable name="State" timeSlice="0" />
+                <Variable name="Chemo" />
               </Variables>
-              <TopVariable name="Chemo Tox" timeSlice="0" />
+              <TopVariable name="Cycle" timeSlice="0" />
               <Branches>
                 <Branch>
-                  <States>
-                    <State name="tox" />
-                    <State name="no tox" />
-                  </States>
+                  <Thresholds>
+                    <Threshold value="1.0" belongsTo="right" />
+                    <Threshold value="13.0" belongsTo="right" />
+                  </Thresholds>
                   <Potential type="Tree/ADD">
-                    <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
+                    <UtilityVariable name="U: RF" timeSlice="0" />
                     <Variables>
-                      <Variable name="Chemo Type" />
-                      <Variable name="Chemo Tox" timeSlice="0" />
                       <Variable name="Cycle" timeSlice="0" />
+                      <Variable name="State" timeSlice="0" />
+                      <Variable name="Chemo" />
                     </Variables>
-                    <TopVariable name="Chemo Type" />
+                    <TopVariable name="Chemo" />
                     <Branches>
                       <Branch>
                         <States>
-                          <State name="CMF" />
+                          <State name="yes" />
                         </States>
-                        <Potential type="Table">
-                          <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
-                          <Values>223.281835248</Values>
+                        <Potential type="Tree/ADD">
+                          <UtilityVariable name="U: RF" timeSlice="0" />
+                          <Variables>
+                            <Variable name="Cycle" timeSlice="0" />
+                            <Variable name="State" timeSlice="0" />
+                            <Variable name="Chemo" />
+                          </Variables>
+                          <TopVariable name="Cycle" timeSlice="0" />
+                          <Branches>
+                            <Branch>
+                              <Thresholds>
+                                <Threshold value="1.0" belongsTo="right" />
+                                <Threshold value="2.0" belongsTo="right" />
+                              </Thresholds>
+                              <Potential type="Table">
+                                <UtilityVariable name="U: RF" timeSlice="0" />
+                                <Values>0.062</Values>
+                              </Potential>
+                            </Branch>
+                            <Branch>
+                              <Thresholds>
+                                <Threshold value="2.0" belongsTo="right" />
+                                <Threshold value="7.0" belongsTo="left" />
+                              </Thresholds>
+                              <Potential type="Table">
+                                <UtilityVariable name="U: RF" timeSlice="0" />
+                                <Values>0.0</Values>
+                              </Potential>
+                            </Branch>
+                            <Branch>
+                              <Thresholds>
+                                <Threshold value="7.0" belongsTo="left" />
+                                <Threshold value="13.0" belongsTo="right" />
+                              </Thresholds>
+                              <Potential type="Table">
+                                <UtilityVariable name="U: RF" timeSlice="0" />
+                                <Values>0.062</Values>
+                              </Potential>
+                            </Branch>
+                          </Branches>
                         </Potential>
                       </Branch>
                       <Branch>
                         <States>
-                          <State name="TC" />
+                          <State name="no" />
                         </States>
                         <Potential type="Table">
-                          <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
-                          <Values>672.83517</Values>
-                        </Potential>
-                      </Branch>
-                      <Branch>
-                        <States>
-                          <State name="FEC-D" />
-                        </States>
-                        <Potential type="Table">
-                          <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
-                          <Values>1050.00517</Values>
-                        </Potential>
-                      </Branch>
-                      <Branch>
-                        <States>
-                          <State name="None" />
-                        </States>
-                        <Potential type="Table">
-                          <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
-                          <Values>0.0</Values>
+                          <UtilityVariable name="U: RF" timeSlice="0" />
+                          <Values>0.062</Values>
                         </Potential>
                       </Branch>
                     </Branches>
                   </Potential>
                 </Branch>
                 <Branch>
+                  <Thresholds>
+                    <Threshold value="13.0" belongsTo="right" />
+                    <Threshold value="601.0" belongsTo="left" />
+                  </Thresholds>
+                  <Potential type="Table">
+                    <UtilityVariable name="U: RF" timeSlice="0" />
+                    <Values>0.064916667</Values>
+                  </Potential>
+                </Branch>
+              </Branches>
+            </Potential>
+          </Branch>
+        </Branches>
+      </Potential>
+      <Potential type="Table" role="conditionalProbability">
+        <Variables>
+          <Variable name="Distance Recurrence" timeSlice="0" />
+          <Variable name="AO risk" />
+          <Variable name="21g risk" />
+          <Variable name="Chemo" />
+        </Variables>
+        <Values>0.9997794165 2.205835E-4 0.9996390175 3.609825E-4 0.9996390175 3.609825E-4 0.9993337231 6.662769E-4 0.9985586701 0.0014413299 0.9985586701 0.0014413299 0.9969443899 0.0030556101 0.9948409548 0.0051590452 0.9948409548 0.0051590452 0.9992957531 7.042469E-4 0.9980099086 0.0019900914 0.9975818158 0.0024181842 0.9997246835 2.753165E-4 0.9996509497 3.490503E-4 0.9996509497 3.490503E-4 0.9996256232 3.743768E-4 0.9994824395 5.175605E-4 0.9994824395 5.175605E-4 0.999391815 6.08185E-4 0.9993415121 6.584879E-4 0.9993415121 6.584879E-4 0.9995991717 4.008283E-4 0.9995235581 4.764419E-4 0.9995189421 4.810579E-4</Values>
+      </Potential>
+      <Potential type="Tree/ADD" role="conditionalProbability">
+        <UtilityVariable name="C: After DR-1" timeSlice="0" />
+        <Variables>
+          <Variable name="State" timeSlice="0" />
+        </Variables>
+        <TopVariable name="State" timeSlice="0" />
+        <Branches>
+          <Branch>
+            <States>
+              <State name="recurrence-free" />
+              <State name="dead" />
+            </States>
+            <Potential type="Table">
+              <UtilityVariable name="C: After DR-1" timeSlice="0" />
+              <Values>0.0</Values>
+            </Potential>
+          </Branch>
+          <Branch>
+            <States>
+              <State name="distant recurrence" />
+            </States>
+            <Potential type="Table">
+              <UtilityVariable name="C: After DR-1" timeSlice="0" />
+              <Values>717.56865</Values>
+            </Potential>
+          </Branch>
+        </Branches>
+      </Potential>
+      <Potential type="Tree/ADD" role="conditionalProbability">
+        <UtilityVariable name="C: After DR-2" timeSlice="0" />
+        <Variables>
+          <Variable name="State" timeSlice="0" />
+          <Variable name="Death OC" timeSlice="0" />
+          <Variable name="Distance Recurrence" timeSlice="0" />
+          <Variable name="Cycle" timeSlice="0" />
+          <Variable name="Chemo" />
+        </Variables>
+        <TopVariable name="State" timeSlice="0" />
+        <Branches>
+          <Branch>
+            <States>
+              <State name="distant recurrence" />
+              <State name="dead" />
+            </States>
+            <Potential type="Table">
+              <UtilityVariable name="C: After DR-2" timeSlice="0" />
+              <Values>0.0</Values>
+            </Potential>
+          </Branch>
+          <Branch>
+            <States>
+              <State name="recurrence-free" />
+            </States>
+            <Potential type="Tree/ADD">
+              <UtilityVariable name="C: After DR-2" timeSlice="0" />
+              <Variables>
+                <Variable name="State" timeSlice="0" />
+                <Variable name="Death OC" timeSlice="0" />
+                <Variable name="Distance Recurrence" timeSlice="0" />
+                <Variable name="Cycle" timeSlice="0" />
+                <Variable name="Chemo" />
+              </Variables>
+              <TopVariable name="Death OC" timeSlice="0" />
+              <Branches>
+                <Branch>
                   <States>
-                    <State name="none" />
+                    <State name="yes" />
                   </States>
                   <Potential type="Table">
-                    <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
+                    <UtilityVariable name="C: After DR-2" timeSlice="0" />
                     <Values>0.0</Values>
+                  </Potential>
+                </Branch>
+                <Branch>
+                  <States>
+                    <State name="no" />
+                  </States>
+                  <Potential type="Tree/ADD">
+                    <UtilityVariable name="C: After DR-2" timeSlice="0" />
+                    <Variables>
+                      <Variable name="State" timeSlice="0" />
+                      <Variable name="Death OC" timeSlice="0" />
+                      <Variable name="Distance Recurrence" timeSlice="0" />
+                      <Variable name="Cycle" timeSlice="0" />
+                      <Variable name="Chemo" />
+                    </Variables>
+                    <TopVariable name="Distance Recurrence" timeSlice="0" />
+                    <Branches>
+                      <Branch>
+                        <States>
+                          <State name="yes" />
+                        </States>
+                        <Potential type="Tree/ADD">
+                          <UtilityVariable name="C: After DR-2" timeSlice="0" />
+                          <Variables>
+                            <Variable name="State" timeSlice="0" />
+                            <Variable name="Death OC" timeSlice="0" />
+                            <Variable name="Distance Recurrence" timeSlice="0" />
+                            <Variable name="Cycle" timeSlice="0" />
+                            <Variable name="Chemo" />
+                          </Variables>
+                          <TopVariable name="Chemo" />
+                          <Branches>
+                            <Branch>
+                              <States>
+                                <State name="yes" />
+                              </States>
+                              <Potential type="Tree/ADD">
+                                <UtilityVariable name="C: After DR-2" timeSlice="0" />
+                                <Variables>
+                                  <Variable name="State" timeSlice="0" />
+                                  <Variable name="Death OC" timeSlice="0" />
+                                  <Variable name="Distance Recurrence" timeSlice="0" />
+                                  <Variable name="Cycle" timeSlice="0" />
+                                  <Variable name="Chemo" />
+                                </Variables>
+                                <TopVariable name="Cycle" timeSlice="0" />
+                                <Branches>
+                                  <Branch>
+                                    <Thresholds>
+                                      <Threshold value="1.0" belongsTo="right" />
+                                      <Threshold value="7.0" belongsTo="left" />
+                                    </Thresholds>
+                                    <Potential type="Table">
+                                      <UtilityVariable name="C: After DR-2" timeSlice="0" />
+                                      <Values>0.0</Values>
+                                    </Potential>
+                                  </Branch>
+                                  <Branch>
+                                    <Thresholds>
+                                      <Threshold value="7.0" belongsTo="left" />
+                                      <Threshold value="601.0" belongsTo="left" />
+                                    </Thresholds>
+                                    <Potential type="Table">
+                                      <UtilityVariable name="C: After DR-2" timeSlice="0" />
+                                      <Values>8356.228203</Values>
+                                    </Potential>
+                                  </Branch>
+                                </Branches>
+                              </Potential>
+                            </Branch>
+                            <Branch>
+                              <States>
+                                <State name="no" />
+                              </States>
+                              <Potential type="Tree/ADD">
+                                <UtilityVariable name="C: After DR-2" timeSlice="0" />
+                                <Variables>
+                                  <Variable name="State" timeSlice="0" />
+                                  <Variable name="Death OC" timeSlice="0" />
+                                  <Variable name="Distance Recurrence" timeSlice="0" />
+                                  <Variable name="Cycle" timeSlice="0" />
+                                  <Variable name="Chemo" />
+                                </Variables>
+                                <TopVariable name="Cycle" timeSlice="0" />
+                                <Branches>
+                                  <Branch>
+                                    <Thresholds>
+                                      <Threshold value="1.0" belongsTo="right" />
+                                      <Threshold value="2.0" belongsTo="right" />
+                                    </Thresholds>
+                                    <Potential type="Table">
+                                      <UtilityVariable name="C: After DR-2" timeSlice="0" />
+                                      <Values>0.0</Values>
+                                    </Potential>
+                                  </Branch>
+                                  <Branch>
+                                    <Thresholds>
+                                      <Threshold value="2.0" belongsTo="right" />
+                                      <Threshold value="601.0" belongsTo="left" />
+                                    </Thresholds>
+                                    <Potential type="Table">
+                                      <UtilityVariable name="C: After DR-2" timeSlice="0" />
+                                      <Values>8356.228203</Values>
+                                    </Potential>
+                                  </Branch>
+                                </Branches>
+                              </Potential>
+                            </Branch>
+                          </Branches>
+                        </Potential>
+                      </Branch>
+                      <Branch>
+                        <States>
+                          <State name="no" />
+                        </States>
+                        <Potential type="Table">
+                          <UtilityVariable name="C: After DR-2" timeSlice="0" />
+                          <Values>0.0</Values>
+                        </Potential>
+                      </Branch>
+                    </Branches>
+                  </Potential>
+                </Branch>
+              </Branches>
+            </Potential>
+          </Branch>
+        </Branches>
+      </Potential>
+      <Potential type="Tree/ADD" role="conditionalProbability">
+        <UtilityVariable name="C: Before DR" timeSlice="0" />
+        <Variables>
+          <Variable name="State" timeSlice="0" />
+          <Variable name="Cycle" timeSlice="0" />
+          <Variable name="Chemo" />
+        </Variables>
+        <TopVariable name="State" timeSlice="0" />
+        <Branches>
+          <Branch>
+            <States>
+              <State name="distant recurrence" />
+              <State name="dead" />
+            </States>
+            <Potential type="Table">
+              <UtilityVariable name="C: Before DR" timeSlice="0" />
+              <Values>0.0</Values>
+            </Potential>
+          </Branch>
+          <Branch>
+            <States>
+              <State name="recurrence-free" />
+            </States>
+            <Potential type="Tree/ADD">
+              <UtilityVariable name="C: Before DR" timeSlice="0" />
+              <Variables>
+                <Variable name="State" timeSlice="0" />
+                <Variable name="Cycle" timeSlice="0" />
+                <Variable name="Chemo" />
+              </Variables>
+              <TopVariable name="Cycle" timeSlice="0" />
+              <Branches>
+                <Branch>
+                  <Thresholds>
+                    <Threshold value="1.0" belongsTo="right" />
+                    <Threshold value="2.0" belongsTo="right" />
+                  </Thresholds>
+                  <Potential type="Table">
+                    <UtilityVariable name="C: Before DR" timeSlice="0" />
+                    <Values>0.0</Values>
+                  </Potential>
+                </Branch>
+                <Branch>
+                  <Thresholds>
+                    <Threshold value="2.0" belongsTo="right" />
+                    <Threshold value="13.0" belongsTo="right" />
+                  </Thresholds>
+                  <Potential type="Tree/ADD">
+                    <UtilityVariable name="C: Before DR" timeSlice="0" />
+                    <Variables>
+                      <Variable name="State" timeSlice="0" />
+                      <Variable name="Cycle" timeSlice="0" />
+                      <Variable name="Chemo" />
+                    </Variables>
+                    <TopVariable name="Chemo" />
+                    <Branches>
+                      <Branch>
+                        <States>
+                          <State name="yes" />
+                        </States>
+                        <Potential type="Tree/ADD">
+                          <UtilityVariable name="C: Before DR" timeSlice="0" />
+                          <Variables>
+                            <Variable name="State" timeSlice="0" />
+                            <Variable name="Cycle" timeSlice="0" />
+                            <Variable name="Chemo" />
+                          </Variables>
+                          <TopVariable name="Cycle" timeSlice="0" />
+                          <Branches>
+                            <Branch>
+                              <Thresholds>
+                                <Threshold value="2.0" belongsTo="right" />
+                                <Threshold value="7.0" belongsTo="left" />
+                              </Thresholds>
+                              <Potential type="Table">
+                                <UtilityVariable name="C: Before DR" timeSlice="0" />
+                                <Values>0.0</Values>
+                              </Potential>
+                            </Branch>
+                            <Branch>
+                              <Thresholds>
+                                <Threshold value="7.0" belongsTo="left" />
+                                <Threshold value="13.0" belongsTo="right" />
+                              </Thresholds>
+                              <Potential type="Table">
+                                <UtilityVariable name="C: Before DR" timeSlice="0" />
+                                <Values>58.5917</Values>
+                              </Potential>
+                            </Branch>
+                          </Branches>
+                        </Potential>
+                      </Branch>
+                      <Branch>
+                        <States>
+                          <State name="no" />
+                        </States>
+                        <Potential type="Table">
+                          <UtilityVariable name="C: Before DR" timeSlice="0" />
+                          <Values>58.5917</Values>
+                        </Potential>
+                      </Branch>
+                    </Branches>
+                  </Potential>
+                </Branch>
+                <Branch>
+                  <Thresholds>
+                    <Threshold value="13.0" belongsTo="right" />
+                    <Threshold value="25.0" belongsTo="right" />
+                  </Thresholds>
+                  <Potential type="Table">
+                    <UtilityVariable name="C: Before DR" timeSlice="0" />
+                    <Values>53.2389</Values>
+                  </Potential>
+                </Branch>
+                <Branch>
+                  <Thresholds>
+                    <Threshold value="25.0" belongsTo="right" />
+                    <Threshold value="37.0" belongsTo="right" />
+                  </Thresholds>
+                  <Potential type="Table">
+                    <UtilityVariable name="C: Before DR" timeSlice="0" />
+                    <Values>47.886</Values>
+                  </Potential>
+                </Branch>
+                <Branch>
+                  <Thresholds>
+                    <Threshold value="37.0" belongsTo="right" />
+                    <Threshold value="49.0" belongsTo="right" />
+                  </Thresholds>
+                  <Potential type="Table">
+                    <UtilityVariable name="C: Before DR" timeSlice="0" />
+                    <Values>42.5332</Values>
+                  </Potential>
+                </Branch>
+                <Branch>
+                  <Thresholds>
+                    <Threshold value="49.0" belongsTo="right" />
+                    <Threshold value="69.0" belongsTo="right" />
+                  </Thresholds>
+                  <Potential type="Table">
+                    <UtilityVariable name="C: Before DR" timeSlice="0" />
+                    <Values>37.1804</Values>
+                  </Potential>
+                </Branch>
+                <Branch>
+                  <Thresholds>
+                    <Threshold value="69.0" belongsTo="right" />
+                    <Threshold value="601.0" belongsTo="left" />
+                  </Thresholds>
+                  <Potential type="Table">
+                    <UtilityVariable name="C: Before DR" timeSlice="0" />
+                    <Values>33.8322</Values>
+                  </Potential>
+                </Branch>
+              </Branches>
+            </Potential>
+          </Branch>
+        </Branches>
+      </Potential>
+      <Potential type="Tree/ADD" role="conditionalProbability">
+        <UtilityVariable name="C: During last 3 months" timeSlice="0" />
+        <Variables>
+          <Variable name="Death OC" timeSlice="0" />
+          <Variable name="State" timeSlice="0" />
+          <Variable name="Death Cancer" timeSlice="0" />
+        </Variables>
+        <TopVariable name="State" timeSlice="0" />
+        <Branches>
+          <Branch>
+            <States>
+              <State name="recurrence-free" />
+              <State name="dead" />
+            </States>
+            <Potential type="Table">
+              <UtilityVariable name="C: During last 3 months" timeSlice="0" />
+              <Values>0.0</Values>
+            </Potential>
+          </Branch>
+          <Branch>
+            <States>
+              <State name="distant recurrence" />
+            </States>
+            <Potential type="Tree/ADD">
+              <UtilityVariable name="C: During last 3 months" timeSlice="0" />
+              <Variables>
+                <Variable name="Death OC" timeSlice="0" />
+                <Variable name="State" timeSlice="0" />
+                <Variable name="Death Cancer" timeSlice="0" />
+              </Variables>
+              <TopVariable name="Death OC" timeSlice="0" />
+              <Branches>
+                <Branch>
+                  <States>
+                    <State name="yes" />
+                  </States>
+                  <Potential type="Table">
+                    <UtilityVariable name="C: During last 3 months" timeSlice="0" />
+                    <Values>0.0</Values>
+                  </Potential>
+                </Branch>
+                <Branch>
+                  <States>
+                    <State name="no" />
+                  </States>
+                  <Potential type="Tree/ADD">
+                    <UtilityVariable name="C: During last 3 months" timeSlice="0" />
+                    <Variables>
+                      <Variable name="Death OC" timeSlice="0" />
+                      <Variable name="State" timeSlice="0" />
+                      <Variable name="Death Cancer" timeSlice="0" />
+                    </Variables>
+                    <TopVariable name="Death Cancer" timeSlice="0" />
+                    <Branches>
+                      <Branch>
+                        <States>
+                          <State name="no" />
+                        </States>
+                        <Potential type="Table">
+                          <UtilityVariable name="C: During last 3 months" timeSlice="0" />
+                          <Values>0.0</Values>
+                        </Potential>
+                      </Branch>
+                      <Branch>
+                        <States>
+                          <State name="yes" />
+                        </States>
+                        <Potential type="Table">
+                          <UtilityVariable name="C: During last 3 months" timeSlice="0" />
+                          <Values>22040.96077</Values>
+                        </Potential>
+                      </Branch>
+                    </Branches>
                   </Potential>
                 </Branch>
               </Branches>
@@ -9007,99 +9605,99 @@
           </Branch>
         </Branches>
       </Potential>
-      <Potential type="Table" role="conditionalProbability">
-        <UtilityVariable name="Life time" timeSlice="0" />
-        <Variables>
-          <Variable name="State" timeSlice="0" />
-        </Variables>
-        <Values>0.08333333333333333 0.08333333333333333 0.0</Values>
-      </Potential>
       <Potential type="Tree/ADD" role="conditionalProbability">
-        <UtilityVariable name="U: DR" timeSlice="0" />
+        <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
         <Variables>
-          <Variable name="State" timeSlice="0" />
-        </Variables>
-        <TopVariable name="State" timeSlice="0" />
-        <Branches>
-          <Branch>
-            <States>
-              <State name="recurrence-free" />
-              <State name="dead" />
-            </States>
-            <Potential type="Table">
-              <UtilityVariable name="U: DR" timeSlice="0" />
-              <Values>0.0</Values>
-            </Potential>
-          </Branch>
-          <Branch>
-            <States>
-              <State name="distant recurrence" />
-            </States>
-            <Potential type="Table">
-              <UtilityVariable name="U: DR" timeSlice="0" />
-              <Values>0.0570833</Values>
-            </Potential>
-          </Branch>
-        </Branches>
-      </Potential>
-      <Potential type="Tree/ADD" role="conditionalProbability">
-        <UtilityVariable name="U: RF" timeSlice="0" />
-        <Variables>
+          <Variable name="Chemo Type" />
+          <Variable name="Chemo Tox" timeSlice="0" />
           <Variable name="Cycle" timeSlice="0" />
-          <Variable name="State" timeSlice="0" />
         </Variables>
-        <TopVariable name="State" timeSlice="0" />
+        <TopVariable name="Cycle" timeSlice="0" />
         <Branches>
           <Branch>
-            <States>
-              <State name="distant recurrence" />
-              <State name="dead" />
-            </States>
+            <Thresholds>
+              <Threshold value="1.0" belongsTo="right" />
+              <Threshold value="2.0" belongsTo="right" />
+            </Thresholds>
             <Potential type="Table">
-              <UtilityVariable name="U: RF" timeSlice="0" />
+              <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
               <Values>0.0</Values>
             </Potential>
           </Branch>
           <Branch>
-            <States>
-              <State name="recurrence-free" />
-            </States>
+            <Thresholds>
+              <Threshold value="2.0" belongsTo="right" />
+              <Threshold value="601.0" belongsTo="left" />
+            </Thresholds>
             <Potential type="Tree/ADD">
-              <UtilityVariable name="U: RF" timeSlice="0" />
+              <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
               <Variables>
+                <Variable name="Chemo Type" />
+                <Variable name="Chemo Tox" timeSlice="0" />
                 <Variable name="Cycle" timeSlice="0" />
-                <Variable name="State" timeSlice="0" />
               </Variables>
-              <TopVariable name="Cycle" timeSlice="0" />
+              <TopVariable name="Chemo Tox" timeSlice="0" />
               <Branches>
                 <Branch>
-                  <Thresholds>
-                    <Threshold value="1.0" belongsTo="right" />
-                    <Threshold value="2.0" belongsTo="right" />
-                  </Thresholds>
+                  <States>
+                    <State name="tox" />
+                    <State name="no tox" />
+                  </States>
+                  <Potential type="Tree/ADD">
+                    <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
+                    <Variables>
+                      <Variable name="Chemo Type" />
+                      <Variable name="Chemo Tox" timeSlice="0" />
+                      <Variable name="Cycle" timeSlice="0" />
+                    </Variables>
+                    <TopVariable name="Chemo Type" />
+                    <Branches>
+                      <Branch>
+                        <States>
+                          <State name="CMF" />
+                        </States>
+                        <Potential type="Table">
+                          <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
+                          <Values>223.281835248</Values>
+                        </Potential>
+                      </Branch>
+                      <Branch>
+                        <States>
+                          <State name="TC" />
+                        </States>
+                        <Potential type="Table">
+                          <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
+                          <Values>672.83517</Values>
+                        </Potential>
+                      </Branch>
+                      <Branch>
+                        <States>
+                          <State name="FEC-D" />
+                        </States>
+                        <Potential type="Table">
+                          <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
+                          <Values>1050.00517</Values>
+                        </Potential>
+                      </Branch>
+                      <Branch>
+                        <States>
+                          <State name="None" />
+                        </States>
+                        <Potential type="Table">
+                          <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
+                          <Values>0.0</Values>
+                        </Potential>
+                      </Branch>
+                    </Branches>
+                  </Potential>
+                </Branch>
+                <Branch>
+                  <States>
+                    <State name="none" />
+                  </States>
                   <Potential type="Table">
-                    <UtilityVariable name="U: RF" timeSlice="0" />
+                    <UtilityVariable name="C: Chemo Tox" timeSlice="0" />
                     <Values>0.0</Values>
-                  </Potential>
-                </Branch>
-                <Branch>
-                  <Thresholds>
-                    <Threshold value="2.0" belongsTo="right" />
-                    <Threshold value="13.0" belongsTo="right" />
-                  </Thresholds>
-                  <Potential type="Table">
-                    <UtilityVariable name="U: RF" timeSlice="0" />
-                    <Values>0.062</Values>
-                  </Potential>
-                </Branch>
-                <Branch>
-                  <Thresholds>
-                    <Threshold value="13.0" belongsTo="right" />
-                    <Threshold value="601.0" belongsTo="left" />
-                  </Thresholds>
-                  <Potential type="Table">
-                    <UtilityVariable name="U: RF" timeSlice="0" />
-                    <Values>0.064916667</Values>
                   </Potential>
                 </Branch>
               </Branches>
@@ -9136,191 +9734,6 @@
           </Branch>
         </Branches>
       </Potential>
-      <Potential type="Tree/ADD" role="conditionalProbability">
-        <UtilityVariable name="C: During last 3 months" timeSlice="0" />
-        <Variables>
-          <Variable name="Death OC" timeSlice="0" />
-          <Variable name="State" timeSlice="0" />
-          <Variable name="Death Cancer" timeSlice="0" />
-        </Variables>
-        <TopVariable name="State" timeSlice="0" />
-        <Branches>
-          <Branch>
-            <States>
-              <State name="recurrence-free" />
-              <State name="dead" />
-            </States>
-            <Potential type="Table">
-              <UtilityVariable name="C: During last 3 months" timeSlice="0" />
-              <Values>0.0</Values>
-            </Potential>
-          </Branch>
-          <Branch>
-            <States>
-              <State name="distant recurrence" />
-            </States>
-            <Potential type="Tree/ADD">
-              <UtilityVariable name="C: During last 3 months" timeSlice="0" />
-              <Variables>
-                <Variable name="Death OC" timeSlice="0" />
-                <Variable name="State" timeSlice="0" />
-                <Variable name="Death Cancer" timeSlice="0" />
-              </Variables>
-              <TopVariable name="Death OC" timeSlice="0" />
-              <Branches>
-                <Branch>
-                  <States>
-                    <State name="yes" />
-                  </States>
-                  <Potential type="Table">
-                    <UtilityVariable name="C: During last 3 months" timeSlice="0" />
-                    <Values>0.0</Values>
-                  </Potential>
-                </Branch>
-                <Branch>
-                  <States>
-                    <State name="no" />
-                  </States>
-                  <Potential type="Tree/ADD">
-                    <UtilityVariable name="C: During last 3 months" timeSlice="0" />
-                    <Variables>
-                      <Variable name="Death OC" timeSlice="0" />
-                      <Variable name="State" timeSlice="0" />
-                      <Variable name="Death Cancer" timeSlice="0" />
-                    </Variables>
-                    <TopVariable name="Death Cancer" timeSlice="0" />
-                    <Branches>
-                      <Branch>
-                        <States>
-                          <State name="no" />
-                        </States>
-                        <Potential type="Table">
-                          <UtilityVariable name="C: During last 3 months" timeSlice="0" />
-                          <Values>0.0</Values>
-                        </Potential>
-                      </Branch>
-                      <Branch>
-                        <States>
-                          <State name="yes" />
-                        </States>
-                        <Potential type="Table">
-                          <UtilityVariable name="C: During last 3 months" timeSlice="0" />
-                          <Values>22040.96077</Values>
-                        </Potential>
-                      </Branch>
-                    </Branches>
-                  </Potential>
-                </Branch>
-              </Branches>
-            </Potential>
-          </Branch>
-        </Branches>
-      </Potential>
-      <Potential type="Tree/ADD" role="conditionalProbability">
-        <UtilityVariable name="C: Before DR" timeSlice="0" />
-        <Variables>
-          <Variable name="State" timeSlice="0" />
-          <Variable name="Cycle" timeSlice="0" />
-        </Variables>
-        <TopVariable name="State" timeSlice="0" />
-        <Branches>
-          <Branch>
-            <States>
-              <State name="distant recurrence" />
-              <State name="dead" />
-            </States>
-            <Potential type="Table">
-              <UtilityVariable name="C: Before DR" timeSlice="0" />
-              <Values>0.0</Values>
-            </Potential>
-          </Branch>
-          <Branch>
-            <States>
-              <State name="recurrence-free" />
-            </States>
-            <Potential type="Tree/ADD">
-              <UtilityVariable name="C: Before DR" timeSlice="0" />
-              <Variables>
-                <Variable name="State" timeSlice="0" />
-                <Variable name="Cycle" timeSlice="0" />
-              </Variables>
-              <TopVariable name="Cycle" timeSlice="0" />
-              <Branches>
-                <Branch>
-                  <Thresholds>
-                    <Threshold value="1.0" belongsTo="right" />
-                    <Threshold value="2.0" belongsTo="right" />
-                  </Thresholds>
-                  <Potential type="Table">
-                    <UtilityVariable name="C: Before DR" timeSlice="0" />
-                    <Values>0.0</Values>
-                  </Potential>
-                </Branch>
-                <Branch>
-                  <Thresholds>
-                    <Threshold value="2.0" belongsTo="right" />
-                    <Threshold value="13.0" belongsTo="right" />
-                  </Thresholds>
-                  <Potential type="Table">
-                    <UtilityVariable name="C: Before DR" timeSlice="0" />
-                    <Values>58.5917</Values>
-                  </Potential>
-                </Branch>
-                <Branch>
-                  <Thresholds>
-                    <Threshold value="13.0" belongsTo="right" />
-                    <Threshold value="25.0" belongsTo="right" />
-                  </Thresholds>
-                  <Potential type="Table">
-                    <UtilityVariable name="C: Before DR" timeSlice="0" />
-                    <Values>53.2389</Values>
-                  </Potential>
-                </Branch>
-                <Branch>
-                  <Thresholds>
-                    <Threshold value="25.0" belongsTo="right" />
-                    <Threshold value="37.0" belongsTo="right" />
-                  </Thresholds>
-                  <Potential type="Table">
-                    <UtilityVariable name="C: Before DR" timeSlice="0" />
-                    <Values>47.886</Values>
-                  </Potential>
-                </Branch>
-                <Branch>
-                  <Thresholds>
-                    <Threshold value="37.0" belongsTo="right" />
-                    <Threshold value="49.0" belongsTo="right" />
-                  </Thresholds>
-                  <Potential type="Table">
-                    <UtilityVariable name="C: Before DR" timeSlice="0" />
-                    <Values>42.5332</Values>
-                  </Potential>
-                </Branch>
-                <Branch>
-                  <Thresholds>
-                    <Threshold value="49.0" belongsTo="right" />
-                    <Threshold value="69.0" belongsTo="right" />
-                  </Thresholds>
-                  <Potential type="Table">
-                    <UtilityVariable name="C: Before DR" timeSlice="0" />
-                    <Values>37.1804</Values>
-                  </Potential>
-                </Branch>
-                <Branch>
-                  <Thresholds>
-                    <Threshold value="69.0" belongsTo="right" />
-                    <Threshold value="601.0" belongsTo="left" />
-                  </Thresholds>
-                  <Potential type="Table">
-                    <UtilityVariable name="C: Before DR" timeSlice="0" />
-                    <Values>33.8322</Values>
-                  </Potential>
-                </Branch>
-              </Branches>
-            </Potential>
-          </Branch>
-        </Branches>
-      </Potential>
     </Potentials>
   </ProbNet>
   <InferenceOptions>
@@ -9338,7 +9751,7 @@
         <Scales>
           <Scale Criterion="Eff" Value="1.0" />
           <Scale Criterion="Cost" Value="1.0" />
-          <Scale Criterion="Life time" Value="1.0" />
+          <Scale Criterion="Life time" Value="0.0" />
         </Scales>
         <CE_Criteria>
           <CE_Criterion Criterion="Eff" Value="Effectiveness" />
@@ -9348,7 +9761,7 @@
       </CostEffectiveness>
     </MulticriteriaOptions>
     <TemporalOptions>
-      <Slices>6</Slices>
+      <Slices>10</Slices>
       <Transition>END</Transition>
       <DiscountRates>
         <DiscountRate Criterion="Eff" value="0.05" unit="YEAR" />
@@ -9363,7 +9776,7 @@
         <Variable name="Dec: 21g" />
         <Variable name="AO risk" />
       </Variables>
-      <State>no</State>
+      <State>yes</State>
     </Potential>
     <Potential type="Delta" role="policy">
       <Variables>

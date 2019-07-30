@@ -18,6 +18,7 @@ import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.CEP;
+import org.openmarkov.core.model.network.CycleLength;
 import org.openmarkov.core.model.network.EvidenceCase;
 import org.openmarkov.core.model.network.Finding;
 import org.openmarkov.core.model.network.Node;
@@ -45,7 +46,7 @@ public class mid21gene {
 	// Delta parameter for Assert.Equals methods
 	private final double deltaEquals = Math.pow(10, -4);
 
-	private final int C_TEMPORAL_HORIZON = 10;
+	private final int C_TEMPORAL_HORIZON = 601;
 
 	private List<CEA_Scenario_Result> cea_scenario_results;
 
@@ -70,6 +71,8 @@ public class mid21gene {
 		this.probNet = probNetInfo.getProbNet();
 
 		this.probNet.getInferenceOptions().getTemporalOptions().setHorizon(C_TEMPORAL_HORIZON);
+		this.probNet.setCycleLength(new CycleLength(CycleLength.Unit.MONTH));
+		
 
 		if (probNetInfo.getEvidence().size() != 0) {
 			this.preResolutionEvidence = probNetInfo.getEvidence().get(0);
@@ -78,24 +81,6 @@ public class mid21gene {
 		cea_scenario_results = new ArrayList<>();
 	}
 
-	@Test public void veResolutionTestWithoutEvidence() {
-		try {
-			VEEvaluation evaluation = new VEEvaluation(probNet);
-			LogManager.getLogger().debug("Utility " + evaluation.getUtility());
-
-			VEPropagation vePropagation = new VEPropagation(probNet);
-			List<Variable> variablesOfInterest = new ArrayList<>();
-			variablesOfInterest.add(probNet.getVariable("Group"));
-			vePropagation.setVariablesOfInterest(variablesOfInterest);
-			for (Variable variable : vePropagation.getPosteriorValues().keySet()) {
-				TablePotential potential = vePropagation.getPosteriorValues().get(variable);
-				LogManager.getLogger().debug("Potential for " + variable.getBaseName() + " = " + evaluation.getUtility());
-			}
-
-		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
 
 	@Test public void getCEA4Scenarios() {
 		try {
@@ -255,8 +240,10 @@ public class mid21gene {
 		double effectiveness = cep.getEffectiveness(0);
 		LogManager.getLogger().info("Cost: " + costs);
 		LogManager.getLogger().info("Effectiveness: " + effectiveness);
-
+		
+		
 		// Gets life_time
+		/*
 		VETemporalEvolution veTemporalEvolution = new VETemporalEvolution(probNet, probNet.getVariable("Life time", 0));
 		HashMap<Variable, TablePotential> result = veTemporalEvolution.getTemporalEvolution();
 		double life_time = 0;
@@ -264,12 +251,13 @@ public class mid21gene {
 			life_time += potential.getValues()[0];
 		}
 		LogManager.getLogger().info("Life years: " + life_time);
-
+		*/
+		
 		CEA_Scenario_Result cea_scenario_result = new CEA_Scenario_Result();
 		cea_scenario_result.scenario = scenarioName;
 		cea_scenario_result.cost = costs;
 		cea_scenario_result.effectiveness = effectiveness;
-		cea_scenario_result.lifeTime = life_time;
+		//cea_scenario_result.lifeTime = life_time;
 		cea_scenario_results.add(cea_scenario_result);
 	}
 
