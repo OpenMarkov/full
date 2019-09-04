@@ -23,6 +23,7 @@ import org.openmarkov.core.model.network.EvidenceCase;
 import org.openmarkov.core.model.network.Finding;
 import org.openmarkov.core.model.network.Node;
 import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.core.model.network.State;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.DeltaPotential;
 import org.openmarkov.core.model.network.potential.TablePotential;
@@ -80,14 +81,26 @@ public class mid21gene {
 
 		cea_scenario_results = new ArrayList<>();
 	}
+	
+	@Test public void prueba() throws NodeNotFoundException, InvalidStateException, NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
+		//Node dec_21g = probNet.getNode("Dec: 21g");
+		
+		//State stado = dec_21g.getVariable().getState("no");
+		//DeltaPotential potencial = ((DeltaPotential) dec_21g.getPotentials().get(0));
+	    //	potencial.setValue(0);
+		
+		evaluateScenario("demo");
+	}
+	
 
-
+/*
 	@Test public void getCEA4Scenarios() {
 		try {
+			
 			// L-L-NC
 			setScenario("AO low", "21g low", "no");
 			evaluateScenario("L-L-NC");
-
+	
 			// L-L-C
 			setScenario("AO low", "21g low", "yes");
 			evaluateScenario("L-L-C");
@@ -180,12 +193,13 @@ public class mid21gene {
 			// H-N-C
 			setScenario("AO high", "21g N/A", "yes");
 			evaluateScenario("H-N-C");
-
+			
 			printToExcel();
 		} catch (NodeNotFoundException | InvalidStateException | NoFindingException | IncompatibleEvidenceException | NotEvaluableNetworkException | UnexpectedInferenceException e) {
 			e.printStackTrace();
 		}
 	}
+	*/
 
 	private void printToExcel() {
 		// Abstract output file
@@ -260,6 +274,8 @@ public class mid21gene {
 		//cea_scenario_result.lifeTime = life_time;
 		cea_scenario_results.add(cea_scenario_result);
 	}
+	
+
 
 	private void setScenario(String str_ao_risk, String str_gen_risk, String chemo_dec)
 			throws NodeNotFoundException, InvalidStateException, NoFindingException, IncompatibleEvidenceException {
