@@ -26,8 +26,11 @@ import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.State;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.DeltaPotential;
+import org.openmarkov.core.model.network.potential.GTablePotential;
 import org.openmarkov.core.model.network.potential.TablePotential;
+import org.openmarkov.inference.temporalevaluation.tasks.TemporalEvaluation;
 import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
+import org.openmarkov.inference.variableElimination.tasks.VECEPSA;
 import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
 import org.openmarkov.inference.variableElimination.tasks.VEPropagation;
 import org.openmarkov.inference.variableElimination.tasks.VETemporalEvolution;
@@ -47,7 +50,7 @@ public class mid21gene {
 	// Delta parameter for Assert.Equals methods
 	private final double deltaEquals = Math.pow(10, -4);
 
-	private final int C_TEMPORAL_HORIZON = 601;
+	private final int C_TEMPORAL_HORIZON = 600;
 
 	private List<CEA_Scenario_Result> cea_scenario_results;
 
@@ -57,7 +60,7 @@ public class mid21gene {
 	@Before public void setUp() {
 		Configurator.setRootLevel(Level.DEBUG);
 
-		String networkName = "networks/mid/21-gene.pgmx";
+		String networkName = "networks/mid/21-gene-190909-psa.pgmx";
 		InputStream file = getClass().getClassLoader().getResourceAsStream(networkName);
 
 		// Load the network: ID-decide-test
@@ -71,8 +74,8 @@ public class mid21gene {
 		assert probNetInfo != null;
 		this.probNet = probNetInfo.getProbNet();
 
-		this.probNet.getInferenceOptions().getTemporalOptions().setHorizon(C_TEMPORAL_HORIZON);
-		this.probNet.setCycleLength(new CycleLength(CycleLength.Unit.MONTH));
+//		this.probNet.getInferenceOptions().getTemporalOptions().setHorizon(C_TEMPORAL_HORIZON);
+//		this.probNet.setCycleLength(new CycleLength(CycleLength.Unit.MONTH));
 		
 
 		if (probNetInfo.getEvidence().size() != 0) {
@@ -277,6 +280,13 @@ public class mid21gene {
 	
 
 
+	@Test
+	public void test() throws NodeNotFoundException, InvalidStateException, NotEvaluableNetworkException,
+			IncompatibleEvidenceException, UnexpectedInferenceException {
+
+		evaluateScenario("Demo");
+	}
+
 	private void setScenario(String str_ao_risk, String str_gen_risk, String chemo_dec)
 			throws NodeNotFoundException, InvalidStateException, NoFindingException, IncompatibleEvidenceException {
 		Node dec_21g = probNet.getNode("Dec: 21g");
@@ -299,6 +309,54 @@ public class mid21gene {
 		preResolutionEvidence.removeFinding(gen_risk.getVariable());
 		preResolutionEvidence.addFinding(ao_finding);
 		preResolutionEvidence.addFinding(gen_finding);
+	}
+
+	@Test
+	public void psa_test(){
+		try {
+			for (int i = 1; i <= 5; i++) {
+				long startTime, endTime;
+				int numSim = 1000;
+				VECEPSA vecepsa = new VECEPSA(probNet);
+				vecepsa.setNumSimulations(numSim);
+				vecepsa.setUseMultithreading(true);
+				LogManager.getLogger().debug("Iteration: " + i);
+				LogManager.getLogger().debug("Starting PSA with " + numSim + " simulations and multithreading");
+				startTime = System.nanoTime();
+				ArrayList<GTablePotential> cepPotentials = (ArrayList<GTablePotential>) vecepsa.getCEPPotentials();
+				endTime = System.nanoTime();
+				LogManager.getLogger().debug("Total time: " + (startTime-endTime) + " ns.");
+			}
+		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void temporalEvaluation(){
+		TemporalEvaluation temporalEvaluation = null;
+		try {
+			long startTime, endTime;
+			LogManager.getLogger().debug("Starting temporal evaluation");
+			startTime = System.nanoTime();
+			temporalEvaluation = new TemporalEvaluation(probNet);
+			temporalEvaluation.setPreResolutionEvidence(preResolutionEvidence);
+			GTablePotential atemporalUtility = (GTablePotential) temporalEvaluation.getAtemporalUtility();
+			endTime = System.nanoTime();
+			LogManager.getLogger().debug("Total time: " + (startTime-endTime) + " ns.");
+
+			LogManager.getLogger().debug("Starting VECEAnalysis");
+			startTime = System.nanoTime();
+			VECEAnalysis veceAnalysis = new VECEAnalysis(probNet);
+			veceAnalysis.setPreResolutionEvidence(preResolutionEvidence);
+			CEP cep =  veceAnalysis.getCEP();
+			endTime = System.nanoTime();
+			LogManager.getLogger().debug("Total time: " + (startTime-endTime) + " ns.");
+
+		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private class CEA_Scenario_Result {
