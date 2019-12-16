@@ -46,7 +46,7 @@ public class OpenMarkov {
 	/**
 	 * OpenMarkov main class
 	 *
-	 * @param args
+	 * @param args Arguments
 	 */
 	public static void main(String[] args) {
 		List<String> filesToOpen = new ArrayList<String>();
