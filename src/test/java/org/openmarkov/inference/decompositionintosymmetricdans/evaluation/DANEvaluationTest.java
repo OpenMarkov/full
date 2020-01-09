@@ -7,6 +7,8 @@
 
 package org.openmarkov.inference.decompositionintosymmetricdans.evaluation;
 
+import java.util.Arrays;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -302,6 +304,15 @@ public abstract class DANEvaluationTest extends NetworkEvaluationInferenceTest {
 			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
 			NotEvaluableNetworkException {
 		testNetworkEvaluation("utility-and-chance-function-sv", Math.abs(3)*0.7+Math.abs(-9)*0.3);
+	}
+	
+	@Test public void testDANDecUtilProductSV()
+			throws IncompatibleEvidenceException, UnexpectedInferenceException, NodeNotFoundException,
+			NotEvaluableNetworkException {
+		//for (int x:Arrays.asList(2,5)) {
+		for (int x:Arrays.asList(2)) {
+			testNetworkEvaluation("dec-util-product-0-"+x+"-0", 15.0);
+		}
 	}
 	
 	@Ignore @Test public void testDANOnlyTwoUtilityAndChanceFunctionSV()

@@ -254,9 +254,9 @@ public class Classificator extends PGMXReader_0_2 {
     }
 
     /**
-     * Checks if a string is contained in an array of strings
+     * Checks if the network name is included in the list of advanced features
      * @param netName
-     * @return
+     * @return True iff the network name is included in the list of advanced features
      */
     private boolean networkNameIsIncludedInListOfAdvancedFeatures(String netName) {
         boolean advancedFeatures = false;
