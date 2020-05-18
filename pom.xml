@@ -74,11 +74,11 @@
             <artifactId>org.openmarkov.costEffectiveness</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.sensitivityanalysis</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.openmarkov</groupId>-->
+<!--            <artifactId>org.openmarkov.sensitivityanalysis</artifactId>-->
+<!--            <version>0.3.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.dbgenerator</artifactId>
