@@ -38,32 +38,9 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
-public class idDecideTestNetworkTests {
+public abstract class idDecideTestNetworkTests extends IDNetworkTests {
 
-	private final String networkName = "networks/id/ID-decide-test.pgmx";
-
-	// Delta parameter for Assert.Equals methods
-	private final double deltaEquals = Math.pow(10, -4);
-
-	private ProbNet probNet;
-	private EvidenceCase preResolutionEvidence;
-
-	@Before public void setUp() throws Exception {
-		InputStream file = getClass().getClassLoader().getResourceAsStream(networkName);
-
-		// Load the network: ID-decide-test
-		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-		ProbNetInfo probNetInfo = null;
-		try {
-			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
-		} catch (ParserException e) {
-			e.printStackTrace();
-		}
-		this.probNet = probNetInfo.getProbNet();
-		if (probNetInfo.getEvidence().size() != 0) {
-			this.preResolutionEvidence = probNetInfo.getEvidence().get(0);
-		}
-	}
+	
 
 	@Test public void veResolutionTestWithoutEvidence() {
 		VEEvaluation veEvaluation;
@@ -201,21 +178,6 @@ public class idDecideTestNetworkTests {
 		}
 	}
 
-	@Test public void veSensAnTornadoSpiderTests() {
-		List<UncertainParameter> uncertainParameterList = SystematicSampling.getUncertainParameters(this.probNet);
-		AxisVariation axisVariation = new AxisVariation();
-		axisVariation.setVariationType(DeterministicAxisVariationType.POPP);
-		axisVariation.setVariationValue(0.8);
-
-		try {
-			VESensAnTornadoSpider veSensAnTornadoSpider = new VESensAnTornadoSpider(probNet, preResolutionEvidence,
-					uncertainParameterList, axisVariation, 50);
-			HashMap<UncertainParameter, TablePotential> uncertainParameterTablePotentialHashMap = veSensAnTornadoSpider
-					.getUncertainParametersPotentials();
-
-		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 }
