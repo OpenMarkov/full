@@ -8,7 +8,6 @@
 package org.openmarkov.inference;
 
 import org.openmarkov.core.model.network.ProbNet;
-import org.openmarkov.core.model.network.potential.Intervention;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.type.InfluenceDiagramType;
 

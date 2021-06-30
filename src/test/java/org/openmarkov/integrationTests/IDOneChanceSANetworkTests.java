@@ -2,7 +2,7 @@ package org.openmarkov.integrationTests;
 
 import org.junit.Before;
 import org.openmarkov.core.io.ProbNetReader;
-import org.openmarkov.io.probmodel.reader.PGMXReader_0_5;
+import org.openmarkov.io.probmodel.reader.PGMXReader_1_0;
 
 public class IDOneChanceSANetworkTests extends IDNetworkTests {
 	
@@ -15,7 +15,7 @@ public class IDOneChanceSANetworkTests extends IDNetworkTests {
 	@Override
 	protected ProbNetReader newPGMXReader() {
 		// TODO Auto-generated method stub
-		return new PGMXReader_0_5();
+		return new PGMXReader_1_0();
 	}
 
 }

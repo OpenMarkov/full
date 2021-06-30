@@ -8,14 +8,18 @@
 package org.openmarkov.inference.util;
 
 import bitbucket.NetsRepository;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.potential.Potential;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.type.NetworkType;
-
-import bitbucket.NetsRepository;
-import org.openmarkov.io.probmodel.PGMXReader;
+import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 public class Util {
 
