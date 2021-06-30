@@ -8,6 +8,11 @@
 package org.openmarkov.inference.variableElimination;
 
 import org.junit.Before;
+import org.junit.Test;
+import org.openmarkov.core.exception.NotEvaluableNetworkException;
+import org.openmarkov.core.exception.ParserException;
+import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.core.model.network.type.BayesianNetworkType;
 
 /**
  * @author Manuel Arias

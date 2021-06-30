@@ -8,7 +8,7 @@ import org.openmarkov.core.model.network.EvidenceCase;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 import org.openmarkov.io.probmodel.writer.PGMXWriter_0_2;
-import org.openmarkov.io.probmodel.writer.PGMXWriter_0_5;
+import org.openmarkov.io.probmodel.writer.PGMXWriter_1_0;
 
 import java.io.*;
 import java.net.URL;
@@ -137,7 +137,7 @@ public class PGMXCompound {
             if (version.matches(V0_2)) {
                 writer = new PGMXWriter_0_2();
             } else {
-                writer = new PGMXWriter_0_5();
+                writer = new PGMXWriter_1_0();
             }
             try {
                 writer.writeProbNet(fileName, probNet, evidenceCases);

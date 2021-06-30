@@ -8,6 +8,12 @@
 package org.openmarkov.inference.util;
 
 import bitbucket.NetsRepository;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.potential.Potential;
@@ -15,16 +21,10 @@ import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.type.NetworkType;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Util {
 
 	/**
 	 * Reads all the networks from the repository that meet the restriction given in the parameter "networkType"
-	 *
 	 * @param networkType <code>NetworkType</code>
 	 * @return <code>List</code> of <code>ProbNet</code>s
 	 */
