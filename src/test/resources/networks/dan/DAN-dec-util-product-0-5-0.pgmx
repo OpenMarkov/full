@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ProbModelXML formatVersion="1.0.0">
+<ProbModelXML formatVersion="0.5.0">
   <ProbNet type="DAN">
     <Comment showWhenOpeningNetwork="false"><![CDATA[<<Double click to add/modify comment>>]]></Comment>
     <DecisionCriteria>
@@ -48,14 +48,14 @@
       </Link>
     </Links>
     <Potentials>
-      <Potential type="UnivariateDistr" distribution="Exact">
+      <Potential type="UnivariateDistr" distribution="exact">
         <Variables>
           <Variable name="U" />
           <Variable name="D" />
         </Variables>
         <Values>2.0 5.0</Values>
       </Potential>
-      <Potential type="UnivariateDistr" distribution="Exact">
+      <Potential type="UnivariateDistr" distribution="exact">
         <Variables>
           <Variable name="U1" />
         </Variables>
