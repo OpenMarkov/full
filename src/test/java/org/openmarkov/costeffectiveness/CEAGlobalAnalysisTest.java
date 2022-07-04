@@ -30,7 +30,6 @@ import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CEAGlobalAnalysisTest {
@@ -61,7 +60,7 @@ public class CEAGlobalAnalysisTest {
 		veceAnalysis.setDecisionVariable(probNet.getNodes(NodeType.DECISION).get(0).getVariable());
 		veceAnalysis.setPreResolutionEvidence(evidence);
 
-		GTablePotential result = veceAnalysis.getUtility();
+		GTablePotential<?> result = veceAnalysis.getUtility();
 
 		double[] expectedResults = new double[] { 1066.744, 1.444, 852.399, 1.709 };
 
@@ -92,7 +91,7 @@ public class CEAGlobalAnalysisTest {
 		veceAnalysis.setDecisionVariable(probNet.getNodes(NodeType.DECISION).get(0).getVariable());
 		veceAnalysis.setPreResolutionEvidence(evidence);
 
-		GTablePotential result = veceAnalysis.getUtility();
+		GTablePotential<?> result = veceAnalysis.getUtility();
 
 		double[] expectedResults = new double[] { 1066.744, 1.444, 852.399, 1.709 };
 
@@ -119,7 +118,7 @@ public class CEAGlobalAnalysisTest {
 		ceAnalysis.setDecisionVariable(probNet.getNodes(NodeType.DECISION).get(0).getVariable());
 		ceAnalysis.setPreResolutionEvidence(evidence);
 
-		GTablePotential result = ceAnalysis.getUtility();
+		GTablePotential<?> result = ceAnalysis.getUtility();
 
 		double[] expectedResults = new double[] { 50585.917, 9.412, 44662.217, 8.471 };
 		Assert.assertArrayEquals(expectedResults, result.values, 0.001);
@@ -192,7 +191,7 @@ public class CEAGlobalAnalysisTest {
 		ceAnalysis.setDecisionVariable(probNet.getNodes(NodeType.DECISION).get(0).getVariable());
 		ceAnalysis.setPreResolutionEvidence(evidence);
 
-		GTablePotential result = ceAnalysis.getUtility();
+		GTablePotential<?> result = ceAnalysis.getUtility();
 
 		double[] expectedResults = new double[] { 50585.917, 8.935, 44662.217, 7.991 };
 
@@ -220,7 +219,7 @@ public class CEAGlobalAnalysisTest {
 		ceAnalysis.setDecisionVariable(probNet.getNodes(NodeType.DECISION).get(0).getVariable());
 		ceAnalysis.setPreResolutionEvidence(evidence);
 
-		GTablePotential result = ceAnalysis.getUtility();
+		GTablePotential<?> result = ceAnalysis.getUtility();
 
 		double[] expectedResults = new double[] { 510.948, 14.666, 609.904, 14.701 };
 		CEP[] ceps = new CEP[] {((CEP)result.elementTable.get(0)),((CEP)result.elementTable.get(1))};
@@ -242,6 +241,7 @@ public class CEAGlobalAnalysisTest {
 
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Test public void testDMHEE47PSA() throws Exception {
 		// Constants
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator + "MID-dmhee-4.7.pgmx";
@@ -265,6 +265,8 @@ public class CEAGlobalAnalysisTest {
 		vecepsa.setUseMultithreading(useMultithreading);
 
 		List<GTablePotential> result = (List<GTablePotential>) vecepsa.getCEPPotentials();
+		Assert.assertNotNull(result);
+		Assert.assertTrue(result.size() > 0);
 
 		double[] expectedResults = new double[] { 50600, 8.935, 44680, 7.991 };
 
@@ -274,6 +276,7 @@ public class CEAGlobalAnalysisTest {
 		Assert.assertEquals(expectedResults[3], ((CEP)result.get(0).elementTable.get(0)).getEffectiveness(0), 0.01);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Test public void testBriggsSA() throws Exception {
 		// Constants
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator + "MID-dmhee-4.8.pgmx";
@@ -303,6 +306,8 @@ public class CEAGlobalAnalysisTest {
 		vecepsa.setUseMultithreading(useMultithreading);
 
 		List<GTablePotential> result = (List<GTablePotential>) vecepsa.getCEPPotentials();
+		Assert.assertNotNull(result);
+		Assert.assertTrue(result.size() > 0);
 
 		double[] expectedResults = new double[] { 510.948, 14.666, 609.904, 14.701 };
 
@@ -350,11 +355,11 @@ public class CEAGlobalAnalysisTest {
 		veceAnalysis.setDecisionVariable(probNet.getNodes(NodeType.DECISION).get(0).getVariable());
 		veceAnalysis.setPreResolutionEvidence(evidence);
 
-		GTablePotential result = veceAnalysis.getUtility();
+		GTablePotential<?> result = veceAnalysis.getUtility();
 
-		List<Variable> variablesInOrder = Arrays.asList(result.getVariable(0), probNet.getVariable("Dec:Test type"),
+		/*List<Variable> variablesInOrder = Arrays.asList(result.getVariable(0), probNet.getVariable("Dec:Test type"),
 				probNet.getVariable("Dec:Vaccine"));
-//		result = DiscretePotentialOperations.reorder(result, variablesInOrder);
+		result = DiscretePotentialOperations.reorder(result, variablesInOrder);*/
 		double[] expectedResults = new double[] { 1205.296, 59.81, 2897.377, 59.855, 3420.872, 59.86, 1171.416, 60.158,
 				2813.055, 60.162, 3332.291, 60.162 };
 		Assert.assertArrayEquals(expectedResults, result.values, 0.001);
