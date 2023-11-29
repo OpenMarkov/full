@@ -29,6 +29,8 @@ import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,11 +46,13 @@ public class CEAGlobalAnalysisTest {
 		// Constants
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator + "chap.pgmx";
 		// Open the file containing the network
-		InputStream file = getClass().getClassLoader().getResourceAsStream(modelFilePath);
-
+		File f = null;
+		URL res = getClass().getClassLoader().getResource(modelFilePath);
+		f = Paths.get(res.toURI()).toFile();
+		String absolutePath = f.getAbsolutePath();
 		// Load the Bayesian network
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-		ProbNet probNet = pgmxReader.loadProbNet("CHAP", file);
+		ProbNet probNet = pgmxReader.loadProbNet(absolutePath);
 
 		EvidenceCase evidence = new EvidenceCase();
 
@@ -76,11 +80,13 @@ public class CEAGlobalAnalysisTest {
 		// Constants
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator + "chap-sv.pgmx";
 		// Open the file containing the network
-		InputStream file = getClass().getClassLoader().getResourceAsStream(modelFilePath);
-
+		File f = null;
+		URL res = getClass().getClassLoader().getResource(modelFilePath);
+		f = Paths.get(res.toURI()).toFile();
+		String absolutePath = f.getAbsolutePath();
 		// Load the Bayesian network
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-		ProbNet probNet = pgmxReader.loadProbNet("CHAP", file);
+		ProbNet probNet = pgmxReader.loadProbNet(absolutePath);
 
 		EvidenceCase evidence = new EvidenceCase();
 
@@ -102,11 +108,14 @@ public class CEAGlobalAnalysisTest {
 		// Constants
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator + "MID-dmhee-2.5.pgmx";
 		// Open the file containing the network
-		InputStream file = getClass().getClassLoader().getResourceAsStream(modelFilePath);
+		File f = null;
+		URL res = getClass().getClassLoader().getResource(modelFilePath);
+		f = Paths.get(res.toURI()).toFile();
+		String absolutePath = f.getAbsolutePath();
 
 		// Load the Bayesian network
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-		ProbNet probNet = pgmxReader.loadProbNet("Chancellor", file);
+		ProbNet probNet = pgmxReader.loadProbNet(absolutePath);
 
 		EvidenceCase evidence = new EvidenceCase();
 
@@ -129,11 +138,13 @@ public class CEAGlobalAnalysisTest {
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator
 				+ "MID-Chancellor-Unicriterion.pgmx";
 		// Open the file containing the network
-		InputStream file = getClass().getClassLoader().getResourceAsStream(modelFilePath);
-
+		File f = null;
+		URL res = getClass().getClassLoader().getResource(modelFilePath);
+		f = Paths.get(res.toURI()).toFile();
+		String absolutePath = f.getAbsolutePath();
 		// Load the Bayesian network
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-		ProbNet probNet = pgmxReader.loadProbNet("Chancellor", file);
+		ProbNet probNet = pgmxReader.loadProbNet(absolutePath);
 
 		EvidenceCase evidence = new EvidenceCase();
 		List<Variable> conditioningVariables = new ArrayList<Variable>();
@@ -175,11 +186,14 @@ public class CEAGlobalAnalysisTest {
 		// Constants
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator + "MID-dmhee-2.5-sv.pgmx";
 		// Open the file containing the network
-		InputStream file = getClass().getClassLoader().getResourceAsStream(modelFilePath);
+		File f = null;
+		URL res = getClass().getClassLoader().getResource(modelFilePath);
+		f = Paths.get(res.toURI()).toFile();
+		String absolutePath = f.getAbsolutePath();
 
 		// Load the Bayesian network
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-		ProbNet probNet = pgmxReader.loadProbNet("Chancellor", file);
+		ProbNet probNet = pgmxReader.loadProbNet(absolutePath);
 
 		EvidenceCase evidence = new EvidenceCase();
 
@@ -202,11 +216,14 @@ public class CEAGlobalAnalysisTest {
 		// Constants
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator + "MID-dmhee-3.5.pgmx";
 		// Open the file containing the network
-		InputStream file = getClass().getClassLoader().getResourceAsStream(modelFilePath);
+		File f = null;
+		URL res = getClass().getClassLoader().getResource(modelFilePath);
+		f = Paths.get(res.toURI()).toFile();
+		String absolutePath = f.getAbsolutePath();
 
 		// Load the Bayesian network
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-		ProbNet probNet = pgmxReader.loadProbNet("Briggs", file);
+		ProbNet probNet = pgmxReader.loadProbNet(absolutePath);
 
 		EvidenceCase evidence = new EvidenceCase();
 		Variable sexVariable = probNet.getVariable("Sex");
@@ -246,11 +263,14 @@ public class CEAGlobalAnalysisTest {
 		// Constants
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator + "MID-dmhee-4.7.pgmx";
 		// Open the file containing the network
-		InputStream file = getClass().getClassLoader().getResourceAsStream(modelFilePath);
+		File f = null;
+		URL res = getClass().getClassLoader().getResource(modelFilePath);
+		f = Paths.get(res.toURI()).toFile();
+		String absolutePath = f.getAbsolutePath();
 
 		// Load the Bayesian network
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-		ProbNet probNet = pgmxReader.loadProbNet("Chancellor", file);
+		ProbNet probNet = pgmxReader.loadProbNet(absolutePath);
 
 		EvidenceCase evidence = new EvidenceCase();
 
@@ -281,12 +301,14 @@ public class CEAGlobalAnalysisTest {
 		// Constants
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator + "MID-dmhee-4.8.pgmx";
 		// Open the file containing the network
-		InputStream file = getClass().getClassLoader().
-				getResourceAsStream(modelFilePath);
+		File f = null;
+		URL res = getClass().getClassLoader().getResource(modelFilePath);
+		f = Paths.get(res.toURI()).toFile();
+		String absolutePath = f.getAbsolutePath();
 
 		// Load the Bayesian network
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-		ProbNet probNet = pgmxReader.loadProbNet("Briggs", file);
+		ProbNet probNet = pgmxReader.loadProbNet(absolutePath);
 
 		// Sex = 0
 		EvidenceCase evidence = new EvidenceCase();
@@ -339,11 +361,13 @@ public class CEAGlobalAnalysisTest {
 		// Constants
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator + "MID-HPV.pgmx";
 		// Open the file containing the network
-		InputStream file = getClass().getClassLoader().getResourceAsStream(modelFilePath);
-
+		File f = null;
+		URL res = getClass().getClassLoader().getResource(modelFilePath);
+		f = Paths.get(res.toURI()).toFile();
+		String absolutePath = f.getAbsolutePath();
 		// Load the Bayesian network
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-		ProbNet probNet = pgmxReader.loadProbNet("MID-HPV", file);
+		ProbNet probNet = pgmxReader.loadProbNet(absolutePath);
 
 		EvidenceCase evidence = new EvidenceCase();
 

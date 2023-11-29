@@ -18,7 +18,11 @@ import org.openmarkov.core.model.network.Criterion;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
+import java.io.File;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,14 +85,21 @@ public class MulticriteriaEditTest {
 
 	private ProbNet getProbNet4Test() {
 		String bayesNetworkName = "networks/bn/BN-MulticriteriaEditTest.pgmx";
-		InputStream file = getClass().getClassLoader().
-				getResourceAsStream(bayesNetworkName);
+
+		URL res = getClass().getClassLoader().getResource(bayesNetworkName);
+		File f = null;
+		try {
+			f = Paths.get(res.toURI()).toFile();
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+		String absolutePath = f.getAbsolutePath();
 
 		// Load the Bayesian network
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		ProbNet probNet = null;
 		try {
-			probNet = pgmxReader.loadProbNet(bayesNetworkName, file);
+			probNet = pgmxReader.loadProbNet(absolutePath);
 		} catch (ParserException e) {
 			e.printStackTrace();
 		}

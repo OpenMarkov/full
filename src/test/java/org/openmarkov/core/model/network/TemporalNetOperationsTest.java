@@ -13,7 +13,10 @@ import org.openmarkov.core.model.network.CycleLength.Unit;
 import org.openmarkov.core.model.network.potential.ExactDistrPotential;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
+import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Paths;
 
 import static org.junit.Assert.assertTrue;
 
@@ -24,13 +27,15 @@ public class TemporalNetOperationsTest {
 	@Before public void setUp() throws Exception {
 		String networkName = "networks/mid/SimpleTemporalUtilityNode.pgmx";
 		// Open the file containing the network
-		InputStream file = getClass().getClassLoader().
-				getResourceAsStream(networkName);
+		File f = null;
+		URL res = getClass().getClassLoader().getResource(networkName);
+		f = Paths.get(res.toURI()).toFile();
+		String absolutePath = f.getAbsolutePath();
 
 		// Load the Bayesian network
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		try {
-			probNet = pgmxReader.loadProbNet(networkName, file);
+			probNet = pgmxReader.loadProbNet(absolutePath);
 			probNet.getInferenceOptions().getTemporalOptions().setHorizon(15);
 
 		} catch (ParserException e) {

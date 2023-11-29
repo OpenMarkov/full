@@ -1,6 +1,9 @@
 package org.openmarkov.integrationTests;
 
+import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,13 +35,15 @@ public abstract class IDNetworkTests {
 	protected EvidenceCase preResolutionEvidence;
 
 	@Before public void setUp() throws Exception {
-		InputStream file = getClass().getClassLoader().getResourceAsStream(networkName);
+		URL res = getClass().getClassLoader().getResource(networkName);
+		File f = Paths.get(res.toURI()).toFile();
+		String absolutePath = f.getAbsolutePath();
 
 		// Load the network: ID-decide-test
 		ProbNetReader pgmxReader = newPGMXReader();
 		ProbNetInfo probNetInfo = null;
 		try {
-			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
+			probNetInfo = pgmxReader.loadProbNetInfo(absolutePath);
 		} catch (ParserException e) {
 			e.printStackTrace();
 		}

@@ -40,6 +40,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,14 +64,22 @@ public class mid21gene {
 		Configurator.setRootLevel(Level.DEBUG);
 
 		String networkName = "networks/mid/21-gene-190909-psa.pgmx";
-		InputStream file = getClass().getClassLoader().getResourceAsStream(networkName);
 
 		// Load the network: ID-decide-test
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		ProbNetInfo probNetInfo = null;
 		try {
-			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
+			URL res = getClass().getClassLoader().getResource(networkName);
+			File f = null;
+			f = Paths.get(res.toURI()).toFile();
+			String absolutePath = f.getAbsolutePath();
+
+			probNetInfo = pgmxReader.loadProbNetInfo(absolutePath);
 		} catch (ParserException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e){
 			e.printStackTrace();
 		}
 		assert probNetInfo != null;

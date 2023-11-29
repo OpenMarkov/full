@@ -22,7 +22,11 @@ import org.openmarkov.inference.decompositionIntoSymmetricDANs.ceanalysis.DANDec
 import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANDecompositionIntoSymmetricDANsEvaluation;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
+import java.io.File;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 
 public class danAlgorithmTests {
 
@@ -39,11 +43,19 @@ public class danAlgorithmTests {
 		String networkName = "DAN-one-decision-CE.pgmx";
 		String path = "networks/dan/";
 		double lambda = 30000;
-		InputStream file = getClass().getClassLoader().getResourceAsStream(path + networkName);
+		String absolutePath = null;
+		try {
+			URL res = getClass().getClassLoader().getResource(path + networkName);
+			File f = f = Paths.get(res.toURI()).toFile();
+
+			absolutePath = f.getAbsolutePath();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		ProbNetInfo probNetInfo = null;
 		try {
-			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
+			probNetInfo = pgmxReader.loadProbNetInfo(absolutePath);
 			ProbNet probNet = probNetInfo.getProbNet();
 
 			CEP resultCEA = new DANDecompositionIntoSymmetricDANsCEA(probNet).getCEP();
@@ -66,11 +78,14 @@ public class danAlgorithmTests {
 		String networkName = "DAN-2tests.pgmx";
 		String path = "networks/IDCEAnTherapies/";
 		double lambda = 30000;
-		InputStream file = getClass().getClassLoader().getResourceAsStream(path + networkName);
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		ProbNetInfo probNetInfo = null;
 		try {
-			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
+			URL res = getClass().getClassLoader().getResource(networkName);
+			File f = Paths.get(res.toURI()).toFile();
+			String absolutePath = f.getAbsolutePath();
+
+			probNetInfo = pgmxReader.loadProbNetInfo(absolutePath);
 			ProbNet probNet = probNetInfo.getProbNet();
 
 			CEP resultCEA = new DANDecompositionIntoSymmetricDANsCEA(probNet).getCEP();
@@ -84,6 +99,10 @@ public class danAlgorithmTests {
 		} catch (NotEvaluableNetworkException e) {
 			e.printStackTrace();
 		} catch (IncompatibleEvidenceException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e){
 			e.printStackTrace();
 		}
 	}
@@ -93,11 +112,14 @@ public class danAlgorithmTests {
 		String networkName = "DAN-3tests.pgmx";
 		String path = "networks/IDCEAnTherapies/";
 		double lambda = 30000;
-		InputStream file = getClass().getClassLoader().getResourceAsStream(path + networkName);
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		ProbNetInfo probNetInfo = null;
 		try {
-			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
+			URL res = getClass().getClassLoader().getResource(networkName);
+			File f = Paths.get(res.toURI()).toFile();
+			String absolutePath = f.getAbsolutePath();
+
+			probNetInfo = pgmxReader.loadProbNetInfo(absolutePath);
 			ProbNet probNet = probNetInfo.getProbNet();
 
 			CEP resultCEA = new DANDecompositionIntoSymmetricDANsCEA(probNet).getCEP();
@@ -111,6 +133,10 @@ public class danAlgorithmTests {
 		} catch (NotEvaluableNetworkException e) {
 			e.printStackTrace();
 		} catch (IncompatibleEvidenceException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}catch (NullPointerException e){
 			e.printStackTrace();
 		}
 	}
@@ -120,11 +146,14 @@ public class danAlgorithmTests {
 		String networkName = "DAN-4tests.pgmx";
 		String path = "networks/IDCEAnTherapies/";
 		double lambda = 30000;
-		InputStream file = getClass().getClassLoader().getResourceAsStream(path + networkName);
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		ProbNetInfo probNetInfo = null;
 		try {
-			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
+			URL res = getClass().getClassLoader().getResource(path + networkName);
+			File f = f = Paths.get(res.toURI()).toFile();
+			String absolutePath = f.getAbsolutePath();
+
+			probNetInfo = pgmxReader.loadProbNetInfo(absolutePath);
 			ProbNet probNet = probNetInfo.getProbNet();
 
 			CEP resultCEA = new DANDecompositionIntoSymmetricDANsCEA(probNet).getCEP();
@@ -139,6 +168,10 @@ public class danAlgorithmTests {
 			e.printStackTrace();
 		} catch (IncompatibleEvidenceException e) {
 			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e){
+			e.printStackTrace();
 		}
 	}
 
@@ -147,11 +180,19 @@ public class danAlgorithmTests {
 		String networkName = "DAN-one-chance-ce.pgmx";
 		String path = "networks/dan/";
 		double lambda = 30000;
-		InputStream file = getClass().getClassLoader().getResourceAsStream(path + networkName);
+		URL res = getClass().getClassLoader().getResource(path + networkName);
+		File f = null;
+		try {
+			f = Paths.get(res.toURI()).toFile();
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+		String absolutePath = f.getAbsolutePath();
+
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		ProbNetInfo probNetInfo = null;
 		try {
-			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
+			probNetInfo = pgmxReader.loadProbNetInfo(absolutePath);
 			ProbNet probNet = probNetInfo.getProbNet();
 
 			CEP resultCEA = new DANDecompositionIntoSymmetricDANsCEA(probNet).getCEP();

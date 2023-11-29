@@ -33,7 +33,10 @@ import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
 import org.openmarkov.inference.variableElimination.tasks.VEOptimalIntervention;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
+import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Paths;
 
 public class idCEATest2therapiesTests {
 
@@ -46,13 +49,15 @@ public class idCEATest2therapiesTests {
 	private EvidenceCase preResolutionEvidence;
 
 	@Before public void setUp() throws Exception {
-		InputStream file = getClass().getClassLoader().getResourceAsStream(networkName);
+		URL res = getClass().getClassLoader().getResource(networkName);
+		File f = Paths.get(res.toURI()).toFile();
+		String absolutePath = f.getAbsolutePath();
 
 		// Load the network: ID-decide-test
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		ProbNetInfo probNetInfo = null;
 		try {
-			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
+			probNetInfo = pgmxReader.loadProbNetInfo(absolutePath);
 		} catch (ParserException e) {
 			e.printStackTrace();
 		}

@@ -1,6 +1,10 @@
 package org.openmarkov.inference;
 
+import java.io.File;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -29,13 +33,19 @@ public class Tools {
 	
 	public ProbNet loadNetwork(String networkNameSuffix,String networkNamePrefix,String subfolderName) {
 		String networkName = "networks/"+subfolderName+"/"+networkNamePrefix+"-" + networkNameSuffix + ".pgmx";
-		InputStream file = getClass().getClassLoader().getResourceAsStream(networkName);
-
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		ProbNetInfo probNetInfo = null;
 		try {
-			probNetInfo = pgmxReader.loadProbNetInfo(networkName, file);
+			URL res = getClass().getClassLoader().getResource(networkName);
+			File f = Paths.get(res.toURI()).toFile();
+			String absolutePath = f.getAbsolutePath();
+
+			probNetInfo = pgmxReader.loadProbNetInfo(absolutePath);
 		} catch (ParserException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e){
 			e.printStackTrace();
 		}
 		return probNetInfo.getProbNet();
