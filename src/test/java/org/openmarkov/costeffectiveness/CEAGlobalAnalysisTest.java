@@ -5,10 +5,12 @@
  * WITHOUT WARRANTIES OF ANY KIND.
  */
 
-package org.openmarkov.costeffectiveness;import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+package org.openmarkov.costeffectiveness;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.openmarkov.core.inference.TransitionTime;
 import org.openmarkov.core.model.network.CEP;
 import org.openmarkov.core.model.network.Criterion;
@@ -38,11 +40,11 @@ public class CEAGlobalAnalysisTest {
 
 	private boolean useMultithreading = true;
 
-	@Before public void setUp() throws Exception {
+	@BeforeAll public void setUp() throws Exception {
 
 	}
 
-	@Ignore @Test public void testCHAP() throws Exception {
+	@Disabled @Test public void testCHAP() throws Exception {
 		// Constants
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator + "chap.pgmx";
 		// Open the file containing the network
@@ -68,7 +70,7 @@ public class CEAGlobalAnalysisTest {
 
 		double[] expectedResults = new double[] { 1066.744, 1.444, 852.399, 1.709 };
 
-		Assert.assertArrayEquals(expectedResults, result.values, 0.001);
+		Assertions.assertArrayEquals(expectedResults, result.values, 0.001);
 	}
 
 	/**
@@ -76,7 +78,7 @@ public class CEAGlobalAnalysisTest {
 	 *
 	 * @throws Exception
 	 */
-	@Ignore @Test public void testCHAPSV() throws Exception {
+	@Disabled @Test public void testCHAPSV() throws Exception {
 		// Constants
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator + "chap-sv.pgmx";
 		// Open the file containing the network
@@ -101,10 +103,10 @@ public class CEAGlobalAnalysisTest {
 
 		double[] expectedResults = new double[] { 1066.744, 1.444, 852.399, 1.709 };
 
-		Assert.assertArrayEquals(expectedResults, result.values, 0.001);
+		Assertions.assertArrayEquals(expectedResults, result.values, 0.001);
 	}
 
-	@Ignore @Test public void testChancellorHC() throws Exception {
+	@Disabled @Test public void testChancellorHC() throws Exception {
 		// Constants
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator + "MID-dmhee-2.5.pgmx";
 		// Open the file containing the network
@@ -130,7 +132,7 @@ public class CEAGlobalAnalysisTest {
 		GTablePotential<?> result = ceAnalysis.getUtility();
 
 		double[] expectedResults = new double[] { 50585.917, 9.412, 44662.217, 8.471 };
-		Assert.assertArrayEquals(expectedResults, result.values, 0.001);
+		Assertions.assertArrayEquals(expectedResults, result.values, 0.001);
 	}
 
 	@Test public void testChancellorUnicriterion() throws Exception {
@@ -163,7 +165,7 @@ public class CEAGlobalAnalysisTest {
 		veResolution.setConditioningVariables(conditioningVariables);
 
 		double globalUtility = veResolution.getUtility().getValues()[0];
-		Assert.assertEquals(globalUtility, 195546.556793745, Math.pow(10, -8));
+		Assertions.assertEquals(globalUtility, 195546.556793745, Math.pow(10, -8));
 
 		wtp = 8000;
 		for (Criterion criterion : probNet.getDecisionCriteria()) {
@@ -178,11 +180,11 @@ public class CEAGlobalAnalysisTest {
 		veResolution.setPreResolutionEvidence(evidence);
 		veResolution.setConditioningVariables(conditioningVariables);
 		globalUtility = veResolution.getUtility().getValues()[0];
-		Assert.assertEquals(globalUtility, 184.440530353197, Math.pow(10, -8));
+		Assertions.assertEquals(globalUtility, 184.440530353197, Math.pow(10, -8));
 
 	}
 
-	@Ignore @Test public void testDMHEE25SV() throws Exception {
+	@Disabled @Test public void testDMHEE25SV() throws Exception {
 		// Constants
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator + "MID-dmhee-2.5-sv.pgmx";
 		// Open the file containing the network
@@ -209,7 +211,7 @@ public class CEAGlobalAnalysisTest {
 
 		double[] expectedResults = new double[] { 50585.917, 8.935, 44662.217, 7.991 };
 
-		Assert.assertArrayEquals(expectedResults, result.values, 0.001);
+		Assertions.assertArrayEquals(expectedResults, result.values, 0.001);
 	}
 
 	@Test public void testDMHEE35() throws Exception {
@@ -241,7 +243,7 @@ public class CEAGlobalAnalysisTest {
 		double[] expectedResults = new double[] { 510.948, 14.666, 609.904, 14.701 };
 		CEP[] ceps = new CEP[] {((CEP)result.elementTable.get(0)),((CEP)result.elementTable.get(1))};
 		double[] results = new double[] {ceps[0].getCost(0), ceps[0].getEffectiveness(0), ceps[1].getCost(0), ceps[1].getEffectiveness(0)};
-		Assert.assertArrayEquals(expectedResults, results, 0.001);
+		Assertions.assertArrayEquals(expectedResults, results, 0.001);
 
 		evidence.changeFinding(new Finding(sexVariable, 1));
 
@@ -254,7 +256,7 @@ public class CEAGlobalAnalysisTest {
 		results = new double[] {ceps[0].getCost(0), ceps[0].getEffectiveness(0), ceps[1].getCost(0), ceps[1].getEffectiveness(0)};
 		expectedResults = new double[] { 604.264, 12.59, 635.217, 12.643 };
 
-		Assert.assertArrayEquals(expectedResults, results, 0.001);
+		Assertions.assertArrayEquals(expectedResults, results, 0.001);
 
 	}
 
@@ -285,15 +287,15 @@ public class CEAGlobalAnalysisTest {
 		vecepsa.setUseMultithreading(useMultithreading);
 
 		List<GTablePotential> result = (List<GTablePotential>) vecepsa.getCEPPotentials();
-		Assert.assertNotNull(result);
-		Assert.assertTrue(result.size() > 0);
+		Assertions.assertNotNull(result);
+		Assertions.assertTrue(result.size() > 0);
 
 		double[] expectedResults = new double[] { 50600, 8.935, 44680, 7.991 };
 
-		Assert.assertEquals(expectedResults[0], ((CEP)result.get(0).elementTable.get(0)).getCost(0), 200);
-		Assert.assertEquals(expectedResults[1], ((CEP)result.get(0).elementTable.get(0)).getEffectiveness(0), 0.01);
-		Assert.assertEquals(expectedResults[2], ((CEP)result.get(0).elementTable.get(1)).getCost(0), 200);
-		Assert.assertEquals(expectedResults[3], ((CEP)result.get(0).elementTable.get(0)).getEffectiveness(0), 0.01);
+		Assertions.assertEquals(expectedResults[0], ((CEP)result.get(0).elementTable.get(0)).getCost(0), 200);
+		Assertions.assertEquals(expectedResults[1], ((CEP)result.get(0).elementTable.get(0)).getEffectiveness(0), 0.01);
+		Assertions.assertEquals(expectedResults[2], ((CEP)result.get(0).elementTable.get(1)).getCost(0), 200);
+		Assertions.assertEquals(expectedResults[3], ((CEP)result.get(0).elementTable.get(0)).getEffectiveness(0), 0.01);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -328,15 +330,15 @@ public class CEAGlobalAnalysisTest {
 		vecepsa.setUseMultithreading(useMultithreading);
 
 		List<GTablePotential> result = (List<GTablePotential>) vecepsa.getCEPPotentials();
-		Assert.assertNotNull(result);
-		Assert.assertTrue(result.size() > 0);
+		Assertions.assertNotNull(result);
+		Assertions.assertTrue(result.size() > 0);
 
 		double[] expectedResults = new double[] { 510.948, 14.666, 609.904, 14.701 };
 
-		Assert.assertEquals(expectedResults[0], ((CEP)result.get(0).elementTable.get(0)).getCost(0), 2);
-		Assert.assertEquals(expectedResults[1], ((CEP)result.get(0).elementTable.get(0)).getEffectiveness(0), 0.02);
-		Assert.assertEquals(expectedResults[2], ((CEP)result.get(0).elementTable.get(1)).getCost(0), 2);
-		Assert.assertEquals(expectedResults[3], ((CEP)result.get(0).elementTable.get(0)).getEffectiveness(0), 0.02);
+		Assertions.assertEquals(expectedResults[0], ((CEP)result.get(0).elementTable.get(0)).getCost(0), 2);
+		Assertions.assertEquals(expectedResults[1], ((CEP)result.get(0).elementTable.get(0)).getEffectiveness(0), 0.02);
+		Assertions.assertEquals(expectedResults[2], ((CEP)result.get(0).elementTable.get(1)).getCost(0), 2);
+		Assertions.assertEquals(expectedResults[3], ((CEP)result.get(0).elementTable.get(0)).getEffectiveness(0), 0.02);
 
 
 		// Sex = 1
@@ -351,13 +353,13 @@ public class CEAGlobalAnalysisTest {
 		result = (List<GTablePotential>) vecepsa.getCEPPotentials();
 		expectedResults = new double[] { 604.264, 12.59, 635.217, 12.643 };
 
-		Assert.assertEquals(expectedResults[0], ((CEP)result.get(0).elementTable.get(0)).getCost(0), 2);
-		Assert.assertEquals(expectedResults[1], ((CEP)result.get(0).elementTable.get(0)).getEffectiveness(0), 0.02);
-		Assert.assertEquals(expectedResults[2], ((CEP)result.get(0).elementTable.get(1)).getCost(0), 2);
-		Assert.assertEquals(expectedResults[3], ((CEP)result.get(0).elementTable.get(0)).getEffectiveness(0), 0.02);
+		Assertions.assertEquals(expectedResults[0], ((CEP)result.get(0).elementTable.get(0)).getCost(0), 2);
+		Assertions.assertEquals(expectedResults[1], ((CEP)result.get(0).elementTable.get(0)).getEffectiveness(0), 0.02);
+		Assertions.assertEquals(expectedResults[2], ((CEP)result.get(0).elementTable.get(1)).getCost(0), 2);
+		Assertions.assertEquals(expectedResults[3], ((CEP)result.get(0).elementTable.get(0)).getEffectiveness(0), 0.02);
 	}
 
-	@Ignore @Test public void testHPV() throws Exception {
+	@Disabled @Test public void testHPV() throws Exception {
 		// Constants
 		String modelFilePath = "networks" + File.separator + "mid" + File.separator + "MID-HPV.pgmx";
 		// Open the file containing the network
@@ -386,7 +388,7 @@ public class CEAGlobalAnalysisTest {
 		result = DiscretePotentialOperations.reorder(result, variablesInOrder);*/
 		double[] expectedResults = new double[] { 1205.296, 59.81, 2897.377, 59.855, 3420.872, 59.86, 1171.416, 60.158,
 				2813.055, 60.162, 3332.291, 60.162 };
-		Assert.assertArrayEquals(expectedResults, result.values, 0.001);
+		Assertions.assertArrayEquals(expectedResults, result.values, 0.001);
 	}
 
 	/**

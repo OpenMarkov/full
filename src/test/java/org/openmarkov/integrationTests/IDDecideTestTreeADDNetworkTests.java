@@ -1,6 +1,7 @@
 package org.openmarkov.integrationTests;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
+
 
 /**
  * This class implements some basic tests for ID-decide-test-tree-add, which is an influence diagram equivalent to ID-decide-test, but that,
@@ -9,7 +10,7 @@ import org.junit.Before;
 public class IDDecideTestTreeADDNetworkTests extends idDecideTestNetworkTests {
 	
 	@Override
-	@Before public void setUp() throws Exception {
+	@BeforeAll public void setUp() throws Exception {
 		networkName = "networks/id/ID-decide-test-tree-add.pgmx";
 		super.setUp();
 	}

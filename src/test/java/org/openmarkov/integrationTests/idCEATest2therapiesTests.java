@@ -6,9 +6,9 @@
  */
 package org.openmarkov.integrationTests;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.InvalidStateException;
 import org.openmarkov.core.exception.NodeNotFoundException;
@@ -42,13 +42,13 @@ public class idCEATest2therapiesTests {
 
 	private final String networkName = "networks/id/ID-CEA-test-2therapies.pgmx";
 
-	// Delta parameter for Assert.Equals methods
+	// Delta parameter for Assertions.Equals methods
 	private final double deltaEquals = Math.pow(10, -4);
 
 	private ProbNet probNet;
 	private EvidenceCase preResolutionEvidence;
 
-	@Before public void setUp() throws Exception {
+	@BeforeAll public void setUp() throws Exception {
 		URL res = getClass().getClassLoader().getResource(networkName);
 		File f = Paths.get(res.toURI()).toFile();
 		String absolutePath = f.getAbsolutePath();
@@ -73,7 +73,7 @@ public class idCEATest2therapiesTests {
 			veEvaluation = new VEEvaluation(probNet);
 			veEvaluation.setPreResolutionEvidence(preResolutionEvidence);
 			TablePotential utility = veEvaluation.getUtility();
-			Assert.assertEquals(utility.getValues()[0], 269569.4, deltaEquals);
+			Assertions.assertEquals(utility.getValues()[0], 269569.4, deltaEquals);
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
 			e.printStackTrace();
 		}
@@ -95,7 +95,7 @@ public class idCEATest2therapiesTests {
 			veEvaluation = new VEEvaluation(probNet);
 			veEvaluation.setPreResolutionEvidence(evidenceCase);
 			TablePotential utility = veEvaluation.getUtility();
-			Assert.assertEquals(utility.getValues()[0], 10 * 30000, deltaEquals);
+			Assertions.assertEquals(utility.getValues()[0], 10 * 30000, deltaEquals);
 
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException | InvalidStateException e) {
 			e.printStackTrace();
@@ -111,7 +111,7 @@ public class idCEATest2therapiesTests {
 			veEvaluation = new VEEvaluation(probNet);
 			veEvaluation.setPreResolutionEvidence(evidenceCase);
 			TablePotential utility = veEvaluation.getUtility();
-			Assert.assertEquals(utility.getValues()[0], 125000, deltaEquals);
+			Assertions.assertEquals(utility.getValues()[0], 125000, deltaEquals);
 
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException | InvalidStateException e) {
 			e.printStackTrace();
@@ -134,7 +134,7 @@ public class idCEATest2therapiesTests {
 			veEvaluation = new VEEvaluation(probNet);
 			veEvaluation.setPreResolutionEvidence(evidenceCase);
 			TablePotential utility = veEvaluation.getUtility();
-			Assert.assertEquals(utility.getValues()[0], 124850, deltaEquals);
+			Assertions.assertEquals(utility.getValues()[0], 124850, deltaEquals);
 
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException | InvalidStateException e) {
 			e.printStackTrace();
@@ -148,7 +148,7 @@ public class idCEATest2therapiesTests {
 			veOptimalPolicy = new VEEvaluation(probNet);
 			TablePotential optimalPolicy = (TablePotential) veOptimalPolicy.getOptimalPolicy(decisionVariable);
 			double[] expectedValues = { 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0 };
-			Assert.assertArrayEquals(optimalPolicy.getValues(), expectedValues, deltaEquals);
+			Assertions.assertArrayEquals(optimalPolicy.getValues(), expectedValues, deltaEquals);
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -161,26 +161,26 @@ public class idCEATest2therapiesTests {
 			StrategyTree optimalStrategyTree = veOptimalIntervention.getOptimalIntervention();
 
 			Variable doTestVariable = probNet.getVariable("Dec:Test");
-			Assert.assertTrue(optimalStrategyTree.getRootVariable().equals(doTestVariable));
-			Assert.assertTrue(veOptimalIntervention.getOptimalIntervention().getBranches().size() == 1);
+			Assertions.assertTrue(optimalStrategyTree.getRootVariable().equals(doTestVariable));
+			Assertions.assertTrue(veOptimalIntervention.getOptimalIntervention().getBranches().size() == 1);
 
 			TreeADDBranch branchDoTestYes = veOptimalIntervention.getOptimalIntervention().getBranches().get(0);
-			Assert.assertTrue(branchDoTestYes.getStates().get(0).getName().equals("yes"));
+			Assertions.assertTrue(branchDoTestYes.getStates().get(0).getName().equals("yes"));
 
 			StrategyTree subStrategyTree = (StrategyTree) branchDoTestYes.getPotential();
 			Variable resultOfTestVariable = probNet.getVariable("Test");
-			Assert.assertTrue(subStrategyTree.getRootVariable().equals(resultOfTestVariable));
-			Assert.assertTrue(subStrategyTree.getBranches().size() == 2);
+			Assertions.assertTrue(subStrategyTree.getRootVariable().equals(resultOfTestVariable));
+			Assertions.assertTrue(subStrategyTree.getBranches().size() == 2);
 
-			Assert.assertTrue(subStrategyTree.getBranches().get(0).getStates().get(0).getName().equals("negative"));
+			Assertions.assertTrue(subStrategyTree.getBranches().get(0).getStates().get(0).getName().equals("negative"));
 			StrategyTree potBranch0 = (StrategyTree) subStrategyTree.getBranches().get(0).getPotential();
-			Assert.assertTrue(potBranch0.getRootVariable().getName().equals("Therapy"));
-			Assert.assertTrue(potBranch0.getBranches().get(0).getStates().get(0).getName().equals("no"));
+			Assertions.assertTrue(potBranch0.getRootVariable().getName().equals("Therapy"));
+			Assertions.assertTrue(potBranch0.getBranches().get(0).getStates().get(0).getName().equals("no"));
 
-			Assert.assertTrue(subStrategyTree.getBranches().get(1).getStates().get(0).getName().equals("positive"));
+			Assertions.assertTrue(subStrategyTree.getBranches().get(1).getStates().get(0).getName().equals("positive"));
 			StrategyTree potBranch1 = (StrategyTree) subStrategyTree.getBranches().get(1).getPotential();
-			Assert.assertTrue(potBranch1.getRootVariable().getName().equals("Therapy"));
-			Assert.assertTrue(potBranch1.getBranches().get(0).getStates().get(0).getName().equals("therapy 1"));
+			Assertions.assertTrue(potBranch1.getRootVariable().getName().equals("Therapy"));
+			Assertions.assertTrue(potBranch1.getBranches().get(0).getStates().get(0).getName().equals("therapy 1"));
 
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
 			e.printStackTrace();
@@ -198,19 +198,19 @@ public class idCEATest2therapiesTests {
 			veceaGlobal.setPreResolutionEvidence(preResolutionEvidence);
 
 			CEP cep = (CEP) (veceaGlobal.getUtility()).elementTable.get(0);
-			Assert.assertTrue(cep.getNumIntervals() == 3);
+			Assertions.assertTrue(cep.getNumIntervals() == 3);
 
 			// First interval
-			Assert.assertEquals(cep.getCost(11171.0), 0, deltaEquals);
-			Assert.assertEquals(cep.getEffectiveness(0.0), 8.768, deltaEquals);
+			Assertions.assertEquals(cep.getCost(11171.0), 0, deltaEquals);
+			Assertions.assertEquals(cep.getEffectiveness(0.0), 8.768, deltaEquals);
 
 			// Second interval
-			Assert.assertEquals(cep.getCost(11171.4), 3874, deltaEquals);
-			Assert.assertEquals(cep.getEffectiveness(33383.4), 9.11478, deltaEquals);
+			Assertions.assertEquals(cep.getCost(11171.4), 3874, deltaEquals);
+			Assertions.assertEquals(cep.getEffectiveness(33383.4), 9.11478, deltaEquals);
 
 			// Third interval
-			Assert.assertEquals(cep.getCost(500000.0), 13184, deltaEquals);
-			Assert.assertEquals(cep.getEffectiveness(33383.6), 9.39366, deltaEquals);
+			Assertions.assertEquals(cep.getCost(500000.0), 13184, deltaEquals);
+			Assertions.assertEquals(cep.getEffectiveness(33383.6), 9.39366, deltaEquals);
 
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
 			e.printStackTrace();
@@ -247,25 +247,25 @@ public class idCEATest2therapiesTests {
 			veceaDecision.setDecisionVariable(decisionVariable);
 			GTablePotential cepPotential = veceaDecision.getUtility();
 			// There are three therapies (no, therapy 1, therapy 2)
-			Assert.assertTrue(cepPotential.elementTable.size() == 3);
+			Assertions.assertTrue(cepPotential.elementTable.size() == 3);
 
 			// CEP -> no therapy
 			CEP noTherapyCEP = (CEP) cepPotential.elementTable.get(0);
-			Assert.assertTrue(noTherapyCEP.getNumIntervals() == 1);
-			Assert.assertEquals(noTherapyCEP.getCost(11171.0), 150.0, deltaEquals);
-			Assert.assertEquals(noTherapyCEP.getEffectiveness(0.0), 9.8486, deltaEquals);
+			Assertions.assertTrue(noTherapyCEP.getNumIntervals() == 1);
+			Assertions.assertEquals(noTherapyCEP.getCost(11171.0), 150.0, deltaEquals);
+			Assertions.assertEquals(noTherapyCEP.getEffectiveness(0.0), 9.8486, deltaEquals);
 
 			// CEP -> therapy 1
 			CEP therapyOneCEP = (CEP) cepPotential.elementTable.get(1);
-			Assert.assertTrue(therapyOneCEP.getNumIntervals() == 1);
-			Assert.assertEquals(therapyOneCEP.getCost(500000.0), 20150, deltaEquals);
-			Assert.assertEquals(therapyOneCEP.getEffectiveness(30000.0), 9.7985, deltaEquals);
+			Assertions.assertTrue(therapyOneCEP.getNumIntervals() == 1);
+			Assertions.assertEquals(therapyOneCEP.getCost(500000.0), 20150, deltaEquals);
+			Assertions.assertEquals(therapyOneCEP.getEffectiveness(30000.0), 9.7985, deltaEquals);
 
 			// CEP -> therapy 1
 			CEP therapyTwoCEP = (CEP) cepPotential.elementTable.get(2);
-			Assert.assertTrue(therapyTwoCEP.getNumIntervals() == 1);
-			Assert.assertEquals(therapyTwoCEP.getCost(10.0), 70150, deltaEquals);
-			Assert.assertEquals(therapyTwoCEP.getEffectiveness(5.0), 9.2518, deltaEquals);
+			Assertions.assertTrue(therapyTwoCEP.getNumIntervals() == 1);
+			Assertions.assertEquals(therapyTwoCEP.getCost(10.0), 70150, deltaEquals);
+			Assertions.assertEquals(therapyTwoCEP.getEffectiveness(5.0), 9.2518, deltaEquals);
 
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
 			e.printStackTrace();

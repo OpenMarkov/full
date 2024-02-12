@@ -7,9 +7,9 @@
 
 package org.openmarkov.integrationTests;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.ParserException;
@@ -32,7 +32,7 @@ public class danAlgorithmTests {
 
 	private final double deltaEquals = Math.pow(10, -4);
 
-	@Before
+	@BeforeAll
 	public void setUp(){
 
 
@@ -61,7 +61,7 @@ public class danAlgorithmTests {
 			CEP resultCEA = new DANDecompositionIntoSymmetricDANsCEA(probNet).getCEP();
 			TablePotential resultUNI = new DANDecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
 
-			Assert.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
+			Assertions.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
 		} catch (ParserException e) {
 			e.printStackTrace();
 		} catch (UnexpectedInferenceException e) {
@@ -91,7 +91,7 @@ public class danAlgorithmTests {
 			CEP resultCEA = new DANDecompositionIntoSymmetricDANsCEA(probNet).getCEP();
 			TablePotential resultUNI = new DANDecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
 
-			Assert.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
+			Assertions.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
 		} catch (ParserException e) {
 			e.printStackTrace();
 		} catch (UnexpectedInferenceException e) {
@@ -125,7 +125,7 @@ public class danAlgorithmTests {
 			CEP resultCEA = new DANDecompositionIntoSymmetricDANsCEA(probNet).getCEP();
 			TablePotential resultUNI = new DANDecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
 
-			Assert.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
+			Assertions.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
 		} catch (ParserException e) {
 			e.printStackTrace();
 		} catch (UnexpectedInferenceException e) {
@@ -159,7 +159,7 @@ public class danAlgorithmTests {
 			CEP resultCEA = new DANDecompositionIntoSymmetricDANsCEA(probNet).getCEP();
 			TablePotential resultUNI = new DANDecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
 
-			Assert.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
+			Assertions.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
 		} catch (ParserException e) {
 			e.printStackTrace();
 		} catch (UnexpectedInferenceException e) {
@@ -198,7 +198,7 @@ public class danAlgorithmTests {
 			CEP resultCEA = new DANDecompositionIntoSymmetricDANsCEA(probNet).getCEP();
 			TablePotential resultUNI = new DANDecompositionIntoSymmetricDANsEvaluation(probNet).getUtility();
 
-			Assert.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
+			Assertions.assertEquals(resultUNI.values[0], resultCEA.getEffectiveness(lambda) * lambda - resultCEA.getCost(lambda), deltaEquals);
 		} catch (ParserException e) {
 			e.printStackTrace();
 		} catch (UnexpectedInferenceException e) {

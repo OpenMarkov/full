@@ -2,13 +2,16 @@ package org.openmarkov.integrationTests;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
+
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.InvalidStateException;
 import org.openmarkov.core.exception.NoFindingException;
@@ -60,7 +63,7 @@ public class mid21gene {
 	private ProbNet probNet;
 	private EvidenceCase preResolutionEvidence;
 
-	@Before public void setUp() {
+	@BeforeAll public void setUp() {
 		Configurator.setRootLevel(Level.DEBUG);
 
 		String networkName = "networks/mid/21-gene-190909-psa.pgmx";

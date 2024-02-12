@@ -1,10 +1,12 @@
 package org.openmarkov.exception;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.openmarkov.core.exception.OpenMarkovException;
 import org.openmarkov.gui.localize.LocalizedException;
 
-import static junit.framework.Assert.assertNotNull;
 
 public class TestOpenMarkovException {
 

@@ -6,9 +6,9 @@
  */
 package org.openmarkov.integrationTests;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.InvalidStateException;
 import org.openmarkov.core.exception.NodeNotFoundException;
@@ -34,13 +34,13 @@ import java.util.List;
 public class bnHeparTests {
 	private final String networkName = "networks/bn/BN-hepar.pgmx";
 
-	// Delta parameter for Assert.Equals methods
+	// Delta parameter for Assertions.Equals methods
 	private final double deltaEquals = Math.pow(10, -4);
 
 	private ProbNet probNet;
 	private EvidenceCase preResolutionEvidence;
 
-	@Before public void setUp() throws Exception {
+	@BeforeAll public void setUp() throws Exception {
 		URL res = getClass().getClassLoader().getResource(networkName);
 		File f = Paths.get(res.toURI()).toFile();
 		String absolutePath = f.getAbsolutePath();
@@ -91,7 +91,7 @@ public class bnHeparTests {
 					expectedValues = new double[] { 0.8718, 0.1282 };
 					break;
 				}
-				Assert.assertArrayEquals(posteriorVales.get(variable).values, expectedValues, deltaEquals);
+				Assertions.assertArrayEquals(posteriorVales.get(variable).values, expectedValues, deltaEquals);
 			}
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException e) {
 			e.printStackTrace();
@@ -146,7 +146,7 @@ public class bnHeparTests {
 					expectedValues = new double[] { 0.2051, 0.7949 };
 					break;
 				}
-				Assert.assertArrayEquals(posteriorVales.get(variable).values, expectedValues, deltaEquals);
+				Assertions.assertArrayEquals(posteriorVales.get(variable).values, expectedValues, deltaEquals);
 			}
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException e) {
 			e.printStackTrace();

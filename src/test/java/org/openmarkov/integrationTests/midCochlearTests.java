@@ -7,9 +7,9 @@
 
 package org.openmarkov.integrationTests;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
@@ -42,13 +42,13 @@ import java.util.List;
 public class midCochlearTests {
 	private final String networkName = "networks/mid/MID-Cochlear.pgmx";
 
-	// Delta parameter for Assert.Equals methods
+	// Delta parameter for Assertions.Equals methods
 	private final double deltaEquals = Math.pow(10, -4);
 
 	private ProbNet probNet;
 	private EvidenceCase preResolutionEvidence;
 
-	@Before public void setUp() throws Exception {
+	@BeforeAll public void setUp() throws Exception {
 		URL res = getClass().getClassLoader().getResource(networkName);
 		File f = Paths.get(res.toURI()).toFile();
 		String absolutePath = f.getAbsolutePath();
@@ -72,9 +72,9 @@ public class midCochlearTests {
 			TemporalEvaluation temporalEvaluation = new TemporalEvaluation(probNet);
 			temporalEvaluation.setPreResolutionEvidence(preResolutionEvidence);
 			GTablePotential atemporalUtility = (GTablePotential) temporalEvaluation.getAtemporalUtility();
-			Assert.assertEquals(0, ((CEP) atemporalUtility.elementTable.get(0)).getCost(0), deltaEquals);
-			Assert.assertEquals(21639.98, ((CEP) atemporalUtility.elementTable.get(1)).getCost(0), deltaEquals);
-			Assert.assertEquals(26100, ((CEP) atemporalUtility.elementTable.get(2)).getCost(0), deltaEquals);
+			Assertions.assertEquals(0, ((CEP) atemporalUtility.elementTable.get(0)).getCost(0), deltaEquals);
+			Assertions.assertEquals(21639.98, ((CEP) atemporalUtility.elementTable.get(1)).getCost(0), deltaEquals);
+			Assertions.assertEquals(26100, ((CEP) atemporalUtility.elementTable.get(2)).getCost(0), deltaEquals);
 
 			List<TablePotential> potentialsPerSlice = temporalEvaluation.getUtilityPotentialsPerSlice();
 			double[] costs_UCI = new double[101];
@@ -127,12 +127,12 @@ public class midCochlearTests {
 			double c_bciSeq_cea = ((CEP) (ceaResult.elementTable.get(2))).getCost(0);
 			double e_bciSeq_cea = ((CEP) (ceaResult.elementTable.get(2))).getEffectiveness(0);
 
-			Assert.assertEquals(c_UCI, c_uci_cea, deltaEquals);
-			Assert.assertEquals(e_UCI, e_uci_cea, deltaEquals);
-			Assert.assertEquals(c_BCI_Sim, c_bciSim_cea, deltaEquals);
-			Assert.assertEquals(e_BCI_Sim, e_bciSim_cea, deltaEquals);
-			Assert.assertEquals(c_BCI_Seq, c_bciSeq_cea, deltaEquals);
-			Assert.assertEquals(e_BCI_Seq, e_bciSeq_cea, deltaEquals);
+			Assertions.assertEquals(c_UCI, c_uci_cea, deltaEquals);
+			Assertions.assertEquals(e_UCI, e_uci_cea, deltaEquals);
+			Assertions.assertEquals(c_BCI_Sim, c_bciSim_cea, deltaEquals);
+			Assertions.assertEquals(e_BCI_Sim, e_bciSim_cea, deltaEquals);
+			Assertions.assertEquals(c_BCI_Seq, c_bciSeq_cea, deltaEquals);
+			Assertions.assertEquals(e_BCI_Seq, e_bciSeq_cea, deltaEquals);
 
 			//Asserting that Right Riemann Summ is equals to a transition at the beginning
 			probNet.getInferenceOptions().getTemporalOptions().setTransition(TransitionTime.BEGINNING);
@@ -156,12 +156,12 @@ public class midCochlearTests {
 			c_bciSeq_cea = ((CEP) (ceaResult.elementTable.get(2))).getCost(0);
 			e_bciSeq_cea = ((CEP) (ceaResult.elementTable.get(2))).getEffectiveness(0);
 
-			Assert.assertEquals(c_UCI, c_uci_cea, deltaEquals);
-			Assert.assertEquals(e_UCI, e_uci_cea, deltaEquals);
-			Assert.assertEquals(c_BCI_Sim, c_bciSim_cea, deltaEquals);
-			Assert.assertEquals(e_BCI_Sim, e_bciSim_cea, deltaEquals);
-			Assert.assertEquals(c_BCI_Seq, c_bciSeq_cea, deltaEquals);
-			Assert.assertEquals(e_BCI_Seq, e_bciSeq_cea, deltaEquals);
+			Assertions.assertEquals(c_UCI, c_uci_cea, deltaEquals);
+			Assertions.assertEquals(e_UCI, e_uci_cea, deltaEquals);
+			Assertions.assertEquals(c_BCI_Sim, c_bciSim_cea, deltaEquals);
+			Assertions.assertEquals(e_BCI_Sim, e_bciSim_cea, deltaEquals);
+			Assertions.assertEquals(c_BCI_Seq, c_bciSeq_cea, deltaEquals);
+			Assertions.assertEquals(e_BCI_Seq, e_bciSeq_cea, deltaEquals);
 
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
 			e.printStackTrace();

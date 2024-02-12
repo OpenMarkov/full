@@ -6,9 +6,9 @@
  */
 package org.openmarkov.integrationTests;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.InvalidStateException;
 import org.openmarkov.core.exception.NodeNotFoundException;
@@ -48,7 +48,7 @@ public abstract class idDecideTestNetworkTests extends IDNetworkTests {
 			veEvaluation = new VEEvaluation(probNet);
 			veEvaluation.setPreResolutionEvidence(preResolutionEvidence);
 			TablePotential utility = veEvaluation.getUtility();
-			Assert.assertEquals(utility.getValues()[0], 9.3289, deltaEquals);
+			Assertions.assertEquals(utility.getValues()[0], 9.3289, deltaEquals);
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
 			e.printStackTrace();
 		}
@@ -70,7 +70,7 @@ public abstract class idDecideTestNetworkTests extends IDNetworkTests {
 			veEvaluation = new VEEvaluation(probNet);
 			veEvaluation.setPreResolutionEvidence(evidenceCase);
 			TablePotential utility = veEvaluation.getUtility();
-			Assert.assertEquals(utility.getValues()[0], 10, deltaEquals);
+			Assertions.assertEquals(utility.getValues()[0], 10, deltaEquals);
 
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException | InvalidStateException e) {
 			e.printStackTrace();
@@ -86,7 +86,7 @@ public abstract class idDecideTestNetworkTests extends IDNetworkTests {
 			veEvaluation = new VEEvaluation(probNet);
 			veEvaluation.setPreResolutionEvidence(evidenceCase);
 			TablePotential utility = veEvaluation.getUtility();
-			Assert.assertEquals(utility.getValues()[0], 7.25, deltaEquals);
+			Assertions.assertEquals(utility.getValues()[0], 7.25, deltaEquals);
 
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException | InvalidStateException e) {
 			e.printStackTrace();
@@ -109,7 +109,7 @@ public abstract class idDecideTestNetworkTests extends IDNetworkTests {
 			veEvaluation = new VEEvaluation(probNet);
 			veEvaluation.setPreResolutionEvidence(evidenceCase);
 			TablePotential utility = veEvaluation.getUtility();
-			Assert.assertEquals(utility.getValues()[0], 7.05, deltaEquals);
+			Assertions.assertEquals(utility.getValues()[0], 7.05, deltaEquals);
 
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException | InvalidStateException e) {
 			e.printStackTrace();
@@ -123,7 +123,7 @@ public abstract class idDecideTestNetworkTests extends IDNetworkTests {
 			veOptimalPolicy = new VEEvaluation(probNet);
 			TablePotential optimalPolicy = (TablePotential) veOptimalPolicy.getOptimalPolicy(decisionVariable);
 			double[] expectedValues = { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1 };
-			Assert.assertArrayEquals(optimalPolicy.getValues(), expectedValues, deltaEquals);
+			Assertions.assertArrayEquals(optimalPolicy.getValues(), expectedValues, deltaEquals);
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -137,7 +137,7 @@ public abstract class idDecideTestNetworkTests extends IDNetworkTests {
 			TablePotential expectedUtility = veExpectedUtilityDecision.getExpectedUtility();
 			double[] expectedValues = { 9.16, 8.11, -0.2, -0.95, 0.0, -0.75, 9.7107227, 8.03512, 0.0, -0.75, 4.810443,
 					7.2184073 };
-			Assert.assertArrayEquals(expectedUtility.getValues(), expectedValues, deltaEquals);
+			Assertions.assertArrayEquals(expectedUtility.getValues(), expectedValues, deltaEquals);
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException | NodeNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -150,26 +150,26 @@ public abstract class idDecideTestNetworkTests extends IDNetworkTests {
 			StrategyTree optimalStrategyTree = veOptimalIntervention.getOptimalIntervention();
 
 			Variable doTestVariable = probNet.getVariable("Do test?");
-			Assert.assertTrue(optimalStrategyTree.getRootVariable().equals(doTestVariable));
-			Assert.assertTrue(veOptimalIntervention.getOptimalIntervention().getBranches().size() == 1);
+			Assertions.assertTrue(optimalStrategyTree.getRootVariable().equals(doTestVariable));
+			Assertions.assertTrue(veOptimalIntervention.getOptimalIntervention().getBranches().size() == 1);
 
 			TreeADDBranch branchDoTestYes = veOptimalIntervention.getOptimalIntervention().getBranches().get(0);
-			Assert.assertTrue(branchDoTestYes.getStates().get(0).getName().equals("yes"));
+			Assertions.assertTrue(branchDoTestYes.getStates().get(0).getName().equals("yes"));
 
 			StrategyTree subStrategyTree = (StrategyTree) branchDoTestYes.getPotential();
 			Variable resultOfTestVariable = probNet.getVariable("Result of test");
-			Assert.assertTrue(subStrategyTree.getRootVariable().equals(resultOfTestVariable));
-			Assert.assertTrue(subStrategyTree.getBranches().size() == 2);
+			Assertions.assertTrue(subStrategyTree.getRootVariable().equals(resultOfTestVariable));
+			Assertions.assertTrue(subStrategyTree.getBranches().size() == 2);
 
-			Assert.assertTrue(subStrategyTree.getBranches().get(0).getStates().get(0).getName().equals("negative"));
+			Assertions.assertTrue(subStrategyTree.getBranches().get(0).getStates().get(0).getName().equals("negative"));
 			StrategyTree potBranch0 = (StrategyTree) subStrategyTree.getBranches().get(0).getPotential();
-			Assert.assertTrue(potBranch0.getRootVariable().getName().equals("Therapy"));
-			Assert.assertTrue(potBranch0.getBranches().get(0).getStates().get(0).getName().equals("no"));
+			Assertions.assertTrue(potBranch0.getRootVariable().getName().equals("Therapy"));
+			Assertions.assertTrue(potBranch0.getBranches().get(0).getStates().get(0).getName().equals("no"));
 
-			Assert.assertTrue(subStrategyTree.getBranches().get(1).getStates().get(0).getName().equals("positive"));
+			Assertions.assertTrue(subStrategyTree.getBranches().get(1).getStates().get(0).getName().equals("positive"));
 			StrategyTree potBranch1 = (StrategyTree) subStrategyTree.getBranches().get(1).getPotential();
-			Assert.assertTrue(potBranch1.getRootVariable().getName().equals("Therapy"));
-			Assert.assertTrue(potBranch1.getBranches().get(0).getStates().get(0).getName().equals("yes"));
+			Assertions.assertTrue(potBranch1.getRootVariable().getName().equals("Therapy"));
+			Assertions.assertTrue(potBranch1.getBranches().get(0).getStates().get(0).getName().equals("yes"));
 
 		} catch (NotEvaluableNetworkException | IncompatibleEvidenceException | UnexpectedInferenceException e) {
 			e.printStackTrace();
