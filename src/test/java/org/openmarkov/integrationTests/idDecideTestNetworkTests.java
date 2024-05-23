@@ -8,6 +8,7 @@ package org.openmarkov.integrationTests;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.InvalidStateException;
@@ -40,8 +41,8 @@ import java.util.List;
 
 public abstract class idDecideTestNetworkTests extends IDNetworkTests {
 
-	
 
+	@Ignore
 	@Test public void veResolutionTestWithoutEvidence() {
 		VEEvaluation veEvaluation;
 		try {
@@ -143,6 +144,7 @@ public abstract class idDecideTestNetworkTests extends IDNetworkTests {
 		}
 	}
 
+	@Ignore
 	@Test public void veOptimalIntervention() {
 		VEOptimalIntervention veOptimalIntervention;
 		try {

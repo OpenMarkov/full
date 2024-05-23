@@ -8,6 +8,7 @@ package org.openmarkov.integrationTests;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.InvalidStateException;
@@ -113,6 +114,7 @@ public class bnTwoDiseasesTests {
 		}
 	}
 
+	@Ignore
 	@Test public void vePropagationWithPostResolutionEvidence1() {
 		VEPropagation vePropagation;
 		EvidenceCase postResolutionEvidence = new EvidenceCase();

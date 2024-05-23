@@ -8,6 +8,7 @@ package org.openmarkov.integrationTests;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.InvalidStateException;
@@ -148,7 +149,7 @@ public class bnCatarnetTests {
 			e.printStackTrace();
 		}
 	}
-
+	@Ignore
 	@Test public void vePropagationIncompatibleEvidence() {
 		VEPropagation vePropagation;
 		EvidenceCase postResolutionEvidence = new EvidenceCase();

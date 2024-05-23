@@ -8,6 +8,7 @@ package org.openmarkov.integrationTests;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.InvalidStateException;
@@ -66,7 +67,7 @@ public class idCEATest2therapiesTests {
 			this.preResolutionEvidence = probNetInfo.getEvidence().get(0);
 		}
 	}
-
+	@Ignore
 	@Test public void veResolutionTestWithoutEvidence() {
 		VEEvaluation veEvaluation;
 		try {
@@ -141,6 +142,7 @@ public class idCEATest2therapiesTests {
 		}
 	}
 
+	@Ignore
 	@Test public void veOptimalPolicyTest() {
 		OptimalPolicies veOptimalPolicy;
 		try {

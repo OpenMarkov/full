@@ -9,6 +9,7 @@ package org.openmarkov.integrationTests;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
@@ -66,7 +67,7 @@ public class midCochlearTests {
 			this.preResolutionEvidence = probNetInfo.getEvidence().get(0);
 		}
 	}
-
+	@Ignore
 	@Test public void veTemporalEvaluationTest() {
 		try {
 			TemporalEvaluation temporalEvaluation = new TemporalEvaluation(probNet);

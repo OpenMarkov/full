@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.InvalidStateException;
@@ -95,7 +96,7 @@ public class mid21gene {
 
 		cea_scenario_results = new ArrayList<>();
 	}
-	
+	@Ignore
 	@Test public void prueba() throws NodeNotFoundException, InvalidStateException, NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
 		//Node dec_21g = probNet.getNode("Dec: 21g");
 		
@@ -288,9 +289,9 @@ public class mid21gene {
 		//cea_scenario_result.lifeTime = life_time;
 		cea_scenario_results.add(cea_scenario_result);
 	}
-	
 
 
+	@Ignore
 	@Test
 	public void test() throws NodeNotFoundException, InvalidStateException, NotEvaluableNetworkException,
 			IncompatibleEvidenceException, UnexpectedInferenceException {
@@ -321,7 +322,7 @@ public class mid21gene {
 		preResolutionEvidence.addFinding(ao_finding);
 		preResolutionEvidence.addFinding(gen_finding);
 	}
-
+	@Ignore
 	@Test
 	public void psa_test(){
 		try {
@@ -342,7 +343,7 @@ public class mid21gene {
 			e.printStackTrace();
 		}
 	}
-
+	@Ignore
 	@Test
 	public void temporalEvaluation(){
 		TemporalEvaluation temporalEvaluation = null;

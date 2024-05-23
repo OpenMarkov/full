@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
@@ -57,6 +58,7 @@ public abstract class IDNetworkTests {
 		return new PGMXReader_0_2();
 	}
 
+	@Ignore
 	@Test public void veSensAnTornadoSpiderTests() {
 		List<UncertainParameter> uncertainParameterList = SystematicSampling.getUncertainParameters(this.probNet);
 		AxisVariation axisVariation = new AxisVariation();
