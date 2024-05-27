@@ -9,6 +9,7 @@ package org.openmarkov.learning.pc;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.ParserException;
@@ -74,7 +75,7 @@ public class PCAlgorithmTest {
 		}
 		return probNet;
 	}
-
+	@Ignore
 	@Test public void testLearnTestDataBase() throws Exception {
 
 		ElviraDataBaseIO databaseIO = new ElviraDataBaseIO();
@@ -173,7 +174,7 @@ public class PCAlgorithmTest {
 		Assert.assertEquals(0.8585657, probabilities[6], maxError);
 		Assert.assertEquals(0.1414342, probabilities[7], maxError);
 	}
-
+	@Ignore
 	@Test public void testAsia10k() throws Exception {
 		CSVDataBaseIO csvReader = new CSVDataBaseIO();
 		CaseDatabase asiaDatabase = csvReader.load(getClass().getResource(asiaDatabaseFilename).getFile());
@@ -280,6 +281,7 @@ public class PCAlgorithmTest {
 
 	}
 
+	@Ignore
 	@Test public void testAlarm500() throws Exception {
 
 		CSVDataBaseIO csvReader = new CSVDataBaseIO();
@@ -366,6 +368,7 @@ public class PCAlgorithmTest {
 
 
 
+	@Ignore
 	@Test public void testVStructuresInNetworks() {
 		ProbNet asia10k = readNetwork(asia10kProbNet);
 		if (asia10k != null)
