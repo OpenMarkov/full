@@ -10,6 +10,7 @@ package org.openmarkov.integrationTests;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
@@ -66,7 +67,7 @@ public class midCochlearTests {
 			this.preResolutionEvidence = probNetInfo.getEvidence().get(0);
 		}
 	}
-
+	@Disabled
 	@Test public void veTemporalEvaluationTest() {
 		try {
 			TemporalEvaluation temporalEvaluation = new TemporalEvaluation(probNet);

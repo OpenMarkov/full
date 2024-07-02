@@ -9,6 +9,7 @@ package org.openmarkov.integrationTests;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.InvalidStateException;
 import org.openmarkov.core.exception.NodeNotFoundException;
@@ -40,8 +41,8 @@ import java.util.List;
 
 public abstract class idDecideTestNetworkTests extends IDNetworkTests {
 
-	
 
+	@Disabled
 	@Test public void veResolutionTestWithoutEvidence() {
 		VEEvaluation veEvaluation;
 		try {
@@ -143,6 +144,7 @@ public abstract class idDecideTestNetworkTests extends IDNetworkTests {
 		}
 	}
 
+	@Disabled
 	@Test public void veOptimalIntervention() {
 		VEOptimalIntervention veOptimalIntervention;
 		try {

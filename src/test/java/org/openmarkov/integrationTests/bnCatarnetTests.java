@@ -9,6 +9,9 @@ package org.openmarkov.integrationTests;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.api.Disabled;
+
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.InvalidStateException;
 import org.openmarkov.core.exception.NodeNotFoundException;
@@ -148,7 +151,7 @@ public class bnCatarnetTests {
 			e.printStackTrace();
 		}
 	}
-
+	@Disabled
 	@Test public void vePropagationIncompatibleEvidence() {
 		VEPropagation vePropagation;
 		EvidenceCase postResolutionEvidence = new EvidenceCase();

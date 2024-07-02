@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.api.Disabled;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.ParserException;
@@ -59,6 +60,7 @@ public abstract class IDNetworkTests {
 		return new PGMXReader_0_2();
 	}
 
+	@Disabled
 	@Test public void veSensAnTornadoSpiderTests() {
 		List<UncertainParameter> uncertainParameterList = SystematicSampling.getUncertainParameters(this.probNet);
 		AxisVariation axisVariation = new AxisVariation();

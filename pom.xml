@@ -6,6 +6,7 @@
         <groupId>org.openmarkov</groupId>
         <artifactId>org.openmarkov</artifactId>
         <version>0.3.0-SNAPSHOT</version>
+        <relativePath>../org.openmarkov</relativePath>
     </parent>
 
     <artifactId>org.openmarkov.full</artifactId>
@@ -93,6 +94,12 @@
             <groupId>org.openmarkov</groupId>
             <artifactId>org.openmarkov.stochasticPropagationOutput</artifactId>
             <version>0.3.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
         </dependency>
         <!--<dependency>-->
         <!--<groupId>org.openmarkov</groupId>-->

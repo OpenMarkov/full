@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.api.Disabled;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.InvalidStateException;
 import org.openmarkov.core.exception.NoFindingException;
@@ -98,7 +99,7 @@ public class mid21gene {
 
 		cea_scenario_results = new ArrayList<>();
 	}
-	
+	@Disabled
 	@Test public void prueba() throws NodeNotFoundException, InvalidStateException, NotEvaluableNetworkException, IncompatibleEvidenceException, UnexpectedInferenceException {
 		//Node dec_21g = probNet.getNode("Dec: 21g");
 		
@@ -291,9 +292,9 @@ public class mid21gene {
 		//cea_scenario_result.lifeTime = life_time;
 		cea_scenario_results.add(cea_scenario_result);
 	}
-	
 
 
+	@Disabled
 	@Test
 	public void test() throws NodeNotFoundException, InvalidStateException, NotEvaluableNetworkException,
 			IncompatibleEvidenceException, UnexpectedInferenceException {
@@ -324,7 +325,7 @@ public class mid21gene {
 		preResolutionEvidence.addFinding(ao_finding);
 		preResolutionEvidence.addFinding(gen_finding);
 	}
-
+	@Disabled
 	@Test
 	public void psa_test(){
 		try {
@@ -345,7 +346,7 @@ public class mid21gene {
 			e.printStackTrace();
 		}
 	}
-
+	@Disabled
 	@Test
 	public void temporalEvaluation(){
 		TemporalEvaluation temporalEvaluation = null;

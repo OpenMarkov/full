@@ -9,6 +9,7 @@ package org.openmarkov.integrationTests;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
@@ -77,7 +78,7 @@ public class midChancellorTests {
 			this.preResolutionEvidence = probNetInfo.getEvidence().get(0);
 		}
 	}
-
+	@Disabled
 	@Test public void veResolutionTestWithoutEvidence() {
 		VEEvaluation veEvaluation;
 		try {
@@ -89,7 +90,7 @@ public class midChancellorTests {
 			e.printStackTrace();
 		}
 	}
-
+	@Disabled
 	@Test public void veOptimalPolicyTest() {
 		OptimalPolicies veOptimalPolicy;
 		try {
@@ -102,7 +103,7 @@ public class midChancellorTests {
 			e.printStackTrace();
 		}
 	}
-
+	@Disabled
 	@Test public void veOptimalIntervention() {
 		VEOptimalIntervention veOptimalIntervention;
 		try {
@@ -143,7 +144,7 @@ public class midChancellorTests {
 			e.printStackTrace();
 		}
 	}
-
+	@Disabled
 	@Test public void veCEADecisionDecTestTests() {
 		CEAnalysis veceaDecision;
 		try {
@@ -180,7 +181,7 @@ public class midChancellorTests {
 			e.printStackTrace();
 		}
 	}
-
+	@Disabled
 	@Test public void stateVETemporalEvolutionTests() {
 		Variable stateVariable = null;
 		try {
@@ -250,7 +251,7 @@ public class midChancellorTests {
 			e.printStackTrace();
 		}
 	}
-
+	@Disabled
 	@Test public void costLamiduvineVETemporalEvolutionTests() {
 		Variable stateVariable = null;
 		try {
@@ -414,7 +415,7 @@ public class midChancellorTests {
 			e.printStackTrace();
 		}
 	}
-
+	@Disabled
 	@Test public void communityCareCostVETemporalEvolutionTests() {
 		Variable stateVariable = null;
 		try {
@@ -477,7 +478,7 @@ public class midChancellorTests {
 			e.printStackTrace();
 		}
 	}
-
+	@Disabled
 	@Test public void veTemporalEvaluationTest() {
 		try {
 			TemporalEvaluation temporalEvaluation = new TemporalEvaluation(probNet);

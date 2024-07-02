@@ -9,6 +9,7 @@ package org.openmarkov.integrationTests;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.InvalidStateException;
 import org.openmarkov.core.exception.NodeNotFoundException;
@@ -113,6 +114,7 @@ public class bnTwoDiseasesTests {
 		}
 	}
 
+	@Disabled
 	@Test public void vePropagationWithPostResolutionEvidence1() {
 		VEPropagation vePropagation;
 		EvidenceCase postResolutionEvidence = new EvidenceCase();

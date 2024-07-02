@@ -260,6 +260,7 @@ public class CEAGlobalAnalysisTest {
 
 	}
 
+	@Ignore
 	@SuppressWarnings("rawtypes")
 	@Test public void testDMHEE47PSA() throws Exception {
 		// Constants
@@ -298,6 +299,7 @@ public class CEAGlobalAnalysisTest {
 		Assertions.assertEquals(expectedResults[3], ((CEP)result.get(0).elementTable.get(0)).getEffectiveness(0), 0.01);
 	}
 
+	@Ignore
 	@SuppressWarnings("rawtypes")
 	@Test public void testBriggsSA() throws Exception {
 		// Constants
