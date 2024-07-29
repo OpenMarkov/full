@@ -413,23 +413,6 @@ public class Classificator extends PGMXReader_0_2 {
         }
     }
 
-    /**
-     * Gets the version of a PGMX file
-     * @param pgmxFile
-     * @return
-     */
-    private String getVersion(File pgmxFile) throws ParserException {
-        PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
-        String absolutePath = pgmxFile.getAbsolutePath();
-        InputStream networkStream = null;
-        try {
-            networkStream = new FileInputStream(absolutePath);
-        } catch (FileNotFoundException e) {
-            throw new ParserException("File: " + absolutePath + " does not exists.");
-        }
-        return pgmxReader.getVersion(absolutePath, networkStream);
-    }
-
     // Methods to compare data structures.
     /**
      *
