@@ -18,6 +18,7 @@ import java.util.List;
 /**
  * Auxiliar class for tests
  */
+// TODO Replace usages of Strings with the "version" by the enum Version
 public class PGMXCompound {
     private final String V0_2 = "0.2.0";
     private final String V0_7 = "0.7.0";
