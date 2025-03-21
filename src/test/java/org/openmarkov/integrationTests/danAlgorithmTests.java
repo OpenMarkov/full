@@ -7,9 +7,7 @@
 
 package org.openmarkov.integrationTests;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.ParserException;
@@ -28,12 +26,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class danAlgorithmTests {
 
 	private final double deltaEquals = Math.pow(10, -4);
 
-	@BeforeAll
-	public void setUp(){
+	@BeforeEach	public void setUp(){
 
 
 	}

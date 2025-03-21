@@ -7,9 +7,8 @@
 
 package org.openmarkov.full.inference.heuristics;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Ignore;
+import org.junit.jupiter.api.*;
 
 import org.openmarkov.core.exception.WrongGraphStructureException;
 import org.openmarkov.core.model.network.ProbNet;
@@ -33,6 +32,7 @@ import java.util.List;
  *
  * @author Manuel Arias
  */
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class HeuristicsTest {
 
 	// TODO Add performance tests
@@ -40,9 +40,11 @@ public class HeuristicsTest {
 	@SuppressWarnings("rawtypes") private Class[] heuristicsClasses = new Class[] { CanoMoralElimination.class,
 			MinimalFillIn.class, HybridElimination.class, SimpleElimination.class };
 
-	@BeforeAll public void setUp() throws Exception {
+	@BeforeEach public void setUp() throws Exception {
 	}
-
+	
+	@Ignore("This performance test is so heavy, that it can throw a java.lang.OutOfMemoryError after a few minutes of execution")
+	@Disabled("This performance test is so heavy, that it can throw a java.lang.OutOfMemoryError after a few minutes of execution")
 	@Test
 	/** This is a performance test. It checks that some heuristics are better than others.
 	 * We assume that CanoAndMoral must be better than all the others "most" of the times, 

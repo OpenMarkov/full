@@ -7,9 +7,7 @@
 
 package org.openmarkov.full.inference.decompositionintosymmetricdans;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.io.ProbNetInfo;
@@ -29,6 +27,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class DANOperationsTest {
 
 	private ProbNet danTest2Therapies;
@@ -37,7 +36,7 @@ public class DANOperationsTest {
 	private ProbNet danDiabetes;
 	private ProbNet danDiabetesCE;
 
-	@BeforeAll public void setUp() {
+	@BeforeEach public void setUp() {
 		String networkName;
 		PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
 		ProbNetInfo probNetInfo;

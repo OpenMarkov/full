@@ -7,10 +7,7 @@
 
 package org.openmarkov.integrationTests;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.*;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
@@ -40,6 +37,7 @@ import java.util.List;
 /**
  * Created by JORGE on 08/02/2017.
  */
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class midCochlearTests {
 	private final String networkName = "networks/mid/MID-Cochlear.pgmx";
 
@@ -49,7 +47,7 @@ public class midCochlearTests {
 	private ProbNet probNet;
 	private EvidenceCase preResolutionEvidence;
 
-	@BeforeAll public void setUp() throws Exception {
+	@BeforeEach public void setUp() throws Exception {
 		URL res = getClass().getClassLoader().getResource(networkName);
 		File f = Paths.get(res.toURI()).toFile();
 		String absolutePath = f.getAbsolutePath();

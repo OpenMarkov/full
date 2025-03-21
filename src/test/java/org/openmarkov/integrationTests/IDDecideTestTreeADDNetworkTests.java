@@ -1,6 +1,7 @@
 package org.openmarkov.integrationTests;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 
 
 /**
@@ -10,7 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 public class IDDecideTestTreeADDNetworkTests extends idDecideTestNetworkTests {
 	
 	@Override
-	@BeforeAll public void setUp() throws Exception {
+	@BeforeEach public void setUp() throws Exception {
 		networkName = "networks/id/ID-decide-test-tree-add.pgmx";
 		super.setUp();
 	}

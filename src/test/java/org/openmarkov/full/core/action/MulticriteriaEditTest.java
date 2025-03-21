@@ -7,9 +7,7 @@
 
 package org.openmarkov.full.core.action;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import org.openmarkov.core.action.MulticriteriaEdit;
 import org.openmarkov.core.exception.DoEditException;
@@ -31,12 +29,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class MulticriteriaEditTest {
 
 	private ProbNet probNet;
 
-	@BeforeAll public void setUp() throws Exception {
+	@BeforeEach public void setUp() throws Exception {
 		this.probNet = getProbNet4Test();
 		probNet.getPNESupport().setWithUndo(true);
 	}

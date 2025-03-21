@@ -6,10 +6,7 @@
  */
 package org.openmarkov.integrationTests;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.*;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
@@ -44,6 +41,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class midChancellorTests {
 
 	// Delta parameter for Assertions.Equals methods
@@ -52,7 +50,7 @@ public class midChancellorTests {
 	private ProbNet probNet;
 	private EvidenceCase preResolutionEvidence;
 
-	@BeforeAll public void setUp() {
+	@BeforeEach public void setUp() {
 		String networkName = "networks/mid/MID-Chancellor.pgmx";
 		URL res = getClass().getClassLoader().getResource(networkName);
 		File f = null;

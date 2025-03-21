@@ -7,11 +7,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
-import org.junit.jupiter.api.Disabled;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.ParserException;
@@ -27,6 +24,7 @@ import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.inference.variableElimination.tasks.VESensAnTornadoSpider;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public abstract class IDNetworkTests {
 	
 	protected String networkName;
@@ -37,7 +35,7 @@ public abstract class IDNetworkTests {
 	protected ProbNet probNet;
 	protected EvidenceCase preResolutionEvidence;
 
-	@BeforeAll public void setUp() throws Exception {
+	@BeforeEach public void setUp() throws Exception {
 		URL res = getClass().getClassLoader().getResource(networkName);
 		File f = Paths.get(res.toURI()).toFile();
 		String absolutePath = f.getAbsolutePath();

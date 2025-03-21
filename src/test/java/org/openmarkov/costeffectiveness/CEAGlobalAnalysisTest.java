@@ -7,10 +7,8 @@
 
 package org.openmarkov.costeffectiveness;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.Ignore;
+import org.junit.jupiter.api.*;
 import org.openmarkov.core.inference.TransitionTime;
 import org.openmarkov.core.model.network.CEP;
 import org.openmarkov.core.model.network.Criterion;
@@ -36,11 +34,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class CEAGlobalAnalysisTest {
 
 	private boolean useMultithreading = true;
 
-	@BeforeAll public void setUp() throws Exception {
+	@BeforeEach public void setUp() throws Exception {
 
 	}
 
@@ -261,6 +260,7 @@ public class CEAGlobalAnalysisTest {
 	}
 
 	@Ignore
+	@Disabled
 	@SuppressWarnings("rawtypes")
 	@Test public void testDMHEE47PSA() throws Exception {
 		// Constants
@@ -300,6 +300,7 @@ public class CEAGlobalAnalysisTest {
 	}
 
 	@Ignore
+	@Disabled
 	@SuppressWarnings("rawtypes")
 	@Test public void testBriggsSA() throws Exception {
 		// Constants

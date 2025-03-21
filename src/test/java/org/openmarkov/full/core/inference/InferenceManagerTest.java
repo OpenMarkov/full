@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.openmarkov.core.inference.InferenceAlgorithm;
@@ -24,7 +25,7 @@ public class InferenceManagerTest {
 	private InferenceManager inferenceManager;
 	private ProbNet probNet;
 
-	@BeforeAll public void setUp() throws Exception {
+	@BeforeEach public void setUp() throws Exception {
 		inferenceManager = new InferenceManager();
 		probNet = new ProbNet();
 	}

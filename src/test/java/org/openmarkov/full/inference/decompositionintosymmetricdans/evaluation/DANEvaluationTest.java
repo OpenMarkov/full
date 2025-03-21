@@ -9,10 +9,7 @@ package org.openmarkov.full.inference.decompositionintosymmetricdans.evaluation;
 
 import java.util.Arrays;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
@@ -21,6 +18,7 @@ import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.full.inference.Tools;
 import org.openmarkov.full.inference.decompositionintosymmetricdans.NetworkEvaluationInferenceTest;
 
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public abstract class DANEvaluationTest extends NetworkEvaluationInferenceTest {
 
 	
@@ -28,7 +26,7 @@ public abstract class DANEvaluationTest extends NetworkEvaluationInferenceTest {
 
 
 
-	@BeforeAll public void setUp() throws Exception {
+	@BeforeEach public void setUp() throws Exception {
 	}
 
 

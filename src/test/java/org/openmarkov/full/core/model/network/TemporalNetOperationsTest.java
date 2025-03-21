@@ -6,9 +6,7 @@
  */
 package org.openmarkov.full.core.model.network;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.model.network.CycleLength;
@@ -27,12 +25,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Paths;
 
-
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class TemporalNetOperationsTest {
 
 	private ProbNet probNet;
 
-	@BeforeAll public void setUp() throws Exception {
+	@BeforeEach public void setUp() throws Exception {
 		String networkName = "networks/mid/SimpleTemporalUtilityNode.pgmx";
 		// Open the file containing the network
 		File f = null;

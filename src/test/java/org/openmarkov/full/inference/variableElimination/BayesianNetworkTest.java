@@ -9,13 +9,14 @@ package org.openmarkov.full.inference.variableElimination;
 
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * @author Manuel Arias
  */
 public class BayesianNetworkTest {
 
-	@BeforeAll public void setUp() throws Exception {
+	@BeforeEach public void setUp() throws Exception {
 	}
 
 	//    @Test
