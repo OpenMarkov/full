@@ -7,7 +7,6 @@
 
 package org.openmarkov.full.inference.heuristics;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.*;
 
 import org.openmarkov.core.exception.WrongGraphStructureException;
@@ -43,7 +42,6 @@ public class HeuristicsTest {
 	@BeforeEach public void setUp() throws Exception {
 	}
 	
-	@Ignore("This performance test is so heavy, that it can throw a java.lang.OutOfMemoryError after a few minutes of execution")
 	@Disabled("This performance test is so heavy, that it can throw a java.lang.OutOfMemoryError after a few minutes of execution")
 	@Test
 	/** This is a performance test. It checks that some heuristics are better than others.

@@ -7,10 +7,7 @@
 
 package org.openmarkov.learning.pc;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.io.database.CaseDatabase;
@@ -34,7 +31,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class PCAlgorithmTest {
 	private final double maxError = 1E-6;
@@ -54,7 +51,7 @@ public class PCAlgorithmTest {
 	private PGMXReader_0_2 reader;
 
 
-	@Before public void setUp() throws Exception {
+	@BeforeEach public void setUp() throws Exception {
 		independenceTester = new CrossEntropyIndependenceTester();
 
 		URL url = getClass().getClassLoader ().getResource (asia10kProbNet);
@@ -75,7 +72,7 @@ public class PCAlgorithmTest {
 		}
 		return probNet;
 	}
-	@Ignore
+	@Disabled
 	@Test public void testLearnTestDataBase() throws Exception {
 
 		ElviraDataBaseIO databaseIO = new ElviraDataBaseIO();
@@ -104,60 +101,61 @@ public class PCAlgorithmTest {
 
 		// check the structure of the learned net
 		// present links
-		Assert.assertTrue(nodeC.isParent(nodeA));
-		Assert.assertTrue(nodeD.isParent(nodeA));
-		Assert.assertTrue(nodeC.isParent(nodeB));
-		Assert.assertTrue(nodeD.isParent(nodeC));
-		Assert.assertTrue(nodeE.isParent(nodeD));
+		
+		Assertions.assertTrue(nodeC.isParent(nodeA));
+		Assertions.assertTrue(nodeD.isParent(nodeA));
+		Assertions.assertTrue(nodeC.isParent(nodeB));
+		Assertions.assertTrue(nodeD.isParent(nodeC));
+		Assertions.assertTrue(nodeE.isParent(nodeD));
 		// non-present links
-		Assert.assertFalse(nodeA.isParent(nodeB));
-		Assert.assertFalse(nodeA.isParent(nodeC));
-		Assert.assertFalse(nodeA.isParent(nodeD));
-		Assert.assertFalse(nodeA.isParent(nodeE));
-		Assert.assertFalse(nodeA.isParent(nodeF));
-		Assert.assertFalse(nodeB.isParent(nodeA));
-		Assert.assertFalse(nodeB.isParent(nodeC));
-		Assert.assertFalse(nodeB.isParent(nodeD));
-		Assert.assertFalse(nodeB.isParent(nodeE));
-		Assert.assertFalse(nodeB.isParent(nodeF));
-		Assert.assertFalse(nodeC.isParent(nodeD));
-		Assert.assertFalse(nodeC.isParent(nodeE));
-		Assert.assertFalse(nodeC.isParent(nodeF));
-		Assert.assertFalse(nodeD.isParent(nodeB));
-		Assert.assertFalse(nodeD.isParent(nodeE));
-		Assert.assertFalse(nodeD.isParent(nodeF));
-		Assert.assertFalse(nodeE.isParent(nodeA));
-		Assert.assertFalse(nodeE.isParent(nodeB));
-		Assert.assertFalse(nodeE.isParent(nodeC));
-		Assert.assertFalse(nodeE.isParent(nodeF));
-		Assert.assertFalse(nodeF.isParent(nodeA));
-		Assert.assertFalse(nodeF.isParent(nodeB));
-		Assert.assertFalse(nodeF.isParent(nodeC));
-		Assert.assertFalse(nodeF.isParent(nodeD));
-		Assert.assertFalse(nodeF.isParent(nodeE));
+		Assertions.assertFalse(nodeA.isParent(nodeB));
+		Assertions.assertFalse(nodeA.isParent(nodeC));
+		Assertions.assertFalse(nodeA.isParent(nodeD));
+		Assertions.assertFalse(nodeA.isParent(nodeE));
+		Assertions.assertFalse(nodeA.isParent(nodeF));
+		Assertions.assertFalse(nodeB.isParent(nodeA));
+		Assertions.assertFalse(nodeB.isParent(nodeC));
+		Assertions.assertFalse(nodeB.isParent(nodeD));
+		Assertions.assertFalse(nodeB.isParent(nodeE));
+		Assertions.assertFalse(nodeB.isParent(nodeF));
+		Assertions.assertFalse(nodeC.isParent(nodeD));
+		Assertions.assertFalse(nodeC.isParent(nodeE));
+		Assertions.assertFalse(nodeC.isParent(nodeF));
+		Assertions.assertFalse(nodeD.isParent(nodeB));
+		Assertions.assertFalse(nodeD.isParent(nodeE));
+		Assertions.assertFalse(nodeD.isParent(nodeF));
+		Assertions.assertFalse(nodeE.isParent(nodeA));
+		Assertions.assertFalse(nodeE.isParent(nodeB));
+		Assertions.assertFalse(nodeE.isParent(nodeC));
+		Assertions.assertFalse(nodeE.isParent(nodeF));
+		Assertions.assertFalse(nodeF.isParent(nodeA));
+		Assertions.assertFalse(nodeF.isParent(nodeB));
+		Assertions.assertFalse(nodeF.isParent(nodeC));
+		Assertions.assertFalse(nodeF.isParent(nodeD));
+		Assertions.assertFalse(nodeF.isParent(nodeE));
 		// chek the CPTs
 		// A
 		probabilities = ((TablePotential) nodeA.getPotentials().get(0)).getValues();
-		Assert.assertEquals(0.305194, probabilities[0], maxError);
-		Assert.assertEquals(0.694805, probabilities[1], maxError);
+		Assertions.assertEquals(0.305194, probabilities[0], maxError);
+		Assertions.assertEquals(0.694805, probabilities[1], maxError);
 		//B
 		probabilities = ((TablePotential) nodeB.getPotentials().get(0)).getValues();
-		Assert.assertEquals(0.602897, probabilities[0], maxError);
-		Assert.assertEquals(0.397102, probabilities[1], maxError);
+		Assertions.assertEquals(0.602897, probabilities[0], maxError);
+		Assertions.assertEquals(0.397102, probabilities[1], maxError);
 		//C | B, A
 		TablePotential cGivenBAPotential = (TablePotential) nodeC.getPotentials().get(0);
 		List<Variable> cGivenBAVariables = Arrays.asList(variableC, variableB, variableA);
 		cGivenBAPotential = (TablePotential) cGivenBAPotential.reorder(cGivenBAVariables);
 		probabilities = cGivenBAPotential.getValues();
 
-		Assert.assertEquals(0.286111, probabilities[0], maxError);
-		Assert.assertEquals(0.713888, probabilities[1], maxError);
-		Assert.assertEquals(0.5, probabilities[2], maxError);
-		Assert.assertEquals(0.5, probabilities[3], maxError);
-		Assert.assertEquals(0.791764, probabilities[4], maxError);
-		Assert.assertEquals(0.208235, probabilities[5], maxError);
-		Assert.assertEquals(0.402573, probabilities[6], maxError);
-		Assert.assertEquals(0.597426, probabilities[7], maxError);
+		Assertions.assertEquals(0.286111, probabilities[0], maxError);
+		Assertions.assertEquals(0.713888, probabilities[1], maxError);
+		Assertions.assertEquals(0.5, probabilities[2], maxError);
+		Assertions.assertEquals(0.5, probabilities[3], maxError);
+		Assertions.assertEquals(0.791764, probabilities[4], maxError);
+		Assertions.assertEquals(0.208235, probabilities[5], maxError);
+		Assertions.assertEquals(0.402573, probabilities[6], maxError);
+		Assertions.assertEquals(0.597426, probabilities[7], maxError);
 
 		//D | C, A
 		TablePotential dGivenCAPotential = (TablePotential) nodeD.getPotentials().get(0);
@@ -165,16 +163,16 @@ public class PCAlgorithmTest {
 		dGivenCAPotential = (TablePotential) dGivenCAPotential.reorder(dGivenCAVariables);
 		probabilities = dGivenCAPotential.getValues();
 
-		Assert.assertEquals(0.491304, probabilities[0], maxError);
-		Assert.assertEquals(0.5086956, probabilities[1], maxError);
-		Assert.assertEquals(0.1536458, probabilities[2], maxError);
-		Assert.assertEquals(0.8463541, probabilities[3], maxError);
-		Assert.assertEquals(0.7343049, probabilities[4], maxError);
-		Assert.assertEquals(0.2656950, probabilities[5], maxError);
-		Assert.assertEquals(0.8585657, probabilities[6], maxError);
-		Assert.assertEquals(0.1414342, probabilities[7], maxError);
+		Assertions.assertEquals(0.491304, probabilities[0], maxError);
+		Assertions.assertEquals(0.5086956, probabilities[1], maxError);
+		Assertions.assertEquals(0.1536458, probabilities[2], maxError);
+		Assertions.assertEquals(0.8463541, probabilities[3], maxError);
+		Assertions.assertEquals(0.7343049, probabilities[4], maxError);
+		Assertions.assertEquals(0.2656950, probabilities[5], maxError);
+		Assertions.assertEquals(0.8585657, probabilities[6], maxError);
+		Assertions.assertEquals(0.1414342, probabilities[7], maxError);
 	}
-	@Ignore
+	@Disabled
 	@Test public void testAsia10k() throws Exception {
 		CSVDataBaseIO csvReader = new CSVDataBaseIO();
 		CaseDatabase asiaDatabase = csvReader.load(getClass().getResource(asiaDatabaseFilename).getFile());
@@ -197,91 +195,91 @@ public class PCAlgorithmTest {
 		Node nodeXRay = learnedNet.getNode("X-ray");
 		Node nodeDyspnea = learnedNet.getNode("Dyspnea");
 
-		Assert.assertNotNull(nodeAsia);
-		Assert.assertNotNull(nodeTuberculosis);
-		Assert.assertNotNull(nodeLungCancer);
-		Assert.assertNotNull(nodeTuberculosisOrCancer);
-		Assert.assertNotNull(nodeBronchitis);
-		Assert.assertNotNull(nodeSmoker);
-		Assert.assertNotNull(nodeXRay);
-		Assert.assertNotNull(nodeDyspnea);
+		Assertions.assertNotNull(nodeAsia);
+		Assertions.assertNotNull(nodeTuberculosis);
+		Assertions.assertNotNull(nodeLungCancer);
+		Assertions.assertNotNull(nodeTuberculosisOrCancer);
+		Assertions.assertNotNull(nodeBronchitis);
+		Assertions.assertNotNull(nodeSmoker);
+		Assertions.assertNotNull(nodeXRay);
+		Assertions.assertNotNull(nodeDyspnea);
 
 		// Node asia
-		Assert.assertTrue(nodeTuberculosis.isParent(nodeAsia));
-		Assert.assertFalse(nodeLungCancer.isParent(nodeAsia));
-		Assert.assertFalse(nodeTuberculosisOrCancer.isParent(nodeAsia));
-		Assert.assertFalse(nodeBronchitis.isParent(nodeAsia));
-		Assert.assertFalse(nodeSmoker.isParent(nodeAsia));
-		Assert.assertFalse(nodeXRay.isParent(nodeAsia));
-		Assert.assertFalse(nodeDyspnea.isParent(nodeAsia));
+		Assertions.assertTrue(nodeTuberculosis.isParent(nodeAsia));
+		Assertions.assertFalse(nodeLungCancer.isParent(nodeAsia));
+		Assertions.assertFalse(nodeTuberculosisOrCancer.isParent(nodeAsia));
+		Assertions.assertFalse(nodeBronchitis.isParent(nodeAsia));
+		Assertions.assertFalse(nodeSmoker.isParent(nodeAsia));
+		Assertions.assertFalse(nodeXRay.isParent(nodeAsia));
+		Assertions.assertFalse(nodeDyspnea.isParent(nodeAsia));
 
 		// Node LungCancer
-		Assert.assertFalse(nodeAsia.isParent(nodeLungCancer));
-		Assert.assertFalse(nodeTuberculosis.isParent(nodeLungCancer));
-		Assert.assertTrue(nodeTuberculosisOrCancer.isParent(nodeLungCancer));
-		Assert.assertFalse(nodeBronchitis.isParent(nodeLungCancer));
-		Assert.assertFalse(nodeSmoker.isParent(nodeLungCancer));
-		Assert.assertFalse(nodeXRay.isParent(nodeLungCancer));
-		Assert.assertFalse(nodeDyspnea.isParent(nodeLungCancer));
+		Assertions.assertFalse(nodeAsia.isParent(nodeLungCancer));
+		Assertions.assertFalse(nodeTuberculosis.isParent(nodeLungCancer));
+		Assertions.assertTrue(nodeTuberculosisOrCancer.isParent(nodeLungCancer));
+		Assertions.assertFalse(nodeBronchitis.isParent(nodeLungCancer));
+		Assertions.assertFalse(nodeSmoker.isParent(nodeLungCancer));
+		Assertions.assertFalse(nodeXRay.isParent(nodeLungCancer));
+		Assertions.assertFalse(nodeDyspnea.isParent(nodeLungCancer));
 
 		// Node Tuberculosis
-		Assert.assertFalse(nodeAsia.isParent(nodeTuberculosis));
-		Assert.assertFalse(nodeLungCancer.isParent(nodeTuberculosis));
-		Assert.assertTrue(nodeTuberculosisOrCancer.isParent(nodeTuberculosis));
-		Assert.assertFalse(nodeBronchitis.isParent(nodeTuberculosis));
-		Assert.assertFalse(nodeSmoker.isParent(nodeTuberculosis));
-		Assert.assertFalse(nodeXRay.isParent(nodeTuberculosis));
-		Assert.assertFalse(nodeDyspnea.isParent(nodeTuberculosis));
+		Assertions.assertFalse(nodeAsia.isParent(nodeTuberculosis));
+		Assertions.assertFalse(nodeLungCancer.isParent(nodeTuberculosis));
+		Assertions.assertTrue(nodeTuberculosisOrCancer.isParent(nodeTuberculosis));
+		Assertions.assertFalse(nodeBronchitis.isParent(nodeTuberculosis));
+		Assertions.assertFalse(nodeSmoker.isParent(nodeTuberculosis));
+		Assertions.assertFalse(nodeXRay.isParent(nodeTuberculosis));
+		Assertions.assertFalse(nodeDyspnea.isParent(nodeTuberculosis));
 
 		// Node TuberculosisOrCancer
-		Assert.assertFalse(nodeAsia.isParent(nodeTuberculosisOrCancer));
-		Assert.assertFalse(nodeLungCancer.isParent(nodeTuberculosisOrCancer));
-		Assert.assertFalse(nodeTuberculosis.isParent(nodeTuberculosisOrCancer));
-		Assert.assertFalse(nodeBronchitis.isParent(nodeTuberculosisOrCancer));
-		Assert.assertFalse(nodeSmoker.isParent(nodeTuberculosisOrCancer));
-		Assert.assertTrue(nodeXRay.isParent(nodeTuberculosisOrCancer));
-		Assert.assertTrue(nodeDyspnea.isParent(nodeTuberculosisOrCancer));
+		Assertions.assertFalse(nodeAsia.isParent(nodeTuberculosisOrCancer));
+		Assertions.assertFalse(nodeLungCancer.isParent(nodeTuberculosisOrCancer));
+		Assertions.assertFalse(nodeTuberculosis.isParent(nodeTuberculosisOrCancer));
+		Assertions.assertFalse(nodeBronchitis.isParent(nodeTuberculosisOrCancer));
+		Assertions.assertFalse(nodeSmoker.isParent(nodeTuberculosisOrCancer));
+		Assertions.assertTrue(nodeXRay.isParent(nodeTuberculosisOrCancer));
+		Assertions.assertTrue(nodeDyspnea.isParent(nodeTuberculosisOrCancer));
 
 		// Node Bronchitis
-		Assert.assertFalse(nodeAsia.isParent(nodeBronchitis));
-		Assert.assertFalse(nodeLungCancer.isParent(nodeBronchitis));
-		Assert.assertFalse(nodeTuberculosis.isParent(nodeBronchitis));
-		Assert.assertFalse(nodeTuberculosisOrCancer.isParent(nodeBronchitis));
-		Assert.assertFalse(nodeBronchitis.isParent(nodeBronchitis));
-		Assert.assertFalse(nodeSmoker.isParent(nodeBronchitis));
-		Assert.assertFalse(nodeXRay.isParent(nodeBronchitis));
-		Assert.assertTrue(nodeDyspnea.isParent(nodeBronchitis));
+		Assertions.assertFalse(nodeAsia.isParent(nodeBronchitis));
+		Assertions.assertFalse(nodeLungCancer.isParent(nodeBronchitis));
+		Assertions.assertFalse(nodeTuberculosis.isParent(nodeBronchitis));
+		Assertions.assertFalse(nodeTuberculosisOrCancer.isParent(nodeBronchitis));
+		Assertions.assertFalse(nodeBronchitis.isParent(nodeBronchitis));
+		Assertions.assertFalse(nodeSmoker.isParent(nodeBronchitis));
+		Assertions.assertFalse(nodeXRay.isParent(nodeBronchitis));
+		Assertions.assertTrue(nodeDyspnea.isParent(nodeBronchitis));
 
 		// Node Smoker
-		Assert.assertFalse(nodeAsia.isParent(nodeSmoker));
-		Assert.assertTrue(nodeLungCancer.isParent(nodeSmoker));
-		Assert.assertFalse(nodeTuberculosis.isParent(nodeSmoker));
-		Assert.assertFalse(nodeTuberculosisOrCancer.isParent(nodeSmoker));
-		Assert.assertTrue(nodeBronchitis.isParent(nodeSmoker));
-		Assert.assertFalse(nodeXRay.isParent(nodeSmoker));
-		Assert.assertFalse(nodeDyspnea.isParent(nodeSmoker));
+		Assertions.assertFalse(nodeAsia.isParent(nodeSmoker));
+		Assertions.assertTrue(nodeLungCancer.isParent(nodeSmoker));
+		Assertions.assertFalse(nodeTuberculosis.isParent(nodeSmoker));
+		Assertions.assertFalse(nodeTuberculosisOrCancer.isParent(nodeSmoker));
+		Assertions.assertTrue(nodeBronchitis.isParent(nodeSmoker));
+		Assertions.assertFalse(nodeXRay.isParent(nodeSmoker));
+		Assertions.assertFalse(nodeDyspnea.isParent(nodeSmoker));
 
 		// Node X-ray
-		Assert.assertFalse(nodeAsia.isParent(nodeXRay));
-		Assert.assertFalse(nodeLungCancer.isParent(nodeXRay));
-		Assert.assertFalse(nodeTuberculosis.isParent(nodeXRay));
-		Assert.assertFalse(nodeTuberculosisOrCancer.isParent(nodeXRay));
-		Assert.assertFalse(nodeBronchitis.isParent(nodeXRay));
-		Assert.assertFalse(nodeSmoker.isParent(nodeXRay));
-		Assert.assertFalse(nodeDyspnea.isParent(nodeXRay));
+		Assertions.assertFalse(nodeAsia.isParent(nodeXRay));
+		Assertions.assertFalse(nodeLungCancer.isParent(nodeXRay));
+		Assertions.assertFalse(nodeTuberculosis.isParent(nodeXRay));
+		Assertions.assertFalse(nodeTuberculosisOrCancer.isParent(nodeXRay));
+		Assertions.assertFalse(nodeBronchitis.isParent(nodeXRay));
+		Assertions.assertFalse(nodeSmoker.isParent(nodeXRay));
+		Assertions.assertFalse(nodeDyspnea.isParent(nodeXRay));
 
 		// Node X-ray
-		Assert.assertFalse(nodeAsia.isParent(nodeDyspnea));
-		Assert.assertFalse(nodeLungCancer.isParent(nodeDyspnea));
-		Assert.assertFalse(nodeTuberculosis.isParent(nodeDyspnea));
-		Assert.assertFalse(nodeTuberculosisOrCancer.isParent(nodeDyspnea));
-		Assert.assertFalse(nodeBronchitis.isParent(nodeDyspnea));
-		Assert.assertFalse(nodeSmoker.isParent(nodeDyspnea));
-		Assert.assertFalse(nodeXRay.isParent(nodeDyspnea));
+		Assertions.assertFalse(nodeAsia.isParent(nodeDyspnea));
+		Assertions.assertFalse(nodeLungCancer.isParent(nodeDyspnea));
+		Assertions.assertFalse(nodeTuberculosis.isParent(nodeDyspnea));
+		Assertions.assertFalse(nodeTuberculosisOrCancer.isParent(nodeDyspnea));
+		Assertions.assertFalse(nodeBronchitis.isParent(nodeDyspnea));
+		Assertions.assertFalse(nodeSmoker.isParent(nodeDyspnea));
+		Assertions.assertFalse(nodeXRay.isParent(nodeDyspnea));
 
 	}
 
-	@Ignore
+	@Disabled
 	@Test public void testAlarm500() throws Exception {
 
 		CSVDataBaseIO csvReader = new CSVDataBaseIO();
@@ -296,7 +294,7 @@ public class PCAlgorithmTest {
 
 		learningAlgorithm.run(new ModelNetUse());
 
-		Assert.assertEquals(34, learnedNet.getLinks().size());
+		Assertions.assertEquals(34, learnedNet.getLinks().size());
 		PGMXReader_0_2 reader = new PGMXReader_0_2();
 		ProbNet readNet = reader.loadProbNet(getClass().getResource("/BN-alarm.pgmx").getFile());
 		printDifferences(readNet, learnedNet);
@@ -317,7 +315,7 @@ public class PCAlgorithmTest {
 
 		learningAlgorithm.run(new ModelNetUse());
 
-		Assert.assertEquals(46, learnedNet.getLinks().size());
+		Assertions.assertEquals(46, learnedNet.getLinks().size());
 
 		PGMXReader_0_2 reader = new PGMXReader_0_2();
 		ProbNet readNet = reader.loadProbNet(getClass().getResource("/BN-alarm.pgmx").getFile());
@@ -368,7 +366,7 @@ public class PCAlgorithmTest {
 
 
 
-	@Ignore
+	@Disabled
 	@Test public void testVStructuresInNetworks() {
 		ProbNet asia10k = readNetwork(asia10kProbNet);
 		if (asia10k != null)

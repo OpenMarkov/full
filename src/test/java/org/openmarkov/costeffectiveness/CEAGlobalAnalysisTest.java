@@ -7,7 +7,6 @@
 
 package org.openmarkov.costeffectiveness;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.*;
 import org.openmarkov.core.inference.TransitionTime;
 import org.openmarkov.core.model.network.CEP;
@@ -259,7 +258,6 @@ public class CEAGlobalAnalysisTest {
 
 	}
 
-	@Ignore
 	@Disabled
 	@SuppressWarnings("rawtypes")
 	@Test public void testDMHEE47PSA() throws Exception {
@@ -299,7 +297,6 @@ public class CEAGlobalAnalysisTest {
 		Assertions.assertEquals(expectedResults[3], ((CEP)result.get(0).elementTable.get(0)).getEffectiveness(0), 0.01);
 	}
 
-	@Ignore
 	@Disabled
 	@SuppressWarnings("rawtypes")
 	@Test public void testBriggsSA() throws Exception {
