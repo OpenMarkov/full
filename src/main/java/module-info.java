@@ -16,5 +16,4 @@ module org.openmarkov.full {
 	requires org.apache.poi.ooxml;
 	requires org.openmarkov.inference.temporalevaluation;
 	requires org.openmarkov.inference.huginpropagation;
-	
 }
