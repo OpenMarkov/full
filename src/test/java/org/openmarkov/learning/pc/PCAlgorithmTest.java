@@ -28,8 +28,15 @@ import org.openmarkov.learning.core.util.ModelNetUse;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -55,10 +62,12 @@ public class PCAlgorithmTest {
 		independenceTester = new CrossEntropyIndependenceTester();
 
 		URL url = getClass().getClassLoader ().getResource (asia10kProbNet);
-		File file = new File(url.getPath());
-		String absolutePath = file.getAbsolutePath();
-		rootPath = absolutePath.substring(0, absolutePath.length() - asia10kProbNet.length());
-		reader = new PGMXReader_0_2();
+		if (url != null) {
+			File file = new File(url.getPath());
+			String absolutePath = file.getAbsolutePath();
+			rootPath = absolutePath.substring(0, absolutePath.length() - asia10kProbNet.length());
+			reader = new PGMXReader_0_2();
+		}
 	}
 
 	private ProbNet readNetwork(String networkName) {
@@ -363,9 +372,6 @@ public class PCAlgorithmTest {
 		System.out.println("Missing: " + missingLinkCount + "; Added: " + addedLinkCount);
 	}
 
-
-
-
 	@Disabled
 	@Test public void testVStructuresInNetworks() {
 		ProbNet asia10k = readNetwork(asia10kProbNet);
@@ -374,5 +380,82 @@ public class PCAlgorithmTest {
 		else
 			System.out.println("No se lee");
 		//ProbNet alarm =
+	}
+
+	/** Check the method subSetsOfSize in parallel. */
+	@Test
+	public void testSubSetsOfSize() {
+		ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		List<Future<?>> futures = new ArrayList<>();
+
+		for (int setSize = 1; setSize < 12; setSize++) {
+			for (int subSetsSize = 1; subSetsSize <= setSize; subSetsSize++) {
+				final int n = setSize;
+				final int k = subSetsSize;
+				futures.add(executor.submit(() -> testSubSetsOfSizeNK(n, k)));
+			}
+		}
+
+		executor.shutdown();
+		try {
+			executor.awaitTermination(5, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			fail("Thread execution interrupted");
+		}
+
+		for (Future<?> future : futures) {
+			try {
+				future.get();
+			} catch (Exception e) {
+				fail("Exception in parallel test: " + e.getMessage());
+			}
+		}
+	}
+	
+	private void testSubSetsOfSizeNK(int setSize, int subSetsSize) {
+		Assertions.assertTrue(setSize>=subSetsSize,"Error in tests: a subset can not be bigger that the set.");
+		
+		// Prepare a list of dummy nodes
+		ProbNet probNet = new ProbNet();
+		List<Node> nodes = new ArrayList<>();
+		for (int i = 0; i < setSize; i++) {
+			Variable variable = new Variable("X" + i);
+			Node node = new Node(probNet, variable, NodeType.CHANCE);
+			nodes.add(node);
+		}
+
+		PCAlgorithm dummyAlgorithm = new PCAlgorithm(new ProbNet(), null, 0.05, null, 0.05);
+
+		List<List<Node>> subsets = dummyAlgorithm.subSetsOfSize(nodes, subSetsSize);
+
+		// 1) Checks that the number of subsets is the binomial coefficient
+		int expectedCount = binomial(nodes.size(), subSetsSize);
+		Assertions.assertEquals(expectedCount, subsets.size(), "Wrong number of subsets.");
+
+		// 2) Checks that all the subsets has the same size = 
+		for (List<Node> subset : subsets) {
+			Assertions.assertEquals(subSetsSize, subset.size(), "Wrong size of a subset.");
+		}
+		// 3) Checks that the all the subsets are different
+		for (int i = 0; i < subsets.size(); i++) {
+			Set<Node> setI = new HashSet<>(subsets.get(i));
+			for (int j = i + 1; j < subsets.size(); j++) {
+				Set<Node> setJ = new HashSet<>(subsets.get(j));
+				Assertions.assertFalse(setJ.containsAll(setI), "There are dupplicate subsets: " + i + " y " + j);
+			}
+		}
+	}
+
+	// Auxiliary method to calculate the binomial coefficient.
+	private int binomial(int n, int k) {
+		if (k < 0 || k > n) return 0;
+		if (k == 0 || k == n) return 1;
+		k = Math.min(k, n - k);
+		long result = 1;
+		for (int i = 1; i <= k; i++) {
+			result *= (n - i + 1);
+			result /= i;
+		}
+		return (int) result;
 	}
 }
