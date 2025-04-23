@@ -9,6 +9,8 @@ package bitbucket;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.openmarkov.core.exception.ParserException;
+import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.type.BayesianNetworkType;
 import org.openmarkov.core.model.network.type.DecisionAnalysisNetworkType;
 import org.openmarkov.core.model.network.type.InfluenceDiagramType;
@@ -16,8 +18,10 @@ import org.openmarkov.core.model.network.type.LIMIDType;
 import org.openmarkov.core.model.network.type.MIDType;
 import org.openmarkov.core.model.network.type.NetworkType;
 import org.openmarkov.core.model.network.type.POMDPType;
+import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,6 +31,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This class gets the networks avaible on the bitbucket repository
@@ -179,6 +184,31 @@ public class NetsRepository {
 		} finally {
 			inputStream.close();
 		}
+	}
+
+	/** 
+	 * Utility method to read specific networks in tests from the classpath by name located in the application's resources.<p>
+	 * 
+	 * @param networkName the name or relative path of the network file in the classpath
+	 * @return an {@code Optional} containing the loaded {@code ProbNetInfo} if found and successfully parsed,
+	 *         or {@code Optional.empty()} if the resource is missing or cannot be loaded
+	 */
+	public static Optional<ProbNetInfo> getProbNetInfoFromDisk(String relativePath) {
+	    File file = new File("src/test/resources/" + relativePath);
+	    if (!file.exists()) {
+	        System.err.println("File not found: " + file.getAbsolutePath());
+	        return Optional.empty();
+	    }
+
+	    try {
+	        String absolutePath = file.getAbsolutePath();
+	        PGMXReader_0_2 pgmxReader = new PGMXReader_0_2();
+	        ProbNetInfo probNetInfo = pgmxReader.loadProbNetInfo(absolutePath);
+	        return Optional.ofNullable(probNetInfo);
+	    } catch (ParserException e) {
+	        e.printStackTrace();
+	        return Optional.empty();
+	    }
 	}
 
 }

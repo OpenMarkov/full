@@ -10,13 +10,13 @@ package org.openmarkov.learning.pc;
 import org.junit.jupiter.api.*;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.ParserException;
+import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.io.database.CaseDatabase;
 import org.openmarkov.core.model.network.Node;
 import org.openmarkov.core.model.network.NodeType;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.core.model.network.potential.operation.DiscretePotentialOperations;
 import org.openmarkov.io.database.elvira.ElviraDataBaseIO;
 import org.openmarkov.io.database.excel.CSVDataBaseIO;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
@@ -26,12 +26,15 @@ import org.openmarkov.learning.algorithm.pc.independencetester.IndependenceTeste
 import org.openmarkov.learning.core.algorithm.LearningAlgorithm;
 import org.openmarkov.learning.core.util.ModelNetUse;
 
+import bitbucket.NetsRepository;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -53,7 +56,7 @@ public class PCAlgorithmTest {
 	private String alarmDatabaseFilename = "/alarm500.csv";
 	private String alarm10kDatabaseFilename = "/alarm10k.csv";
 
-	private String asia10kProbNet = "/asia10k.pgmx";
+	private String asia10kProbNet = "networks/learning/BN-asia.pgmx";
 	private String rootPath;
 	private PGMXReader_0_2 reader;
 
@@ -309,8 +312,8 @@ public class PCAlgorithmTest {
 		printDifferences(readNet, learnedNet);
 	}
 
-	//@Test
-	public void testAlarm10k() throws Exception {
+	@Disabled
+	@Test public void testAlarm10k() throws Exception {
 
 		CSVDataBaseIO csvReader = new CSVDataBaseIO();
 		CaseDatabase alarm10kDatabase = csvReader.load(getClass().getResource(alarm10kDatabaseFilename).getFile());
@@ -373,12 +376,23 @@ public class PCAlgorithmTest {
 	}
 
 	@Disabled
+	@Test void testResourceExists() {
+	    URL res = Thread.currentThread()
+	                    .getContextClassLoader()
+	                    .getResource("networks/learning/BN-asia.pgmx");
+
+	    Assertions.assertNotNull(res, "El archivo no se encontró en el classpath de pruebas");
+	    System.out.println("Ruta encontrada: " + res);
+	}
+	
 	@Test public void testVStructuresInNetworks() {
-		ProbNet asia10k = readNetwork(asia10kProbNet);
+		Optional<ProbNetInfo> optional = NetsRepository.getProbNetInfoFromDisk(asia10kProbNet);
+		
+		ProbNet asia10k = optional.isPresent() ? optional.get().getProbNet() : null;
 		if (asia10k != null)
-			System.out.println("Se lee");
+			System.out.println("Se lee: " + asia10kProbNet);
 		else
-			System.out.println("No se lee");
+			System.out.println("No se lee: " + asia10kProbNet);
 		//ProbNet alarm =
 	}
 
@@ -388,7 +402,7 @@ public class PCAlgorithmTest {
 		ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 		List<Future<?>> futures = new ArrayList<>();
 
-		for (int setSize = 1; setSize < 12; setSize++) {
+		for (int setSize = 1; setSize < 14; setSize++) {
 			for (int subSetsSize = 1; subSetsSize <= setSize; subSetsSize++) {
 				final int n = setSize;
 				final int k = subSetsSize;
@@ -398,7 +412,7 @@ public class PCAlgorithmTest {
 
 		executor.shutdown();
 		try {
-			executor.awaitTermination(5, TimeUnit.SECONDS);
+			executor.awaitTermination(15, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 			fail("Thread execution interrupted");
 		}
