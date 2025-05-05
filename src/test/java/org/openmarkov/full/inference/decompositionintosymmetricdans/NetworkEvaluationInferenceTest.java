@@ -6,8 +6,8 @@ import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.full.inference.Tools;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecisionTreeComputation;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;
+import org.openmarkov.inference.algorithm.decompositionIntoSymmetricDANs.DecisionTreeComputation;
+import org.openmarkov.inference.algorithm.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;
 
 
 public abstract class NetworkEvaluationInferenceTest {

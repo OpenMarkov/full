@@ -6,8 +6,8 @@ import org.openmarkov.core.inference.MulticriteriaOptions.Type;
 import org.openmarkov.core.inference.tasks.CEAnalysis;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.full.inference.Tools;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecisionTreeComputation;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.ceanalysis.DANDecisionTreeCEA;
+import org.openmarkov.inference.algorithm.decompositionIntoSymmetricDANs.DecisionTreeComputation;
+import org.openmarkov.inference.algorithm.decompositionIntoSymmetricDANs.ceanalysis.DANDecisionTreeCEA;
 
 public class DANDecisionTreeCEATest extends DANCEATest {
 

@@ -1,6 +1,5 @@
 package org.openmarkov.full.io;
 
-import bitbucket.NetsRepository;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -26,10 +25,8 @@ import org.openmarkov.core.model.network.potential.treeadd.TreeADDPotential;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 import org.openmarkov.io.probmodel.strings.XMLAttributes;
 import org.openmarkov.io.probmodel.writer.PGMXWriter_0_2;
-import org.openmarkov.io.probmodel.writer.PGMXWriter_1_0;
 
 import java.io.*;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;

@@ -23,13 +23,11 @@ import org.openmarkov.core.model.network.UtilityOperations;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.GTablePotential;
 import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.inference.temporalevaluation.tasks.TemporalEvaluation;
-import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
+import org.openmarkov.inference.algorithm.temporalevaluation.tasks.TemporalEvaluation;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VECEAnalysis;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 import java.io.File;
-import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.List;

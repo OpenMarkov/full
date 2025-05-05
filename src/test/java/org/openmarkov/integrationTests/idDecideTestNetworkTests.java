@@ -7,37 +7,23 @@
 package org.openmarkov.integrationTests;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.InvalidStateException;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
-import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.inference.tasks.OptimalPolicies;
-import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.EvidenceCase;
 import org.openmarkov.core.model.network.Finding;
-import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
-import org.openmarkov.core.model.network.modelUncertainty.AxisVariation;
-import org.openmarkov.core.model.network.modelUncertainty.DeterministicAxisVariationType;
-import org.openmarkov.core.model.network.modelUncertainty.SystematicSampling;
-import org.openmarkov.core.model.network.modelUncertainty.UncertainParameter;
 import org.openmarkov.core.model.network.potential.StrategyTree;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.potential.treeadd.TreeADDBranch;
-import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
-import org.openmarkov.inference.variableElimination.tasks.VEExpectedUtilityDecision;
-import org.openmarkov.inference.variableElimination.tasks.VEOptimalIntervention;
-import org.openmarkov.inference.variableElimination.tasks.VESensAnTornadoSpider;
-import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
-
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VEEvaluation;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VEExpectedUtilityDecision;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VEOptimalIntervention;
 
 public abstract class idDecideTestNetworkTests extends IDNetworkTests {
 

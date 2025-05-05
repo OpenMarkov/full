@@ -1,7 +1,6 @@
 package org.openmarkov.integrationTests;
 
 import java.io.File;
-import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -21,7 +20,7 @@ import org.openmarkov.core.model.network.modelUncertainty.DeterministicAxisVaria
 import org.openmarkov.core.model.network.modelUncertainty.SystematicSampling;
 import org.openmarkov.core.model.network.modelUncertainty.UncertainParameter;
 import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.inference.variableElimination.tasks.VESensAnTornadoSpider;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VESensAnTornadoSpider;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)

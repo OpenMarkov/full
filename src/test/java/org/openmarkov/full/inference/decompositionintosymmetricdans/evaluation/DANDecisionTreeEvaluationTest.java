@@ -7,25 +7,15 @@
 
 package org.openmarkov.full.inference.decompositionintosymmetricdans.evaluation;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.openmarkov.core.dt.DecisionTreeBranch;
-import org.openmarkov.core.dt.DecisionTreeElement;
-import org.openmarkov.core.dt.DecisionTreeNode;
 import org.openmarkov.core.exception.IncompatibleEvidenceException;
 import org.openmarkov.core.exception.NodeNotFoundException;
 import org.openmarkov.core.exception.NotEvaluableNetworkException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
-import org.openmarkov.core.model.network.NodeType;
 import org.openmarkov.core.model.network.ProbNet;
-import org.openmarkov.gui.window.dt.DecisionTree;
-import org.openmarkov.gui.window.dt.DecisionTreeBranchPanel;
-import org.openmarkov.gui.window.dt.DecisionTreeModel;
-import org.openmarkov.gui.window.dt.DecisionTreePanel;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANDecisionTreeEvaluation;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;
+import org.openmarkov.inference.algorithm.decompositionIntoSymmetricDANs.evaluation.DANDecisionTreeEvaluation;
+import org.openmarkov.inference.algorithm.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;
 //@Ignore
 public class DANDecisionTreeEvaluationTest extends DANEvaluationTest {
 	

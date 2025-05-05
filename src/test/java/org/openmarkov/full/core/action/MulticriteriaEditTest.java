@@ -22,7 +22,6 @@ import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;

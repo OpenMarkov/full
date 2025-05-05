@@ -21,13 +21,12 @@ import org.openmarkov.core.model.network.NodeType;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.GTablePotential;
-import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
-import org.openmarkov.inference.variableElimination.tasks.VECEPSA;
-import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VECEAnalysis;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VECEPSA;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VEEvaluation;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 import java.io.File;
-import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;

@@ -21,7 +21,6 @@ import org.openmarkov.core.model.network.Node;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
-import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Paths;
 

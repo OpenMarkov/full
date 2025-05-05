@@ -20,9 +20,9 @@ import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.StrategyTree;
 import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.gui.window.dt.DecisionTreePanel;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.DecisionTreeComputation;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.core.DANOperations;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.core.EvaluationDecisionTreeNode;
+import org.openmarkov.inference.algorithm.decompositionIntoSymmetricDANs.DecisionTreeComputation;
+import org.openmarkov.inference.algorithm.decompositionIntoSymmetricDANs.core.DANOperations;
+import org.openmarkov.inference.algorithm.decompositionIntoSymmetricDANs.core.EvaluationDecisionTreeNode;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 import org.junit.jupiter.api.Assertions;

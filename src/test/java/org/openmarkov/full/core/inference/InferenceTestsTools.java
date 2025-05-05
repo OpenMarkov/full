@@ -25,12 +25,12 @@ import org.openmarkov.core.model.network.potential.TablePotential;
 import org.openmarkov.core.model.network.type.BayesianNetworkType;
 import org.openmarkov.core.model.network.type.InfluenceDiagramType;
 import org.openmarkov.core.model.network.type.MIDType;
-import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
-import org.openmarkov.inference.variableElimination.tasks.VECEPSA;
-import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
-import org.openmarkov.inference.variableElimination.tasks.VEOptimalIntervention;
-import org.openmarkov.inference.variableElimination.tasks.VEPropagation;
-import org.openmarkov.inference.variableElimination.tasks.VETemporalEvolution;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VECEAnalysis;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VECEPSA;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VEEvaluation;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VEOptimalIntervention;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VEPropagation;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VETemporalEvolution;
 
 public class InferenceTestsTools {
 	

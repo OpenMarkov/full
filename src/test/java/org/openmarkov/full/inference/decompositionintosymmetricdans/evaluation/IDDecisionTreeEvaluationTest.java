@@ -9,8 +9,8 @@ import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.model.network.EvidenceCase;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.full.inference.Tools;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;
-import org.openmarkov.inference.decompositionIntoSymmetricDANs.evaluation.IDDecisionTreeEvaluation;
+import org.openmarkov.inference.algorithm.decompositionIntoSymmetricDANs.evaluation.DANEvaluation;
+import org.openmarkov.inference.algorithm.decompositionIntoSymmetricDANs.evaluation.IDDecisionTreeEvaluation;
 import org.openmarkov.full.inference.decompositionintosymmetricdans.NetworkEvaluationInferenceTest;
 
 //@Ignore

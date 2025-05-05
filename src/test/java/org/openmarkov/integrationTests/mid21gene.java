@@ -19,33 +19,24 @@ import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.exception.UnexpectedInferenceException;
 import org.openmarkov.core.io.ProbNetInfo;
 import org.openmarkov.core.model.network.CEP;
-import org.openmarkov.core.model.network.CycleLength;
 import org.openmarkov.core.model.network.EvidenceCase;
 import org.openmarkov.core.model.network.Finding;
 import org.openmarkov.core.model.network.Node;
 import org.openmarkov.core.model.network.ProbNet;
-import org.openmarkov.core.model.network.State;
-import org.openmarkov.core.model.network.Variable;
 import org.openmarkov.core.model.network.potential.DeltaPotential;
 import org.openmarkov.core.model.network.potential.GTablePotential;
-import org.openmarkov.core.model.network.potential.TablePotential;
-import org.openmarkov.inference.temporalevaluation.tasks.TemporalEvaluation;
-import org.openmarkov.inference.variableElimination.tasks.VECEAnalysis;
-import org.openmarkov.inference.variableElimination.tasks.VECEPSA;
-import org.openmarkov.inference.variableElimination.tasks.VEEvaluation;
-import org.openmarkov.inference.variableElimination.tasks.VEPropagation;
-import org.openmarkov.inference.variableElimination.tasks.VETemporalEvolution;
+import org.openmarkov.inference.algorithm.temporalevaluation.tasks.TemporalEvaluation;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VECEAnalysis;
+import org.openmarkov.inference.algorithm.variableElimination.tasks.VECEPSA;
 import org.openmarkov.io.probmodel.reader.PGMXReader_0_2;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)

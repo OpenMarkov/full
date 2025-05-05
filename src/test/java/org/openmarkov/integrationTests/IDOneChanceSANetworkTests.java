@@ -1,9 +1,6 @@
 package org.openmarkov.integrationTests;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import org.openmarkov.core.io.ProbNetReader;
 import org.openmarkov.io.probmodel.reader.PGMXReader_1_0;
