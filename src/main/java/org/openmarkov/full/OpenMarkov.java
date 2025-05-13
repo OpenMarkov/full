@@ -7,14 +7,14 @@
 
 package org.openmarkov.full;
 
+import org.openmarkov.core.localize.StringDatabase;
 import org.openmarkov.gui.configuration.ComponentConfiguration;
 import org.openmarkov.gui.configuration.OpenMarkovConfiguration;
-import org.openmarkov.gui.localize.StringDatabase;
+import org.openmarkov.gui.configuration.OpenMarkovPreferences;
 import org.openmarkov.gui.window.MainGUI;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,37 +34,40 @@ import java.util.List;
  * @since OpenMarkov 1.0
  */
 public class OpenMarkov {
-	// Attributes
-	/**
-	 * Stores variables such as initialPath, netsDirectory ...
-	 */
-	ComponentConfiguration openMarkovKernelConfiguration = null;
-	/**
-	 * Stores the configuration of each component.
-	 */
-	OpenMarkovConfiguration openMarkovConfiguration = null;
-
-	/**
-	 * OpenMarkov main class
-	 *
-	 * @param args Arguments
-	 */
-	public static void main(String[] args) {
-		List<String> filesToOpen = new ArrayList<String>();
-		for (int i = 0; i < args.length; ++i) {
-			if (args[i].equals("-l") || args[i].equals("-language")) {
-				if (i + 1 < args.length) {
-					StringDatabase.getUniqueInstance().setLanguage(args[i + 1]);
-					++i;
-				}
-			} else if (new File(args[i]).exists()) {
-				filesToOpen.add(args[i]);
-			}
-		}
-		MainGUI openMarkovGUI = new MainGUI();
-		openMarkovGUI.setVisible(true);
-		for (String filename : filesToOpen) {
-			openMarkovGUI.openNetwork(filename);
-		}
-	}
+    // Attributes
+    /**
+     * Stores variables such as initialPath, netsDirectory ...
+     */
+    ComponentConfiguration openMarkovKernelConfiguration = null;
+    /**
+     * Stores the configuration of each component.
+     */
+    OpenMarkovConfiguration openMarkovConfiguration = null;
+    
+    /**
+     * OpenMarkov main class
+     *
+     * @param args Arguments
+     */
+    public static void main(String[] args) {
+        StringDatabase.getUniqueInstance()
+                      .setLanguage(OpenMarkovPreferences.get(OpenMarkovPreferences.PREFERENCE_LANGUAGE, OpenMarkovPreferences.OPENMARKOV_LANGUAGES,
+                                                             System.getProperty("user.language")));
+        List<String> filesToOpen = new ArrayList<String>();
+        for (int i = 0; i < args.length; ++i) {
+            if (args[i].equals("-l") || args[i].equals("-language")) {
+                if (i + 1 < args.length) {
+                    StringDatabase.getUniqueInstance().setLanguage(args[i + 1]);
+                    ++i;
+                }
+            } else if (new File(args[i]).exists()) {
+                filesToOpen.add(args[i]);
+            }
+        }
+        MainGUI openMarkovGUI = new MainGUI();
+        openMarkovGUI.setVisible(true);
+        for (String filename : filesToOpen) {
+            openMarkovGUI.openNetwork(filename);
+        }
+    }
 }
