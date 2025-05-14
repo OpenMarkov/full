@@ -50,19 +50,24 @@ public class OpenMarkov {
      * @param args Arguments
      */
     public static void main(String[] args) {
-        StringDatabase.getUniqueInstance()
-                      .setLanguage(OpenMarkovPreferences.get(OpenMarkovPreferences.PREFERENCE_LANGUAGE, OpenMarkovPreferences.OPENMARKOV_LANGUAGES,
-                                                             System.getProperty("user.language")));
         List<String> filesToOpen = new ArrayList<String>();
+        boolean languageWasSet = false;
         for (int i = 0; i < args.length; ++i) {
             if (args[i].equals("-l") || args[i].equals("-language")) {
                 if (i + 1 < args.length) {
                     StringDatabase.getUniqueInstance().setLanguage(args[i + 1]);
                     ++i;
+                    languageWasSet=true;
                 }
             } else if (new File(args[i]).exists()) {
                 filesToOpen.add(args[i]);
             }
+        }
+        if (!languageWasSet){
+            StringDatabase.getUniqueInstance()
+                          .setLanguage(OpenMarkovPreferences.get(OpenMarkovPreferences.PREFERENCE_LANGUAGE, OpenMarkovPreferences.OPENMARKOV_LANGUAGES,
+                                                                 System.getProperty("user.language")));
+            languageWasSet=true;
         }
         MainGUI openMarkovGUI = new MainGUI();
         openMarkovGUI.setVisible(true);
