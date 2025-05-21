@@ -64,9 +64,11 @@ public class OpenMarkov {
             }
         }
         if (!languageWasSet){
+            String newLanguage = OpenMarkovPreferences.get(
+                    OpenMarkovPreferences.PREFERENCE_LANGUAGE, OpenMarkovPreferences.OPENMARKOV_LANGUAGES,
+                                                           System.getProperty("user.language"));
             StringDatabase.getUniqueInstance()
-                          .setLanguage(OpenMarkovPreferences.get(OpenMarkovPreferences.PREFERENCE_LANGUAGE, OpenMarkovPreferences.OPENMARKOV_LANGUAGES,
-                                                                 System.getProperty("user.language")));
+                          .setLanguage(newLanguage);
             languageWasSet=true;
         }
         MainGUI openMarkovGUI = new MainGUI();
