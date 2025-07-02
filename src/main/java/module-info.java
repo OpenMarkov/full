@@ -1,4 +1,4 @@
-module org.openmarkov.full {
+open module org.openmarkov.full {
 	requires org.openmarkov.core;
 	requires org.openmarkov.gui;
 	requires org.openmarkov.inference;
