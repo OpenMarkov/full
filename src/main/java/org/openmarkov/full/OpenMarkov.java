@@ -7,10 +7,13 @@
 
 package org.openmarkov.full;
 
+import org.openmarkov.core.exception.UnrecoverableException;
 import org.openmarkov.core.localize.StringDatabase;
 import org.openmarkov.gui.configuration.ComponentConfiguration;
 import org.openmarkov.gui.configuration.OpenMarkovConfiguration;
 import org.openmarkov.gui.configuration.OpenMarkovPreferences;
+import org.openmarkov.gui.dialog.ExceptionDialog;
+import org.openmarkov.gui.dialog.UnexpectedThrowableDialog;
 import org.openmarkov.gui.window.MainGUI;
 
 import java.io.File;
@@ -50,6 +53,17 @@ public class OpenMarkov {
      * @param args Arguments
      */
     public static void main(String[] args) {
+        Thread.setDefaultUncaughtExceptionHandler(
+                (thread, throwable) -> {
+                    while (throwable instanceof UnrecoverableException) {
+                        throwable = throwable.getCause();
+                    }
+                    if (throwable instanceof RuntimeException) {
+                        new UnexpectedThrowableDialog(throwable).setVisible(true);
+                    } else {
+                        ExceptionDialog.show(throwable);
+                    }
+                });
         List<String> filesToOpen = new ArrayList<String>();
         boolean languageWasSet = false;
         for (int i = 0; i < args.length; ++i) {
@@ -57,19 +71,17 @@ public class OpenMarkov {
                 if (i + 1 < args.length) {
                     StringDatabase.getUniqueInstance().setLanguage(args[i + 1]);
                     ++i;
-                    languageWasSet=true;
+                    languageWasSet = true;
                 }
             } else if (new File(args[i]).exists()) {
                 filesToOpen.add(args[i]);
             }
         }
-        if (!languageWasSet){
+        if (!languageWasSet) {
             String newLanguage = OpenMarkovPreferences.get(
                     OpenMarkovPreferences.PREFERENCE_LANGUAGE, OpenMarkovPreferences.OPENMARKOV_LANGUAGES,
-                                                           System.getProperty("user.language"));
-            StringDatabase.getUniqueInstance()
-                          .setLanguage(newLanguage);
-            languageWasSet=true;
+                    System.getProperty("user.language"));
+            StringDatabase.getUniqueInstance().setLanguage(newLanguage);
         }
         MainGUI openMarkovGUI = new MainGUI();
         openMarkovGUI.setVisible(true);

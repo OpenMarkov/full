@@ -9,6 +9,7 @@ open module org.openmarkov.full {
 	requires org.apache.poi.poi;
 	requires org.jdom2;
 	requires org.apache.poi.ooxml;
-	
-	exports org.openmarkov.full;
+    requires java.desktop;
+    
+    exports org.openmarkov.full;
 }
