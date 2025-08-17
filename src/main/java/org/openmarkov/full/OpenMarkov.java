@@ -59,6 +59,8 @@ public class OpenMarkov {
                         throwable = throwable.getCause();
                     }
                     if (throwable instanceof RuntimeException) {
+                        System.err.println(throwable);
+                        throwable.printStackTrace();
                         new UnexpectedThrowableDialog(throwable).setVisible(true);
                     } else {
                         ExceptionDialog.show(throwable);
