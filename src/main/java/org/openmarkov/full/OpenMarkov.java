@@ -12,6 +12,7 @@ import org.openmarkov.core.localize.StringDatabase;
 import org.openmarkov.gui.configuration.ComponentConfiguration;
 import org.openmarkov.gui.configuration.OpenMarkovConfiguration;
 import org.openmarkov.gui.configuration.OpenMarkovPreferences;
+import org.openmarkov.gui.configuration.OpenMarkovPreferencesKeys;
 import org.openmarkov.gui.dialog.ExceptionDialog;
 import org.openmarkov.gui.dialog.UnexpectedThrowableDialog;
 import org.openmarkov.gui.window.MainGUI;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class stores a set of additionalProperties and the <code>main</code>
+ * This class stores a set of additionalProperties and the {@code main}
  * method.
  * <p>
  * If there is some other main method in other class is only for test.
@@ -81,7 +82,7 @@ public class OpenMarkov {
         }
         if (!languageWasSet) {
             String newLanguage = OpenMarkovPreferences.get(
-                    OpenMarkovPreferences.PREFERENCE_LANGUAGE, OpenMarkovPreferences.OPENMARKOV_LANGUAGES,
+                    OpenMarkovPreferencesKeys.PREFERENCE_LANGUAGE, OpenMarkovPreferences.OPENMARKOV_LANGUAGES,
                     System.getProperty("user.language"));
             StringDatabase.getUniqueInstance().setLanguage(newLanguage);
         }
