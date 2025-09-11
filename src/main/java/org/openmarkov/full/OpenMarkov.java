@@ -7,6 +7,7 @@
 
 package org.openmarkov.full;
 
+import org.openmarkov.core.exception.IOpenMarkovException;
 import org.openmarkov.core.exception.UnrecoverableException;
 import org.openmarkov.core.localize.StringDatabase;
 import org.openmarkov.gui.configuration.ComponentConfiguration;
@@ -59,7 +60,7 @@ public class OpenMarkov {
                     while (throwable instanceof UnrecoverableException) {
                         throwable = throwable.getCause();
                     }
-                    if (throwable instanceof RuntimeException) {
+                    if (throwable instanceof RuntimeException && !(throwable instanceof IOpenMarkovException)) {
                         System.err.println(throwable);
                         throwable.printStackTrace();
                         new UnexpectedThrowableDialog(throwable).setVisible(true);
