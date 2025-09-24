@@ -7,18 +7,20 @@
 
 package org.openmarkov.full;
 
-import org.openmarkov.core.exception.IOpenMarkovException;
+import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.exception.UnrecoverableException;
 import org.openmarkov.core.localize.StringDatabase;
 import org.openmarkov.gui.configuration.ComponentConfiguration;
 import org.openmarkov.gui.configuration.OpenMarkovConfiguration;
 import org.openmarkov.gui.configuration.OpenMarkovPreferences;
 import org.openmarkov.gui.configuration.OpenMarkovPreferencesKeys;
-import org.openmarkov.gui.dialog.ExceptionDialog;
-import org.openmarkov.gui.dialog.UnexpectedThrowableDialog;
+import org.openmarkov.gui.dialog.OMExceptionHandler;
 import org.openmarkov.gui.window.MainGUI;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,19 +57,7 @@ public class OpenMarkov {
      * @param args Arguments
      */
     public static void main(String[] args) {
-        Thread.setDefaultUncaughtExceptionHandler(
-                (thread, throwable) -> {
-                    while (throwable instanceof UnrecoverableException) {
-                        throwable = throwable.getCause();
-                    }
-                    if (throwable instanceof RuntimeException && !(throwable instanceof IOpenMarkovException)) {
-                        System.err.println(throwable);
-                        throwable.printStackTrace();
-                        new UnexpectedThrowableDialog(throwable).setVisible(true);
-                    } else {
-                        ExceptionDialog.show(throwable);
-                    }
-                });
+        Thread.setDefaultUncaughtExceptionHandler(new OMExceptionHandler());
         List<String> filesToOpen = new ArrayList<String>();
         boolean languageWasSet = false;
         for (int i = 0; i < args.length; ++i) {
@@ -90,7 +80,11 @@ public class OpenMarkov {
         MainGUI openMarkovGUI = new MainGUI();
         openMarkovGUI.setVisible(true);
         for (String filename : filesToOpen) {
-            openMarkovGUI.openNetwork(filename);
+            try {
+                openMarkovGUI.openNetwork(filename);
+            } catch (ParserException | IOException | ParserConfigurationException | SAXException e) {
+                Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+            }
         }
     }
 }
