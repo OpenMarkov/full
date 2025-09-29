@@ -9,6 +9,7 @@ package org.openmarkov.full;
 
 import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.exception.UnrecoverableException;
+import org.openmarkov.core.io.format.annotation.NoReaderForFileException;
 import org.openmarkov.core.localize.StringDatabase;
 import org.openmarkov.gui.configuration.ComponentConfiguration;
 import org.openmarkov.gui.configuration.OpenMarkovConfiguration;
@@ -82,7 +83,8 @@ public class OpenMarkov {
         for (String filename : filesToOpen) {
             try {
                 openMarkovGUI.openNetwork(filename);
-            } catch (ParserException | IOException | ParserConfigurationException | SAXException e) {
+            } catch (ParserException | IOException | ParserConfigurationException | SAXException |
+                     NoReaderForFileException e) {
                 Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
             }
         }
