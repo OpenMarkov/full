@@ -8,7 +8,6 @@
 package org.openmarkov.full;
 
 import org.openmarkov.core.exception.ParserException;
-import org.openmarkov.core.exception.UnrecoverableException;
 import org.openmarkov.core.io.format.annotation.NoReaderForFileException;
 import org.openmarkov.core.localize.StringDatabase;
 import org.openmarkov.gui.configuration.ComponentConfiguration;
@@ -16,10 +15,11 @@ import org.openmarkov.gui.configuration.OpenMarkovConfiguration;
 import org.openmarkov.gui.configuration.OpenMarkovPreferences;
 import org.openmarkov.gui.configuration.OpenMarkovPreferencesKeys;
 import org.openmarkov.gui.dialog.OMExceptionHandler;
+import org.openmarkov.gui.exception.CorruptNetworkFile;
 import org.openmarkov.gui.window.MainGUI;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,10 +83,19 @@ public class OpenMarkov {
         for (String filename : filesToOpen) {
             try {
                 openMarkovGUI.openNetwork(filename);
-            } catch (ParserException | IOException | ParserConfigurationException | SAXException |
-                     NoReaderForFileException e) {
+            } catch (ParserException | IOException | SAXException | NoReaderForFileException | CorruptNetworkFile e) {
                 Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
             }
         }
+        /*
+        SwingUtilities.invokeLater(() -> {
+            try {
+                org.openmarkov.gui.toolplugin.DarkModePlugin.updateInterfaceToLook(org.openmarkov.gui.window.MainPanel.getUniqueInstance().getMainFrame());
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                     UnsupportedLookAndFeelException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        */
     }
 }

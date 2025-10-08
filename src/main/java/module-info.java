@@ -10,6 +10,8 @@ open module org.openmarkov.full {
 	requires org.jdom2;
 	requires org.apache.poi.ooxml;
     requires java.desktop;
+    requires org.jetbrains.annotations;
+    requires com.formdev.flatlaf;
     
     exports org.openmarkov.full;
 }
