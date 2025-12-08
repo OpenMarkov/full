@@ -7,13 +7,13 @@
 
 package org.openmarkov.full;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.IntelliJTheme;
 import org.openmarkov.core.exception.ParserException;
+import org.openmarkov.core.exception.UnrecoverableException;
 import org.openmarkov.core.io.format.annotation.NoReaderForFileException;
 import org.openmarkov.core.localize.StringDatabase;
-import org.openmarkov.gui.configuration.ComponentConfiguration;
-import org.openmarkov.gui.configuration.OpenMarkovConfiguration;
-import org.openmarkov.gui.configuration.OpenMarkovPreferences;
-import org.openmarkov.gui.configuration.OpenMarkovPreferencesKeys;
+import org.openmarkov.gui.configuration.*;
 import org.openmarkov.gui.dialog.OMExceptionHandler;
 import org.openmarkov.gui.exception.CorruptNetworkFile;
 import org.openmarkov.gui.window.MainGUI;
@@ -21,7 +21,10 @@ import org.xml.sax.SAXException;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,10 +76,7 @@ public class OpenMarkov {
             }
         }
         if (!languageWasSet) {
-            String newLanguage = OpenMarkovPreferences.get(
-                    OpenMarkovPreferencesKeys.PREFERENCE_LANGUAGE, OpenMarkovPreferences.OPENMARKOV_LANGUAGES,
-                    System.getProperty("user.language"));
-            StringDatabase.getUniqueInstance().setLanguage(newLanguage);
+            StringDatabase.getUniqueInstance().setLanguage(OpenMarkovLocalPreferences.PREFERENCE_LANGUAGE.get());
         }
         MainGUI openMarkovGUI = new MainGUI();
         openMarkovGUI.setVisible(true);
@@ -87,15 +87,48 @@ public class OpenMarkov {
                 Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
             }
         }
-        /*
-        SwingUtilities.invokeLater(() -> {
+        
+        if (OpenMarkovLocalPreferences.PREFERS_DARK_THEME.get()) {
+            openMarkovGUI.setVisible(false);
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    org.openmarkov.gui.toolplugin.DarkModePlugin.updateInterfaceToLook(
+                            org.openmarkov.gui.window.MainPanel.getUniqueInstance().getMainFrame());
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                         UnsupportedLookAndFeelException e) {
+                    throw new UnrecoverableException(e);
+                } finally {
+                    openMarkovGUI.setVisible(true);
+                }
+            });
+        }
+        
+        
+        var developmentTheme = new File("development.theme.json").getAbsoluteFile();
+        System.out.println("Reading changes at " + developmentTheme);
+        long lastModified;
+        while (true) {
+            lastModified = developmentTheme.lastModified();
+            System.out.println("Loading development theme from " + developmentTheme);
             try {
-                org.openmarkov.gui.toolplugin.DarkModePlugin.updateInterfaceToLook(org.openmarkov.gui.window.MainPanel.getUniqueInstance().getMainFrame());
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
-                     UnsupportedLookAndFeelException e) {
+                SwingUtilities.invokeAndWait(() -> {
+                    try {
+                        UIManager.setLookAndFeel(new IntelliJTheme.ThemeLaf(new IntelliJTheme(new FileInputStream(developmentTheme))));
+                        SwingUtilities.updateComponentTreeUI(openMarkovGUI);
+                    } catch (UnsupportedLookAndFeelException | IOException e) {
+                        System.out.println(e);
+                    }
+                });
+            } catch (InterruptedException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
-        });
-        */
+            while (lastModified == developmentTheme.lastModified()) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
     }
 }
