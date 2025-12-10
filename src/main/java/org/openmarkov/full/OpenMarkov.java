@@ -7,7 +7,6 @@
 
 package org.openmarkov.full;
 
-import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.IntelliJTheme;
 import org.openmarkov.core.exception.ParserException;
 import org.openmarkov.core.exception.UnrecoverableException;
@@ -22,7 +21,6 @@ import org.xml.sax.SAXException;
 import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -76,7 +74,7 @@ public class OpenMarkov {
             }
         }
         if (!languageWasSet) {
-            StringDatabase.getUniqueInstance().setLanguage(OpenMarkovLocalPreferences.PREFERENCE_LANGUAGE.get());
+            StringDatabase.getUniqueInstance().setLanguage(LocalPreferences.PREFERENCE_LANGUAGE.get());
         }
         MainGUI openMarkovGUI = new MainGUI();
         openMarkovGUI.setVisible(true);
@@ -88,7 +86,7 @@ public class OpenMarkov {
             }
         }
         
-        if (OpenMarkovLocalPreferences.PREFERS_DARK_THEME.get()) {
+        if (LocalPreferences.PREFERS_DARK_THEME.get()) {
             openMarkovGUI.setVisible(false);
             SwingUtilities.invokeLater(() -> {
                 try {
