@@ -76,18 +76,17 @@ public class OpenMarkov {
         if (!languageWasSet) {
             StringDatabase.getUniqueInstance().setLanguage(LocalPreferences.PREFERENCE_LANGUAGE.get());
         }
-        MainGUI openMarkovGUI = new MainGUI();
-        openMarkovGUI.setVisible(true);
+        MainGUI.INSTANCE.setVisible(true);
         for (String filename : filesToOpen) {
             try {
-                openMarkovGUI.openNetwork(filename);
+                MainGUI.INSTANCE.openNetwork(filename);
             } catch (ParserException | IOException | SAXException | NoReaderForFileException | CorruptNetworkFile e) {
                 Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
             }
         }
         
         if (LocalPreferences.PREFERS_DARK_THEME.get()) {
-            openMarkovGUI.setVisible(false);
+            MainGUI.INSTANCE.setVisible(false);
             SwingUtilities.invokeLater(() -> {
                 try {
                     org.openmarkov.gui.toolplugin.DarkModePlugin.updateInterfaceToLook(
@@ -96,7 +95,7 @@ public class OpenMarkov {
                          UnsupportedLookAndFeelException e) {
                     throw new UnrecoverableException(e);
                 } finally {
-                    openMarkovGUI.setVisible(true);
+                    MainGUI.INSTANCE.setVisible(true);
                 }
             });
         }
@@ -112,7 +111,7 @@ public class OpenMarkov {
                 SwingUtilities.invokeAndWait(() -> {
                     try {
                         UIManager.setLookAndFeel(new IntelliJTheme.ThemeLaf(new IntelliJTheme(new FileInputStream(developmentTheme))));
-                        SwingUtilities.updateComponentTreeUI(openMarkovGUI);
+                        SwingUtilities.updateComponentTreeUI(MainGUI.INSTANCE);
                     } catch (UnsupportedLookAndFeelException | IOException e) {
                         System.out.println(e);
                     }
