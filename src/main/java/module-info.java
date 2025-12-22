@@ -12,6 +12,7 @@ open module org.openmarkov.full {
     requires java.desktop;
     requires org.jetbrains.annotations;
     requires com.formdev.flatlaf;
+    requires com.google.gson;
     
     exports org.openmarkov.full;
 }

@@ -59,6 +59,9 @@ public class OpenMarkov {
      * @param args Arguments
      */
     public static void main(String[] args) {
+        if (LocalPreferences.UI_SCALE.isSet()) {
+            System.setProperty("sun.java2d.uiScale", LocalPreferences.UI_SCALE.get().toString());
+        }
         Thread.setDefaultUncaughtExceptionHandler(new OMExceptionHandler());
         List<String> filesToOpen = new ArrayList<String>();
         boolean languageWasSet = false;
@@ -90,7 +93,7 @@ public class OpenMarkov {
             SwingUtilities.invokeLater(() -> {
                 try {
                     org.openmarkov.gui.toolplugin.DarkModePlugin.updateInterfaceToLook(
-                            org.openmarkov.gui.window.MainPanel.getUniqueInstance().getMainFrame());
+                            MainGUI.INSTANCE.mainPanel.getMainFrame());
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
                          UnsupportedLookAndFeelException e) {
                     throw new UnrecoverableException(e);
