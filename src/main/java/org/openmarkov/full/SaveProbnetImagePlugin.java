@@ -1,0 +1,89 @@
+package org.openmarkov.full;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.openmarkov.core.localize.StringDatabase;
+import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.gui.dialog.io.OMFileChooser;
+import org.openmarkov.gui.toolplugin.ToolPlugin;
+import org.openmarkov.gui.util.Utilities;
+import org.openmarkov.gui.window.MainGUI;
+import org.openmarkov.gui.window.MainPanel;
+import org.openmarkov.gui.window.edition.EditorPanel;
+import org.openmarkov.gui.window.edition.NetworkPanel;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+
+public class SaveProbnetImagePlugin implements ToolPlugin {
+    
+    @Override public @NotNull String menuOptionText() {
+        return "Save network as image";
+    }
+    
+    @Override public @NotNull ToolPluginGroup pluginGroup() {
+        return ToolPluginGroup.UNCATEGORIZED;
+    }
+    
+    @Override public int priorityInGroup() {
+        return 0;
+    }
+    
+    @Override public boolean enabled() {
+        return MainPanel.getCurrentProbNet() != null;
+    }
+    
+    @Override public void showDialog(@Nullable JFrame parent) throws IOException {
+        String title = StringDatabase.getUniqueInstance().getString("SaveNetworkImage");
+        SaveProbnetImagePlugin.SAVE_IMAGE_FILE_CHOOSER.setDialogTitle(title);
+        if (SaveProbnetImagePlugin.SAVE_IMAGE_FILE_CHOOSER.showSaveDialog(Utilities.getOwner(MainGUI.INSTANCE.mainPanel)) != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        var file = SaveProbnetImagePlugin.SAVE_IMAGE_FILE_CHOOSER.getSelectedFile();
+        if (file == null) {
+            return;
+        }
+        if (!file.toPath().toString().endsWith(".png")) {
+            file = Paths.get(file.toPath().toString() + ".png").toFile();
+        }
+        SaveProbnetImagePlugin.saveProbnetAsImage(MainPanel.getCurrentProbNet(), file);
+    }
+    
+    private static @NotNull BufferedImage imageOfProbnet(ProbNet currentProbNet) {
+        NetworkPanel networkPanel = new NetworkPanel(currentProbNet, MainGUI.INSTANCE.mainPanel);
+        networkPanel.setZoom(1.0);
+        EditorPanel editorPanel = networkPanel.getEditorPanel();
+        editorPanel.adjustPanelDimension();
+        
+        BufferedImage image = new BufferedImage((int) editorPanel.getCurrentWidth(), (int) editorPanel.getCurrentHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics g = image.createGraphics();
+        editorPanel.paint(g);
+        return image;
+    }
+    
+    private static void saveProbnetAsImage(ProbNet currentProbNet, File file) throws IOException {
+        ImageIO.write(SaveProbnetImagePlugin.imageOfProbnet(currentProbNet), "png", file);
+    }
+    
+    
+    private static final OMFileChooser SAVE_IMAGE_FILE_CHOOSER = new OMFileChooser();
+    
+    static {
+        SaveProbnetImagePlugin.SAVE_IMAGE_FILE_CHOOSER.setFileFilter(new FileFilter() {
+            
+            @Override public boolean accept(File f) {
+                return f.isDirectory() || "png".equals(org.apache.commons.io.FilenameUtils.getExtension(f.getName()));
+            }
+            
+            @Override public String getDescription() {
+                return "Portable Network Graphics (.png)";
+            }
+        });
+    }
+}

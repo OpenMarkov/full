@@ -13,6 +13,7 @@ open module org.openmarkov.full {
     requires org.jetbrains.annotations;
     requires com.formdev.flatlaf;
     requires com.google.gson;
+    requires org.apache.commons.io;
     
     exports org.openmarkov.full;
 }
