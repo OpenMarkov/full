@@ -62,6 +62,8 @@ public class OpenMarkov {
         if (LocalPreferences.UI_SCALE.isSet()) {
             System.setProperty("sun.java2d.uiScale", LocalPreferences.UI_SCALE.get().toString());
         }
+        System.setProperty("flatlaf.uiScale", String.valueOf(LocalPreferences.UI_SCALE.get()));
+        
         Thread.setDefaultUncaughtExceptionHandler(new OMExceptionHandler());
         List<String> filesToOpen = new ArrayList<String>();
         boolean languageWasSet = false;
