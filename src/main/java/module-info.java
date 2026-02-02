@@ -14,6 +14,7 @@ open module org.openmarkov.full {
     requires com.formdev.flatlaf;
     requires com.google.gson;
     requires org.apache.commons.io;
+    requires org.jgrapht.core;
     
     exports org.openmarkov.full;
 }
