@@ -10,9 +10,11 @@ import org.openmarkov.gui.window.MainPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class EditsHistoryPlugin implements ToolPlugin {
@@ -66,27 +68,62 @@ public class EditsHistoryPlugin implements ToolPlugin {
                         edits.clear();
                         edits.addAll(newEdits);
                         editsPanel.removeAll();
-                        edits.stream().map(editAndDone -> {
-                            JButton jButton = new JButton(editAndDone.edit.localize());
+                        var editsButtons = edits.stream()
+                                                .map(editAndDone -> new JButton(editAndDone.edit.getClass() + ": " + editAndDone.edit.localize()))
+                                                .toList();
+                        for (int buttonIndex = 0; buttonIndex < editsButtons.size(); ++buttonIndex) {
+                            int finalButtonIndex = buttonIndex;
+                            var editAndDone = edits.get(buttonIndex);
+                            var editButton = editsButtons.get(buttonIndex);
+                            var baseBackgroundColor = editButton.getBackground();
                             if (editAndDone.done) {
-                                jButton.setIcon(IconBind.UNDO_ENABLED.icon());
-                                jButton.addActionListener(e -> {
+                                editButton.setIcon(IconBind.UNDO_ENABLED.icon());
+                                editButton.addActionListener(e -> {
                                     while (!currentProbNet.getPNESupport().undo().contains(editAndDone.edit)) {
                                     
                                     }
                                 });
+                                editButton.addMouseListener(new MouseAdapter() {
+                                    @Override public void mouseEntered(MouseEvent e) {
+                                        super.mouseEntered(e);
+                                        IntStream.range(finalButtonIndex, editsButtons.size())
+                                                 .filter(index -> edits.get(index).done)
+                                                 .mapToObj(editsButtons::get)
+                                                 .forEach(button -> button.setBackground(Color.RED));
+                                    }
+                                    
+                                    @Override public void mouseExited(MouseEvent e) {
+                                        super.mouseExited(e);
+                                        editsButtons.forEach(button -> button.setBackground(baseBackgroundColor));
+                                    }
+                                });
+                                
                             } else {
-                                jButton.setIcon(IconBind.REDO_ENABLED.icon());
-                                jButton.addActionListener(e -> {
+                                editButton.setIcon(IconBind.REDO_ENABLED.icon());
+                                editButton.addActionListener(e -> {
                                     while (!currentProbNet.getPNESupport().redo().contains(editAndDone.edit)) {
                                     
                                     }
                                 });
+                                editButton.addMouseListener(new MouseAdapter() {
+                                    @Override public void mouseEntered(MouseEvent e) {
+                                        super.mouseEntered(e);
+                                        IntStream.range(0, finalButtonIndex + 1)
+                                                 .filter(index -> !edits.get(index).done)
+                                                 .mapToObj(editsButtons::get)
+                                                 .forEach(button -> button.setBackground(Color.GREEN));
+                                    }
+                                    
+                                    @Override public void mouseExited(MouseEvent e) {
+                                        super.mouseExited(e);
+                                        editsButtons.forEach(button -> button.setBackground(baseBackgroundColor));
+                                    }
+                                });
                             }
-                            
-                            
-                            return jButton;
-                        }).forEach(editsPanel::add);
+                        }
+                        
+                        
+                        editsButtons.forEach(editsPanel::add);
                         editsPanel.revalidate();
                         editsPanel.repaint();
                         editsDialog.pack();
