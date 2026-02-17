@@ -1,11 +1,12 @@
 package org.openmarkov.full;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.openmarkov.core.action.base.PNEdit;
 import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.gui.componentBuilder.JMenuItemBuilder;
 import org.openmarkov.gui.loader.element.IconBind;
 import org.openmarkov.gui.toolplugin.ToolPlugin;
+import org.openmarkov.gui.window.MainGUI;
 import org.openmarkov.gui.window.MainPanel;
 
 import javax.swing.*;
@@ -19,10 +20,6 @@ import java.util.stream.Stream;
 
 public class EditsHistoryPlugin implements ToolPlugin {
     
-    @Override public @NotNull String menuOptionText() {
-        return "Edits history";
-    }
-    
     @Override public @NotNull ToolPluginGroup pluginGroup() {
         return ToolPluginGroup.UNCATEGORIZED;
     }
@@ -31,8 +28,14 @@ public class EditsHistoryPlugin implements ToolPlugin {
         return 0;
     }
     
-    @Override public void showDialog(@Nullable JFrame parent) {
-        JDialog editsDialog = new JDialog(parent);
+    @Override public JMenuItem toMenuItem() {
+        return new JMenuItemBuilder("Edits history")
+                .onClick(EditsHistoryPlugin::action)
+                .build();
+    }
+    
+    private static void action() {
+        JDialog editsDialog = new JDialog(MainGUI.INSTANCE.mainPanel.getMainFrame());
         editsDialog.setVisible(true);
         editsDialog.setModalityType(Dialog.ModalityType.MODELESS);
         editsDialog.setTitle("Visualization of edits");
@@ -133,9 +136,7 @@ public class EditsHistoryPlugin implements ToolPlugin {
                 }
             }
         }).start();
-        
     }
-    
     
     record EditAndDone(PNEdit edit, boolean done) {
     }

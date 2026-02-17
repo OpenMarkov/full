@@ -1,7 +1,6 @@
 package org.openmarkov.full;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jgrapht.alg.drawing.FRLayoutAlgorithm2D;
 import org.jgrapht.alg.drawing.LayoutAlgorithm2D;
 import org.jgrapht.alg.drawing.model.Box2D;
@@ -10,6 +9,7 @@ import org.jgrapht.alg.drawing.model.MapLayoutModel2D;
 import org.jgrapht.alg.drawing.model.Point2D;
 import org.openmarkov.core.exception.DoEditException;
 import org.openmarkov.gui.action.MoveNodeEdit;
+import org.openmarkov.gui.componentBuilder.JMenuItemBuilder;
 import org.openmarkov.gui.graphic.VisualNode;
 import org.openmarkov.gui.toolplugin.ToolPlugin;
 import org.openmarkov.gui.window.MainPanel;
@@ -23,10 +23,6 @@ import org.openmarkov.gui.window.edition.EditorPanel;
 
 public class SortProbnetPlugin implements ToolPlugin {
     
-    @Override public @NotNull String menuOptionText() {
-        return "Sort probnet";
-    }
-    
     @Override public @NotNull ToolPluginGroup pluginGroup() {
         return ToolPluginGroup.UNCATEGORIZED;
     }
@@ -35,7 +31,7 @@ public class SortProbnetPlugin implements ToolPlugin {
         return 0;
     }
     
-    @Override public boolean enabled() {
+    public boolean enabled() {
         return MainPanel.getCurrentNetworkPanel() != null && !MainPanel.getCurrentNetworkPanel()
                                                                        .getProbNet()
                                                                        .getLinks()
@@ -48,13 +44,19 @@ public class SortProbnetPlugin implements ToolPlugin {
     private static final int TOP_LEFT_CORNER_SIZE = 30;
     private static final int BOTTOM_RIGHT_CORNER_SIZE = 50;
     
-    @Override public void showDialog(@Nullable JFrame parent) throws DoEditException {
-        var panel = MainPanel.getCurrentNetworkPanel().getEditorPanel();
-        double desiredWidth = panel.getVisibleRect().getWidth()
-                - SortProbnetPlugin.TOP_LEFT_CORNER_SIZE - SortProbnetPlugin.BOTTOM_RIGHT_CORNER_SIZE;
-        double desiredHeight = panel.getVisibleRect().getHeight()
-                - SortProbnetPlugin.TOP_LEFT_CORNER_SIZE - SortProbnetPlugin.BOTTOM_RIGHT_CORNER_SIZE;
-        SortProbnetPlugin.graphicallySortNetworkAsMoveEdit(panel, desiredWidth, desiredHeight);
+    @Override public JMenuItem toMenuItem() {
+        return new JMenuItemBuilder("Sort probnet")
+                .enabled(MainPanel.getCurrentNetworkPanel() != null
+                                 && !MainPanel.getCurrentNetworkPanel().getProbNet().getLinks().isEmpty())
+                .onClick(() -> {
+                    var panel = MainPanel.getCurrentNetworkPanel().getEditorPanel();
+                    double desiredWidth = panel.getVisibleRect().getWidth()
+                            - SortProbnetPlugin.TOP_LEFT_CORNER_SIZE - SortProbnetPlugin.BOTTOM_RIGHT_CORNER_SIZE;
+                    double desiredHeight = panel.getVisibleRect().getHeight()
+                            - SortProbnetPlugin.TOP_LEFT_CORNER_SIZE - SortProbnetPlugin.BOTTOM_RIGHT_CORNER_SIZE;
+                    SortProbnetPlugin.graphicallySortNetworkAsMoveEdit(panel, desiredWidth, desiredHeight);
+                })
+                .build();
     }
     
     public static void graphicallySortNetwork(EditorPanel panel, double desiredWidth, double desiredHeight) {

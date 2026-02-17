@@ -1,9 +1,9 @@
 package org.openmarkov.full;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.openmarkov.core.localize.StringDatabase;
 import org.openmarkov.core.model.network.ProbNet;
+import org.openmarkov.gui.componentBuilder.JMenuItemBuilder;
 import org.openmarkov.gui.dialog.io.OMFileChooser;
 import org.openmarkov.gui.toolplugin.ToolPlugin;
 import org.openmarkov.gui.util.Utilities;
@@ -23,10 +23,6 @@ import java.nio.file.Paths;
 
 public class SaveProbnetImagePlugin implements ToolPlugin {
     
-    @Override public @NotNull String menuOptionText() {
-        return "Save network as image";
-    }
-    
     @Override public @NotNull ToolPluginGroup pluginGroup() {
         return ToolPluginGroup.UNCATEGORIZED;
     }
@@ -35,11 +31,18 @@ public class SaveProbnetImagePlugin implements ToolPlugin {
         return 0;
     }
     
-    @Override public boolean enabled() {
+    public boolean enabled() {
         return MainPanel.getCurrentProbNet() != null;
     }
     
-    @Override public void showDialog(@Nullable JFrame parent) throws IOException {
+    @Override public JMenuItem toMenuItem() {
+        return new JMenuItemBuilder("Save network as image")
+                .enabled(MainPanel.getCurrentProbNet() != null)
+                .onClick(SaveProbnetImagePlugin::action)
+                .build();
+    }
+    
+    private static void action() throws IOException {
         String title = StringDatabase.getUniqueInstance().getString("SaveNetworkImage");
         SaveProbnetImagePlugin.SAVE_IMAGE_FILE_CHOOSER.setDialogTitle(title);
         if (SaveProbnetImagePlugin.SAVE_IMAGE_FILE_CHOOSER.showSaveDialog(Utilities.getOwner(MainGUI.INSTANCE.mainPanel)) != JFileChooser.APPROVE_OPTION) {

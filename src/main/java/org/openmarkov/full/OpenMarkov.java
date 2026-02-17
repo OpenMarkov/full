@@ -15,6 +15,7 @@ import org.openmarkov.core.localize.StringDatabase;
 import org.openmarkov.gui.configuration.*;
 import org.openmarkov.gui.dialog.OMExceptionHandler;
 import org.openmarkov.gui.exception.CorruptNetworkFile;
+import org.openmarkov.gui.toolplugin.UILookAndFeelPlugin;
 import org.openmarkov.gui.window.MainGUI;
 import org.xml.sax.SAXException;
 
@@ -90,11 +91,11 @@ public class OpenMarkov {
             }
         }
         
-        if (LocalPreferences.PREFERS_DARK_THEME.get()) {
+        if (LocalPreferences.PREFERRED_THEME.get() != UILookAndFeelPlugin.Theme.SYSTEM) {
             MainGUI.INSTANCE.setVisible(false);
             SwingUtilities.invokeLater(() -> {
                 try {
-                    org.openmarkov.gui.toolplugin.DarkModePlugin.updateInterfaceToLook(
+                    UILookAndFeelPlugin.updateInterfaceToLook(
                             MainGUI.INSTANCE.mainPanel.getMainFrame());
                 } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
                          UnsupportedLookAndFeelException e) {
