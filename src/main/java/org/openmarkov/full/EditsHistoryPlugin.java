@@ -57,8 +57,10 @@ public class EditsHistoryPlugin implements ToolPlugin {
                 try {
                     List<EditAndDone> newEdits;
                     try {
-                        List<PNEdit> undoneEdits = currentProbNet.getPNESupport().undoManager.getUndoneEdits();
-                        List<PNEdit> doneEdits = currentProbNet.getPNESupport().undoManager.getDoneEdits();
+                        List<PNEdit> undoneEdits = currentProbNet.getPNESupport()
+                                                                 .getCurrentEditHistory()
+                                                                 .getUndoneEdits();
+                        List<PNEdit> doneEdits = currentProbNet.getPNESupport().getCurrentEditHistory().getDoneEdits();
                         doneEdits = doneEdits.reversed();
                         newEdits = Stream.concat(
                                 doneEdits.stream().map(edit -> new EditAndDone(edit, true)),
