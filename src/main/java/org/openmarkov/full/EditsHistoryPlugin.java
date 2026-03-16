@@ -40,14 +40,12 @@ public class EditsHistoryPlugin implements ToolPlugin {
         editsDialog.setModalityType(Dialog.ModalityType.MODELESS);
         editsDialog.setTitle("Visualization of edits");
         
-        
         JPanel editsPanel = new JPanel();
         editsPanel.setLayout(new BoxLayout(editsPanel, BoxLayout.Y_AXIS));
         var visualPanel = new JPanel();
         visualPanel.setLayout(new BorderLayout());
         visualPanel.add(new JScrollPane(editsPanel), BorderLayout.CENTER);
         editsDialog.setContentPane(visualPanel);
-        
         
         final ArrayList<EditAndDone> edits = new ArrayList<>();
         new Thread(() -> {

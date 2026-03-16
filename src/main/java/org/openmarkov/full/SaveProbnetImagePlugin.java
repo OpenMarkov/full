@@ -6,7 +6,7 @@ import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.gui.componentBuilder.JMenuItemBuilder;
 import org.openmarkov.gui.dialog.io.OMFileChooser;
 import org.openmarkov.gui.toolplugin.ToolPlugin;
-import org.openmarkov.gui.util.Utilities;
+import org.openmarkov.gui.util.GUIUtils;
 import org.openmarkov.gui.window.MainGUI;
 import org.openmarkov.gui.window.MainPanel;
 import org.openmarkov.gui.window.edition.EditorPanel;
@@ -45,7 +45,7 @@ public class SaveProbnetImagePlugin implements ToolPlugin {
     private static void action() throws IOException {
         String title = StringDatabase.getUniqueInstance().getString("SaveNetworkImage");
         SaveProbnetImagePlugin.SAVE_IMAGE_FILE_CHOOSER.setDialogTitle(title);
-        if (SaveProbnetImagePlugin.SAVE_IMAGE_FILE_CHOOSER.showSaveDialog(Utilities.getOwner(MainGUI.INSTANCE.mainPanel)) != JFileChooser.APPROVE_OPTION) {
+        if (SaveProbnetImagePlugin.SAVE_IMAGE_FILE_CHOOSER.showSaveDialog(GUIUtils.getOwner(MainGUI.INSTANCE.mainPanel)) != JFileChooser.APPROVE_OPTION) {
             return;
         }
         var file = SaveProbnetImagePlugin.SAVE_IMAGE_FILE_CHOOSER.getSelectedFile();
