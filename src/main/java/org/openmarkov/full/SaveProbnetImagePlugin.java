@@ -9,7 +9,7 @@ import org.openmarkov.gui.toolplugin.ToolPlugin;
 import org.openmarkov.gui.util.GUIUtils;
 import org.openmarkov.gui.window.MainGUI;
 import org.openmarkov.gui.window.MainPanel;
-import org.openmarkov.gui.window.edition.EditorPanel;
+import org.openmarkov.gui.window.edition.editorPanel.EditorPanel;
 import org.openmarkov.gui.window.edition.NetworkPanel;
 
 import javax.imageio.ImageIO;
