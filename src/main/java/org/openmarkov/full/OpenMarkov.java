@@ -17,7 +17,6 @@ import org.openmarkov.gui.dialog.OMExceptionHandler;
 import org.openmarkov.gui.exception.CorruptNetworkFile;
 import org.openmarkov.gui.toolplugin.UILookAndFeelPlugin;
 import org.openmarkov.gui.window.MainGUI;
-import org.xml.sax.SAXException;
 
 import javax.swing.*;
 import java.io.File;
@@ -86,7 +85,7 @@ public class OpenMarkov {
         for (String filename : filesToOpen) {
             try {
                 MainGUI.INSTANCE.openNetwork(filename);
-            } catch (ParserException | IOException | SAXException | NoReaderForFileException | CorruptNetworkFile e) {
+            } catch (ParserException | IOException | NoReaderForFileException | CorruptNetworkFile e) {
                 Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
             }
         }
