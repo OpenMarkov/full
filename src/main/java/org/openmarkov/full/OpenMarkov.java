@@ -7,9 +7,8 @@
 
 package org.openmarkov.full;
 
-import com.formdev.flatlaf.IntelliJTheme;
 import org.openmarkov.core.exception.ParserException;
-import org.openmarkov.core.exception.UnrecoverableException;
+import org.openmarkov.core.exception.UnreachableException;
 import org.openmarkov.core.io.format.annotation.NoReaderForFileException;
 import org.openmarkov.core.localize.StringDatabase;
 import org.openmarkov.gui.configuration.*;
@@ -19,12 +18,15 @@ import org.openmarkov.gui.toolplugin.UILookAndFeelPlugin;
 import org.openmarkov.gui.window.MainGUI;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.openmarkov.gui.window.MainGUI.loadWithSplash;
 
 /**
  * This class stores a set of additionalProperties and the {@code main}
@@ -43,15 +45,6 @@ import java.util.List;
  * @since OpenMarkov 1.0
  */
 public class OpenMarkov {
-    // Attributes
-    /**
-     * Stores variables such as initialPath, netsDirectory ...
-     */
-    ComponentConfiguration openMarkovKernelConfiguration = null;
-    /**
-     * Stores the configuration of each component.
-     */
-    OpenMarkovConfiguration openMarkovConfiguration = null;
     
     /**
      * OpenMarkov main class
@@ -63,49 +56,19 @@ public class OpenMarkov {
             System.setProperty("sun.java2d.uiScale", LocalPreferences.UI_SCALE.get().toString());
         }
         System.setProperty("flatlaf.uiScale", String.valueOf(LocalPreferences.UI_SCALE.get()));
-        
         Thread.setDefaultUncaughtExceptionHandler(new OMExceptionHandler());
-        List<String> filesToOpen = new ArrayList<String>();
-        boolean languageWasSet = false;
-        for (int i = 0; i < args.length; ++i) {
-            if (args[i].equals("-l") || args[i].equals("-language")) {
-                if (i + 1 < args.length) {
-                    StringDatabase.getUniqueInstance().setLanguage(args[i + 1]);
-                    ++i;
-                    languageWasSet = true;
-                }
-            } else if (new File(args[i]).exists()) {
-                filesToOpen.add(args[i]);
-            }
+        try {
+            UILookAndFeelPlugin.updateInterfaceToLook(null);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                 UnsupportedLookAndFeelException e) {
+            throw new UnreachableException(e);
         }
-        if (!languageWasSet) {
-            StringDatabase.getUniqueInstance().setLanguage(LocalPreferences.PREFERENCE_LANGUAGE.get());
-        }
-        MainGUI.INSTANCE.setVisible(true);
-        for (String filename : filesToOpen) {
-            try {
-                MainGUI.INSTANCE.openNetwork(filename);
-            } catch (ParserException | IOException | NoReaderForFileException | CorruptNetworkFile e) {
-                Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
-            }
-        }
-        
-        if (LocalPreferences.PREFERRED_THEME.get() != UILookAndFeelPlugin.Theme.SYSTEM) {
-            MainGUI.INSTANCE.setVisible(false);
-            SwingUtilities.invokeLater(() -> {
-                try {
-                    UILookAndFeelPlugin.updateInterfaceToLook(
-                            MainGUI.INSTANCE.mainPanel.getMainFrame());
-                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
-                         UnsupportedLookAndFeelException e) {
-                    throw new UnrecoverableException(e);
-                } finally {
-                    MainGUI.INSTANCE.setVisible(true);
-                }
-            });
-        }
-        
-        
+        loadWithSplash();
+        SwingUtilities.invokeLater(() -> {
+            OpenMarkov.processArguments(args, MainGUI.INSTANCE);
+            MainGUI.INSTANCE.setVisible(true);
+        });
+    /*
         var developmentTheme = new File("development.theme.json").getAbsoluteFile();
         System.out.println("Reading changes at " + developmentTheme);
         long lastModified;
@@ -132,5 +95,34 @@ public class OpenMarkov {
                 }
             }
         }
+        */
     }
+    
+    private static void processArguments(String[] args, MainGUI mainGUI) {
+        List<String> filesToOpen = new ArrayList<>();
+        boolean languageWasSet = false;
+        for (int i = 0; i < args.length; ++i) {
+            if (args[i].equals("-l") || args[i].equals("-language")) {
+                if (i + 1 < args.length) {
+                    StringDatabase.getUniqueInstance().setLanguage(args[i + 1]);
+                    ++i;
+                    languageWasSet = true;
+                }
+            } else if (new File(args[i]).exists()) {
+                filesToOpen.add(args[i]);
+            }
+        }
+        if (!languageWasSet) {
+            StringDatabase.getUniqueInstance().setLanguage(LocalPreferences.PREFERENCE_LANGUAGE.get());
+        }
+        for (String filename : filesToOpen) {
+            try {
+                mainGUI.openNetwork(filename);
+            } catch (ParserException | IOException | NoReaderForFileException | CorruptNetworkFile e) {
+                Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+            }
+        }
+    }
+    
+    
 }

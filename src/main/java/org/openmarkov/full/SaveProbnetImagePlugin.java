@@ -9,7 +9,7 @@ import org.openmarkov.gui.toolplugin.ToolPlugin;
 import org.openmarkov.gui.util.GUIUtils;
 import org.openmarkov.gui.window.MainGUI;
 import org.openmarkov.gui.window.MainPanel;
-import org.openmarkov.gui.window.edition.editorPanel.EditorPanel;
+import org.openmarkov.gui.window.edition.networkEditorPanel.NetworkEditorPanel;
 import org.openmarkov.gui.window.edition.NetworkPanel;
 
 import javax.imageio.ImageIO;
@@ -61,12 +61,12 @@ public class SaveProbnetImagePlugin implements ToolPlugin {
     private static @NotNull BufferedImage imageOfProbnet(ProbNet currentProbNet) {
         NetworkPanel networkPanel = new NetworkPanel(currentProbNet, MainGUI.INSTANCE.mainPanel);
         networkPanel.setZoom(1.0);
-        EditorPanel editorPanel = networkPanel.getEditorPanel();
-        editorPanel.adjustPanelDimension();
+        NetworkEditorPanel networkEditorPanel = networkPanel.getEditorPanel();
+        networkEditorPanel.adjustPanelDimension();
         
-        BufferedImage image = new BufferedImage((int) editorPanel.getCurrentWidth(), (int) editorPanel.getCurrentHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = new BufferedImage((int) networkEditorPanel.getCurrentWidth(), (int) networkEditorPanel.getCurrentHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.createGraphics();
-        editorPanel.paint(g);
+        networkEditorPanel.paint(g);
         return image;
     }
     

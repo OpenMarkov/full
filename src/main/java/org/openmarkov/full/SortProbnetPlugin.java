@@ -19,7 +19,7 @@ import javax.swing.*;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleDirectedGraph;
-import org.openmarkov.gui.window.edition.editorPanel.EditorPanel;
+import org.openmarkov.gui.window.edition.networkEditorPanel.NetworkEditorPanel;
 
 public class SortProbnetPlugin implements ToolPlugin {
     
@@ -59,7 +59,7 @@ public class SortProbnetPlugin implements ToolPlugin {
                 .build();
     }
     
-    public static void graphicallySortNetwork(EditorPanel panel, double desiredWidth, double desiredHeight) {
+    public static void graphicallySortNetwork(NetworkEditorPanel panel, double desiredWidth, double desiredHeight) {
         SortedCoordinates sortedCoordinates = SortProbnetPlugin.getSortedCoordinates(panel, desiredWidth, desiredHeight);
         for (VisualNode vertex : sortedCoordinates.graph().vertexSet()) {
             Point2D position = sortedCoordinates.model().get(vertex);
@@ -70,7 +70,7 @@ public class SortProbnetPlugin implements ToolPlugin {
         panel.adjustPanelDimension();
     }
     
-    private static void graphicallySortNetworkAsMoveEdit(EditorPanel panel, double desiredWidth, double desiredHeight) throws DoEditException {
+    private static void graphicallySortNetworkAsMoveEdit(NetworkEditorPanel panel, double desiredWidth, double desiredHeight) throws DoEditException {
         SortedCoordinates sortedCoordinates = SortProbnetPlugin.getSortedCoordinates(panel, desiredWidth, desiredHeight);
         for (VisualNode vertex : sortedCoordinates.graph().vertexSet()) {
             Point2D position = sortedCoordinates.model().get(vertex);
@@ -81,7 +81,7 @@ public class SortProbnetPlugin implements ToolPlugin {
         new MoveNodeEdit(sortedCoordinates.graph().vertexSet().stream().toList()).executeEdit();
     }
     
-    private static @NotNull SortProbnetPlugin.SortedCoordinates getSortedCoordinates(EditorPanel panel, double desiredWidth, double desiredHeight) {
+    private static @NotNull SortProbnetPlugin.SortedCoordinates getSortedCoordinates(NetworkEditorPanel panel, double desiredWidth, double desiredHeight) {
         var visualNetwork = panel.getVisualNetwork();
         Graph<VisualNode, DefaultEdge> graph = new SimpleDirectedGraph<>(DefaultEdge.class);
         LayoutModel2D<VisualNode> model = new MapLayoutModel2D<>(new Box2D(
