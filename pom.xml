@@ -38,7 +38,7 @@
                                 <mainClass>org.openmarkov.full.OpenMarkov</mainClass>
                             </manifest>
                         </archive>
-                        <appendAssemblyId>false</appendAssemblyId>
+                        <appendAssemblyId>true</appendAssemblyId>
                         <encoding>UTF-8</encoding>
                     </configuration>
                     <executions>
