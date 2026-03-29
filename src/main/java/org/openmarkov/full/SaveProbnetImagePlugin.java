@@ -21,6 +21,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+/**
+ * Tool plugin that exports the current probabilistic network as a PNG image file.
+ */
 public class SaveProbnetImagePlugin implements ToolPlugin {
     
     @Override public @NotNull ToolPluginGroup pluginGroup() {
@@ -31,6 +34,7 @@ public class SaveProbnetImagePlugin implements ToolPlugin {
         return 0;
     }
     
+    /** {@return whether a network is currently open and can be exported} */
     public boolean enabled() {
         return MainPanel.getCurrentProbNet() != null;
     }

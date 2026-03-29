@@ -21,6 +21,10 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleDirectedGraph;
 import org.openmarkov.gui.window.edition.networkEditorPanel.NetworkEditorPanel;
 
+/**
+ * Tool plugin that rearranges the visual layout of a probabilistic network using
+ * the Fruchterman-Reingold force-directed algorithm from JGraphT.
+ */
 public class SortProbnetPlugin implements ToolPlugin {
     
     @Override public @NotNull ToolPluginGroup pluginGroup() {
@@ -59,6 +63,13 @@ public class SortProbnetPlugin implements ToolPlugin {
                 .build();
     }
     
+    /**
+     * Applies force-directed layout to the network and directly sets node positions (no undo support).
+     *
+     * @param panel         the editor panel containing the visual network
+     * @param desiredWidth  the target layout width in pixels
+     * @param desiredHeight the target layout height in pixels
+     */
     public static void graphicallySortNetwork(NetworkEditorPanel panel, double desiredWidth, double desiredHeight) {
         SortedCoordinates sortedCoordinates = SortProbnetPlugin.getSortedCoordinates(panel, desiredWidth, desiredHeight);
         for (VisualNode vertex : sortedCoordinates.graph().vertexSet()) {
@@ -107,6 +118,7 @@ public class SortProbnetPlugin implements ToolPlugin {
         return new SortedCoordinates(visualNetwork, graph, model, minX, minY);
     }
     
+    /** Holds the result of a force-directed layout computation. */
     private record SortedCoordinates(org.openmarkov.gui.graphic.VisualNetwork visualNetwork,
                                      Graph<VisualNode, DefaultEdge> graph, LayoutModel2D<VisualNode> model, double minX,
                                      double minY) {

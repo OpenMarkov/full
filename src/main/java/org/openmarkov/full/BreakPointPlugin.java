@@ -8,6 +8,10 @@ import org.openmarkov.gui.window.MainPanel;
 
 import javax.swing.*;
 
+/**
+ * Developer tool plugin that provides a menu item whose action is an empty breakpoint,
+ * useful for attaching a debugger and inspecting the current network state.
+ */
 public class BreakPointPlugin implements ToolPlugin {
     
     @Override public @NotNull ToolPluginGroup pluginGroup() {

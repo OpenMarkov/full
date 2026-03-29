@@ -18,6 +18,10 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+/**
+ * Developer tool plugin that displays a modeless dialog showing the undo/redo edit history
+ * of the current network. Clicking an edit undoes or redoes up to that point.
+ */
 public class EditsHistoryPlugin implements ToolPlugin {
     
     @Override public @NotNull ToolPluginGroup pluginGroup() {
@@ -138,6 +142,7 @@ public class EditsHistoryPlugin implements ToolPlugin {
         }).start();
     }
     
+    /** Associates an edit with its done/undone status. */
     record EditAndDone(PNEdit edit, boolean done) {
     }
     

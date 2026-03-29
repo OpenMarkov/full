@@ -13,6 +13,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 
+/**
+ * Developer tool plugin that logs the class name and name of any Swing component
+ * hovered by the mouse. Can be toggled on/off via the Tools menu.
+ */
 public class HoverLoggerPlugin implements ToolPlugin {
     
     @Override public @NotNull ToolPluginGroup pluginGroup() {
