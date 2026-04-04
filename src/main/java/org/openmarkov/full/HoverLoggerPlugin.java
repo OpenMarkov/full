@@ -1,16 +1,13 @@
 package org.openmarkov.full;
 
 import org.jetbrains.annotations.NotNull;
-import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.gui.componentBuilder.JMenuItemBuilder;
 import org.openmarkov.gui.configuration.LocalPreferences;
 import org.openmarkov.gui.toolplugin.ToolPlugin;
-import org.openmarkov.gui.window.MainPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 
 /**
