@@ -14,7 +14,7 @@ import org.openmarkov.core.localize.StringDatabase;
 import org.openmarkov.gui.configuration.*;
 import org.openmarkov.gui.dialog.OMExceptionHandler;
 import org.openmarkov.gui.exception.CorruptNetworkFile;
-import org.openmarkov.gui.toolplugin.UILookAndFeelPlugin;
+import org.openmarkov.gui.configuration.UILookAndFeelPlugin;
 import org.openmarkov.gui.window.MainGUI;
 
 import javax.swing.*;

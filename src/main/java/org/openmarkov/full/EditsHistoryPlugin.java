@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.openmarkov.core.action.base.PNEdit;
 import org.openmarkov.core.model.network.ProbNet;
 import org.openmarkov.gui.componentBuilder.JMenuItemBuilder;
+import org.openmarkov.gui.configuration.GUIColors;
 import org.openmarkov.gui.loader.element.IconBind;
 import org.openmarkov.gui.toolplugin.ToolPlugin;
 import org.openmarkov.gui.window.MainGUI;
@@ -96,7 +97,7 @@ public class EditsHistoryPlugin implements ToolPlugin {
                                         IntStream.range(finalButtonIndex, editsButtons.size())
                                                  .filter(index -> edits.get(index).done)
                                                  .mapToObj(editsButtons::get)
-                                                 .forEach(button -> button.setBackground(Color.RED));
+                                                 .forEach(button -> button.setBackground(GUIColors.DevelopmentTools.EditHistory.EDIT_TO_UNDO_BACKGROUND.getColor()));
                                     }
                                     
                                     @Override public void mouseExited(MouseEvent e) {
@@ -118,7 +119,7 @@ public class EditsHistoryPlugin implements ToolPlugin {
                                         IntStream.range(0, finalButtonIndex + 1)
                                                  .filter(index -> !edits.get(index).done)
                                                  .mapToObj(editsButtons::get)
-                                                 .forEach(button -> button.setBackground(Color.GREEN));
+                                                 .forEach(button -> button.setBackground(GUIColors.DevelopmentTools.EditHistory.EDIT_TO_REDO_BACKGROUND.getColor()));
                                     }
                                     
                                     @Override public void mouseExited(MouseEvent e) {
