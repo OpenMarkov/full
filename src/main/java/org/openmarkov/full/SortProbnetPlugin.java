@@ -36,7 +36,7 @@ public class SortProbnetPlugin implements ToolPlugin {
     }
     
     public boolean enabled() {
-        return MainPanel.getCurrentNetworkPanel() != null && !MainPanel.getCurrentNetworkPanel()
+        return MainPanel.getCurrentNetworkEditorPanel() != null && !MainPanel.getCurrentNetworkEditorPanel()
                                                                        .getProbNet()
                                                                        .getLinks()
                                                                        .isEmpty();
@@ -50,10 +50,10 @@ public class SortProbnetPlugin implements ToolPlugin {
     
     @Override public JMenuItem toMenuItem() {
         return new JMenuItemBuilder("Sort probnet")
-                .enabled(MainPanel.getCurrentNetworkPanel() != null
-                                 && !MainPanel.getCurrentNetworkPanel().getProbNet().getLinks().isEmpty())
+                .enabled(MainPanel.getCurrentNetworkEditorPanel() != null
+                                 && !MainPanel.getCurrentNetworkEditorPanel().getProbNet().getLinks().isEmpty())
                 .onClick(() -> {
-                    var panel = MainPanel.getCurrentNetworkPanel().getEditorPanel();
+                    var panel = MainPanel.getCurrentNetworkEditorPanel().getEditorPanel();
                     double desiredWidth = panel.getVisibleRect().getWidth()
                             - SortProbnetPlugin.TOP_LEFT_CORNER_SIZE - SortProbnetPlugin.BOTTOM_RIGHT_CORNER_SIZE;
                     double desiredHeight = panel.getVisibleRect().getHeight()
