@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseEvent;
+import java.util.Collections;
 
 /**
  * Developer tool plugin that logs the class name and name of any Swing component
@@ -34,7 +35,7 @@ public class HoverLoggerPlugin implements ToolPlugin {
     
     static {
         Toolkit.getDefaultToolkit().addAWTEventListener(event -> {
-            if(!LocalPreferences.HOVER_LOGGER_ENABLED.get()){
+            if (!LocalPreferences.HOVER_LOGGER_ENABLED.get()) {
                 return;
             }
             if (!(event instanceof MouseEvent mouseEvent)) {
@@ -46,7 +47,14 @@ public class HoverLoggerPlugin implements ToolPlugin {
             if (!(mouseEvent.getSource() instanceof Component hoveredComponent)) {
                 return;
             }
-            System.out.println("Hovering a " + hoveredComponent.getClass().getName() + " with name " + hoveredComponent.getName());
+            var componentTree = org.openmarkov.java.swing.ComponentUtilities.parents(hoveredComponent);
+            componentTree.add(0, hoveredComponent);
+            Collections.reverse(componentTree);
+            for (int i = 0; i < componentTree.size(); i++) {
+                Component component = componentTree.get(i);
+                String name = component.getName() == null ? "" : " with name " + component.getName();
+                System.out.println("\t".repeat(i) + "- " + component.getClass().getName() + name);
+            }
         }, AWTEvent.MOUSE_MOTION_EVENT_MASK);
         
     }
