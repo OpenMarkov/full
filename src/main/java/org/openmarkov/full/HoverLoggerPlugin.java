@@ -1,6 +1,7 @@
 package org.openmarkov.full;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.openmarkov.gui.componentBuilder.JMenuItemBuilder;
 import org.openmarkov.gui.configuration.LocalPreferences;
 import org.openmarkov.gui.toolplugin.ToolPlugin;
@@ -33,11 +34,10 @@ public class HoverLoggerPlugin implements ToolPlugin {
                 .build();
     }
     
+    private static @Nullable Component HOVERED_COMPONENT = null;
+    
     static {
         Toolkit.getDefaultToolkit().addAWTEventListener(event -> {
-            if (!LocalPreferences.HOVER_LOGGER_ENABLED.get()) {
-                return;
-            }
             if (!(event instanceof MouseEvent mouseEvent)) {
                 return;
             }
@@ -45,6 +45,11 @@ public class HoverLoggerPlugin implements ToolPlugin {
                 return;
             }
             if (!(mouseEvent.getSource() instanceof Component hoveredComponent)) {
+                HOVERED_COMPONENT = null;
+                return;
+            }
+            HoverLoggerPlugin.HOVERED_COMPONENT = hoveredComponent;
+            if (!LocalPreferences.HOVER_LOGGER_ENABLED.get()) {
                 return;
             }
             var componentTree = org.openmarkov.java.swing.ComponentUtilities.parents(hoveredComponent);
