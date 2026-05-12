@@ -4,12 +4,12 @@
 
     <parent>
         <groupId>org.openmarkov</groupId>
-        <artifactId>org.openmarkov</artifactId>
+        <artifactId>root</artifactId>
         <version>0.3.0-SNAPSHOT</version>
-        <relativePath>../org.openmarkov</relativePath>
+        <relativePath>../root</relativePath>
     </parent>
 
-    <artifactId>org.openmarkov.full</artifactId>
+    <artifactId>full</artifactId>
     <version>0.3.0-SNAPSHOT</version>
 
     <build>
@@ -58,12 +58,12 @@
     <dependencies>
         <dependency>
             <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.gui</artifactId>
+            <artifactId>gui</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <!--<dependency>-->
         <!--<groupId>org.openmarkov</groupId>-->
-        <!--<artifactId>org.openmarkov.core</artifactId>-->
+        <!--<artifactId>core</artifactId>-->
         <!--<version>0.3.0-SNAPSHOT</version>-->
         <!--<scope>test</scope>-->
         <!--<type>test-jar</type>-->
@@ -72,70 +72,70 @@
         <!-- Plugins -->
         <dependency>
             <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.costEffectiveness</artifactId>
+            <artifactId>costEffectiveness</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.sensitivityAnalysis</artifactId>
+            <artifactId>sensitivityAnalysis</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.dbGenerator</artifactId>
+            <artifactId>dbGenerator</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.bnEvaluation</artifactId>
+            <artifactId>bnEvaluation</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.stochasticPropagationOutput</artifactId>
+            <artifactId>stochasticPropagationOutput</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.io</artifactId>
+            <artifactId>io</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.learning.algorithm</artifactId>
+            <artifactId>learning.algorithm</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.learning.gui</artifactId>
+            <artifactId>learning.gui</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.learning.metric</artifactId>
+            <artifactId>learning.metric</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.openmarkov</groupId>
-            <artifactId>org.openmarkov.inference</artifactId>
+            <artifactId>inference</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <!--<dependency>-->
         <!--<groupId>org.openmarkov</groupId>-->
-        <!--<artifactId>org.openmarkov.evaluation</artifactId>-->
+        <!--<artifactId>evaluation</artifactId>-->
         <!--<version>0.3.0-SNAPSHOT</version>-->
         <!--<scope>test</scope>-->
         <!--</dependency>-->
 
         <!--<dependency>-->
         <!--<groupId>org.openmarkov</groupId>-->
-        <!--<artifactId>org.openmarkov.utilityCalculator</artifactId>-->
+        <!--<artifactId>utilityCalculator</artifactId>-->
         <!--<version>0.3.0-SNAPSHOT</version>-->
         <!--<scope>test</scope>-->
         <!--</dependency>-->
         <!--<dependency>-->
         <!--<groupId>org.openmarkov</groupId>-->
-        <!--<artifactId>org.openmarkov.objectOrientedNetworks</artifactId>-->
+        <!--<artifactId>objectOrientedNetworks</artifactId>-->
         <!--<version>0.3.0-SNAPSHOT</version>-->
         <!--<scope>test</scope>-->
         <!--</dependency>-->
