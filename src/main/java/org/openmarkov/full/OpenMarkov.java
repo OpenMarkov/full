@@ -55,7 +55,7 @@ public class OpenMarkov {
         System.setProperty("flatlaf.uiScale", String.valueOf(LocalPreferences.UI_SCALE.get()));
         Thread.setDefaultUncaughtExceptionHandler(new OMExceptionHandler());
         try {
-            UILookAndFeelPlugin.updateInterfaceToLook(null);
+            UILookAndFeelPlugin.updateInterfaceToLook();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
                  UnsupportedLookAndFeelException e) {
             throw new UnreachableException(e);
