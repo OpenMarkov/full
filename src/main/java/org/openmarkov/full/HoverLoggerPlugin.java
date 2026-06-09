@@ -61,6 +61,5 @@ public class HoverLoggerPlugin implements ToolPlugin {
                 System.out.println("\t".repeat(i) + "- " + component.getClass().getName() + name);
             }
         }, AWTEvent.MOUSE_MOTION_EVENT_MASK);
-        
     }
 }
