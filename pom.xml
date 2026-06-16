@@ -12,12 +12,11 @@
     <artifactId>full</artifactId>
     <version>0.3.0-SNAPSHOT</version>
 
+    <properties>
+        <maven.build.timestamp.format>yyyy-MM-dd_HH-mm-ss</maven.build.timestamp.format>
+    </properties>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -30,6 +29,8 @@
                     <artifactId>maven-assembly-plugin</artifactId>
                     <version>3.6.0</version>
                     <configuration>
+                        <outputDirectory>${project.basedir}</outputDirectory>
+                        <finalName>OpenMarkov-${maven.build.timestamp}</finalName>
                         <descriptorRefs>
                             <descriptorRef>jar-with-dependencies</descriptorRef>
                         </descriptorRefs>
@@ -38,7 +39,7 @@
                                 <mainClass>org.openmarkov.full.OpenMarkov</mainClass>
                             </manifest>
                         </archive>
-                        <appendAssemblyId>true</appendAssemblyId>
+                        <appendAssemblyId>false</appendAssemblyId>
                         <encoding>UTF-8</encoding>
                     </configuration>
                     <executions>
